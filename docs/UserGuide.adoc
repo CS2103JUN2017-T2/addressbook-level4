@@ -105,16 +105,9 @@ Format: `find KEYWORD_1 [KEYWORD_2 ...] [-archive|-bin]`
 * The search is case insensitive. e.g `meeting` will match `Meeting`
 * The order of the keywords does not matter. e.g. `meeting group` will match `group meeting`
 * The name and label are searched.
-* Only full words will be matched e.g. `Meet` will not match `Meeting`
+* Only full words will be matched e.g. `Meet` will not match `Meeting` but mathces `meet`.
 * Only entries matching all keywords will be returned (i.e. `AND` search). e.g. `group meeting` will not match `client meeting`.
 ****
-
-Examples:
-
-* `find John` +
-Returns `John Doe` but not `john`
-* `find Betsy Tim John` +
-Returns Any person having names `Betsy`, `Tim`, or `John`
 
 === Deleting a person : `delete`
 
