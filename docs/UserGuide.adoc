@@ -94,6 +94,7 @@ Format: `edit [KEYWORD_1, KEYWORD_2,...] | [-index INDEX] [-name NEW_ENTRY_NAME]
 ****
 * There are two ways to select an entry to edit: searching by `KEYWORD`, or specifying the `INDEX`.
 ** The keyword searches both the entry name and tags, and a found entry must match all keywords.
+** The search must only produce one entry to modify. If multiple entries are found to match the keyword no entries will be modified.
 ** The index refers to the index number shown in the last active entry listing. The index *must be a positive integer* 1, 2, 3, ...
 * At least one of the optional data fields must be provided.
 * Existing values will be updated to the input values. If that field is not provided, the existing values are not changed.
@@ -107,6 +108,8 @@ Examples:
 Edits the 1st entry to take place on the coming Saturday at 6pm, for a duration set by `default.add.duration`.
 * `edit 2 -every week 3 -tag` +
 Edits the 2nd entry to take place every week for the 3 weeks including its current occurence, and clears all existing tags.
+* `edit zoo, outing -on 20 September` +
+Edits the entry matching "zoo" and "outing" to take place on 20 September. If there are multiple entries that match the keywords, no entries are modifies.
 
 === Finding all persons containing any keyword in their name: `find`
 
