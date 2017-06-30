@@ -63,51 +63,50 @@ Format: `help`
 Adds an entry to the active tasks +
 Format: `add ENTRY_NAME [-on | -by DATE_A] [-to DATE_B] [-every day | week | month | year [NUM_TIMES | -until STOP_DATE] [-tag TAG_1, TAG_2...]`
 
-*Date combinations*:
-
+****
 * If no date is specified, the entry will contain no date information.
 * `-on DATE_A` indicates an entry starting from `DATE_A` which uses the default value `default.add.duration`.
 * `-by DATE_A` indicates an entry with single date of `DATE_A`.
-* `-on DATE_A -to DATE_B` indicates an entry with spans from `DATE_A` to `DATE_B`.
+* `-on DATE_A -to DATE_B` indicates an entry which spans from `DATE_A` to `DATE_B`.
+****
 
 *Defaults*: +
 If no `NUM_TIMES` or `STOP_DATE` for a recurring entry is specified, `recurring.numTimes` is used for the number of recurring events to add to the calendar.
-
 
 Examples:
 
 * `add dinner with parents -on friday 6pm -to friday 9pm -tag family`
 * `add go to the gym -on monday 10am -every week -tag exercise, activities`
-* `add project submission 5 July 10am -tag school` 
+* `add project submission -by 5 July 10am -tag school` 
 * `add write novel -tag bucketlist`
-
-[TIP]
-Entries can have any number of tags (including 0)
+* `add clean up room`
 
 === Listing all persons : `list`
 
 Shows a list of all persons in the address book. +
 Format: `list`
 
-=== Editing a person : `edit`
+=== Editing an entry : `edit`
 
-Edits an existing person in the address book. +
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]...`
+Edits an existing active entry in the calendar. +
+Format: `edit [KEYWORD_1, KEYWORD_2,...] | [-index INDEX] [-name NEW_ENTRY_NAME] [-on | -by DATE_A] [-to DATE_B] [-every day | week | month | year [NUM_TIMES | -until STOP_DATE] [-tag TAG_1, TAG_2...]`
 
 ****
-* Edits the person at the specified `INDEX`. The index refers to the index number shown in the last person listing. The index *must be a positive integer* 1, 2, 3, ...
-* At least one of the optional fields must be provided.
-* Existing values will be updated to the input values.
-* When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
-* You can remove all the person's tags by typing `t/` without specifying any tags after it.
+* There are two ways to select an entry to edit: searching by `KEYWORD`, or specifying the `INDEX`. 
+** The keyword searches both the entry name and tags.
+** The index refers to the index number shown in the last entry listing. The index *must be a positive integer* 1, 2, 3, ...
+* At least one of the optional data fields must be provided.
+* Existing values will be updated to the input values. If that field is not provided, the existing values are not changed.
+* When editing tags, the existing tags of the entry will be removed and replaced with the new tags: *adding of tags is not cumulative*.
+* You can remove all of the entry's tags by typing `-tag` without specifying any tags after it.
 ****
 
 Examples:
 
-* `edit 1 p/91234567 e/johndoe@example.com` +
-Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
-* `edit 2 n/Betsy Crower t/` +
-Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
+* `edit 1 -on saturday 6pm` +
+Edits the 1st entry to take place on the coming Saturday at 6pm, for a duration set by `default.add.duration`.
+* `edit 2 -every week 3 -tag` +
+Edits the 2nd entry to take place every week for the 3 weeks including its current occurence, and clears all existing tags.
 
 === Finding all persons containing any keyword in their name: `find`
 
