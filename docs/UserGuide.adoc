@@ -159,6 +159,11 @@ Format: `history`
 Undo the changes made by the last command. +
 Format: `undo`
 
+=== Redo changes : `redo`
+
+Reapply the changes removed by the `undo` command. +
+Format: `redo`
+
 === Clearing all entries : `clear`
 
 Clears all entries from the address book. +
