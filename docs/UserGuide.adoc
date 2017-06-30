@@ -77,7 +77,7 @@ Examples:
 
 * `add dinner with parents -on friday 6pm -to friday 9pm -tag family`
 * `add go to the gym -on monday 10am -every week -tag exercise, activities`
-* `add project submission -by 5 July 10am -tag school` 
+* `add project submission -by 5 July 10am -tag school`
 * `add write novel -tag bucketlist`
 * `add clean up room`
 
@@ -92,9 +92,9 @@ Edits an existing active entry in the calendar. +
 Format: `edit [KEYWORD_1, KEYWORD_2,...] | [-index INDEX] [-name NEW_ENTRY_NAME] [-on | -by DATE_A] [-to DATE_B] [-every day | week | month | year [NUM_TIMES | -until STOP_DATE] [-tag TAG_1, TAG_2...]`
 
 ****
-* There are two ways to select an entry to edit: searching by `KEYWORD`, or specifying the `INDEX`. 
-** The keyword searches both the entry name and tags.
-** The index refers to the index number shown in the last entry listing. The index *must be a positive integer* 1, 2, 3, ...
+* There are two ways to select an entry to edit: searching by `KEYWORD`, or specifying the `INDEX`.
+** The keyword searches both the entry name and tags, and a found entry must match all keywords.
+** The index refers to the index number shown in the last active entry listing. The index *must be a positive integer* 1, 2, 3, ...
 * At least one of the optional data fields must be provided.
 * Existing values will be updated to the input values. If that field is not provided, the existing values are not changed.
 * When editing tags, the existing tags of the entry will be removed and replaced with the new tags: *adding of tags is not cumulative*.
@@ -128,25 +128,27 @@ Returns `John Doe` but not `john`
 * `find Betsy Tim John` +
 Returns Any person having names `Betsy`, `Tim`, or `John`
 
-=== Deleting a person : `delete`
+=== Deleting an event : `delete`
 
-Deletes the specified person from the address book. Irreversible. +
-Format: `delete INDEX`
+Deletes the specified entry from the active calendar. +
+Format: `delete [KEYWORD_1, KEYWORD_2,...] | [-index INDEX] [-force]`
 
 ****
-* Deletes the person at the specified `INDEX`.
-* The index refers to the index number shown in the most recent listing.
-* The index *must be a positive integer* 1, 2, 3, ...
+* There are two ways to select an entry to delete: searching by `KEYWORD`, or specifying the `INDEX`.
+** The keyword searches both the entry name and the tags, and a found entry must match all keywords.
+** The index refers to the index number shown in the last active entry listing. The index *must be a positive integer* 1, 2, 3, ...
+* Deleting an entry moves it from the active calendar and to the recycle bin.
+* If multiple entries are found using the keywords, the user will be prompted to confirm that they want to delete all of those entries.
+** Using the `-force` option skips the confirmation step.
 ****
 
 Examples:
 
 * `list` +
 `delete 2` +
-Deletes the 2nd person in the address book.
-* `find Betsy` +
-`delete 1` +
-Deletes the 1st person in the results of the `find` command.
+Deletes the 2nd entry in the active calendar.
+* `delete pasta, dinner` +
+Deletes all entries in the active calendar that matches "pasta" and "dinner" in the name or tag, after prompting the user to confirm if multiple entries are found.
 
 === Select a person : `select`
 
