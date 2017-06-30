@@ -44,7 +44,7 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 
 * Words in `UPPER_CASE` are the parameters.
 * Items in `[ ]` are optional.
-* Items separated by `|` indicate only one should be used.
+* Items separated by `|` indicate that either should be used, but not both.
 * Items with `...` after them can have multiple instances.
 * Parameters can be in any order.
 * `DATE` format is `FORMAT_TO_BE_CONFIRMED`.
@@ -61,7 +61,7 @@ Format: `help`
 === Adding an entry: `add`
 
 Adds an entry to the active tasks +
-Format: `add ENTRY_NAME [-on | -by DATE_A] [-to DATE_B] [-every day | week | month | year [NUM_TIMES | -until STOP_DATE] [-tag TAG_1, TAG_2...]`
+Format: `add ENTRY_NAME [-on | -by DATE_A] [-to DATE_B] [-every day | week | month | year [NUM_TIMES | -until STOP_DATE] [-tag TAG_1 TAG_2...]`
 
 ****
 * If no date is specified, the entry will contain no date information.
@@ -89,7 +89,7 @@ Format: `list`
 === Editing an entry : `edit`
 
 Edits an existing active entry in the calendar. +
-Format: `edit [KEYWORD_1, KEYWORD_2,...] | [-index INDEX] [-name NEW_ENTRY_NAME] [-on | -by DATE_A] [-to DATE_B] [-every day | week | month | year [NUM_TIMES | -until STOP_DATE] [-tag TAG_1, TAG_2...]`
+Format: `edit [KEYWORD_1 KEYWORD_2...] | [-index INDEX] [-name NEW_ENTRY_NAME] [-on | -by DATE_A] [-to DATE_B] [-every day | week | month | year [NUM_TIMES | -until STOP_DATE] [-tag TAG_1 TAG_2...]`
 
 ****
 * There are two ways to select an entry to edit: searching by `KEYWORD`, or specifying the `INDEX`.
@@ -134,7 +134,7 @@ Returns Any person having names `Betsy`, `Tim`, or `John`
 === Deleting an event : `delete`
 
 Deletes the specified entry from the active calendar. +
-Format: `delete [KEYWORD_1, KEYWORD_2,...] | [-index INDEX] [-force]`
+Format: `delete [KEYWORD_1 KEYWORD_2...] | [-index INDEX] [-force]`
 
 ****
 * There are two ways to select an entry to delete: searching by `KEYWORD`, or specifying the `INDEX`.
@@ -150,7 +150,7 @@ Examples:
 * `list` +
 `delete 2` +
 Deletes the 2nd entry in the active calendar.
-* `delete pasta, dinner` +
+* `delete pasta dinner` +
 Deletes all entries in the active calendar that matches "pasta" and "dinner" in the name or tag, after prompting the user to confirm if multiple entries are found.
 
 === Select a person : `select`
@@ -200,15 +200,18 @@ There is no need to save manually.
 
 == Command Summary
 
-* *Add* `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]...` +
-e.g. `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
-* *Clear* : `clear`
-* *Delete* : `delete INDEX` +
-e.g. `delete 3`
+* *Help* `help`
+* *Add* `add ENTRY_NAME [-on | -by DATE_A] [-to DATE_B] [-every day | week | month | year [NUM_TIMES | -until STOP_DATE] [-tag TAG_1 TAG_2...]` +
+e.g. `add dinner with parents -on friday 6pm -to friday 9pm -tag family`
+* *List* : `list`
+* *Edit* : `edit [KEYWORD_1 KEYWORD_2...] | [-index INDEX] [-name NEW_ENTRY_NAME] [-on | -by DATE_A] [-to DATE_B] [-every day | week | month | year [NUM_TIMES | -until STOP_DATE] [-tag TAG_1 TAG_2...]` +
+e.g. `edit zoo, outing -on 20 September`
 * *Find* : `find KEYWORD [MORE_KEYWORDS]` +
 e.g. `find James Jake`
-* *List* : `list`
-* *Help* : `help`
+* *Delete* : `delete [KEYWORD_1 KEYWORD_2...] | [-index INDEX] [-force]` +
+e.g. `delete pasta dinner`
 * *Select* : `select INDEX` +
 e.g.`select 2`
 * *History* : `history`
+* *Clear* : `clear`
+* *Exit* : `exit`
