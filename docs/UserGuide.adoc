@@ -43,27 +43,46 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 *Command Format*
 
 * Words in `UPPER_CASE` are the parameters.
-* Items in `SQUARE_BRACKETS` are optional.
+* Items in `[ ]` are optional.
+* Items separated by `|` indicate only one should be used.
 * Items with `...` after them can have multiple instances.
 * Parameters can be in any order.
+* `DATE` format is `FORMAT_TO_BE_CONFIRMED`.
 ====
+*Defaults*
+
+* Default values used by commands can be found in the config file `FILE_LOCATION_TO_BE_CONFIRMED`.
 
 === Viewing help : `help`
 
+Shows help for all the commands +
 Format: `help`
 
-=== Adding a person: `add`
+=== Adding an entry: `add`
 
-Adds a person to the address book +
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]...`
+Adds an entry to the active tasks +
+Format: `add ENTRY_NAME [-on | -by DATE_A] [-to DATE_B] [-every day | week | month | year [NUM_TIMES | -until STOP_DATE] [-tag TAG_1, TAG_2...]`
 
-[TIP]
-Persons can have any number of tags (including 0)
+*Date combinations*:
+
+* If no date is specified, the entry will contain no date information.
+* `-on DATE_A` indicates an entry starting from `DATE_A` which uses the default value `default.add.duration`.
+* `-by DATE_A` indicates an entry with single date of `DATE_A`.
+* `-on DATE_A -to DATE_B` indicates an entry with spans from `DATE_A` to `DATE_B`.
+
+*Defaults*: +
+If no `NUM_TIMES` or `STOP_DATE` for a recurring entry is specified, `recurring.numTimes` is used for the number of recurring events to add to the calendar.
+
 
 Examples:
 
-* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
+* `add dinner with parents -on friday 6pm -to friday 9pm -tag family`
+* `add go to the gym -on monday 10am -every week -tag exercise, activities`
+* `add project submission 5 July 10am -tag school` 
+* `add write novel -tag bucketlist`
+
+[TIP]
+Entries can have any number of tags (including 0)
 
 === Listing all persons : `list`
 
