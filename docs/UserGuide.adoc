@@ -67,8 +67,14 @@ Examples:
 
 === Listing all persons : `list`
 
-Shows a list of all persons in the address book. +
-Format: `list`
+Displays a list of entries sorted by the starting time. +
+Format: `list [-from START_DATE][-to END_DATE][-archive|-bin]`
+
+****
+* By default the active entries will be listed.
+* The `-archive` and `-bin` options are used to list archived and deleted entries respectively.
+* The default number of entries to list can be configured with the `config` command.
+****
 
 === Editing a person : `edit`
 
