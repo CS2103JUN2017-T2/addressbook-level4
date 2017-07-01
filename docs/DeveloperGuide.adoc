@@ -405,11 +405,11 @@ ____
 Entry
 ____
 Any item stored in the system. +
-An entry *must* have: +
+An entry *must* have:
 
 * A name
 
-An entry *can* have: +
+An entry *can* have:
 
 * No specific start or end date or time *or*
 * Single specified date and/or time as a deadline *or*
@@ -420,7 +420,7 @@ ____
 [[tag]]
 Tag
 ____
-Additional single words saved with `entries` as descriptors
+Additional single words saved within `entries` as descriptors
 ____
 
 [[mainstream-os]]
@@ -440,16 +440,27 @@ _____
 [appendix]
 == Product Survey
 
-*Product Name*
+*Hitask*
 
-Author: ...
+Author: Human Computer LLC
 
 Pros:
 
-* ...
-* ...
+* Encryption of user data.
+* Data is synced with the account across computers.
+* Android and iOS app available.
+* Free for personal use up to 10 projects.
+* Can add tasks with no date, tasks with start date and end date, whole-day tasks, and deadlines.
+* Daily and monthly view in the GUI at the same time.
+* List is always in the GUI, with multiple sorting options.
+* Ability to attach files to projects and tasks.
+* Can create tasks directly from email.
 
 Cons:
 
-* ...
-* ...
+* Only tasks without date can be entered via the command line, other fields require the mouse to select the entry box first.
+* No support for "blocking" tasks.
+* Web-based interface does not function when the user is not connected to the internet.
+* Cannot intelligently search for a free slot for an event.
+* Tasks and events are not differentiated as they have the exact same entry fields.
+* Not enough task preference default parameters for user to specify.
