@@ -334,7 +334,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 [appendix]
 == Use Cases
 
-(For all use cases below, the *System* is the `AddressBook` and the *Actor* is the `user`, unless specified otherwise)
+(For all use cases below, `ProductNameHere` refers to the *System* and `user` refers to the *Actor*, unless specified otherwise.)
 
 [discrete]
 === Use case: Delete person
@@ -361,6 +361,20 @@ ____
 Use case resumes at step 2
 ____
 
+[discrete]
+=== Use case: Getting daily summary
+
+*MSS*
+
+1. User requests to list entries with a duration argument without a start date, and ending at the end of the same day.
+2. Addressbook shows the list of entries sorted by end date/time, starting from the soonest. Use case ends.
+
+*Extensions*
+2a. The list is empty.
+____
+Use case ends.
+____
+
 {More to be added}
 
 [appendix]
@@ -374,6 +388,28 @@ ____
 
 [appendix]
 == Glossary
+
+[[entry]]
+Entry
+____
+Any item stored in the system. +
+An entry *must* have: +
+
+* A name
+
+An entry *can* have: +
+
+* No specific start or end date or time *or*
+* Single specified date and/or time as a deadline *or*
+* Specified start and end date and/or time *and/or*
+* Zero or more tags
+____
+
+[[tag]]
+Tag
+____
+Additional single words saved with `entries` as descriptors
+____
 
 [[mainstream-os]]
 Mainstream OS
