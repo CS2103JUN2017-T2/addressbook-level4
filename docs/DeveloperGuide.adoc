@@ -345,9 +345,9 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |user |automatically insert floating entries into free time-slots |remember to do tasks without deadlines 
 
-|`* * *` |user that attends events |add entries that have fixed start and end times |
-
 |`* * *` |user |view the next n entries |to see upcoming events to attend/tasks to finish
+
+|`* * *` |user that attends events |add entries that have fixed start and end times |
 
 |=======================================================================
 
