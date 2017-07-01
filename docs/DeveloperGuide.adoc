@@ -409,6 +409,34 @@ ____
   ii) User specifies index.
   iii) Use case resumes from step 5.
 
+[discrete]
+=== Use case: Undo a change
+
+*MSS*
+
+1. User accidentally inputs a wrong command.
+2. ProductNameHere obediently executes the command.
+3. User undo changes.
+4. ProductNameHere removes all changes made by the last command.
+
+[discrete]
+=== Use case: Recover a deleted entry
+
+*MSS*
+
+1. User uses the `restore` command to recover a deleted entry by providing keywords that match the name or label of 
+2. ProductNameHere searches for the relevant entry.
+3. ProductNameHere restores the entry.
+4. Use case ends.
+
+*Extensions*
+
+2a. ProductNameHere finds more than one deleted or archived entries with the same keyword in the names.
+  
+  i) ProductNameHere displays an indexed list of all such entries and ask for an index from the user.
+  ii) User specifies index.
+  iii) Use case resumes from step 3.
+
 [appendix]
 == Non Functional Requirements
 
