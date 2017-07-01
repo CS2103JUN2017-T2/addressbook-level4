@@ -330,7 +330,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |user |delete an entry |remove listings that I no longer need
 
-|`* * *` |user |store a task without a due date and still get frequent reminders |remember to finish it 
+|`* * *` |user |store a task without a due date and still get frequent reminders |remember to finish it
 
 |`* * *` |user |specify the start and end times for events |know when it takes place
 
@@ -346,7 +346,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |user |input the details (e.g. deadline, tags, time) of an entry in any order |add to the list without memorizing a specific format
 
-|`* * *` |user |automatically insert floating entries into free time-slots |remember to do tasks without deadlines 
+|`* * *` |user |automatically insert floating entries into free time-slots |remember to do tasks without deadlines
 
 |`* * *` |user |view the next n entries |to see upcoming events to attend/tasks to finish
 
