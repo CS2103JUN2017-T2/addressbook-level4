@@ -440,6 +440,34 @@ _____
 [appendix]
 == Product Survey
 
+*Google Calendar*
+
+Developer(s): Google
+
+Pros:
+
+* 'Quick add' features accepts satisfactorily natural language.
+* Supports recurring tasks.
+* Android and iOS app available.
+* Powerful GUI
+** Various calendar layouts (e.g. daily, weekly, montly, 4-days)
+** Supports dragging and dropping for editing entries.
+* Able to synchronise with a wide range of other calendar and task managing applications.
+* Data can be stored both locally or on a remote server.
+* Able to search entries based on name.
+* Reminder and notification feature.
+* Records all deleted entries, which can be recovered.
+* Provides an undo feature for the latest change made.
+* Allows the sharing of calendar with other users.
+* Runs on a browser, no local installation required.
+* Able to add remarks and file attachments to entries.
+
+Cons:
+
+* Not ideal for capturing tasks that need to be done before a specific date/time, or after a specific date/time, or tasks without specific times.
+* Cannot intelligently lookup a free slot to insert entries without specific times.
+* Launching is slow. Requires opening a browser and then typing in a URL. A way to work around this is to synchronise Google Calendar with another calendar application which can be open more quickly.
+
 *Hitask*
 
 Author: Human Computer LLC
