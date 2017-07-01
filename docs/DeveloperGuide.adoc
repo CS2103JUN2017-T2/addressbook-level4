@@ -424,7 +424,7 @@ ____
 
 *MSS*
 
-1. User uses the `restore` command to recover a deleted entry by providing keywords that match the name or label of 
+1. User uses the `restore` command to recover a deleted entry by providing keywords that match the entry name.
 2. ProductNameHere searches for the relevant entry.
 3. ProductNameHere restores the entry.
 4. Use case ends.
