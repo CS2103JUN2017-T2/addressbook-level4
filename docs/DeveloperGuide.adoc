@@ -367,7 +367,7 @@ ____
 *MSS*
 
 1. User requests to list entries with a duration argument without a start date, and ending at the end of the same day.
-2. Addressbook shows the list of entries sorted by end date/time, starting from the soonest. Use case ends.
+2. ProductNameHere shows the list of entries sorted by end date/time, starting from the soonest. Use case ends.
 
 *Extensions*
 2a. The list is empty.
@@ -375,7 +375,19 @@ ____
 Use case ends.
 ____
 
-{More to be added}
+[discrete]
+=== Use case: Getting weekly summary of the next week
+
+*MSS*
+
+1. User requests to list entries with a duration starting Monday next week, and ending Sunday next week.
+2. ProductNameHere shows the list of entries sorted by end date/time, starting from the soonest. Use case ends.
+
+*Extensions*
+2a. The list is empty.
+____
+Use case ends.
+____
 
 [appendix]
 == Non Functional Requirements
