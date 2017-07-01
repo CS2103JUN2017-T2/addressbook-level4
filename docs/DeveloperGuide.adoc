@@ -396,14 +396,14 @@ ____
 
 1. User adds an entry.
 2. ProductNameHere adds the new entry.
-3. After some time, user decides to reschedule the entry by providing a keyword in the entry's name and a field to change.
-4. ProductNameHere searches for the relevant entry
+3. After some time, user decides to reschedule the entry by providing keywords that matches the entry's name and the field to change.
+4. ProductNameHere searches for the relevant entry.
 5. ProductNameHere makes the modification.
 6. Use case ends.
 
 *Extensions*
 
-4a. ProductNameHere finds more than one entries with the same keyword in the names.
+4a. ProductNameHere finds more than one entries with the same keywords in the names.
   
   i) ProductNameHere displays an indexed list of all such entries and ask for an index from the user.
   ii) User specifies index.
