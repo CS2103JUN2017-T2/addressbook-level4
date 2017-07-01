@@ -404,7 +404,7 @@ ____
 *Extensions*
 
 4a. ProductNameHere finds more than one entries with the same keywords in the names.
-  
+
   i) ProductNameHere displays an indexed list of all such entries and ask for an index from the user.
   ii) User specifies index.
   iii) Use case resumes from step 5.
@@ -432,7 +432,7 @@ ____
 *Extensions*
 
 2a. ProductNameHere finds more than one deleted or archived entries with the same keyword in the names.
-  
+
   i) ProductNameHere displays an indexed list of all such entries and ask for an index from the user.
   ii) User specifies index.
   iii) Use case resumes from step 3.
