@@ -349,10 +349,75 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |user that attends events |add entries that have fixed start and end times |
 
-|'* *` |user that attends events |add entries that have fixed start and end times |
+|'* * *` |user |adjust the start and end date of entries |update tasks when requirements change
+
+|'* *` |user |add a priority level to entries |filter them according to importance
+
+|'* *` |user |add recurring events |schedule daily/weekly/other cyclic tasks easily
+
+|'* *` |new user |have similar syntax for most commands |use them easily without confusion
+
+|'* *` |user |have a set of defaults for each field in a command|leave certain fields blank
+
+|'* *` |user |search entries by due-date/event-date |check my availability on a certain day
+
+|'* *` |user |search entries by added date |
+
+|'* *` |user |edit entries after searching for them |search and update in a one-shot approach
+
+|'* *` |user |have a daily view of tasks and events |view my workload for the day
+
+|'* *` |user |have a weekly view of tasks and events |view my workload for the week
+
+|'* *` |advanced user |undo my commands any number of times |to revert undesirable changes
+
+|'* *` |user |recover deleted entries |retrieve them in case of accidental deletions
+
+|'* *` |user with many projects |tag entries by assignment |distinguish tasks for similar assignments
+
+|'* *` |user with many projects |view entries by assignment |distinguish different assignments
+
+|'* *` |user |search for free days in a time period (e.g. next 1 month) |use free days to slot tasks
+
+|'* *` |user |launch and minimize the application |
+
+|'* *` |user |categorize entries (e.g. work,shopping,etc) |
+
+|'* *` |user |tick off sub-entries within an entry as completed |to track my progress
+
+|'* *` |user |organize my list |
+
+|'* *` |user |swap entries with a single command |
+
+|'* *` |user |identify priority of tasks based on colours in the GUI |view optimally for faster recognition
+
+|'* *` |user |integrate reminders from e-mail |
+
+|'* *` |developer |have an automated test program |check program functionality after every update
+
+|'* *` |user |clear all entries existing before a certain date |keep calendar organized
+
+|'* *` |user |configure defaults (e.g. storage path) |
+
+|'* *` |user |launch and minimize the application |use it more easily
+
+|'* *` |user |sort entries by tags/deadline/priority |plan which tasks to do first
+
+|'* *` |user |clear archive/deleted entries folder |prevent the UI from being cluttered
+
+|'* *` |user |list floating tasks (without deadlines) |finish these in my free time
+
+|'* *` |user |mark applications without deadlines as not important by default |
+
+|'* *` |user |delete duplicate entries |keep my list organized
+
+|'*` |user |add documents to an entry |view more information associated with a task/event
+
+|'*` |user |add descriptions to entries|store more information
+
+|'*` |user |list entries in a calendar view |view items scheduled for specific days
 |=======================================================================
 
-{More to be added}
 
 [appendix]
 == Use Cases
@@ -390,10 +455,17 @@ ____
 == Non Functional Requirements
 
 .  Should work on any link:#mainstream-os[mainstream OS] as long as it has Java `1.8.0_60` or higher installed.
-.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
+.  Should be able to hold up to 1000 entries without a noticeable sluggishness in performance for typical usage.
 .  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+.  The product should be a desktop app.
+.  The Command Line Inteface should be the primary mode of input.
+.  The software should work stand-alone and not be a plug-in to another app.
+.  The software should use text files for storage and not relational databases.
+.  The data should be stored locally in an editable text file.
+.  The code should follow the Object-oriented paradigm.
+.  The software should work on Windows 7 or later.
+.  The product should work without requiring an installer.
 
-{More to be added}
 
 [appendix]
 == Glossary
@@ -415,16 +487,20 @@ _____
 [appendix]
 == Product Survey
 
-*Product Name*
+*Wunderlist*
 
-Author: ...
+Author: Akankshita Dash
 
 Pros:
 
-* ...
-* ...
+* Accessible and activated easily from Desktop
+* Adds tasks in a one-shot approach (e.g. Dinner 5th July 9 pm is added on the given day and time)
+* Accessible and activated easily from Desktop
+* Available on all devices (Desktop, Mobile) offline
+* Can add floating tasks (tasks without a deadline)
 
 Cons:
 
-* ...
-* ...
+* Only one alarm, no multiple reminders
+* Cannot prioritize tasks
+* Cannot block slots and release them if they become free
