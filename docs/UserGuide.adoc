@@ -70,7 +70,7 @@ Format: `add ENTRY_NAME [-on | -by DATE_A] [-to DATE_B] [-every day | week | mon
 * `-on DATE_A -to DATE_B` indicates an entry which spans from `DATE_A` to `DATE_B`.
 ****
 
-*Defaults*: +
+*Defaults from config*: +
 If no `NUM_TIMES` or `STOP_DATE` for a recurring entry is specified, `recurring.numTimes` is used for the number of recurring events to add to the calendar.
 
 Examples:
@@ -102,12 +102,15 @@ Format: `edit [KEYWORD_1 KEYWORD_2...] | [-index INDEX] [-name NEW_ENTRY_NAME] [
 * You can remove all of the entry's tags by typing `-tag` without specifying any tags after it.
 ****
 
+*Defaults from config*: +
+If no `NUM_TIMES` or `STOP_DATE` for a recurring entry is specified, `recurring.numTimes` is used for the number of recurring events to add to the calendar.
+
 Examples:
 
 * `edit 1 -on saturday 6pm` +
 Edits the 1st entry to take place on the coming Saturday at 6pm, for a duration set by `default.add.duration`.
 * `edit 2 -every week 3 -tag` +
-Edits the 2nd entry to take place every week for the 3 weeks including its current occurence, and clears all existing tags.
+Edits the 2nd entry to take place every week for 3 weeks including its current occurence, and clears all its existing tags.
 * `edit zoo, outing -on 20 September` +
 Edits the entry matching "zoo" and "outing" to take place on 20 September. If there are multiple entries that match the keywords, no entries are modifies.
 
@@ -141,7 +144,7 @@ Format: `delete [KEYWORD_1 KEYWORD_2...] | [-index INDEX] [-force]`
 ** The keyword searches both the entry name and the tags, and a found entry must match all keywords.
 ** The index refers to the index number shown in the last active entry listing. The index *must be a positive integer* 1, 2, 3, ...
 * Deleting an entry moves it from the active calendar and to the recycle bin.
-* If multiple entries are found using the keywords, the user will be prompted to confirm that they want to delete all of those entries.
+* If multiple entries are found using the keywords, all found entries will be listed, and the user will be prompted to confirm that they want to delete all of those entries.
 ** Using the `-force` option skips the confirmation step.
 ****
 
