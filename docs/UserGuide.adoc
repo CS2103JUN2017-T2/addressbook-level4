@@ -111,7 +111,7 @@ Examples:
 Edits the 1st entry to take place on the coming Saturday at 6pm, for a duration set by `default.add.duration`.
 * `edit 2 -every week 3 -tag` +
 Edits the 2nd entry to take place every week for 3 weeks including its current occurence, and clears all its existing tags.
-* `edit zoo, outing -on 20 September` +
+* `edit zoo outing -on 20 September` +
 Edits the entry matching "zoo" and "outing" to take place on 20 September. If there are multiple entries that match the keywords, no entries are modifies.
 
 === Finding all persons containing any keyword in their name: `find`
