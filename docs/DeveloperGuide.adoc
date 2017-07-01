@@ -1,4 +1,4 @@
-= AddressBook Level 4 - Developer Guide
+= Team 2 Main Project - Developer Guide
 :toc:
 :toc-title:
 :toc-placement: preamble
@@ -11,7 +11,7 @@ endif::[]
 ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 :repoURL: https://github.com/se-edu/addressbook-level4/tree/master
 
-By: `Team SE-EDU`      Since: `Jun 2016`      Licence: `MIT`
+By: `Team 2`      Since: `Jun 2016`      Licence: `MIT`
 
 == Setting up
 
@@ -334,7 +334,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 [appendix]
 == Use Cases
 
-(For all use cases below, the *System* is the `AddressBook` and the *Actor* is the `user`, unless specified otherwise)
+(For all use cases below, `ProductNameHere` refers to the *System* and `user` refers to the *Actor*, unless specified otherwise.)
 
 [discrete]
 === Use case: Delete person
@@ -361,7 +361,33 @@ ____
 Use case resumes at step 2
 ____
 
-{More to be added}
+[discrete]
+=== Use case: Getting daily summary
+
+*MSS*
+
+1. User requests to list entries with a duration argument without a start date, and ending at the end of the same day.
+2. ProductNameHere shows the list of entries sorted by end date/time, starting from the soonest. Use case ends.
+
+*Extensions*
+2a. The list is empty.
+____
+Use case ends.
+____
+
+[discrete]
+=== Use case: Getting weekly summary of the next week
+
+*MSS*
+
+1. User requests to list entries with a duration starting Monday next week, and ending Sunday next week.
+2. ProductNameHere shows the list of entries sorted by end date/time, starting from the soonest. Use case ends.
+
+*Extensions*
+2a. The list is empty.
+____
+Use case ends.
+____
 
 [appendix]
 == Non Functional Requirements
@@ -374,6 +400,28 @@ ____
 
 [appendix]
 == Glossary
+
+[[entry]]
+Entry
+____
+Any item stored in the system. +
+An entry *must* have:
+
+* A name
+
+An entry *can* have:
+
+* No specific start or end date or time *or*
+* Single specified date and/or time as a deadline *or*
+* Specified start and end date and/or time *and/or*
+* Zero or more tags
+____
+
+[[tag]]
+Tag
+____
+Additional single words saved within `entries` as descriptors
+____
 
 [[mainstream-os]]
 Mainstream OS
@@ -392,16 +440,27 @@ _____
 [appendix]
 == Product Survey
 
-*Product Name*
+*Hitask*
 
-Author: ...
+Author: Human Computer LLC
 
 Pros:
 
-* ...
-* ...
+* Encryption of user data.
+* Data is synced with the account across computers.
+* Android and iOS app available.
+* Free for personal use up to 10 projects.
+* Can add tasks with no date, tasks with start date and end date, whole-day tasks, and deadlines.
+* Daily and monthly view in the GUI at the same time.
+* List is always in the GUI, with multiple sorting options.
+* Ability to attach files to projects and tasks.
+* Can create tasks directly from email.
 
 Cons:
 
-* ...
-* ...
+* Only tasks without date can be entered via the command line, other fields require the mouse to select the entry box first.
+* No support for "blocking" tasks.
+* Web-based interface does not function when the user is not connected to the internet.
+* Cannot intelligently search for a free slot for an event.
+* Tasks and events are not differentiated as they have the exact same entry fields.
+* Not enough task preference default parameters for user to specify.
