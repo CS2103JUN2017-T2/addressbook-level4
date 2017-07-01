@@ -50,6 +50,7 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 
 === Viewing help : `help`
 
+Shows a summary of commands available. +
 Format: `help`
 
 === Adding a person: `add`
@@ -164,10 +165,14 @@ Format: `undo`
 Reapply the changes removed by the `undo` command. +
 Format: `redo`
 
-=== Clearing all entries : `clear`
+=== Clearing entries : `clear`
 
-Clears all entries from the address book. +
-Format: `clear`
+Clears all entries from sections of the to-do list. +
+Format: `clear [-archive|-bin]`
+
+****
+* Defaults to clearing all entries from active to-do's list.
+****
 
 === Exiting the program : `exit`
 
@@ -188,7 +193,7 @@ There is no need to save manually.
 
 * *Add* `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]...` +
 e.g. `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
-* *Clear* : `clear`
+* *Clear* : `clear [-archive|-bin]`
 * *Delete* : `delete INDEX` +
 e.g. `delete 3`
 * *Find* : `find KEYWORD [MORE_KEYWORDS]` +
