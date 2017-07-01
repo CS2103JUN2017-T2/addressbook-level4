@@ -316,17 +316,39 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 [width="59%",cols="22%,<23%,<25%,<30%",options="header",]
 |=======================================================================
 |Priority |As a ... |I want to ... |So that I can...
-|`* * *` |new user |see usage instructions |refer to instructions when I forget how to use the App
 
-|`* * *` |user |add a new person |
+|`* * *` |new user |check the glossary |get help with commands
 
-|`* * *` |user |delete a person |remove entries that I no longer need
+|`* * *` |user |add a new entry |
 
-|`* * *` |user |find a person by name |locate details of persons without having to go through the entire list
+|`* * *` |user |view an entry |check its details
 
-|`* *` |user |hide link:#private-contact-detail[private contact details] by default |minimize chance of someone else seeing them by accident
+|`* * *` |user |edit an entry |change its particulars (e.g. time, deadline)
 
-|`*` |user with many persons in the address book |sort persons by name |locate a person easily
+|`* * *` |user |delete an entry |remove listings that I no longer need
+
+|`* * *` |user |store a task without a due date and still get frequent reminders |remember to finish it 
+
+|`* * *` |user |specify the start and end times for events |know when it takes place
+
+|`* * *` |user |search entries by name |retrieve specific entries more quickly
+
+|`* * *` |user |perform a search using keywords |find specific entries
+
+|`* * *` |user |store my entries in a folder managed by syncing softwares |ensure all my devices have the same list
+
+|`* * *` |user |list my entries based on starting times |view events scheduled according to specific times
+
+|`* * *` |user |archive entries to a 'completed tasks' folder |view tasks I have finished and restore them if needed
+
+|`* * *` |user |input the details (e.g. deadline, tags, time) of an entry in any order |add to the list without memorizing a specific format
+
+|`* * *` |user |automatically insert floating entries into free time-slots |remember to do tasks without deadlines 
+
+|`* * *` |user that attends events |add entries that have fixed start and end times |
+
+|`* * *` |user |view the next n entries |to see upcoming events to attend/tasks to finish
+
 |=======================================================================
 
 {More to be added}
