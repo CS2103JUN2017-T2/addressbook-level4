@@ -500,6 +500,11 @@ ____
 Additional single words saved within `entries` as descriptors
 ____
 
+[[active list]]
+Active list
+____
+A list of all of the ongoing to-do entries that have not been completed/deleted yet. 
+____
 [[mainstream-os]]
 Mainstream OS
 
