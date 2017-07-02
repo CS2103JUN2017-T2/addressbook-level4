@@ -99,7 +99,7 @@ Edits the name of the 2nd person to be `Betsy Crower` and clears all existing ta
 === Searching all entries containing given keywords in the name or labels: `search`
 
 Searches for entries which names or labels contain all of the given keywords. +
-Format: `find KEYWORD_1 [KEYWORD_2 ...] [-archive|-bin]`
+Format: `search KEYWORD_1 [KEYWORD_2 ...] [-archive|-bin]`
 
 ****
 * The search is case insensitive. e.g `meeting` will match `Meeting`
@@ -191,10 +191,13 @@ e.g. `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 123466
 * *Clear* : `clear`
 * *Delete* : `delete INDEX` +
 e.g. `delete 3`
-* *Find* : `find KEYWORD [MORE_KEYWORDS]` +
-e.g. `find James Jake`
-* *List* : `list`
+* *Search* : `search KEYWORD_1 [KEYWORD_2 ...] [-archive|-bin]` +
+e.g. `search lecture`
+* *List* : `list [-from START_DATE][-to END_DATE][-archive|-bin]` +
+e.g. `ENTRY_OUTPUT_FORMAT_TO_BE_CONFIRMED`
 * *Help* : `help`
 * *Select* : `select INDEX` +
 e.g.`select 2`
 * *History* : `history`
+* *Undo* : `undo`
+* *Redo* : `redo`
