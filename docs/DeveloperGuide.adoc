@@ -379,7 +379,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |user |search for free days in a time period (e.g. next 1 month) |use free days to slot tasks
 
-|`* *` |user |launch and minimize the application |
+|`* *` |user |launch and minimize the application with a keyboard shortcut |open directly (from Desktop) without using the mouse
 
 |`* *` |user |categorize entries (e.g. work,shopping,etc) |
 
@@ -398,8 +398,6 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 |`* *` |user |clear all entries existing before a certain date |keep calendar organized
 
 |`* *` |user |configure defaults (e.g. storage path) |
-
-|`* *` |user |launch and minimize the application |use it more easily
 
 |`* *` |user |sort entries by tags/deadline/priority |plan which tasks to do first
 
@@ -463,7 +461,6 @@ ____
 .  The software should use text files for storage and not relational databases.
 .  The data should be stored locally in an editable text file.
 .  The code should follow the Object-oriented paradigm.
-.  The software should work on Windows 7 or later.
 .  The product should work without requiring an installer.
 
 
@@ -489,7 +486,7 @@ _____
 
 *Wunderlist*
 
-Author: Akankshita Dash
+Author: Christian Reber
 
 Pros:
 
