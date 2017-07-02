@@ -65,13 +65,15 @@ Format: `add ENTRY_NAME [-on | -by DATE_A] [-to DATE_B] [-every day | week | mon
 
 ****
 * If no date is specified, the entry will contain no date information.
-* `-on DATE_A` indicates an entry starting from `DATE_A` which uses the default value `default.add.duration`.
+* `-on DATE_A` indicates an entry starting from `DATE_A`.
 * `-by DATE_A` indicates an entry with single date of `DATE_A`.
 * `-on DATE_A -to DATE_B` indicates an entry which spans from `DATE_A` to `DATE_B`.
 ****
 
-*Defaults from config*: +
-If no `NUM_TIMES` or `STOP_DATE` for a recurring entry is specified, `recurring.numTimes` is used for the number of recurring events to add to the calendar.
+*Defaults from `config.json`*: +
+
+* If neither `NUM_TIMES` nor `STOP_DATE` for a recurring entry is specified, `recurringNumTimes` is used for the number of recurring events to add to the calendar.
+* If only the `-on` date is specified, `addDurationHours` is used for the duration of the entry.
 
 Examples:
 
@@ -86,7 +88,7 @@ Examples:
 Finds and checkmarks a task as completed and moves it to archive. +
 Format: `complete [KEYWORD_1 KEYWORD_2...] | [-index INDEX]`
 
-=== Listing all persons : `list`
+=== Listing all entries : `list`
 
 Displays a list of entries sorted by the starting time. +
 Format: `list [-from START_DATE] [-to END_DATE] [-archive | -bin]`
@@ -94,8 +96,11 @@ Format: `list [-from START_DATE] [-to END_DATE] [-archive | -bin]`
 ****
 * By default the active entries will be listed.
 * The `-archive` and `-bin` options are used to list archived and deleted entries respectively.
-* The default number of entries to list can be configured with the `config` command.
 ****
+
+*Defaults from `config.json`* +
+
+* The default number of entries to list is `listNumResults`
 
 === Editing an entry : `edit`
 
@@ -113,8 +118,9 @@ Format: `edit [KEYWORD_1 KEYWORD_2...] | [-index INDEX] [-name NEW_ENTRY_NAME] [
 * You can remove all of the entry's tags by typing `-tag` without specifying any tags after it.
 ****
 
-*Defaults from config*: +
-If no `NUM_TIMES` or `STOP_DATE` for a recurring entry is specified, `recurring.numTimes` is used for the number of recurring events to add to the calendar.
+*Defaults from `config.json`*: +
+
+* If neither `NUM_TIMES` nor `STOP_DATE` for a recurring entry is specified, `recurringNumTimes` is used for the number of recurring events to add to the calendar.
 
 Examples:
 
@@ -137,6 +143,10 @@ Format: `find KEYWORD_1 [KEYWORD_2 ...] [-archive|-bin]`
 * Only full words will be matched e.g. `Meet` will not match `Meeting` but mathces `meet`.
 * Only entries matching all keywords will be returned (i.e. `AND` search). e.g. `group meeting` will not match `client meeting`.
 ****
+
+*Defaults from `config.json`*: +
+
+* The maximum number of `find` results shown to the user is `findNumResults`
 
 === Deleting an event : `delete`
 
@@ -165,26 +175,6 @@ Deletes all entries in the active calendar that matches "pasta" and "dinner" in 
 Finds and restores a deleted entry back to active tasks +
 Format: `restore [KEYWORD_1 KEYWORD_2...] | [-index INDEX]`
 
-=== Select a person : `select`
-
-Selects the person identified by the index number used in the last person listing. +
-Format: `select INDEX`
-
-****
-* Selects the person and loads the Google search page the person at the specified `INDEX`.
-* The index refers to the index number shown in the most recent listing.
-* The index *must be a positive integer* 1, 2, 3, ...
-****
-
-Examples:
-
-* `list` +
-`select 2` +
-Selects the 2nd person in the address book.
-* `find Betsy` +
-`select 1` +
-Selects the 1st person in the results of the `find` command.
-
 === Listing entered commands : `history`
 
 Lists all the commands that you have entered in chronological order. +
@@ -203,7 +193,7 @@ Format: `redo`
 === Clearing entries : `clear`
 
 Clears all entries from sections of the to-do list. +
-Format: `clear [-archive|-bin]`
+Format: `clear [-archive | -bin]`
 
 ****
 * Defaults to clearing all entries from active to-do list.
@@ -235,7 +225,7 @@ e,g, `complete group meeting` or `complete -index 3`
 e.g. `ENTRY_OUTPUT_FORMAT_TO_BE_CONFIRMED`
 * *Edit* : `edit [KEYWORD_1 KEYWORD_2...] | [-index INDEX] [-name NEW_ENTRY_NAME] [-on | -by DATE_A] [-to DATE_B] [-every day | week | month | year [NUM_TIMES | -until STOP_DATE] [-tag TAG_1 TAG_2...]` +
 e.g. `edit zoo, outing -on 20 September`
-* *Find* : `find KEYWORD_1 [KEYWORD_2 ...] [-archive |- bin]` +
+* *Find* : `find KEYWORD_1 [KEYWORD_2 ...] [-archive | -bin]` +
 e.g. `find lecture`
 * *Delete* : `delete [KEYWORD_1 KEYWORD_2...] | [-index INDEX] [-force]` +
 e.g. `delete pasta dinner`
