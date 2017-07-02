@@ -1,4 +1,4 @@
-= Team 2 Main Project - Developer Guide
+﻿= Team 2 Main Project - Developer Guide 
 :toc:
 :toc-title:
 :toc-placement: preamble
@@ -540,3 +540,21 @@ Cons:
 * Cannot intelligently search for a free slot for an event.
 * Tasks and events are not differentiated as they have the exact same entry fields.
 * Not enough task preference default parameters for user to specify.
+
+*Todo.txt*
+
+Developer: Gina Trapani
+
+Pros: 
+
+* Lightweight, easy to install. Does not require network connectivity to use.
+* Extremely simple to use. No tutorial required.
+* Customizable, supports installation of extra add-ons and plugins, complete with guide on how to install extras.
+* Data are saved in human editable text file.
+
+Cons: 
+
+* No support for deadlines in tasks.
+* No support for events or recurring entries.
+* Uses a replace feature instead of edit, which requires user to re-type the whole task and tags.
+* only provides basic functions add/delete/list, advanced functions require installation of add-ons and plugins.
