@@ -1,4 +1,4 @@
-= Team 2 Main Project - Developer Guide
+﻿= Team 2 Main Project - Developer Guide
 :toc:
 :toc-title:
 :toc-placement: preamble
@@ -337,34 +337,63 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 (For all use cases below, `ProductNameHere` refers to the *System* and `user` refers to the *Actor*, unless specified otherwise.)
 
 [discrete]
-=== Use case: Delete person
+=== Use case: Adding an entry
 
-*MSS*
+*Main Success Scenario*
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person Use case ends.
+1. User requests to add a new entry by providing an entry name, and optionally entry deadlines and tags.
+2. ProductNameHere creates the entry and moves it to active list.
+3. Use case ends.
 
 *Extensions*
 
-2a. The list is empty
+1a. Some fields from the data provided by user are invalid.
 
-____
-Use case ends
-____
+i) ProductNameHere shows an error message and prints the proper usage_message for adding new entries.
+ii) Use case resumes from step 1.
 
-3a. The given index is invalid
+[discrete]
+=== Use case: Completing an entry
 
-____
-3a1. AddressBook shows an error message +
-Use case resumes at step 2
-____
+*Main Success Scenario*
+
+1. User requests to complete an entry by providing keywords that match the entry's name/tag.
+2. ProductNameHere searches for the entry.
+3. ProductNameHere makes the modification and moves the entry to archive.
+4.  Use case ends.
+
+*Extensions*
+
+2a. ProductNameHere finds more than one entries with the same keywords in the names.
+
+i) ProductNameHere displays an indexed list of all such entries and asks for an index from the user.
+ii) User specifies index.
+iii) ProductNameHere checks if index is valid, if not, ProductNameHere shows an error message and returns to step 2a ii.
+iv) Use case resumes from step 3.
+
+[discrete]
+=== Use case: Deleting an entry
+
+*Main Success Scenario*
+
+1. User requests to delete an entry by providing keywords that match the entry's name/tag.
+2. ProductNameHere searches for the entry.
+3. ProductNameHere makes the modification and moves the entry to deleted bin.
+4. Use case ends.
+
+*Extensions*
+
+2a. ProductNameHere finds more than one entries with the same keywords in the names.
+
+i) ProductNameHere displays an indexed list of all such entries and ask for an index from the user.
+ii) User specifies index.
+iii) ProductNameHere checks if index is valid, if not, ProductNameHere shows an error message and returns to step 2a ii.
+iv) Use case resumes from step 3.
 
 [discrete]
 === Use case: Getting daily summary
 
-*MSS*
+*Main Success Scenario*
 
 1. User requests to list entries with a duration argument without a start date, and ending at the end of the same day.
 2. ProductNameHere shows the list of entries sorted by end date/time, starting from the soonest. Use case ends.
@@ -378,7 +407,7 @@ ____
 [discrete]
 === Use case: Getting weekly summary of the next week
 
-*MSS*
+*Main Success Scenario*
 
 1. User requests to list entries with a duration starting Monday next week, and ending Sunday next week.
 2. ProductNameHere shows the list of entries sorted by end date/time, starting from the soonest. Use case ends.
@@ -392,7 +421,7 @@ ____
 [discrete]
 === Use case: Rescheduling an entry
 
-*MSS*
+*Main Success Scenario*
 
 1. User adds an entry.
 2. ProductNameHere adds the new entry.
@@ -412,7 +441,7 @@ iii) Use case resumes from step 5.
 [discrete]
 === Use case: Undo a change
 
-*MSS*
+*Main Success Scenario*
 
 1. User inputs an unintended command.
 2. ProductNameHere obediently executes the command.
@@ -422,7 +451,7 @@ iii) Use case resumes from step 5.
 [discrete]
 === Use case: Recover a deleted entry
 
-*MSS*
+*Main Scenario Scenario*
 
 1. User uses the `restore` command to recover a deleted entry by providing keywords that match the entry name.
 2. ProductNameHere finds the relevant entry.
@@ -471,6 +500,11 @@ ____
 Additional single words saved within `entries` as descriptors
 ____
 
+[[active list]]
+Active list
+____
+A list of all of the ongoing to-do entries that have not been completed/deleted yet.
+____
 [[mainstream-os]]
 Mainstream OS
 
@@ -554,3 +588,44 @@ Cons:
 * Cannot intelligently search for a free slot for an event.
 * Tasks and events are not differentiated as they have the exact same entry fields.
 * Not enough task preference default parameters for user to specify.
+
+*Todo.txt*
+
+Developer: Gina Trapani
+
+Pros:
+
+* Lightweight, easy to install. Does not require network connectivity to use.
+* Extremely simple to use. No tutorial required.
+* Customizable, supports installation of extra add-ons and plugins, complete with guide on how to install extras.
+* Data are saved in human editable text file.
+
+Cons:
+
+* No support for deadlines in tasks.
+* No support for events or recurring entries.
+* Uses a replace feature instead of edit, which requires user to re-type the whole task and tags.
+* only provides basic functions add/delete/list, advanced functions require installation of add-ons and plugins.
+
+*Trello*
+
+Developer: Trello, Inc.
+
+Pros:
+
+* Simple to grasp, easy to use.
+* Supports collaborative work across multiple users.
+* Can see history of performed task of participants.
+* Powerful GUI
+** Supports dragging and dropping for rearranging entries.
+** Tasks and subtasks are clearly differentiated.
+* Runs on browser, no local installation required.
+* Android and iOS app available.
+* Free to use.
+
+Cons:
+
+* Requires mouse to use. Not applicable to our target audience.
+* Requires network connection.
+* Not command line interface.
+* Must archive entries before deleting entries. Cumbersome to delete entries.
