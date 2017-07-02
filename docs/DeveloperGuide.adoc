@@ -414,7 +414,7 @@ iii) Use case resumes from step 5.
 
 *MSS*
 
-1. User accidentally inputs a wrong command.
+1. User inputs an unintended command.
 2. ProductNameHere obediently executes the command.
 3. User undo changes.
 4. ProductNameHere removes all changes made by the last command.
