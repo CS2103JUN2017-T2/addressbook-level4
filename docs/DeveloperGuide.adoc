@@ -1,4 +1,4 @@
-﻿= Team 2 Main Project - Developer Guide
+= Team 2 Main Project - Developer Guide
 :toc:
 :toc-title:
 :toc-placement: preamble
@@ -419,6 +419,33 @@ Use case ends.
 ____
 
 [discrete]
+=== Use case: Getting daily summary
+
+*MSS*
+
+1. User requests to list entries with a duration argument without a start date, and ending at the end of the same day.
+2. ProductNameHere shows the list of entries sorted by end date/time, starting from the soonest. Use case ends.
+
+*Extensions*
+2a. The list is empty.
+____
+Use case ends.
+____
+
+[discrete]
+=== Use case: Getting weekly summary of the next week
+
+*MSS*
+
+1. User requests to list entries with a duration starting Monday next week, and ending Sunday next week.
+2. ProductNameHere shows the list of entries sorted by end date/time, starting from the soonest. Use case ends.
+
+*Extensions*
+2a. The list is empty.
+____
+Use case ends.
+____
+
 === Use case: Rescheduling an entry
 
 *Main Success Scenario*
@@ -502,9 +529,11 @@ ____
 
 [[active list]]
 Active list
+
 ____
 A list of all of the ongoing to-do entries that have not been completed/deleted yet.
 ____
+
 [[mainstream-os]]
 Mainstream OS
 
