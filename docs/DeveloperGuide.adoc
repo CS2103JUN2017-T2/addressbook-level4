@@ -1,4 +1,4 @@
-﻿= Team 2 Main Project - Developer Guide
+= Team 2 Main Project - Developer Guide
 :toc:
 :toc-title:
 :toc-placement: preamble
@@ -11,7 +11,11 @@ endif::[]
 ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 :repoURL: https://github.com/se-edu/addressbook-level4/tree/master
 
+<<<<<<< HEAD
+By: `Team 2`      Since: `Jun 2017`      Licence: `MIT`
+=======
 By: `Team 2`      Since: `Jun 2016`      Licence: `MIT`
+>>>>>>> V0.0
 
 == Setting up
 
@@ -316,20 +320,106 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 [width="59%",cols="22%,<23%,<25%,<30%",options="header",]
 |=======================================================================
 |Priority |As a ... |I want to ... |So that I can...
-|`* * *` |new user |see usage instructions |refer to instructions when I forget how to use the App
 
-|`* * *` |user |add a new person |
+|`* * *` |new user |check the glossary |get help with commands
 
-|`* * *` |user |delete a person |remove entries that I no longer need
+|`* * *` |user |add a new entry |
 
-|`* * *` |user |find a person by name |locate details of persons without having to go through the entire list
+|`* * *` |user |view an entry |check its details
 
-|`* *` |user |hide link:#private-contact-detail[private contact details] by default |minimize chance of someone else seeing them by accident
+|`* * *` |user |edit an entry |change its particulars (e.g. time, deadline)
 
-|`*` |user with many persons in the address book |sort persons by name |locate a person easily
+|`* * *` |user |delete an entry |remove listings that I no longer need
+
+|`* * *` |user |store a task without a due date and still get frequent reminders |remember to finish it
+
+|`* * *` |user |specify the start and end times for events |know when it takes place
+
+|`* * *` |user |search entries by name |retrieve specific entries more quickly
+
+|`* * *` |user |perform a search using keywords |find specific entries
+
+|`* * *` |user |store my entries in a folder managed by syncing softwares |ensure all my devices have the same list
+
+|`* * *` |user |list my entries based on starting times |view events scheduled according to specific times
+
+|`* * *` |user |archive entries to a 'completed tasks' folder |view tasks I have finished and restore them if needed
+
+|`* * *` |user |input the details (e.g. deadline, tags, time) of an entry in any order |add to the list without memorizing a specific format
+
+|`* * *` |user |automatically insert floating entries into free time-slots |remember to do tasks without deadlines
+
+|`* * *` |user |view the next n entries |to see upcoming events to attend/tasks to finish
+
+|`* * *` |user that attends events |add entries that have fixed start and end times |
+
+|`* * *` |user |adjust the start and end date of entries |update tasks when requirements change
+
+|`* *` |user |add a priority level to entries |filter them according to importance
+
+|`* *` |user |add recurring events |schedule daily/weekly/other cyclic tasks easily
+
+|`* *` |new user |have similar syntax for most commands |use them easily without confusion
+
+|`* *` |user |have a set of defaults for each field in a command|leave certain fields blank
+
+|`* *` |user |search entries by due-date/event-date |check my availability on a certain day
+
+|`* *` |user |search entries by added date |
+
+|`* *` |user |edit entries after searching for them |search and update in a one-shot approach
+
+|`* *` |user |have a daily view of tasks and events |view my workload for the day
+
+|`* *` |user |have a weekly view of tasks and events |view my workload for the week
+
+|`* *` |advanced user |undo my commands any number of times |to revert undesirable changes
+
+|`* *` |user |recover deleted entries |retrieve them in case of accidental deletions
+
+|`* *` |user with many projects |tag entries by assignment |distinguish tasks for similar assignments
+
+|`* *` |user with many projects |view entries by assignment |distinguish different assignments
+
+|`* *` |user |search for free days in a time period (e.g. next 1 month) |use free days to slot tasks
+
+|`* *` |user |launch and minimize the application with a keyboard shortcut |open directly (from Desktop) without using the mouse
+
+|`* *` |user |categorize entries (e.g. work,shopping,etc) |
+
+|`* *` |user |tick off sub-entries within an entry as completed |to track my progress
+
+|`* *` |user |organize my list |
+
+|`* *` |user |swap entries with a single command |
+
+|`* *` |user |identify priority of tasks based on colours in the GUI |view optimally for faster recognition
+
+|`* *` |user |integrate reminders from e-mail |
+
+|`* *` |developer |have an automated test program |check program functionality after every update
+
+|`* *` |user |clear all entries existing before a certain date |keep calendar organized
+
+|`* *` |user |configure defaults (e.g. storage path) |
+
+|`* *` |user |sort entries by tags/deadline/priority |plan which tasks to do first
+
+|`* *` |user |clear archive/deleted entries folder |prevent the UI from being cluttered
+
+|`* *` |user |list floating tasks (without deadlines) |finish these in my free time
+
+|`* *` |user |mark applications without deadlines as not important by default |
+
+|`* *` |user |delete duplicate entries |keep my list organized
+
+|`*` |user |add documents to an entry |view more information associated with a task/event
+
+|`*` |user |add descriptions to entries|store more information
+
+|`*` |user |list entries in a calendar view |view items scheduled for specific days
 |=======================================================================
 
-{More to be added}
 
 [appendix]
 == Use Cases
@@ -419,6 +509,33 @@ Use case ends.
 ____
 
 [discrete]
+=== Use case: Getting daily summary
+
+*MSS*
+
+1. User requests to list entries with a duration argument without a start date, and ending at the end of the same day.
+2. ProductNameHere shows the list of entries sorted by end date/time, starting from the soonest. Use case ends.
+
+*Extensions*
+2a. The list is empty.
+____
+Use case ends.
+____
+
+[discrete]
+=== Use case: Getting weekly summary of the next week
+
+*MSS*
+
+1. User requests to list entries with a duration starting Monday next week, and ending Sunday next week.
+2. ProductNameHere shows the list of entries sorted by end date/time, starting from the soonest. Use case ends.
+
+*Extensions*
+2a. The list is empty.
+____
+Use case ends.
+____
+
 === Use case: Rescheduling an entry
 
 *Main Success Scenario*
@@ -469,11 +586,17 @@ iii) Use case resumes from step 3.
 [appendix]
 == Non Functional Requirements
 
-.  Should work on any link:#mainstream-os[mainstream OS] as long as it has Java `1.8.0_60` or higher installed.
-.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
+.  The software should work on any link:#mainstream-os[mainstream OS] as long as it has Java `1.8.0_60` or higher installed.
+.  The app should be able to hold up to 1000 entries without a noticeable sluggishness in performance for typical usage.
 .  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+.  The product should be a desktop app.
+.  The Command Line Inteface should be the primary mode of input.
+.  The software should work stand-alone and not be a plug-in to another app.
+.  The software should use text files for storage and not relational databases.
+.  The data should be stored locally in an editable text file.
+.  The code should follow the Object-oriented paradigm.
+.  The product should work without requiring an installer.
 
-{More to be added}
 
 [appendix]
 == Glossary
@@ -502,9 +625,11 @@ ____
 
 [[active list]]
 Active list
+
 ____
 A list of all of the ongoing to-do entries that have not been completed/deleted yet.
 ____
+
 [[mainstream-os]]
 Mainstream OS
 
@@ -535,6 +660,24 @@ _____
 
 [appendix]
 == Product Survey
+
+*Wunderlist*
+
+Author: Christian Reber
+
+Pros:
+
+* Accessible and activated easily from Desktop
+* Adds tasks in a one-shot approach (e.g. Dinner 5th July 9 pm is added on the given day and time)
+* Accessible and activated easily from Desktop
+* Available on all devices (Desktop, Mobile) offline
+* Can add floating tasks (tasks without a deadline)
+
+Cons:
+
+* Only one alarm, no multiple reminders
+* Cannot prioritize tasks
+* Cannot block slots and release them if they become free
 
 *Google Calendar*
 
