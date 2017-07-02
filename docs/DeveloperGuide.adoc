@@ -368,7 +368,7 @@ ii) Use case resumes from step 1.
 
 i) ProductNameHere displays an indexed list of all such entries and asks for an index from the user.
 ii) User specifies index.
-iii) ProductNameHere checks if index is valid, if not, ProductNameHere shows an error message and returns to step 2a ii
+iii) ProductNameHere checks if index is valid, if not, ProductNameHere shows an error message and returns to step 2a ii.
 iv) Use case resumes from step 3.
 
 [discrete]
@@ -387,7 +387,7 @@ iv) Use case resumes from step 3.
 
 i) ProductNameHere displays an indexed list of all such entries and ask for an index from the user.
 ii) User specifies index.
-iii) ProductNameHere checks if index is valid, if not, ProductNameHere shows an error message and returns to step 2a ii
+iii) ProductNameHere checks if index is valid, if not, ProductNameHere shows an error message and returns to step 2a ii.
 iv) Use case resumes from step 3.
 
 [discrete]
@@ -503,7 +503,7 @@ ____
 [[active list]]
 Active list
 ____
-A list of all of the ongoing to-do entries that have not been completed/deleted yet. 
+A list of all of the ongoing to-do entries that have not been completed/deleted yet.
 ____
 [[mainstream-os]]
 Mainstream OS
@@ -579,14 +579,14 @@ Cons:
 
 Developer: Gina Trapani
 
-Pros: 
+Pros:
 
 * Lightweight, easy to install. Does not require network connectivity to use.
 * Extremely simple to use. No tutorial required.
 * Customizable, supports installation of extra add-ons and plugins, complete with guide on how to install extras.
 * Data are saved in human editable text file.
 
-Cons: 
+Cons:
 
 * No support for deadlines in tasks.
 * No support for events or recurring entries.
@@ -597,7 +597,7 @@ Cons:
 
 Developer: Trello, Inc.
 
-Pros: 
+Pros:
 
 * Simple to grasp, easy to use.
 * Supports collaborative work across multiple users.
@@ -609,9 +609,9 @@ Pros:
 * Android and iOS app available.
 * Free to use.
 
-Cons: 
+Cons:
 
 * Requires mouse to use. Not applicable to our target audience.
-* Requires network connection. 
+* Requires network connection.
 * Not command line interface.
 * Must archive entries before deleting entries. Cumbersome to delete entries.
