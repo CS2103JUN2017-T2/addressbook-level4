@@ -50,6 +50,7 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 
 === Viewing help : `help`
 
+Shows a summary of commands available. +
 Format: `help`
 
 === Adding a person: `add`
@@ -64,6 +65,11 @@ Examples:
 
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
+
+=== Completing a task : `complete`
+
+Finds and checkmarks a task as completed and moves it to archive. +
+Format: `complete [KEYWORD_1,KEYWORD_2,...|-index INDEX]`
 
 === Listing all persons : `list`
 
@@ -129,6 +135,11 @@ Deletes the 2nd person in the address book.
 `delete 1` +
 Deletes the 1st person in the results of the `find` command.
 
+=== Restoring a deleted entry : `restore`
+
+Finds and restores a deleted entry back to active tasks +
+Format: `restore [KEYWORD_1,KEYWORD_2,...|-index INDEX]`
+
 === Select a person : `select`
 
 Selects the person identified by the index number used in the last person listing. +
@@ -164,10 +175,14 @@ Format: `undo`
 Reapply the changes removed by the `undo` command. +
 Format: `redo`
 
-=== Clearing all entries : `clear`
+=== Clearing entries : `clear`
 
-Clears all entries from the address book. +
-Format: `clear`
+Clears all entries from sections of the to-do list. +
+Format: `clear [-archive|-bin]`
+
+****
+* Defaults to clearing all entries from active to-do list.
+****
 
 === Exiting the program : `exit`
 
@@ -188,7 +203,9 @@ There is no need to save manually.
 
 * *Add* `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]...` +
 e.g. `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
-* *Clear* : `clear`
+* *Complete* `complete [KEYWORD_1,KEYWORD_2,...|-index INDEX]` +
+e,g, `complete group meeting` or `complete 3`
+* *Clear* : `clear [-archive|-bin]`
 * *Delete* : `delete INDEX` +
 e.g. `delete 3`
 * *Search* : `search KEYWORD_1 [KEYWORD_2 ...] [-archive|-bin]` +
