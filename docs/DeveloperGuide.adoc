@@ -443,7 +443,7 @@ iii) Use case resumes from step 5.
 
 *Main Success Scenario*
 
-1. User accidentally inputs a wrong command.
+1. User inputs an unintended command.
 2. ProductNameHere obediently executes the command.
 3. User undo changes.
 4. ProductNameHere removes all changes made by the last command.
@@ -481,7 +481,7 @@ iii) Use case resumes from step 3.
 [[entry]]
 Entry
 ____
-Any item stored in the system. +
+Any item stored in the system (e.g. events, tasks, note to self). +
 An entry *must* have:
 
 * A name
@@ -517,6 +517,20 @@ Private contact detail
 
 _____
 A contact detail that is not meant to be shared with others
+_____
+
+[[archive]]
+Archive
+
+_____
+A container that stores entries marked as 'done'.
+_____
+
+[[archive]]
+Bin
+
+_____
+A container that stores entries that are deleted.
 _____
 
 [appendix]
