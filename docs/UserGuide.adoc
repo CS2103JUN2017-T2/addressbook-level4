@@ -51,7 +51,7 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 ====
 *Defaults*
 
-* Default values used by commands can be found in the config file `FILE_LOCATION_TO_BE_CONFIRMED`.
+* Default values used by commands can be found in the file `config.json`.
 
 === Viewing help : `help`
 
@@ -89,7 +89,7 @@ Format: `complete [KEYWORD_1 KEYWORD_2...] | [-index INDEX]`
 === Listing all persons : `list`
 
 Displays a list of entries sorted by the starting time. +
-Format: `list [-from START_DATE][-to END_DATE][-archive | -bin]`
+Format: `list [-from START_DATE] [-to END_DATE] [-archive | -bin]`
 
 ****
 * By default the active entries will be listed.
