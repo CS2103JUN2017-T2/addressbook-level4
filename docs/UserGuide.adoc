@@ -96,15 +96,15 @@ Edits the phone number and email address of the 1st person to be `91234567` and 
 * `edit 2 n/Betsy Crower t/` +
 Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
 
-=== Searching all entries containing given keywords in the name or labels: `search`
+=== Find all entries containing given keywords in the name or tags: `find`
 
-Searches for entries which names or labels contain all of the given keywords. +
-Format: `search KEYWORD_1 [KEYWORD_2 ...] [-archive|-bin]`
+Finds entries which names or tags contain all of the given keywords. +
+Format: `find KEYWORD_1 [KEYWORD_2 ...] [-archive|-bin]`
 
 ****
-* The search is case insensitive. e.g `meeting` will match `Meeting`
+* The find is case insensitive. e.g `meeting` will match `Meeting`
 * The order of the keywords does not matter. e.g. `meeting group` will match `group meeting`
-* The name and label are searched.
+* The given keywords are matched with the name and tag of entries.
 * Only full words will be matched e.g. `Meet` will not match `Meeting` but mathces `meet`.
 * Only entries matching all keywords will be returned (i.e. `AND` search). e.g. `group meeting` will not match `client meeting`.
 ****
@@ -191,8 +191,8 @@ e.g. `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 123466
 * *Clear* : `clear`
 * *Delete* : `delete INDEX` +
 e.g. `delete 3`
-* *Search* : `search KEYWORD_1 [KEYWORD_2 ...] [-archive|-bin]` +
-e.g. `search lecture`
+* *Find* : `find KEYWORD_1 [KEYWORD_2 ...] [-archive|-bin]` +
+e.g. `find lecture`
 * *List* : `list [-from START_DATE][-to END_DATE][-archive|-bin]` +
 e.g. `ENTRY_OUTPUT_FORMAT_TO_BE_CONFIRMED`
 * *Help* : `help`
