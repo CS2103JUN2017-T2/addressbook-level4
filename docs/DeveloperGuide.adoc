@@ -349,73 +349,73 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |user that attends events |add entries that have fixed start and end times |
 
-|'* * *` |user |adjust the start and end date of entries |update tasks when requirements change
+|`* * *` |user |adjust the start and end date of entries |update tasks when requirements change
 
-|'* *` |user |add a priority level to entries |filter them according to importance
+|`* *` |user |add a priority level to entries |filter them according to importance
 
-|'* *` |user |add recurring events |schedule daily/weekly/other cyclic tasks easily
+|`* *` |user |add recurring events |schedule daily/weekly/other cyclic tasks easily
 
-|'* *` |new user |have similar syntax for most commands |use them easily without confusion
+|`* *` |new user |have similar syntax for most commands |use them easily without confusion
 
-|'* *` |user |have a set of defaults for each field in a command|leave certain fields blank
+|`* *` |user |have a set of defaults for each field in a command|leave certain fields blank
 
-|'* *` |user |search entries by due-date/event-date |check my availability on a certain day
+|`* *` |user |search entries by due-date/event-date |check my availability on a certain day
 
-|'* *` |user |search entries by added date |
+|`* *` |user |search entries by added date |
 
-|'* *` |user |edit entries after searching for them |search and update in a one-shot approach
+|`* *` |user |edit entries after searching for them |search and update in a one-shot approach
 
-|'* *` |user |have a daily view of tasks and events |view my workload for the day
+|`* *` |user |have a daily view of tasks and events |view my workload for the day
 
-|'* *` |user |have a weekly view of tasks and events |view my workload for the week
+|`* *` |user |have a weekly view of tasks and events |view my workload for the week
 
-|'* *` |advanced user |undo my commands any number of times |to revert undesirable changes
+|`* *` |advanced user |undo my commands any number of times |to revert undesirable changes
 
-|'* *` |user |recover deleted entries |retrieve them in case of accidental deletions
+|`* *` |user |recover deleted entries |retrieve them in case of accidental deletions
 
-|'* *` |user with many projects |tag entries by assignment |distinguish tasks for similar assignments
+|`* *` |user with many projects |tag entries by assignment |distinguish tasks for similar assignments
 
-|'* *` |user with many projects |view entries by assignment |distinguish different assignments
+|`* *` |user with many projects |view entries by assignment |distinguish different assignments
 
-|'* *` |user |search for free days in a time period (e.g. next 1 month) |use free days to slot tasks
+|`* *` |user |search for free days in a time period (e.g. next 1 month) |use free days to slot tasks
 
-|'* *` |user |launch and minimize the application |
+|`* *` |user |launch and minimize the application |
 
-|'* *` |user |categorize entries (e.g. work,shopping,etc) |
+|`* *` |user |categorize entries (e.g. work,shopping,etc) |
 
-|'* *` |user |tick off sub-entries within an entry as completed |to track my progress
+|`* *` |user |tick off sub-entries within an entry as completed |to track my progress
 
-|'* *` |user |organize my list |
+|`* *` |user |organize my list |
 
-|'* *` |user |swap entries with a single command |
+|`* *` |user |swap entries with a single command |
 
-|'* *` |user |identify priority of tasks based on colours in the GUI |view optimally for faster recognition
+|`* *` |user |identify priority of tasks based on colours in the GUI |view optimally for faster recognition
 
-|'* *` |user |integrate reminders from e-mail |
+|`* *` |user |integrate reminders from e-mail |
 
-|'* *` |developer |have an automated test program |check program functionality after every update
+|`* *` |developer |have an automated test program |check program functionality after every update
 
-|'* *` |user |clear all entries existing before a certain date |keep calendar organized
+|`* *` |user |clear all entries existing before a certain date |keep calendar organized
 
-|'* *` |user |configure defaults (e.g. storage path) |
+|`* *` |user |configure defaults (e.g. storage path) |
 
-|'* *` |user |launch and minimize the application |use it more easily
+|`* *` |user |launch and minimize the application |use it more easily
 
-|'* *` |user |sort entries by tags/deadline/priority |plan which tasks to do first
+|`* *` |user |sort entries by tags/deadline/priority |plan which tasks to do first
 
-|'* *` |user |clear archive/deleted entries folder |prevent the UI from being cluttered
+|`* *` |user |clear archive/deleted entries folder |prevent the UI from being cluttered
 
-|'* *` |user |list floating tasks (without deadlines) |finish these in my free time
+|`* *` |user |list floating tasks (without deadlines) |finish these in my free time
 
-|'* *` |user |mark applications without deadlines as not important by default |
+|`* *` |user |mark applications without deadlines as not important by default |
 
-|'* *` |user |delete duplicate entries |keep my list organized
+|`* *` |user |delete duplicate entries |keep my list organized
 
-|'*` |user |add documents to an entry |view more information associated with a task/event
+|`*` |user |add documents to an entry |view more information associated with a task/event
 
-|'*` |user |add descriptions to entries|store more information
+|`*` |user |add descriptions to entries|store more information
 
-|'*` |user |list entries in a calendar view |view items scheduled for specific days
+|`*` |user |list entries in a calendar view |view items scheduled for specific days
 |=======================================================================
 
 
