@@ -18,7 +18,7 @@ Responsibilities: Git
 image::chuapingchan.png[width="150", align="left"]
 
 Role: Developer +
-Responsibilities: 
+Responsibilities:
 
 '''
 
