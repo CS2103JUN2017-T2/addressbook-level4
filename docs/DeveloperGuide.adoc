@@ -592,7 +592,7 @@ ____
 Additional single words saved within `entries` as descriptors
 ____
 
-[[active list]]
+[[active-list]]
 Active list
 
 ____
