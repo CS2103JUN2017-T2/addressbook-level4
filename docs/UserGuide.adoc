@@ -1,4 +1,4 @@
-= AddressBook Level 4 - User Guide
+= ProductNameHere - User Guide
 :toc:
 :toc-title:
 :toc-placement: preamble
@@ -10,9 +10,15 @@ ifdef::env-github[]
 :note-caption: :information_source:
 endif::[]
 
-By: `Team SE-EDU`      Since: `Jun 2016`      Licence: `MIT`
+By: `Team 2`      Since: `Jun 2017`      Licence: `MIT`
 
-== Quick Start
+== Welcome
+
+We often find ourselves overwhelmed by different sets of tasks every single day and frequently have to spend a huge amount of time organizing and remembering what to do. However, with ProductNameHere and our smart key commands, neatly organizing such tasks become a clinch, allowing you to deal with your daily tasks with maximum efficiency!
+
+== Getting Started
+
+Setting up ProductNameHere is simple. Just follow these simple steps:
 
 .  Ensure you have Java version `1.8.0_60` or later installed in your Computer.
 +
