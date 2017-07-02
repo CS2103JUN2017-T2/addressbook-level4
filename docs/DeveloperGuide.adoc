@@ -592,3 +592,26 @@ Cons:
 * No support for events or recurring entries.
 * Uses a replace feature instead of edit, which requires user to re-type the whole task and tags.
 * only provides basic functions add/delete/list, advanced functions require installation of add-ons and plugins.
+
+*Trello*
+
+Developer: Trello, Inc.
+
+Pros: 
+
+* Simple to grasp, easy to use.
+* Supports collaborative work across multiple users.
+* Can see history of performed task of participants.
+* Powerful GUI
+** Supports dragging and dropping for rearranging entries.
+** Tasks and subtasks are clearly differentiated.
+* Runs on browser, no local installation required.
+* Android and iOS app available.
+* Free to use.
+
+Cons: 
+
+* Requires mouse to use. Not applicable to our target audience.
+* Requires network connection. 
+* Not command line interface.
+* Must archive entries before deleting entries. Cumbersome to delete entries.
