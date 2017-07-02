@@ -452,7 +452,7 @@ iii) Use case resumes from step 3.
 [[entry]]
 Entry
 ____
-Any item stored in the system. +
+Any item stored in the system (e.g. events, tasks, note to self). +
 An entry *must* have:
 
 * A name
@@ -483,6 +483,20 @@ Private contact detail
 
 _____
 A contact detail that is not meant to be shared with others
+_____
+
+[[archive]]
+Archive
+
+_____
+A container that stores entries marked as 'done'.
+_____
+
+[[archive]]
+Bin
+
+_____
+A container that stores entries that are deleted.
 _____
 
 [appendix]
