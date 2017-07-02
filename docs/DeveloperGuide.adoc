@@ -1,4 +1,4 @@
-= AddressBook Level 4 - Developer Guide
+﻿= Team 2 Main Project - Developer Guide
 :toc:
 :toc-title:
 :toc-placement: preamble
@@ -11,7 +11,7 @@ endif::[]
 ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 :repoURL: https://github.com/se-edu/addressbook-level4/tree/master
 
-By: `Team SE-EDU`      Since: `Jun 2016`      Licence: `MIT`
+By: `Team 2`      Since: `Jun 2016`      Licence: `MIT`
 
 == Setting up
 
@@ -334,34 +334,137 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 [appendix]
 == Use Cases
 
-(For all use cases below, the *System* is the `AddressBook` and the *Actor* is the `user`, unless specified otherwise)
+(For all use cases below, `ProductNameHere` refers to the *System* and `user` refers to the *Actor*, unless specified otherwise.)
 
 [discrete]
-=== Use case: Delete person
+=== Use case: Adding an entry
 
-*MSS*
+*Main Success Scenario*
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person Use case ends.
+1. User requests to add a new entry by providing an entry name, and optionally entry deadlines and tags.
+2. ProductNameHere creates the entry and moves it to active list.
+3. Use case ends.
 
 *Extensions*
 
-2a. The list is empty
+1a. Some fields from the data provided by user are invalid.
 
+i) ProductNameHere shows an error message and prints the proper usage_message for adding new entries.
+ii) Use case resumes from step 1.
+
+[discrete]
+=== Use case: Completing an entry
+
+*Main Success Scenario*
+
+1. User requests to complete an entry by providing keywords that match the entry's name/tag.
+2. ProductNameHere searches for the entry.
+3. ProductNameHere makes the modification and moves the entry to archive.
+4.  Use case ends.
+
+*Extensions*
+
+2a. ProductNameHere finds more than one entries with the same keywords in the names.
+
+i) ProductNameHere displays an indexed list of all such entries and asks for an index from the user.
+ii) User specifies index.
+iii) ProductNameHere checks if index is valid, if not, ProductNameHere shows an error message and returns to step 2a ii.
+iv) Use case resumes from step 3.
+
+[discrete]
+=== Use case: Deleting an entry
+
+*Main Success Scenario*
+
+1. User requests to delete an entry by providing keywords that match the entry's name/tag.
+2. ProductNameHere searches for the entry.
+3. ProductNameHere makes the modification and moves the entry to deleted bin.
+4. Use case ends.
+
+*Extensions*
+
+2a. ProductNameHere finds more than one entries with the same keywords in the names.
+
+i) ProductNameHere displays an indexed list of all such entries and ask for an index from the user.
+ii) User specifies index.
+iii) ProductNameHere checks if index is valid, if not, ProductNameHere shows an error message and returns to step 2a ii.
+iv) Use case resumes from step 3.
+
+[discrete]
+=== Use case: Getting daily summary
+
+*Main Success Scenario*
+
+1. User requests to list entries with a duration argument without a start date, and ending at the end of the same day.
+2. ProductNameHere shows the list of entries sorted by end date/time, starting from the soonest. Use case ends.
+
+*Extensions*
+2a. The list is empty.
 ____
-Use case ends
+Use case ends.
 ____
 
-3a. The given index is invalid
+[discrete]
+=== Use case: Getting weekly summary of the next week
 
+*Main Success Scenario*
+
+1. User requests to list entries with a duration starting Monday next week, and ending Sunday next week.
+2. ProductNameHere shows the list of entries sorted by end date/time, starting from the soonest. Use case ends.
+
+*Extensions*
+2a. The list is empty.
 ____
-3a1. AddressBook shows an error message +
-Use case resumes at step 2
+Use case ends.
 ____
 
-{More to be added}
+[discrete]
+=== Use case: Rescheduling an entry
+
+*Main Success Scenario*
+
+1. User adds an entry.
+2. ProductNameHere adds the new entry.
+3. After some time, user decides to reschedule the entry by providing keywords that matches the entry's name and the field to change.
+4. ProductNameHere searches for the relevant entry.
+5. ProductNameHere makes the modification.
+6. Use case ends.
+
+*Extensions*
+
+4a. ProductNameHere finds more than one entries with the same keywords in the names.
+
+i) ProductNameHere displays an indexed list of all such entries and ask for an index from the user.
+ii) User specifies index.
+iii) Use case resumes from step 5.
+
+[discrete]
+=== Use case: Undo a change
+
+*Main Success Scenario*
+
+1. User accidentally inputs a wrong command.
+2. ProductNameHere obediently executes the command.
+3. User undo changes.
+4. ProductNameHere removes all changes made by the last command.
+
+[discrete]
+=== Use case: Recover a deleted entry
+
+*Main Scenario Scenario*
+
+1. User uses the `restore` command to recover a deleted entry by providing keywords that match the entry name.
+2. ProductNameHere searches for the relevant entry.
+3. ProductNameHere restores the entry.
+4. Use case ends.
+
+*Extensions*
+
+2a. ProductNameHere finds more than one deleted or archived entries with the same keyword in the names.
+
+i) ProductNameHere displays an indexed list of all such entries and ask for an index from the user.
+ii) User specifies index.
+iii) Use case resumes from step 3.
 
 [appendix]
 == Non Functional Requirements
@@ -375,6 +478,33 @@ ____
 [appendix]
 == Glossary
 
+[[entry]]
+Entry
+____
+Any item stored in the system. +
+An entry *must* have:
+
+* A name
+
+An entry *can* have:
+
+* No specific start or end date or time *or*
+* Single specified date and/or time as a deadline *or*
+* Specified start and end date and/or time *and/or*
+* Zero or more tags
+____
+
+[[tag]]
+Tag
+____
+Additional single words saved within `entries` as descriptors
+____
+
+[[active list]]
+Active list
+____
+A list of all of the ongoing to-do entries that have not been completed/deleted yet.
+____
 [[mainstream-os]]
 Mainstream OS
 
@@ -392,16 +522,96 @@ _____
 [appendix]
 == Product Survey
 
-*Product Name*
+*Google Calendar*
 
-Author: ...
+Developer(s): Google
 
 Pros:
 
-* ...
-* ...
+* 'Quick add' features accepts satisfactorily natural language.
+* Supports recurring tasks.
+* Android and iOS app available.
+* Powerful GUI
+** Various calendar layouts (e.g. daily, weekly, montly, 4-days)
+** Supports dragging and dropping for editing entries.
+* Able to synchronise with a wide range of other calendar and task managing applications.
+* Data can be stored both locally or on a remote server.
+* Able to search entries based on name.
+* Reminder and notification feature.
+* Records all deleted entries, which can be recovered.
+* Provides an undo feature for the latest change made.
+* Allows the sharing of calendar with other users.
+* Runs on a browser, no local installation required.
+* Able to add remarks and file attachments to entries.
 
 Cons:
 
-* ...
-* ...
+* Not ideal for capturing tasks that need to be done before a specific date/time, or after a specific date/time, or tasks without specific times.
+* Cannot intelligently lookup a free slot to insert entries without specific times.
+* Launching is slow. Requires opening a browser and then typing in a URL. A way to work around this is to synchronise Google Calendar with another calendar application which can be open more quickly.
+
+*Hitask*
+
+Author: Human Computer LLC
+
+Pros:
+
+* Encryption of user data.
+* Data is synced with the account across computers.
+* Android and iOS app available.
+* Free for personal use up to 10 projects.
+* Can add tasks with no date, tasks with start date and end date, whole-day tasks, and deadlines.
+* Daily and monthly view in the GUI at the same time.
+* List is always in the GUI, with multiple sorting options.
+* Ability to attach files to projects and tasks.
+* Can create tasks directly from email.
+
+Cons:
+
+* Only tasks without date can be entered via the command line, other fields require the mouse to select the entry box first.
+* No support for "blocking" tasks.
+* Web-based interface does not function when the user is not connected to the internet.
+* Cannot intelligently search for a free slot for an event.
+* Tasks and events are not differentiated as they have the exact same entry fields.
+* Not enough task preference default parameters for user to specify.
+
+*Todo.txt*
+
+Developer: Gina Trapani
+
+Pros:
+
+* Lightweight, easy to install. Does not require network connectivity to use.
+* Extremely simple to use. No tutorial required.
+* Customizable, supports installation of extra add-ons and plugins, complete with guide on how to install extras.
+* Data are saved in human editable text file.
+
+Cons:
+
+* No support for deadlines in tasks.
+* No support for events or recurring entries.
+* Uses a replace feature instead of edit, which requires user to re-type the whole task and tags.
+* only provides basic functions add/delete/list, advanced functions require installation of add-ons and plugins.
+
+*Trello*
+
+Developer: Trello, Inc.
+
+Pros:
+
+* Simple to grasp, easy to use.
+* Supports collaborative work across multiple users.
+* Can see history of performed task of participants.
+* Powerful GUI
+** Supports dragging and dropping for rearranging entries.
+** Tasks and subtasks are clearly differentiated.
+* Runs on browser, no local installation required.
+* Android and iOS app available.
+* Free to use.
+
+Cons:
+
+* Requires mouse to use. Not applicable to our target audience.
+* Requires network connection.
+* Not command line interface.
+* Must archive entries before deleting entries. Cumbersome to delete entries.
