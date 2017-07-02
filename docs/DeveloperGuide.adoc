@@ -539,6 +539,7 @@ _____
 *Google Calendar*
 
 Developer(s): Google
+Author: Chua Ping Chan
 
 Pros:
 
