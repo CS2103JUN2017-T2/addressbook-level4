@@ -606,13 +606,6 @@ ____
 Windows, Linux, Unix, OS-X
 ____
 
-[[private-contact-detail]]
-Private contact detail
-
-_____
-A contact detail that is not meant to be shared with others
-_____
-
 [[archive]]
 Archive
 
