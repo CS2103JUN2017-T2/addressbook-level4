@@ -81,10 +81,21 @@ Examples:
 * `add write novel -tag bucketlist`
 * `add clean up room`
 
+=== Completing a task : `complete`
+
+Finds and checkmarks a task as completed and moves it to archive. +
+Format: `complete [KEYWORD_1 KEYWORD_2...] | [-index INDEX]`
+
 === Listing all persons : `list`
 
-Shows a list of all persons in the address book. +
-Format: `list`
+Displays a list of entries sorted by the starting time. +
+Format: `list [-from START_DATE][-to END_DATE][-archive | -bin]`
+
+****
+* By default the active entries will be listed.
+* The `-archive` and `-bin` options are used to list archived and deleted entries respectively.
+* The default number of entries to list can be configured with the `config` command.
+****
 
 === Editing an entry : `edit`
 
@@ -114,25 +125,18 @@ Edits the 2nd entry to take place every week for 3 weeks including its current o
 * `edit zoo outing -on 20 September` +
 Edits the entry matching "zoo" and "outing" to take place on 20 September. If there are multiple entries that match the keywords, no entries are modifies.
 
-=== Finding all persons containing any keyword in their name: `find`
+=== Searching all entries containing given keywords in the name or labels: `search`
 
-Finds persons whose names contain any of the given keywords. +
-Format: `find KEYWORD [MORE_KEYWORDS]`
+Searches for entries which names or labels contain all of the given keywords. +
+Format: `search KEYWORD_1 [KEYWORD_2 ...] [-archive|-bin]`
 
 ****
-* The search is case insensitive. e.g `hans` will match `Hans`
-* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
-* Only the name is searched.
-* Only full words will be matched e.g. `Han` will not match `Hans`
-* Persons matching at least one keyword will be returned (i.e. `OR` search). e.g. `Hans` will match `Hans Bo`
+* The search is case insensitive. e.g `meeting` will match `Meeting`
+* The order of the keywords does not matter. e.g. `meeting group` will match `group meeting`
+* The name and label are searched.
+* Only full words will be matched e.g. `Meet` will not match `Meeting` but mathces `meet`.
+* Only entries matching all keywords will be returned (i.e. `AND` search). e.g. `group meeting` will not match `client meeting`.
 ****
-
-Examples:
-
-* `find John` +
-Returns `John Doe` but not `john`
-* `find Betsy Tim John` +
-Returns Any person having names `Betsy`, `Tim`, or `John`
 
 === Deleting an event : `delete`
 
@@ -155,6 +159,11 @@ Examples:
 Deletes the 2nd entry in the active calendar.
 * `delete pasta dinner` +
 Deletes all entries in the active calendar that matches "pasta" and "dinner" in the name or tag, after prompting the user to confirm if multiple entries are found.
+
+=== Restoring a deleted entry : `restore`
+
+Finds and restores a deleted entry back to active tasks +
+Format: `restore [KEYWORD_1 KEYWORD_2...] | [-index INDEX]`
 
 === Select a person : `select`
 
@@ -181,10 +190,24 @@ Selects the 1st person in the results of the `find` command.
 Lists all the commands that you have entered in chronological order. +
 Format: `history`
 
-=== Clearing all entries : `clear`
+=== Undo changes : `undo`
 
-Clears all entries from the address book. +
-Format: `clear`
+Undo the changes made by the last command. +
+Format: `undo`
+
+=== Redo changes : `redo`
+
+Reapply the changes removed by the `undo` command. +
+Format: `redo`
+
+=== Clearing entries : `clear`
+
+Clears all entries from sections of the to-do list. +
+Format: `clear [-archive|-bin]`
+
+****
+* Defaults to clearing all entries from active to-do list.
+****
 
 === Exiting the program : `exit`
 
@@ -206,15 +229,20 @@ There is no need to save manually.
 * *Help* `help`
 * *Add* `add ENTRY_NAME [-on | -by DATE_A] [-to DATE_B] [-every day | week | month | year [NUM_TIMES | -until STOP_DATE] [-tag TAG_1 TAG_2...]` +
 e.g. `add dinner with parents -on friday 6pm -to friday 9pm -tag family`
-* *List* : `list`
+* *Complete* `complete [KEYWORD_1 KEYWORD_2...] | [-index INDEX]` +
+e,g, `complete group meeting` or `complete -index 3`
+* *List* : `list [-from START_DATE] [-to END_DATE] [-archive | -bin]` +
+e.g. `ENTRY_OUTPUT_FORMAT_TO_BE_CONFIRMED`
 * *Edit* : `edit [KEYWORD_1 KEYWORD_2...] | [-index INDEX] [-name NEW_ENTRY_NAME] [-on | -by DATE_A] [-to DATE_B] [-every day | week | month | year [NUM_TIMES | -until STOP_DATE] [-tag TAG_1 TAG_2...]` +
 e.g. `edit zoo, outing -on 20 September`
-* *Find* : `find KEYWORD [MORE_KEYWORDS]` +
-e.g. `find James Jake`
+* *Search* : `search KEYWORD_1 [KEYWORD_2 ...] [-archive | -bin]` +
+e.g. `search lecture`
 * *Delete* : `delete [KEYWORD_1 KEYWORD_2...] | [-index INDEX] [-force]` +
 e.g. `delete pasta dinner`
 * *Select* : `select INDEX` +
 e.g.`select 2`
 * *History* : `history`
-* *Clear* : `clear`
+* *Clear* : `clear [-archive | -bin]`
+* *Undo* : `undo`
+* *Redo* : `redo`
 * *Exit* : `exit`
