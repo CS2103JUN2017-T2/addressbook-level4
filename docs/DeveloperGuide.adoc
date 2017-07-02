@@ -543,7 +543,7 @@ ____
 1. User adds an entry.
 2. ProductNameHere adds the new entry.
 3. After some time, user decides to reschedule the entry by providing keywords that matches the entry's name and the field to change.
-4. ProductNameHere searches for the relevant entry.
+4. ProductNameHere finds the relevant entry.
 5. ProductNameHere makes the modification.
 6. Use case ends.
 
@@ -571,7 +571,7 @@ iii) Use case resumes from step 5.
 *Main Scenario Scenario*
 
 1. User uses the `restore` command to recover a deleted entry by providing keywords that match the entry name.
-2. ProductNameHere searches for the relevant entry.
+2. ProductNameHere finds the relevant entry.
 3. ProductNameHere restores the entry.
 4. Use case ends.
 
@@ -682,6 +682,7 @@ Cons:
 *Google Calendar*
 
 Developer(s): Google
+Author: Chua Ping Chan
 
 Pros:
 
