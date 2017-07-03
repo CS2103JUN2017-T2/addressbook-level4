@@ -547,14 +547,14 @@ iii) Use case resumes from step 2.
 [appendix]
 == Non Functional Requirements
 
-.  The software should work on any link:#mainstream-os[mainstream OS] as long as it has Java `1.8.0_60` or higher installed.
-. The app should be able to hold up to 1000 entries without a noticeable sluggishness in performence for typical usage.
-.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
-.  The software should use text files for storage and not relational databases.
-.  The software should favor DOS style commands over Unix-style commands.
-.  All operations should have response time under 1 second.
-.  The software should be able to work offline.
-.  Basic commands on entries should be achieved within a minimum of 2 steps.
+. The software should work on any link:#mainstream-os[mainstream OS] as long as it has Java `1.8.0_60` or higher installed.
+. The app should be able to hold up to 1000 entries without a noticeable sluggishness in performance for typical usage.
+. A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+. The software should use text files for storage and not relational databases.
+. The software should favor DOS style commands over Unix-style commands.
+. All operations should have response time under 1 second.
+. The software should be able to work offline.
+. Basic commands on entries should be achieved within a minimum of 2 steps.
 
 [appendix]
 == Glossary
