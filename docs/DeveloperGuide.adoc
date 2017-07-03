@@ -591,6 +591,10 @@ iii) Use case resumes from step 3.
 .  The data should be stored locally in an editable text file.
 .  The code should follow the Object-oriented paradigm.
 .  The product should work without requiring an installer.
+.  The product should favor DOS style commands over Unix-style commands.
+.  All operations should have response time under 1 second.
+.  The software should be able to work offline.
+
 
 [appendix]
 == Glossary
