@@ -57,7 +57,7 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 ====
 *Defaults*
 
-* Default values used by commands can be found in the config file `FILE_LOCATION_TO_BE_CONFIRMED`.
+* Default values used by commands can be found in the file `config.json`.
 
 === Viewing help : `help`
 
@@ -67,46 +67,52 @@ Format: `help`
 === Adding an entry: `add`
 
 Adds an entry to the active tasks +
-Format: `add ENTRY_NAME [-on | -by DATE_A] [-to DATE_B] [-every day | week | month | year [NUM_TIMES | -until STOP_DATE] [-tag TAG_1 TAG_2...]`
+Format: `add ENTRY_NAME [/on | /by DATE_A] [/to DATE_B] [/every day | week | month | year [NUM_TIMES | /until STOP_DATE] [/tag TAG_1 TAG_2...]`
 
 ****
 * If no date is specified, the entry will contain no date information.
-* `-on DATE_A` indicates an entry starting from `DATE_A` which uses the default value `default.add.duration`.
-* `-by DATE_A` indicates an entry with single date of `DATE_A`.
-* `-on DATE_A -to DATE_B` indicates an entry which spans from `DATE_A` to `DATE_B`.
+* `/on DATE_A` indicates an entry starting from `DATE_A` which uses the default value `default.add.duration`.
+* `/by DATE_A` indicates an entry with single date of `DATE_A`.
+* `/on DATE_A /to DATE_B` indicates an entry which spans from `DATE_A` to `DATE_B`.
 ****
 
-*Defaults from config*: +
-If no `NUM_TIMES` or `STOP_DATE` for a recurring entry is specified, `recurring.numTimes` is used for the number of recurring events to add to the calendar.
+*Defaults from `config.json`*: +
+
+* If neither `NUM_TIMES` nor `STOP_DATE` for a recurring entry is specified, `recurringNumTimes` is used for the number of recurring events to add to the calendar.
+* If only the `-on` date is specified, `addDurationHours` is used for the duration of the entry.
 
 Examples:
 
-* `add dinner with parents -on friday 6pm -to friday 9pm -tag family`
-* `add go to the gym -on monday 10am -every week -tag exercise, activities`
-* `add project submission -by 5 July 10am -tag school`
-* `add write novel -tag bucketlist`
+* `add dinner with parents /on friday 6pm /to friday 9pm /tag family`
+* `add go to the gym /on monday 10am /every week /tag exercise, activities`
+* `add project submission /by 5 July 10am /tag school`
+* `add write novel /tag bucketlist`
 * `add clean up room`
 
 === Completing a task : `complete`
 
 Finds and checkmarks a task as completed and moves it to archive. +
-Format: `complete [KEYWORD_1 KEYWORD_2...] | [-index INDEX]`
+Format: `complete [KEYWORD_1 KEYWORD_2...] | [/index INDEX]`
 
-=== Listing all persons : `list`
+=== Listing all entries : `list`
 
 Displays a list of entries sorted by the starting time. +
-Format: `list [-from START_DATE][-to END_DATE][-archive | -bin]`
+Format: `list [/from START_DATE][/to END_DATE][/archive | /bin]`
 
 ****
 * By default the active entries will be listed.
-* The `-archive` and `-bin` options are used to list archived and deleted entries respectively.
+* The `/archive` and `/bin` options are used to list archived and deleted entries respectively.
 * The default number of entries to list can be configured with the `config` command.
 ****
+
+*Defaults from `config.json`* +
+
+* The default number of entries to list is `listNumResults`
 
 === Editing an entry : `edit`
 
 Edits an existing active entry in the calendar. +
-Format: `edit [KEYWORD_1 KEYWORD_2...] | [-index INDEX] [-name NEW_ENTRY_NAME] [-on | -by DATE_A] [-to DATE_B] [-every day | week | month | year [NUM_TIMES | -until STOP_DATE] [-tag TAG_1 TAG_2...]`
+Format: `edit [KEYWORD_1 KEYWORD_2...] | [/index INDEX] [/name NEW_ENTRY_NAME] [/on | /by DATE_A] [/to DATE_B] [/every day | week | month | year [NUM_TIMES | /until STOP_DATE] [/tag TAG_1 TAG_2...]`
 
 ****
 * There are two ways to select an entry to edit: searching by `KEYWORD`, or specifying the `INDEX`.
@@ -116,25 +122,26 @@ Format: `edit [KEYWORD_1 KEYWORD_2...] | [-index INDEX] [-name NEW_ENTRY_NAME] [
 * At least one of the optional data fields must be provided.
 * Existing values will be updated to the input values. If that field is not provided, the existing values are not changed.
 * When editing tags, the existing tags of the entry will be removed and replaced with the new tags: *adding of tags is not cumulative*.
-* You can remove all of the entry's tags by typing `-tag` without specifying any tags after it.
+* You can remove all of the entry's tags by typing `/tag` without specifying any tags after it.
 ****
 
-*Defaults from config*: +
-If no `NUM_TIMES` or `STOP_DATE` for a recurring entry is specified, `recurring.numTimes` is used for the number of recurring events to add to the calendar.
+*Defaults from `config.json`*: +
+
+* If neither `NUM_TIMES` nor `STOP_DATE` for a recurring entry is specified, `recurringNumTimes` is used for the number of recurring events to add to the calendar.
 
 Examples:
 
-* `edit 1 -on saturday 6pm` +
+* `edit 1 /on saturday 6pm` +
 Edits the 1st entry to take place on the coming Saturday at 6pm, for a duration set by `default.add.duration`.
-* `edit 2 -every week 3 -tag` +
+* `edit 2 /every week 3 /tag` +
 Edits the 2nd entry to take place every week for 3 weeks including its current occurence, and clears all its existing tags.
-* `edit zoo outing -on 20 September` +
+* `edit zoo outing /on 20 September` +
 Edits the entry matching "zoo" and "outing" to take place on 20 September. If there are multiple entries that match the keywords, no entries are modifies.
 
 === Find all entries containing given keywords in the name or tags: `find`
 
 Finds entries which names or tags contain all of the given keywords. +
-Format: `find KEYWORD_1 [KEYWORD_2 ...] [-archive|-bin]`
+Format: `find KEYWORD_1 [KEYWORD_2 ...] [/archive|/bin]`
 
 ****
 * The find is case insensitive. e.g `meeting` will match `Meeting`
@@ -144,10 +151,14 @@ Format: `find KEYWORD_1 [KEYWORD_2 ...] [-archive|-bin]`
 * Only entries matching all keywords will be returned (i.e. `AND` search). e.g. `group meeting` will not match `client meeting`.
 ****
 
+*Defaults from `config.json`*: +
+
+* The maximum number of `find` results shown to the user is `findNumResults`
+
 === Deleting an event : `delete`
 
 Deletes the specified entry from the active calendar. +
-Format: `delete [KEYWORD_1 KEYWORD_2...] | [-index INDEX] [-force]`
+Format: `delete [KEYWORD_1 KEYWORD_2...] | [/index INDEX] [/force]`
 
 ****
 * There are two ways to select an entry to delete: searching by `KEYWORD`, or specifying the `INDEX`.
@@ -155,7 +166,7 @@ Format: `delete [KEYWORD_1 KEYWORD_2...] | [-index INDEX] [-force]`
 ** The index refers to the index number shown in the last active entry listing. The index *must be a positive integer* 1, 2, 3, ...
 * Deleting an entry moves it from the active calendar and to the recycle bin.
 * If multiple entries are found using the keywords, all found entries will be listed, and the user will be prompted to confirm that they want to delete all of those entries.
-** Using the `-force` option skips the confirmation step.
+** Using the `/force` option skips the confirmation step.
 ****
 
 Examples:
@@ -169,27 +180,7 @@ Deletes all entries in the active calendar that matches "pasta" and "dinner" in 
 === Restoring a deleted entry : `restore`
 
 Finds and restores a deleted entry back to active tasks +
-Format: `restore [KEYWORD_1 KEYWORD_2...] | [-index INDEX]`
-
-=== Select a person : `select`
-
-Selects the person identified by the index number used in the last person listing. +
-Format: `select INDEX`
-
-****
-* Selects the person and loads the Google search page the person at the specified `INDEX`.
-* The index refers to the index number shown in the most recent listing.
-* The index *must be a positive integer* 1, 2, 3, ...
-****
-
-Examples:
-
-* `list` +
-`select 2` +
-Selects the 2nd person in the address book.
-* `find Betsy` +
-`select 1` +
-Selects the 1st person in the results of the `find` command.
+Format: `restore [KEYWORD_1 KEYWORD_2...] | [/index INDEX]`
 
 === Listing entered commands : `history`
 
@@ -209,7 +200,7 @@ Format: `redo`
 === Clearing entries : `clear`
 
 Clears all entries from sections of the to-do list. +
-Format: `clear [-archive|-bin]`
+Format: `clear [/archive|/bin]`
 
 ****
 * Defaults to clearing all entries from active to-do list.
@@ -233,22 +224,22 @@ There is no need to save manually.
 == Command Summary
 
 * *Help* `help`
-* *Add* `add ENTRY_NAME [-on | -by DATE_A] [-to DATE_B] [-every day | week | month | year [NUM_TIMES | -until STOP_DATE] [-tag TAG_1 TAG_2...]` +
-e.g. `add dinner with parents -on friday 6pm -to friday 9pm -tag family`
-* *Complete* `complete [KEYWORD_1 KEYWORD_2...] | [-index INDEX]` +
-e,g, `complete group meeting` or `complete -index 3`
-* *List* : `list [-from START_DATE] [-to END_DATE] [-archive | -bin]` +
+* *Add* `add ENTRY_NAME [/on | /by DATE_A] [/to DATE_B] [/every day | week | month | year [NUM_TIMES | /until STOP_DATE] [/tag TAG_1 TAG_2...]` +
+e.g. `add dinner with parents /on friday 6pm /to friday 9pm /tag family`
+* *Complete* `complete [KEYWORD_1 KEYWORD_2...] | [/index INDEX]` +
+e,g, `complete group meeting` or `complete /index 3`
+* *List* : `list [/from START_DATE] [/to END_DATE] [/archive | /bin]` +
 e.g. `ENTRY_OUTPUT_FORMAT_TO_BE_CONFIRMED`
-* *Edit* : `edit [KEYWORD_1 KEYWORD_2...] | [-index INDEX] [-name NEW_ENTRY_NAME] [-on | -by DATE_A] [-to DATE_B] [-every day | week | month | year [NUM_TIMES | -until STOP_DATE] [-tag TAG_1 TAG_2...]` +
-e.g. `edit zoo, outing -on 20 September`
-* *Find* : `find KEYWORD_1 [KEYWORD_2 ...] [-archive |- bin]` +
+* *Edit* : `edit [KEYWORD_1 KEYWORD_2...] | [/index INDEX] [/name NEW_ENTRY_NAME] [/on | /by DATE_A] [/to DATE_B] [/every day | week | month | year [NUM_TIMES | /until STOP_DATE] [/tag TAG_1 TAG_2...]` +
+e.g. `edit zoo, outing /on 20 September`
+* *Find* : `find KEYWORD_1 [KEYWORD_2 ...] [/archive | /bin]` +
 e.g. `find lecture`
-* *Delete* : `delete [KEYWORD_1 KEYWORD_2...] | [-index INDEX] [-force]` +
+* *Delete* : `delete [KEYWORD_1 KEYWORD_2...] | [/index INDEX] [/force]` +
 e.g. `delete pasta dinner`
 * *Select* : `select INDEX` +
 e.g.`select 2`
 * *History* : `history`
-* *Clear* : `clear [-archive | -bin]`
+* *Clear* : `clear [/archive | /bin]`
 * *Undo* : `undo`
 * *Redo* : `redo`
 * *Exit* : `exit`
