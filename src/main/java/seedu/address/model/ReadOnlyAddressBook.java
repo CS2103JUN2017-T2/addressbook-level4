@@ -6,15 +6,15 @@ import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.tag.Tag;
 
 /**
- * Unmodifiable view of an address book
+ * Unmodifiable view of an entry book
  */
-public interface ReadOnlyAddressBook {
+public interface ReadOnlyEntryBook {
 
     /**
-     * Returns an unmodifiable view of the persons list.
-     * This list will not contain any duplicate persons.
+     * Returns an unmodifiable view of the entry list.
+     * This list will not contain any duplicate entry.
      */
-    ObservableList<ReadOnlyPerson> getPersonList();
+    ObservableList<ReadOnlyEntry> getEntryList();
 
     /**
      * Returns an unmodifiable view of the tags list.
