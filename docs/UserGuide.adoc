@@ -61,22 +61,23 @@ Format: `help`
 === Adding an entry: `add`
 
 Adds an entry to the active tasks +
-Format: `add ENTRY_NAME [/on | /by DATE_A] [/to DATE_B] [/every day | week | month | year [NUM_TIMES | /until STOP_DATE] [/tag TAG_1 TAG_2...]`
+Format: `add ENTRY_NAME [/by | /on | /from | /at DATE_A] [/to DATE_B] [/every day | week | month | year [NUM_TIMES | /until STOP_DATE] [/tag TAG_1 TAG_2...]`
 
 ****
 * If no date is specified, the entry will contain no date information.
-* `/on DATE_A` indicates an entry starting from `DATE_A` which uses the default value `default.add.duration`.
-* `/by DATE_A` indicates an entry with single date of `DATE_A`.
-* `/on DATE_A /to DATE_B` indicates an entry which spans from `DATE_A` to `DATE_B`.
+* `/on | /from | /at DATE_A` indicates an event starting from `DATE_A`. The choice of `/on`, `/from` or `/at` is not critical and the options are provided for more natural input.
+* `/by DATE_A` indicates a deadline.
+* `/on DATE_A /to DATE_B` indicates an event which spans from `DATE_A` to `DATE_B`.
 ****
 
 *Defaults from `config.json`*: +
 
 * If neither `NUM_TIMES` nor `STOP_DATE` for a recurring entry is specified, `recurringNumTimes` is used for the number of recurring events to add to the calendar.
-* If only the `-on` date is specified, `addDurationHours` is used for the duration of the entry.
+* If only `DATE_A` for an event, `addDurationHours` is used for the duration of the event.
 
 Examples:
 
+* `add attend class /at 6pm today`
 * `add dinner with parents /on friday 6pm /to friday 9pm /tag family`
 * `add go to the gym /on monday 10am /every week /tag exercise, activities`
 * `add project submission /by 5 July 10am /tag school`
@@ -218,7 +219,7 @@ There is no need to save manually.
 == Command Summary
 
 * *Help* `help`
-* *Add* `add ENTRY_NAME [/on | /by DATE_A] [/to DATE_B] [/every day | week | month | year [NUM_TIMES | /until STOP_DATE] [/tag TAG_1 TAG_2...]` +
+* *Add* `add ENTRY_NAME [/by | /on | /from | /at DATE_A] [/to DATE_B] [/every day | week | month | year [NUM_TIMES | /until STOP_DATE] [/tag TAG_1 TAG_2...]` +
 e.g. `add dinner with parents /on friday 6pm /to friday 9pm /tag family`
 * *Complete* `complete [KEYWORD_1 KEYWORD_2...] | [/event | /deadline | /float INDEX]` +
 e,g, `complete group meeting` or `complete /event | /deadline | /float 3`
