@@ -285,7 +285,7 @@ An entry in the Task Manager with
 * Specified start *and* end date and/or time
 ____
 
-[[Deadline]]
+[[deadline]]
 Deadline
 ____
 An entry in the Task Manager with
