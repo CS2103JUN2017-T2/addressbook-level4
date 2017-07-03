@@ -1,4 +1,4 @@
-= ProductNameHere - User Guide
+= MultiTasky - User Guide
 :toc:
 :toc-title:
 :toc-placement: preamble
@@ -14,20 +14,20 @@ By: `Team 2`      Since: `Jun 2017`      Licence: `MIT`
 
 == Welcome
 
-We often find ourselves overwhelmed by different sets of tasks every single day and frequently have to spend a huge amount of time organizing and remembering what to do. However, with ProductNameHere and our smart key commands, neatly organizing such tasks become a clinch, allowing you to deal with your daily tasks with maximum efficiency!
+We often find ourselves overwhelmed by different sets of tasks every single day, and frequently have to spend huge amounts of time organizing and remembering what to do. However, with MultiTasky and our smart key commands, effortlessly organizing such tasks become a cinch, allowing you to deal with your daily tasks with maximum efficiency!
 
 == Getting Started
 
-Setting up ProductNameHere is simple. Just follow these simple steps:
+Setting up MultiTasky is simple. Just follow these simple steps:
 
-.  Ensure you have Java version `1.8.0_60` or later installed in your Computer.
+.  Ensure you have Java version `1.8.0_60` or later installed in your Computer. You may find the latest version of JRE8  from http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html[here].
 +
 [NOTE]
 Having any Java 8 version is not enough. +
 This app will not work with earlier versions of Java 8.
 +
-.  Download the latest `addressbook.jar` from the link:../../../releases[releases] tab.
-.  Copy the file to the folder you want to use as the home folder for your Address Book.
+.  Download the latest `MultiTasky.jar` from the link:../../../releases[releases] tab.
+.  Copy the file to the folder you want to use as the home folder for your Task Manager.
 .  Double-click the file to start the app. The GUI should appear in a few seconds.
 +
 image::Ui.png[width="790"]
@@ -36,12 +36,13 @@ image::Ui.png[width="790"]
 e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 .  Some example commands you can try:
 
-* *`list`* : lists all contacts
-* **`add`**`n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : adds a contact named `John Doe` to the Address Book.
-* **`delete`**`3` : deletes the 3rd contact shown in the current list
+* *`list`* : lists all active tasks
+* *`add`* `sales proposal /by 050717 1400` : adds an entry named `sales proposal` with deadline `5th July, 2pm` to the Task Manager
+* *`delete`* `/deadline 3` : deletes the 3rd deadline entry shown in the current list
 * *`exit`* : exits the app
 
 .  Refer to the link:#features[Features] section below for details of each command.
+. The link:#glossary[Glossary] may be useful if you come across unfamiliar terms used.
 
 == Features
 
@@ -52,8 +53,8 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 * Items in `[ ]` are optional.
 * Items separated by `|` indicate that either should be used, but not both.
 * Items with `...` after them can have multiple instances.
-* Parameters can be in any order.
-* `DATE` format is `FORMAT_TO_BE_CONFIRMED`.
+* `DATE_TIME` format is `ddmmyy hhmm`.
+
 ====
 *Defaults*
 
@@ -67,19 +68,22 @@ Format: `help`
 === Adding an entry: `add`
 
 Adds an entry to the active tasks +
-Format: `add ENTRY_NAME [/on | /by DATE_A] [/to DATE_B] [/every day | week | month | year [NUM_TIMES | /until STOP_DATE] [/tag TAG_1 TAG_2...]`
+Format: `add ENTRY_NAME [/on | /from | /at | /by DATE_TIME_A] [/to DATE__TIME_B] [/every day | week | month | year [NUM_TIMES | /until STOP_DATE]] [/tag TAG_1 TAG_2...]`
 
 ****
-* If no date is specified, the entry will contain no date information.
-* `/on DATE_A` indicates an entry starting from `DATE_A` which uses the default value `default.add.duration`.
-* `/by DATE_A` indicates an entry with single date of `DATE_A`.
-* `/on DATE_A /to DATE_B` indicates an entry which spans from `DATE_A` to `DATE_B`.
+* If no date is specified, the entry will contain no date information and automatically be classified under `floating entry`
+* `/on`, or `at` can be used to create an `event entry`. The default value of 1 hour will be used to set the ending datetime.
+* `/from` should be used in conjunction with `/to` for `event entry` that needs adjustable ending datetime.
+* `/by` can be used to create `deadline entry`.
+* Reminder that `DATE_TIME` must contain both date and time fields as described in Command Format above.
+* /every can be used as an optional command to create recurring tasks.
+* /tag can be used as an optional command to tag
 ****
 
 *Defaults from `config.json`*: +
 
+* The default value for events can be found as `addDurationHours`.
 * If neither `NUM_TIMES` nor `STOP_DATE` for a recurring entry is specified, `recurringNumTimes` is used for the number of recurring events to add to the calendar.
-* If only the `-on` date is specified, `addDurationHours` is used for the duration of the entry.
 
 Examples:
 
@@ -213,13 +217,66 @@ Format: `exit`
 
 === Saving the data
 
-Address book data are saved in the hard disk automatically after any command that changes the data. +
+Task Manager data are saved in the hard disk automatically after any command that changes the data. +
 There is no need to save manually.
 
 == FAQ
 
 *Q*: How do I transfer my data to another Computer? +
-*A*: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous Address Book folder.
+*A*: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous Task Manager folder.
+
+== Glossary
+
+[[entry]]
+Entry
+____
+Any item stored in the system (e.g. events, tasks, note to self). +
+An entry *must* have:
+
+* A name
+
+An entry *can* have:
+
+* No specific start or end date or time *or*
+* Single specified date and/or time as a deadline *or*
+* Specified start and end date and/or time *and/or*
+* Zero or more tags
+____
+
+[[tag]]
+Tag
+____
+Additional single words saved within `entries` as descriptors
+____
+
+[[active-list]]
+Active list
+
+____
+A list of all of the ongoing to-do entries that have not been completed/deleted yet.
+____
+
+[[mainstream-os]]
+Mainstream OS
+
+____
+Windows, Linux, Unix, OS-X
+____
+
+[[archive]]
+Archive
+
+_____
+A container that stores entries marked as 'done'.
+_____
+
+[[bin]]
+Bin
+
+_____
+A container that stores entries that are deleted.
+_____
+
 
 == Command Summary
 
