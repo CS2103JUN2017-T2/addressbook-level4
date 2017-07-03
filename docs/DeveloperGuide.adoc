@@ -11,11 +11,7 @@ endif::[]
 ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 :repoURL: https://github.com/se-edu/addressbook-level4/tree/master
 
-<<<<<<< HEAD
 By: `Team 2`      Since: `Jun 2017`      Licence: `MIT`
-=======
-By: `Team 2`      Since: `Jun 2016`      Licence: `MIT`
->>>>>>> V0.0
 
 == Setting up
 
@@ -536,6 +532,7 @@ ____
 Use case ends.
 ____
 
+[discrete]
 === Use case: Rescheduling an entry
 
 *Main Success Scenario*
@@ -545,7 +542,9 @@ ____
 3. After some time, user decides to reschedule the entry by providing keywords that matches the entry's name and the field to change.
 4. ProductNameHere finds the relevant entry.
 5. ProductNameHere makes the modification.
-6. Use case ends.
+____
+Use case ends.
+____
 
 *Extensions*
 
@@ -564,6 +563,9 @@ iii) Use case resumes from step 5.
 2. ProductNameHere obediently executes the command.
 3. User undo changes.
 4. ProductNameHere removes all changes made by the last command.
+____
+Use case ends.
+____
 
 [discrete]
 === Use case: Recover a deleted entry
@@ -573,7 +575,9 @@ iii) Use case resumes from step 5.
 1. User uses the `restore` command to recover a deleted entry by providing keywords that match the entry name.
 2. ProductNameHere finds the relevant entry.
 3. ProductNameHere restores the entry.
-4. Use case ends.
+____
+Use case ends.
+____
 
 *Extensions*
 
