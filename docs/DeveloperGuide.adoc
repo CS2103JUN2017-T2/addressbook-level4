@@ -409,6 +409,8 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |user |delete duplicate entries |keep my list organized
 
+|`* *` |user |add multiple entries in the same time slot |allow overlapping tasks
+
 |`*` |user |add documents to an entry |view more information associated with a task/event
 
 |`*` |user |add descriptions to entries |store more information
@@ -627,6 +629,8 @@ _____
 
 Developer: Christian Reber
 
+Author: Akankshita Dash
+
 Pros:
 
 * Accessible and activated easily from Desktop
@@ -644,6 +648,7 @@ Cons:
 *Google Calendar*
 
 Developer(s): Google
+
 Author: Chua Ping Chan
 
 Pros:
@@ -673,6 +678,7 @@ Cons:
 *Hitask*
 
 Developer: Human Computer LLC
+
 Author: Mattheus Lee
 
 Pros:
@@ -700,6 +706,8 @@ Cons:
 
 Developer: Gina Trapani
 
+Author: Kevin Lam
+
 Pros:
 
 * Lightweight, easy to install. Does not require network connectivity to use.
@@ -717,6 +725,8 @@ Cons:
 *Trello*
 
 Developer: Trello, Inc.
+
+Author: Kevin Lam
 
 Pros:
 
