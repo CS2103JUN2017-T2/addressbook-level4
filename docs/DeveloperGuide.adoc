@@ -561,16 +561,11 @@ iii) Use case resumes from step 3.
 .  The software should work on any link:#mainstream-os[mainstream OS] as long as it has Java `1.8.0_60` or higher installed.
 .  The app should be able to hold up to 1000 entries without a noticeable sluggishness in performance for typical usage.
 .  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
-.  The product should be a desktop app.
-.  The Command Line Inteface should be the primary mode of input.
-.  The software should work stand-alone and not be a plug-in to another app.
 .  The software should use text files for storage and not relational databases.
-.  The data should be stored locally in an editable text file.
-.  The code should follow the Object-oriented paradigm.
-.  The product should work without requiring an installer.
-.  The product should favor DOS style commands over Unix-style commands.
+.  The software should favor DOS style commands over Unix-style commands.
 .  All operations should have response time under 1 second.
 .  The software should be able to work offline.
+.  Basic commands on entries should be achieved within 2 steps.
 
 
 [appendix]
