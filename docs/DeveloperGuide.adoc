@@ -345,7 +345,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |user |automatically insert floating entries into free time-slots |remember to do tasks without deadlines
 
-|`* * *` |user |view the next n entries |to see upcoming events to attend/tasks to finish
+|`* * *` |user |view the next `n` number of entries |see upcoming events to attend/tasks to finish
 
 |`* * *` |user that attends events |add entries that have fixed start and end times |
 
@@ -369,7 +369,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |user |have a weekly view of tasks and events |view my workload for the week
 
-|`* *` |advanced user |undo my commands any number of times |to revert undesirable changes
+|`* *` |advanced user |undo my commands any number of times |revert undesirable changes
 
 |`* *` |user |recover deleted entries |retrieve them in case of accidental deletions
 
@@ -377,19 +377,19 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |user with many projects |view entries by assignment |distinguish different assignments
 
-|`* *` |user |search for free days in a time period (e.g. next 1 month) |use free days to slot tasks
+|`* *` |user |search for free days in a time period (e.g. next 1 month) |slot tasks into my free days
 
 |`* *` |user |launch and minimize the application with a keyboard shortcut |open directly (from Desktop) without using the mouse
 
 |`* *` |user |categorize entries (e.g. work,shopping,etc) |
 
-|`* *` |user |tick off sub-entries within an entry as completed |to track my progress
+|`* *` |user |tick off sub-entries within an entry as completed |track my progress
 
 |`* *` |user |organize my list |
 
 |`* *` |user |swap entries with a single command |
 
-|`* *` |user |identify priority of tasks based on colours in the GUI |view optimally for faster recognition
+|`* *` |user |identify priority of tasks based on colours in the GUI |view them optimally for faster recognition
 
 |`* *` |user |integrate reminders from e-mail |
 
@@ -409,9 +409,11 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |user |delete duplicate entries |keep my list organized
 
+|`* *` |user |add multiple entries in the same time slot |allow overlapping tasks
+
 |`*` |user |add documents to an entry |view more information associated with a task/event
 
-|`*` |user |add descriptions to entries|store more information
+|`*` |user |add descriptions to entries |store more information
 
 |`*` |user |list entries in a calendar view |view items scheduled for specific days
 |=======================================================================
@@ -428,14 +430,14 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 *Main Success Scenario*
 
 1. User requests to add a new entry by providing an entry name, and optionally entry deadlines and tags.
-2. ProductNameHere creates the entry and moves it to active list.
-3. Use case ends.
+2. ProductNameHere creates the entry and moves it to active list. +
+Use case ends.
 
 *Extensions*
 
 1a. Some fields from the data provided by user are invalid.
 
-i) ProductNameHere shows an error message and prints the proper usage_message for adding new entries.
+i) ProductNameHere shows an error message and prints the proper usage syntax and example command for adding new entries.
 ii) Use case resumes from step 1.
 
 [discrete]
@@ -445,12 +447,12 @@ ii) Use case resumes from step 1.
 
 1. User requests to complete an entry by providing keywords that match the entry's name/tag.
 2. ProductNameHere searches for the entry.
-3. ProductNameHere makes the modification and moves the entry to archive.
-4.  Use case ends.
+3. ProductNameHere makes the modification and moves the entry to archive. +
+Use case ends.
 
 *Extensions*
 
-2a. ProductNameHere finds more than one entries with the same keywords in the names.
+2a. ProductNameHere finds more than one entry with the same keywords in the names.
 
 i) ProductNameHere displays an indexed list of all such entries and asks for an index from the user.
 ii) User specifies index.
@@ -464,8 +466,8 @@ iv) Use case resumes from step 3.
 
 1. User requests to delete an entry by providing keywords that match the entry's name/tag.
 2. ProductNameHere searches for the entry.
-3. ProductNameHere makes the modification and moves the entry to deleted bin.
-4. Use case ends.
+3. ProductNameHere makes the modification and moves the entry to deleted bin. +
+Use case ends.
 
 *Extensions*
 
@@ -482,13 +484,13 @@ iv) Use case resumes from step 3.
 *Main Success Scenario*
 
 1. User requests to list entries with a duration argument without a start date, and ending at the end of the same day.
-2. ProductNameHere shows the list of entries sorted by end date/time, starting from the soonest. Use case ends.
+2. ProductNameHere shows the list of entries sorted by end date/time, starting from the soonest. +
+Use case ends.
 
 *Extensions*
-2a. The list is empty.
-____
+
+2a. The list is empty. +
 Use case ends.
-____
 
 [discrete]
 === Use case: Getting weekly summary of the next week
@@ -496,41 +498,13 @@ ____
 *Main Success Scenario*
 
 1. User requests to list entries with a duration starting Monday next week, and ending Sunday next week.
-2. ProductNameHere shows the list of entries sorted by end date/time, starting from the soonest. Use case ends.
+2. ProductNameHere shows the list of entries sorted by end date/time, starting from the soonest. +
+Use case ends.
 
 *Extensions*
-2a. The list is empty.
-____
+
+2a. The list is empty. +
 Use case ends.
-____
-
-[discrete]
-=== Use case: Getting daily summary
-
-*MSS*
-
-1. User requests to list entries with a duration argument without a start date, and ending at the end of the same day.
-2. ProductNameHere shows the list of entries sorted by end date/time, starting from the soonest. Use case ends.
-
-*Extensions*
-2a. The list is empty.
-____
-Use case ends.
-____
-
-[discrete]
-=== Use case: Getting weekly summary of the next week
-
-*MSS*
-
-1. User requests to list entries with a duration starting Monday next week, and ending Sunday next week.
-2. ProductNameHere shows the list of entries sorted by end date/time, starting from the soonest. Use case ends.
-
-*Extensions*
-2a. The list is empty.
-____
-Use case ends.
-____
 
 [discrete]
 === Use case: Rescheduling an entry
@@ -541,10 +515,8 @@ ____
 2. ProductNameHere adds the new entry.
 3. After some time, user decides to reschedule the entry by providing keywords that matches the entry's name and the field to change.
 4. ProductNameHere finds the relevant entry.
-5. ProductNameHere makes the modification.
-____
+5. ProductNameHere makes the modification. +
 Use case ends.
-____
 
 *Extensions*
 
@@ -562,10 +534,8 @@ iii) Use case resumes from step 5.
 1. User inputs an unintended command.
 2. ProductNameHere obediently executes the command.
 3. User undo changes.
-4. ProductNameHere removes all changes made by the last command.
-____
+4. ProductNameHere removes all changes made by the last command. +
 Use case ends.
-____
 
 [discrete]
 === Use case: Recover a deleted entry
@@ -574,10 +544,8 @@ ____
 
 1. User uses the `restore` command to recover a deleted entry by providing keywords that match the entry name.
 2. ProductNameHere finds the relevant entry.
-3. ProductNameHere restores the entry.
-____
+3. ProductNameHere restores the entry. +
 Use case ends.
-____
 
 *Extensions*
 
@@ -593,13 +561,11 @@ iii) Use case resumes from step 3.
 .  The software should work on any link:#mainstream-os[mainstream OS] as long as it has Java `1.8.0_60` or higher installed.
 .  The app should be able to hold up to 1000 entries without a noticeable sluggishness in performance for typical usage.
 .  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
-.  The product should be a desktop app.
-.  The Command Line Inteface should be the primary mode of input.
-.  The software should work stand-alone and not be a plug-in to another app.
 .  The software should use text files for storage and not relational databases.
-.  The data should be stored locally in an editable text file.
-.  The code should follow the Object-oriented paradigm.
-.  The product should work without requiring an installer.
+.  The software should favor DOS style commands over Unix-style commands.
+.  All operations should have response time under 1 second.
+.  The software should be able to work offline.
+.  Basic commands on entries should be achieved within 2 steps.
 
 
 [appendix]
@@ -627,7 +593,7 @@ ____
 Additional single words saved within `entries` as descriptors
 ____
 
-[[active list]]
+[[active-list]]
 Active list
 
 ____
@@ -641,13 +607,6 @@ ____
 Windows, Linux, Unix, OS-X
 ____
 
-[[private-contact-detail]]
-Private contact detail
-
-_____
-A contact detail that is not meant to be shared with others
-_____
-
 [[archive]]
 Archive
 
@@ -655,7 +614,7 @@ _____
 A container that stores entries marked as 'done'.
 _____
 
-[[archive]]
+[[bin]]
 Bin
 
 _____
@@ -667,7 +626,9 @@ _____
 
 *Wunderlist*
 
-Author: Christian Reber
+Developer: Christian Reber
+
+Author: Akankshita Dash
 
 Pros:
 
@@ -686,6 +647,7 @@ Cons:
 *Google Calendar*
 
 Developer(s): Google
+
 Author: Chua Ping Chan
 
 Pros:
@@ -714,7 +676,9 @@ Cons:
 
 *Hitask*
 
-Author: Human Computer LLC
+Developer: Human Computer LLC
+
+Author: Mattheus Lee
 
 Pros:
 
@@ -741,6 +705,8 @@ Cons:
 
 Developer: Gina Trapani
 
+Author: Kevin Lam
+
 Pros:
 
 * Lightweight, easy to install. Does not require network connectivity to use.
@@ -758,6 +724,8 @@ Cons:
 *Trello*
 
 Developer: Trello, Inc.
+
+Author: Kevin Lam
 
 Pros:
 
