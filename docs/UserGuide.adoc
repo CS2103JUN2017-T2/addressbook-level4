@@ -54,6 +54,9 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 * Items separated by `|` indicate that either should be used, but not both.
 * Items with `...` after them can have multiple instances.
 * `DATE_TIME` format is `ddmmyy hhmm`.
+[NOTE]
+You can replace date by smart keywords like `tomorrow` or `friday`! +
+`2pm` or `830am` can be also be used alternatively to indicate time
 
 ====
 *Defaults*
@@ -68,28 +71,28 @@ Format: `help`
 === Adding an entry: `add`
 
 Adds an entry to the active tasks +
-Format: `add ENTRY_NAME [/on | /from | /at | /by DATE_TIME_A] [/to DATE__TIME_B] [/every day | week | month | year [NUM_TIMES | /until STOP_DATE]] [/tag TAG_1 TAG_2...]`
+Format: `add ENTRY_NAME [/on | /at | /from | /by DATE_TIME_A] [/to DATE_TIME_B] [/every day | week | month | year [NUM_TIMES | /until END_DATE_TIME]] [/tag TAG_1 TAG_2...]`
 
 ****
 * If no date is specified, the entry will contain no date information and automatically be classified under `floating entry`
 * `/on`, or `at` can be used to create an `event entry`. The default value of 1 hour will be used to set the ending datetime.
 * `/from` should be used in conjunction with `/to` for `event entry` that needs adjustable ending datetime.
 * `/by` can be used to create `deadline entry`.
-* Reminder that `DATE_TIME` must contain both date and time fields as described in Command Format above.
-* /every can be used as an optional command to create recurring tasks.
-* /tag can be used as an optional command to tag
+* Please be reminded that `DATE_TIME` must contain both date and time fields as described in Command Format above.
+* `/every` can be used as an optional command to create recurring tasks.
+* `/tag` can be used as an optional command to tag your entries.
 ****
 
 *Defaults from `config.json`*: +
 
 * The default value for events can be found as `addDurationHours`.
-* If neither `NUM_TIMES` nor `STOP_DATE` for a recurring entry is specified, `recurringNumTimes` is used for the number of recurring events to add to the calendar.
+* If neither `NUM_TIMES` nor `END_DATE_TIME` for a recurring entry is specified, `recurringNumTimes` is used for the number of recurring events to add to the Task Manager.
 
 Examples:
 
-* `add dinner with parents /on friday 6pm /to friday 9pm /tag family`
+* `add dinner with parents /from friday 6pm /to friday 9pm /tag family`
 * `add go to the gym /on monday 10am /every week /tag exercise, activities`
-* `add project submission /by 5 July 10am /tag school`
+* `add project submission /by 050717 1000 /tag school`
 * `add write novel /tag bucketlist`
 * `add clean up room`
 
@@ -98,51 +101,68 @@ Examples:
 Finds and checkmarks a task as completed and moves it to archive. +
 Format: `complete [KEYWORD_1 KEYWORD_2...] | [/event | /deadline | /float INDEX]`
 
+* There are two ways to select an entry to complete: searching by `KEYWORD`, or specifying the `INDEX`.
+** The keyword searches both the entry name and tags, and a found entry must match all keywords.
+** The search must only produce one entry to complete. If multiple entries are found to match the keyword no entries will be marked completed.
+** The search will be done on `active`.
+** The index refers to the index number shown in the last active entry listing. The index *must be a positive integer* 1, 2, 3, ...
+
+Examples:
+
+* `complete clean up room`
+* `complete /deadline 3`
+
 === Listing all entries : `list`
 
-Displays a list of entries sorted by the starting time. +
-Format: `list [/from START_DATE][/to END_DATE][/archive | /bin]`
+Displays a list of entries sorted by datetime. +
+Format: `list [/from START_DATE_TIME][/to END_DATE_TIME][/archive | /bin]`
 
 ****
 * By default the active entries will be listed.
 * The `/archive` and `/bin` options are used to list archived and deleted entries respectively.
-* The default number of entries to list can be configured with the `config` command.
+* `/from` and `/to` are used to list entries from/upto a certain datetime.
 ****
 
 *Defaults from `config.json`* +
 
-* The default number of entries to list is `listNumResults`
+* The default number of entries to list can be configured using `listNumResults`
+
+Examples:
+* `list`
+* `list /to 050717 1400 /archive`
 
 === Editing an entry : `edit`
 
-Edits an existing active entry in the calendar. +
-Format: `edit [KEYWORD_1 KEYWORD_2...] | [/event | /deadline | /float INDEX] [/name NEW_ENTRY_NAME] [/on | /by DATE_A] [/to DATE_B] [/every day | week | month | year [NUM_TIMES | /until STOP_DATE] [/tag TAG_1 TAG_2...]`
+Edits an existing entry in the active list. +
+Format: `edit [KEYWORD_1 KEYWORD_2...] | [/event | /deadline | /float INDEX] [/name NEW_ENTRY_NAME] [/on | /at | /from | /by DATE_TIME_A] [/to DATE_TIME_B] [/every day | week | month | year [NUM_TIMES | /until STOP_DATE] [/tag TAG_1 TAG_2...]`
 
 ****
 * There are two ways to select an entry to edit: searching by `KEYWORD`, or specifying the `INDEX`.
 ** The keyword searches both the entry name and tags, and a found entry must match all keywords.
 ** The search must only produce one entry to modify. If multiple entries are found to match the keyword no entries will be modified.
+** The search will be done on `active`.
 ** The index refers to the index number shown in the last active entry listing. The index *must be a positive integer* 1, 2, 3, ...
-* At least one of the optional data fields must be provided.
+* At least one of the optional data fields to be edited must be provided.
 * Existing values will be updated to the input values. If that field is not provided, the existing values are not changed.
 * When editing tags, the existing tags of the entry will be removed and replaced with the new tags: *adding of tags is not cumulative*.
-* You can remove all of the entry's tags by typing `/tag` without specifying any tags after it.
+[NOTE]
+You can remove all of the entry's tags by typing `/tag` without specifying any tags after it.
 ****
 
 *Defaults from `config.json`*: +
 
-* If neither `NUM_TIMES` nor `STOP_DATE` for a recurring entry is specified, `recurringNumTimes` is used for the number of recurring events to add to the calendar.
+* If neither `NUM_TIMES` nor `STOP_DATE` for a recurring entry is specified, `recurringNumTimes` is used for the number of recurring events to add to the Task Manager.
 
 Examples:
 
-* `edit 1 /on saturday 6pm` +
-Edits the 1st entry to take place on the coming Saturday at 6pm, for a duration set by `default.add.duration`.
-* `edit 2 /every week 3 /tag` +
-Edits the 2nd entry to take place every week for 3 weeks including its current occurence, and clears all its existing tags.
-* `edit zoo outing /on 20 September` +
-Edits the entry matching "zoo" and "outing" to take place on 20 September. If there are multiple entries that match the keywords, no entries are modifies.
+* `edit /event 1 /on saturday 6pm` +
+Edits the 1st entry of event list to take place on the coming Saturday at 6pm, for a duration set by `addDurationHours`.
+* `edit /deadline 2 /every week 3 /tag` +
+Edits the 2nd entry in deadline list to take place every week for 3 weeks including its current occurence, and clears all its existing tags.
+* `edit zoo outing /on 200917 1200` +
+Edits the entry matching "zoo" and "outing" to take place on 20 September, 12pm. If there are multiple entries that match the keywords, no entries are modifies.
 
-=== Find all entries containing given keywords in the name or tags: `find`
+=== Finding an entry : `find`
 
 Finds entries which names or tags contain all of the given keywords. +
 Format: `find KEYWORD_1 [KEYWORD_2 ...] [/archive|/bin]`
@@ -151,40 +171,51 @@ Format: `find KEYWORD_1 [KEYWORD_2 ...] [/archive|/bin]`
 * The find is case insensitive. e.g `meeting` will match `Meeting`
 * The order of the keywords does not matter. e.g. `meeting group` will match `group meeting`
 * The given keywords are matched with the name and tag of entries.
-* Only full words will be matched e.g. `Meet` will not match `Meeting` but mathces `meet`.
-* Only entries matching all keywords will be returned (i.e. `AND` search). e.g. `group meeting` will not match `client meeting`.
+* Only full words will be matched e.g. `Meet` will not match `Meeting` but matches `meet`.
+* Only entries matching all keywords will be returned. e.g. `group meeting` will not match `client meeting`.
 ****
 
 *Defaults from `config.json`*: +
 
 * The maximum number of `find` results shown to the user is `findNumResults`
 
-=== Deleting an event : `delete`
+=== Deleting an entry : `delete`
 
-Deletes the specified entry from the active calendar. +
+Deletes the specified entry from the active entries list. +
 Format: `delete [KEYWORD_1 KEYWORD_2...] | [/event | /deadline | /float INDEX] [/force]`
 
 ****
 * There are two ways to select an entry to delete: searching by `KEYWORD`, or specifying the `INDEX`.
 ** The keyword searches both the entry name and the tags, and a found entry must match all keywords.
+** The search will be done on `active`.
 ** The index refers to the index number shown in the last active entry listing. The index *must be a positive integer* 1, 2, 3, ...
-* Deleting an entry moves it from the active calendar and to the recycle bin.
+* Deleting an entry moves it from the `active` list to the `bin`.
 * If multiple entries are found using the keywords, all found entries will be listed, and the user will be prompted to confirm that they want to delete all of those entries.
-** Using the `/force` option skips the confirmation step.
+** Using the `/force` option skips the confirmation steps.
 ****
 
 Examples:
 
 * `list` +
 `delete 2` +
-Deletes the 2nd entry in the active calendar.
+Deletes the 2nd entry in the active list.
 * `delete pasta dinner` +
-Deletes all entries in the active calendar that matches "pasta" and "dinner" in the name or tag, after prompting the user to confirm if multiple entries are found.
+`yes` +
+Deletes all entries in the active list that matches "pasta" and "dinner" in the name or tag, after prompting the user to confirm if multiple entries are found.
+* `delete pasta dinner /force` +
+Deletes all entries in active entries.
 
-=== Restoring a deleted entry : `restore`
+=== Restoring an entry : `restore`
 
-Finds and restores a deleted entry back to active tasks +
+Finds and restores an archived or deleted entry back to active tasks +
 Format: `restore [KEYWORD_1 KEYWORD_2...] | [/event | /deadline | /float INDEX]`
+
+* There are two ways to select an entry to restore: searching by `KEYWORD`, or specifying the `INDEX`.
+** The keyword searches both the entry name and tags, and a found entry must match all keywords.
+** The search must only produce one entry to modify. If multiple entries are found to match the keyword no entries will be modified.
+** The search will be done on `archive` and `bin`
+** The index refers to the index number shown in the last active entry listing. The index *must be a positive integer* 1, 2, 3, ...
+
 
 === Listing entered commands : `history`
 
@@ -196,18 +227,22 @@ Format: `history`
 Undo the changes made by the last command. +
 Format: `undo`
 
+* Allows multiple undo's.
+
 === Redo changes : `redo`
 
 Reapply the changes removed by the `undo` command. +
 Format: `redo`
 
+* Allows redoing up until the most recent change.
+
 === Clearing entries : `clear`
 
-Clears all entries from sections of the to-do list. +
-Format: `clear [/archive|/bin]`
+Clears all entries from sections of the Task Manager. +
+Format: `clear [/archive | /bin | /all]`
 
 ****
-* Defaults to clearing all entries from active to-do list.
+* Defaults to clearing all entries from active list.
 ****
 
 === Exiting the program : `exit`
@@ -230,7 +265,7 @@ There is no need to save manually.
 [[entry]]
 Entry
 ____
-Any item stored in the system (e.g. events, tasks, note to self). +
+Any item stored in the system (e.g. events, deadlines, floating tasks). +
 An entry *must* have:
 
 * A name
@@ -243,6 +278,22 @@ An entry *can* have:
 * Zero or more tags
 ____
 
+[[Event]]
+____
+An entry in the Task Manager with
+* Specified start *and* end date and/or time
+____
+
+[[Deadline]]
+____
+An entry in the Task Manager with
+* Single specified date and/or time as a deadline
+____
+
+[[Floating task]]
+An entry in the Task Manager with
+* No specified date or time associated
+
 [[tag]]
 Tag
 ____
@@ -251,52 +302,51 @@ ____
 
 [[active-list]]
 Active list
-
 ____
 A list of all of the ongoing to-do entries that have not been completed/deleted yet.
 ____
 
-[[mainstream-os]]
-Mainstream OS
-
-____
-Windows, Linux, Unix, OS-X
-____
-
 [[archive]]
 Archive
-
 _____
 A container that stores entries marked as 'done'.
 _____
 
 [[bin]]
 Bin
-
 _____
 A container that stores entries that are deleted.
 _____
 
+[[mainstream-os]]
+Mainstream OS
+____
+Windows, Linux, Unix, OS-X
+____
+
+[[ddmmyy-hhmm]]
+ddmmyy hhmm format
+____
+Refers to Date,Month,Year and Hour, Minute in 24H clock format.
+____
 
 == Command Summary
 
 * *Help* `help`
-* *Add* `add ENTRY_NAME [/on | /by DATE_A] [/to DATE_B] [/every day | week | month | year [NUM_TIMES | /until STOP_DATE] [/tag TAG_1 TAG_2...]` +
-e.g. `add dinner with parents /on friday 6pm /to friday 9pm /tag family`
-* *Complete* `complete [KEYWORD_1 KEYWORD_2...] | [/event | /deadline | /float INDEX]` +
-e,g, `complete group meeting` or `complete /event | /deadline | /float 3`
-* *List* : `list [/from START_DATE] [/to END_DATE] [/archive | /bin]` +
-e.g. `ENTRY_OUTPUT_FORMAT_TO_BE_CONFIRMED`
-* *Edit* : `edit [KEYWORD_1 KEYWORD_2...] | [/event | /deadline | /float INDEX] [/name NEW_ENTRY_NAME] [/on | /by DATE_A] [/to DATE_B] [/every day | week | month | year [NUM_TIMES | /until STOP_DATE] [/tag TAG_1 TAG_2...]` +
-e.g. `edit zoo, outing /on 20 September`
-* *Find* : `find KEYWORD_1 [KEYWORD_2 ...] [/archive | /bin]` +
-e.g. `find lecture`
-* *Delete* : `delete [KEYWORD_1 KEYWORD_2...] | [/event | /deadline | /float INDEX] [/force]` +
-e.g. `delete pasta dinner`
-* *Select* : `select INDEX` +
-e.g.`select 2`
+* *Add* `add ENTRY_NAME [/on | /at | /from | /by DATE_TIME_A] [/to DATE_TIME_B] [/every day | week | month | year [NUM_TIMES | /until END_DATE_TIME]] [/tag TAG_1 TAG_2...]`
+** e.g. `add dinner with parents /from friday 6pm /to friday 9pm /tag family`
+* *Complete* `complete [KEYWORD_1 KEYWORD_2...] | [/event | /deadline | /float INDEX]`
+** e,g, `complete clean up room` or `complete /event | /deadline | /float 3`
+* *List* : `list [/from START_DATE_TIME][/to END_DATE_TIME][/archive | /bin]`
+** e.g. `list /to wednesday 2pm /archive`
+* *Edit* : `edit [KEYWORD_1 KEYWORD_2...] | [/event | /deadline | /float INDEX] [/name NEW_ENTRY_NAME] [/on | /at | /from | /by DATE_TIME_A] [/to DATE_TIME_B] [/every day | week | month | year [NUM_TIMES | /until STOP_DATE] [/tag TAG_1 TAG_2...]`
+** e.g. `edit zoo outing /on 200917 1200`
+* *Find* : `find KEYWORD_1 [KEYWORD_2 ...] [/archive|/bin]`
+** e.g. `find lecture`
+* *Delete* : `delete [KEYWORD_1 KEYWORD_2...] | [/event | /deadline | /float INDEX] [/force]`
+** e.g. `delete pasta dinner`
 * *History* : `history`
-* *Clear* : `clear [/archive | /bin]`
+* *Clear* : `clear [/archive | /bin | /all]`
 * *Undo* : `undo`
 * *Redo* : `redo`
 * *Exit* : `exit`
