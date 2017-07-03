@@ -588,6 +588,7 @@ iii) Use case resumes from step 3.
 .  The software should favor DOS style commands over Unix-style commands.
 .  All operations should have response time under 1 second.
 .  The software should be able to work offline.
+.  Basic commands on entries should be achieved within 2 steps.
 
 
 [appendix]
