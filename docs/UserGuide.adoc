@@ -86,7 +86,7 @@ Examples:
 === Completing a task : `complete`
 
 Finds and checkmarks a task as completed and moves it to archive. +
-Format: `complete [KEYWORD_1 KEYWORD_2...] | [/index INDEX]`
+Format: `complete [KEYWORD_1 KEYWORD_2...] | [/event | /deadline | /float INDEX]`
 
 === Listing all entries : `list`
 
@@ -106,7 +106,7 @@ Format: `list [/from START_DATE][/to END_DATE][/archive | /bin]`
 === Editing an entry : `edit`
 
 Edits an existing active entry in the calendar. +
-Format: `edit [KEYWORD_1 KEYWORD_2...] | [/index INDEX] [/name NEW_ENTRY_NAME] [/on | /by DATE_A] [/to DATE_B] [/every day | week | month | year [NUM_TIMES | /until STOP_DATE] [/tag TAG_1 TAG_2...]`
+Format: `edit [KEYWORD_1 KEYWORD_2...] | [/event | /deadline | /float INDEX] [/name NEW_ENTRY_NAME] [/on | /by DATE_A] [/to DATE_B] [/every day | week | month | year [NUM_TIMES | /until STOP_DATE] [/tag TAG_1 TAG_2...]`
 
 ****
 * There are two ways to select an entry to edit: searching by `KEYWORD`, or specifying the `INDEX`.
@@ -152,7 +152,7 @@ Format: `find KEYWORD_1 [KEYWORD_2 ...] [/archive|/bin]`
 === Deleting an event : `delete`
 
 Deletes the specified entry from the active calendar. +
-Format: `delete [KEYWORD_1 KEYWORD_2...] | [/index INDEX] [/force]`
+Format: `delete [KEYWORD_1 KEYWORD_2...] | [/event | /deadline | /float INDEX] [/force]`
 
 ****
 * There are two ways to select an entry to delete: searching by `KEYWORD`, or specifying the `INDEX`.
@@ -174,7 +174,7 @@ Deletes all entries in the active calendar that matches "pasta" and "dinner" in 
 === Restoring a deleted entry : `restore`
 
 Finds and restores a deleted entry back to active tasks +
-Format: `restore [KEYWORD_1 KEYWORD_2...] | [/index INDEX]`
+Format: `restore [KEYWORD_1 KEYWORD_2...] | [/event | /deadline | /float INDEX]`
 
 === Listing entered commands : `history`
 
@@ -220,15 +220,15 @@ There is no need to save manually.
 * *Help* `help`
 * *Add* `add ENTRY_NAME [/on | /by DATE_A] [/to DATE_B] [/every day | week | month | year [NUM_TIMES | /until STOP_DATE] [/tag TAG_1 TAG_2...]` +
 e.g. `add dinner with parents /on friday 6pm /to friday 9pm /tag family`
-* *Complete* `complete [KEYWORD_1 KEYWORD_2...] | [/index INDEX]` +
-e,g, `complete group meeting` or `complete /index 3`
+* *Complete* `complete [KEYWORD_1 KEYWORD_2...] | [/event | /deadline | /float INDEX]` +
+e,g, `complete group meeting` or `complete /event | /deadline | /float 3`
 * *List* : `list [/from START_DATE] [/to END_DATE] [/archive | /bin]` +
 e.g. `ENTRY_OUTPUT_FORMAT_TO_BE_CONFIRMED`
-* *Edit* : `edit [KEYWORD_1 KEYWORD_2...] | [/index INDEX] [/name NEW_ENTRY_NAME] [/on | /by DATE_A] [/to DATE_B] [/every day | week | month | year [NUM_TIMES | /until STOP_DATE] [/tag TAG_1 TAG_2...]` +
+* *Edit* : `edit [KEYWORD_1 KEYWORD_2...] | [/event | /deadline | /float INDEX] [/name NEW_ENTRY_NAME] [/on | /by DATE_A] [/to DATE_B] [/every day | week | month | year [NUM_TIMES | /until STOP_DATE] [/tag TAG_1 TAG_2...]` +
 e.g. `edit zoo, outing /on 20 September`
 * *Find* : `find KEYWORD_1 [KEYWORD_2 ...] [/archive | /bin]` +
 e.g. `find lecture`
-* *Delete* : `delete [KEYWORD_1 KEYWORD_2...] | [/index INDEX] [/force]` +
+* *Delete* : `delete [KEYWORD_1 KEYWORD_2...] | [/event | /deadline | /float INDEX] [/force]` +
 e.g. `delete pasta dinner`
 * *Select* : `select INDEX` +
 e.g.`select 2`
