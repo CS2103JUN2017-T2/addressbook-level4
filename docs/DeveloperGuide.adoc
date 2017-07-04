@@ -317,13 +317,13 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 |=======================================================================
 |Priority |As a ... |I want to ... |So that I can...
 
-|`* * *` |new user |check the glossary |get help with commands
+|`* * *` |new user |check the command summary |get help with commands
 
 |`* * *` |user |add a new entry |
 
 |`* * *` |user |view an entry |check its details
 
-|`* * *` |user |edit an entry |change its particulars (e.g. time, deadline)
+|`* * *` |user |edit an entry |change its particulars (e.g. deadline,tags)
 
 |`* * *` |user |delete an entry |remove listings that I no longer need
 
@@ -331,11 +331,11 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |user |specify the start and end times for events |know when it takes place
 
-|`* * *` |user |search entries by name |retrieve specific entries more quickly
+|`* * *` |user |adjust the start and end date of entries |update tasks when requirements change
 
-|`* * *` |user |perform a search using keywords |find specific entries
+|`* * *` |user |search entries by keywords |retrieve specific entries more quickly
 
-|`* * *` |user |store my entries in a folder managed by syncing softwares |ensure all my devices have the same list
+|`* * *` |user |choose the folder and file to store my entries in |ensure all my other task manager software can sync to the same list
 
 |`* * *` |user |list my entries based on starting times |view events scheduled according to specific times
 
@@ -343,73 +343,67 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |user |input the details (e.g. deadline, tags, time) of an entry in any order |add to the list without memorizing a specific format
 
-|`* * *` |user |automatically insert floating entries into free time-slots |remember to do tasks without deadlines
+|`* * *` |user |list the next `n` number of entries |see upcoming events to attend/tasks to finish
 
-|`* * *` |user |view the next `n` number of entries |see upcoming events to attend/tasks to finish
-
-|`* * *` |user that attends events |add entries that have fixed start and end times |
-
-|`* * *` |user |adjust the start and end date of entries |update tasks when requirements change
-
-|`* *` |user |add a priority level to entries |filter them according to importance
-
-|`* *` |user |add recurring events |schedule daily/weekly/other cyclic tasks easily
+|`* *` |developer |have an automated test program |check program functionality after every update
 
 |`* *` |new user |have similar syntax for most commands |use them easily without confusion
 
-|`* *` |user |have a set of defaults for each field in a command|leave certain fields blank
-
-|`* *` |user |search entries by due-date/event-date |check my availability on a certain day
-
-|`* *` |user |search entries by added date |
-
 |`* *` |user |edit entries after searching for them |search and update in a one-shot approach
+
+|`* *` |user |identify priority of tasks based on colours in the GUI |view them optimally for faster recognition
+
+|`* *` |user |have multiple ways to input (e.g this friday instead of dd/mm/yy) |type in my tasks more easily
+
+|`* *` |user |have my datafile saved regularly |close my Task Manager without needing to save
 
 |`* *` |user |have a daily view of tasks and events |view my workload for the day
 
 |`* *` |user |have a weekly view of tasks and events |view my workload for the week
 
+|`* *` |user |add recurring events |schedule daily/weekly/other cyclic tasks easily
+
+|`* *` |user |have a set of defaults for each field in a command|leave certain fields blank
+
 |`* *` |advanced user |undo my commands any number of times |revert undesirable changes
 
 |`* *` |user |recover deleted entries |retrieve them in case of accidental deletions
 
-|`* *` |user with many projects |tag entries by assignment |distinguish tasks for similar assignments
-
-|`* *` |user with many projects |view entries by assignment |distinguish different assignments
+|`* *` |user |launch and minimize the application with a keyboard shortcut |open directly (from Desktop) without using the mouse
 
 |`* *` |user |search for free days in a time period (e.g. next 1 month) |slot tasks into my free days
 
-|`* *` |user |launch and minimize the application with a keyboard shortcut |open directly (from Desktop) without using the mouse
+|`* *` |user |swap entries with a single command | make my task manager conform to changes to my schedule more easily
 
-|`* *` |user |categorize entries (e.g. work,shopping,etc) |
+|`* *` |user |clear archive/bin lists |prevent the UI from being cluttered
 
-|`* *` |user |tick off sub-entries within an entry as completed |track my progress
-
-|`* *` |user |organize my list |
-
-|`* *` |user |swap entries with a single command |
-
-|`* *` |user |identify priority of tasks based on colours in the GUI |view them optimally for faster recognition
-
-|`* *` |user |integrate reminders from e-mail |
-
-|`* *` |developer |have an automated test program |check program functionality after every update
-
-|`* *` |user |clear all entries existing before a certain date |keep calendar organized
-
-|`* *` |user |configure defaults (e.g. storage path) |
-
-|`* *` |user |sort entries by tags/deadline/priority |plan which tasks to do first
-
-|`* *` |user |clear archive/deleted entries folder |prevent the UI from being cluttered
-
-|`* *` |user |list floating tasks (without deadlines) |finish these in my free time
-
-|`* *` |user |mark applications without deadlines as not important by default |
-
-|`* *` |user |delete duplicate entries |keep my list organized
+|`* *` |user |clear all entries existing before a certain date |keep task manager organized
 
 |`* *` |user |add multiple entries in the same time slot |allow overlapping tasks
+
+|`* *` |user |configure defaults (e.g. duration of events when only given start time) | have flexibility in my app use
+
+|`* *` |user |have a command that automatically deletes duplicate entries |keep my list organized
+
+|`* *` |user |be able to convert floating tasks,deadlines and events from one to another |have better flexibilty in my app use
+
+|`* *` |user |search entries by due-date/event-date |check my availability on a certain day
+
+|`* *` |user |search entries by added date | to find entries which i only remember by added date
+
+|`* *` |user |be able to add on sub-entries to an entry |accomodate for tasks with subparts
+
+|`* *` |user |tick off sub-entries within an entry as completed |track my progress whilst i switch between projects
+
+|`* *` |user |have an option in my commands to accept any confirmation messages automatically (/force) |can save time
+
+|`*` |user with many projects |tag entries by assignment |distinguish tasks for similar assignments
+
+|`*` |user with many projects |view entries by assignment |distinguish different assignments
+
+|`*` |user |integrate reminders from e-mail |
+
+|`*` |user |mark applications without deadlines as not important by default |
 
 |`*` |user |add documents to an entry |view more information associated with a task/event
 
@@ -422,7 +416,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 [appendix]
 == Use Cases
 
-(For all use cases below, `ProductNameHere` refers to the *System* and `user` refers to the *Actor*, unless specified otherwise.)
+(For all use cases below, `MultiTasky` refers to the *System* and `User` refers to the *Actor*, unless specified otherwise.)
 
 [discrete]
 === Use case: Adding an entry
@@ -430,14 +424,14 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 *Main Success Scenario*
 
 1. User requests to add a new entry by providing an entry name, and optionally entry deadlines and tags.
-2. ProductNameHere creates the entry and moves it to active list. +
+2. MultiTasky creates the entry and moves it to active list. +
 Use case ends.
 
 *Extensions*
 
-1a. Some fields from the data provided by user are invalid.
+1a. Some fields from the data provided by User are invalid.
 
-i) ProductNameHere shows an error message and prints the proper usage syntax and example command for adding new entries.
+i) MultiTasky shows an error message and prints the proper usage syntax and example command for adding new entries.
 ii) Use case resumes from step 1.
 
 [discrete]
@@ -446,18 +440,17 @@ ii) Use case resumes from step 1.
 *Main Success Scenario*
 
 1. User requests to complete an entry by providing keywords that match the entry's name/tag.
-2. ProductNameHere searches for the entry.
-3. ProductNameHere makes the modification and moves the entry to archive. +
+2. MultiTasky searches for the entry,then makes the modification and moves the entry to archive. +
 Use case ends.
 
 *Extensions*
 
-2a. ProductNameHere finds more than one entry with the same keywords in the names.
+2a. MultiTasky finds more than one entry with the same keywords in the names.
 
-i) ProductNameHere displays an indexed list of all such entries and asks for an index from the user.
+i) MultiTasky displays an indexed list of all such entries and asks for an index from the User.
 ii) User specifies index.
-iii) ProductNameHere checks if index is valid, if not, ProductNameHere shows an error message and returns to step 2a ii.
-iv) Use case resumes from step 3.
+iii) MultiTasky checks if index is valid, if not, MultiTasky shows an error message and returns to step 2a ii.
+iv) Use case resumes from step 2.
 
 [discrete]
 === Use case: Deleting an entry
@@ -465,31 +458,30 @@ iv) Use case resumes from step 3.
 *Main Success Scenario*
 
 1. User requests to delete an entry by providing keywords that match the entry's name/tag.
-2. ProductNameHere searches for the entry.
-3. ProductNameHere makes the modification and moves the entry to deleted bin. +
+2. MultiTasky searches for the entry, makes the modification and moves the entry to the bin. +
 Use case ends.
 
 *Extensions*
 
-2a. ProductNameHere finds more than one entries with the same keywords in the names.
+2a. MultiTasky finds more than one entries with the same keywords in the names.
 
-i) ProductNameHere displays an indexed list of all such entries and ask for an index from the user.
+i) MultiTasky displays an indexed list of all such entries and asks for an index from User.
 ii) User specifies index.
-iii) ProductNameHere checks if index is valid, if not, ProductNameHere shows an error message and returns to step 2a ii.
-iv) Use case resumes from step 3.
+iii) MultiTasky checks if index is valid, if not, MultiTasky shows an error message and returns to step 2a ii.
+iv) Use case resumes from step 2.
 
 [discrete]
 === Use case: Getting daily summary
 
 *Main Success Scenario*
 
-1. User requests to list entries with a duration argument without a start date, and ending at the end of the same day.
-2. ProductNameHere shows the list of entries sorted by end date/time, starting from the soonest. +
+1. User requests to list entries with an input argument without a start date, but with an end date `today`
+2. MultiTasky shows the list of entries sorted by date/time, starting from the ones due earliest. +
 Use case ends.
 
 *Extensions*
 
-2a. The list is empty. +
+2a. The list is empty +
 Use case ends.
 
 [discrete]
@@ -497,8 +489,8 @@ Use case ends.
 
 *Main Success Scenario*
 
-1. User requests to list entries with a duration starting Monday next week, and ending Sunday next week.
-2. ProductNameHere shows the list of entries sorted by end date/time, starting from the soonest. +
+1. User requests to list entries with input start date as `next week monday`, and end date as `next week sunday`.
+2. MultiTasky shows the list of entries sorted by date/time, starting from the ones due earliest. +
 Use case ends.
 
 *Extensions*
@@ -511,20 +503,19 @@ Use case ends.
 
 *Main Success Scenario*
 
-1. User adds an entry.
-2. ProductNameHere adds the new entry.
-3. After some time, user decides to reschedule the entry by providing keywords that matches the entry's name and the field to change.
-4. ProductNameHere finds the relevant entry.
-5. ProductNameHere makes the modification. +
-Use case ends.
+1. User requests to add an entry.
+2. MultiTasky adds the new entry.
+3. After some time, User decides to reschedule the entry by providing keywords that matches the entry's name and the field to change.
+4. MultiTasky finds the relevant entry and makes the modification. +
+Usercase ends.
 
 *Extensions*
 
-4a. ProductNameHere finds more than one entries with the same keywords in the names.
+4a. MultiTasky finds more than one entries with the same keywords in the names.
 
-i) ProductNameHere displays an indexed list of all such entries and ask for an index from the user.
+i) MultiTasky displays an indexed list of all such entries and asks for an index from the User.
 ii) User specifies index.
-iii) Use case resumes from step 5.
+iii) Use case resumes from step 4.
 
 [discrete]
 === Use case: Undo a change
@@ -532,41 +523,38 @@ iii) Use case resumes from step 5.
 *Main Success Scenario*
 
 1. User inputs an unintended command.
-2. ProductNameHere obediently executes the command.
-3. User undo changes.
-4. ProductNameHere removes all changes made by the last command. +
+2. MultiTasky obediently executes the command.
+3. User requests to undo changes.
+4. MultiTasky removes all changes made by the last command. +
 Use case ends.
 
 [discrete]
 === Use case: Recover a deleted entry
+*Main Success Scenario*
 
-*Main Scenario Scenario*
-
-1. User uses the `restore` command to recover a deleted entry by providing keywords that match the entry name.
-2. ProductNameHere finds the relevant entry.
-3. ProductNameHere restores the entry. +
+1. User uses the `restore` command to restore a deleted entry by providing keywords that match the entry name.
+2. MultiTasky finds the relevant entry and restores the entry. +
 Use case ends.
 
 *Extensions*
 
-2a. ProductNameHere finds more than one deleted or archived entries with the same keyword in the names.
+2a. MultiTasky finds more than one deleted or archived entries with the same keyword in the names.
 
-i) ProductNameHere displays an indexed list of all such entries and ask for an index from the user.
+i) MultiTasky displays an indexed list of all such entries and asks for an index from the User.
 ii) User specifies index.
-iii) Use case resumes from step 3.
+iii) Use case resumes from step 2.
 
 [appendix]
 == Non Functional Requirements
 
-.  The software should work on any link:#mainstream-os[mainstream OS] as long as it has Java `1.8.0_60` or higher installed.
-.  The app should be able to hold up to 1000 entries without a noticeable sluggishness in performance for typical usage.
-.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
-.  The software should use text files for storage and not relational databases.
-.  The software should favor DOS style commands over Unix-style commands.
-.  All operations should have response time under 1 second.
-.  The software should be able to work offline.
-.  Basic commands on entries should be achieved within 2 steps.
-
+. The software should work on any link:#mainstream-os[mainstream OS] as long as it has Java `1.8.0_60` or higher installed.
+. The app should be able to hold up to 1000 entries without a noticeable sluggishness in performance for typical usage.
+. A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+. The software should use text files for storage and not relational databases.
+. The software should favor DOS style commands over Unix-style commands.
+. All operations should have response time under 1 second.
+. The software should be able to work offline.
+. Basic commands on entries should be achieved within a minimum of 2 steps.
 
 [appendix]
 == Glossary
@@ -574,7 +562,7 @@ iii) Use case resumes from step 3.
 [[entry]]
 Entry
 ____
-Any item stored in the system (e.g. events, tasks, note to self). +
+Any item stored in the system (e.g. events, deadlines, floating tasks). +
 An entry *must* have:
 
 * A name
@@ -587,6 +575,25 @@ An entry *can* have:
 * Zero or more tags
 ____
 
+[[event]]
+Event
+____
+An entry in the Task Manager with
+* Specified start *and* end date and/or time
+____
+
+[[deadline]]
+Deadline
+____
+An entry in the Task Manager with
+* Single specified date and/or time as a deadline
+____
+
+[[floatingtask]]
+Floating Task
+An entry in the Task Manager with
+* No specified date or time associated
+
 [[tag]]
 Tag
 ____
@@ -595,31 +602,27 @@ ____
 
 [[active-list]]
 Active list
-
 ____
 A list of all of the ongoing to-do entries that have not been completed/deleted yet.
 ____
 
-[[mainstream-os]]
-Mainstream OS
-
-____
-Windows, Linux, Unix, OS-X
-____
-
 [[archive]]
 Archive
-
 _____
-A container that stores entries marked as 'done'.
+A container that stores entries marked as done.
 _____
 
 [[bin]]
 Bin
-
 _____
 A container that stores entries that are deleted.
 _____
+
+[[mainstream-os]]
+Mainstream OS
+____
+Windows, Linux, Unix, OS-X
+____
 
 [appendix]
 == Product Survey

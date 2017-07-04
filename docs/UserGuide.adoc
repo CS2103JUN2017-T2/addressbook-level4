@@ -278,19 +278,22 @@ An entry *can* have:
 * Zero or more tags
 ____
 
-[[Event]]
+[[event]]
+Event
 ____
 An entry in the Task Manager with
 * Specified start *and* end date and/or time
 ____
 
-[[Deadline]]
+[[deadline]]
+Deadline
 ____
 An entry in the Task Manager with
 * Single specified date and/or time as a deadline
 ____
 
-[[Floating task]]
+[[floatingtask]]
+Floating Task
 An entry in the Task Manager with
 * No specified date or time associated
 
