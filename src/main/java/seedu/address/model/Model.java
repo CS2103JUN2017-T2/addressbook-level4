@@ -3,9 +3,8 @@ package seedu.address.model;
 import java.util.Set;
 
 import seedu.address.commons.core.UnmodifiableObservableList;
-import seedu.address.model.person.ReadOnlyPerson;
-import seedu.address.model.person.exceptions.DuplicatePersonException;
-import seedu.address.model.person.exceptions.PersonNotFoundException;
+import seedu.address.model.entry.ReadOnlyPerson;
+import seedu.address.model.entry.exceptions.PersonNotFoundException;
 
 /**
  * The API of the Model component.
@@ -27,7 +26,7 @@ public interface Model {
      * Replaces the given entry {@code target} with {@code editedEntry}.
      *
      * @throws DuplicateEntryException if updating the entry's details causes the entry to be equivalent to
-     *      another existing person in the list.
+     *      another existing entry in the list.
      * @throws EntryNotFoundException if {@code target} could not be found in the list.
      */
     void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
@@ -36,7 +35,7 @@ public interface Model {
     /** Returns the filtered entry list as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
     UnmodifiableObservableList<ReadOnlyEntry> getFilteredEntryList();
 
-    /** Updates the filter of the filtered entry list to show all persons */
+    /** Updates the filter of the filtered entry list to show all entries */
     void updateFilteredListToShowAll();
 
     /** Updates the filter of the filtered entry list to filter by the given keywords*/
