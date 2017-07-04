@@ -23,7 +23,6 @@ Responsibilities: Model(component), Testing, Code Quality, Meeting Minutes
 '''
 == http://github.com/kevinLamKB[Kevin Lam]
 image::kevinlamkb.png[width="150", align="left"]
-<<<<<<< HEAD
 
 Role: Developer +
 Responsibilities: Documentation, Eclipse expert, .logic component
@@ -38,7 +37,6 @@ image::akd13.png[width="150", align="left"]
 
 Role: Developer +
 Responsibilities: Terminology and Style, SourceTree expert, Storage component
->>>>>>> V0.1_dash
 
 '''
 
