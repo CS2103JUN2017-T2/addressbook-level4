@@ -21,8 +21,8 @@ import seedu.address.model.entry.Name;
 import seedu.address.model.entry.Person;
 import seedu.address.model.entry.Phone;
 import seedu.address.model.entry.ReadOnlyPerson;
-import seedu.address.model.person.exceptions.DuplicatePersonException;
-import seedu.address.model.person.exceptions.PersonNotFoundException;
+import seedu.address.model.entry.exceptions.DuplicatePersonException;
+import seedu.address.model.entry.exceptions.PersonNotFoundException;
 import seedu.address.model.tag.Tag;
 
 /**

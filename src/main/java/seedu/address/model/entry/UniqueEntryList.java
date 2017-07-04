@@ -9,8 +9,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.util.CollectionUtil;
-import seedu.address.model.person.exceptions.DuplicatePersonException;
-import seedu.address.model.person.exceptions.PersonNotFoundException;
+import seedu.address.model.entry.exceptions.DuplicatePersonException;
+import seedu.address.model.entry.exceptions.PersonNotFoundException;
 
 /**
  * A list of entries that enforces uniqueness between its elements and does not allow nulls.
