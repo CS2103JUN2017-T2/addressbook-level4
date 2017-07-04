@@ -61,7 +61,7 @@ public class MainApp extends Application {
 
         UserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(config.getUserPrefsFilePath());
         userPrefs = initPrefs(userPrefsStorage);
-        EntryBookStorage addressBookStorage = new XmlAddressBookStorage(userPrefs.getAddressBookFilePath());
+        EntryBookStorage addressBookStorage = new XmlEntryBookStorage(userPrefs.getEntryBookFilePath());
         storage = new StorageManager(addressBookStorage, userPrefsStorage);
 
         initLogging(config);
@@ -81,14 +81,14 @@ public class MainApp extends Application {
     }
 
     private Model initModelManager(Storage storage, UserPrefs userPrefs) {
-        Optional<ReadOnlyEntryBook> addressBookOptional;
+        Optional<ReadOnlyEntryBook> entryBookOptional;
         ReadOnlyEntryBook initialData;
         try {
-            addressBookOptional = storage.readAddressBook();
-            if (!addressBookOptional.isPresent()) {
-                logger.info("Data file not found. Will be starting with a sample EntryBook");
+        	entryBookOptional = storage.readEntryBook();
+            if (!entryBookOptional.isPresent()) {
+                logger.info("Data file not found. Will be starting with an empty EntryBook");
             }
-            initialData = addressBookOptional.orElseGet(SampleDataUtil::getSampleAddressBook);
+            initialData = new EntryBook();
         } catch (DataConversionException e) {
             logger.warning("Data file not in the correct format. Will be starting with an empty EntryBook");
             initialData = new EntryBook();
