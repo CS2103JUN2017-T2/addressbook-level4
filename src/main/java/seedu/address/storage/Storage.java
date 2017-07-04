@@ -27,10 +27,10 @@ public interface Storage extends EntryBookStorage, UserPrefsStorage {
     Optional<ReadOnlyEntryBook> readEntryBook() throws DataConversionException, IOException;
 
     @Override
-    void saveEntryBook(ReadOnlyEntryBook addressBook) throws IOException;
+    void saveEntryBook(ReadOnlyEntryBook entryBook) throws IOException;
 
     /**
-     * Saves the current version of the Address Book to the hard disk.
+     * Saves the current version of the Entry Book to the hard disk.
      *   Creates the data file if it is missing.
      * Raises {@link DataSavingExceptionEvent} if there was an error during saving.
      */

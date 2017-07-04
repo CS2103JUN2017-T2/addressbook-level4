@@ -8,9 +8,9 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlElement;
 
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Entry;
-import seedu.address.model.person.ReadOnlyEntry;
+import seedu.address.model.entry.Entry;
+import seedu.address.model.entry.Name;
+import seedu.address.model.entry.ReadOnlyEntry;
 import seedu.address.model.tag.Tag;
 
 /**

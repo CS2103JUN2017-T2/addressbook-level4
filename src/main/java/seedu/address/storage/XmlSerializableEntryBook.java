@@ -12,8 +12,8 @@ import javafx.collections.ObservableList;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.ReadOnlyEntryBook;
-import seedu.address.model.person.Entry;
-import seedu.address.model.person.ReadOnlyEntry;
+import seedu.address.model.entry.Entry;
+import seedu.address.model.entry.ReadOnlyEntry;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -28,7 +28,7 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
     private List<XmlAdaptedTag> tags;
 
     /**
-     * Creates an empty XmlSerializableAddressBook.
+     * Creates an empty XmlSerializableEntryBook.
      * This empty constructor is required for marshalling.
      */
     public XmlSerializableEntryBook() {

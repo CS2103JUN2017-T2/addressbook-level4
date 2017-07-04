@@ -72,9 +72,9 @@ public class StorageManager extends ComponentManager implements Storage {
     }
 
     @Override
-    public void saveEntryBook(ReadOnlyEntryBook addressBook, String filePath) throws IOException {
+    public void saveEntryBook(ReadOnlyEntryBook entryBook, String filePath) throws IOException {
         logger.fine("Attempting to write to data file: " + filePath);
-        entryBookStorage.saveEntryBook(addressBook, filePath);
+        entryBookStorage.saveEntryBook(entryBook, filePath);
     }
 
 
