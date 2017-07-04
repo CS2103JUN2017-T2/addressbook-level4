@@ -11,15 +11,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.exceptions.IllegalValueException;
-<<<<<<< HEAD:src/main/java/seedu/address/storage/XmlSerializableAddressBook.java
-import seedu.address.model.ReadOnlyAddressBook;
-import seedu.address.model.entry.Person;
-import seedu.address.model.entry.ReadOnlyPerson;
-=======
 import seedu.address.model.ReadOnlyEntryBook;
 import seedu.address.model.entry.Entry;
 import seedu.address.model.entry.ReadOnlyEntry;
->>>>>>> V0.1_dash:src/main/java/seedu/address/storage/XmlSerializableEntryBook.java
 import seedu.address.model.tag.Tag;
 
 /**
