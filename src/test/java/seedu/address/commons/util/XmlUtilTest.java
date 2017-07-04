@@ -13,7 +13,7 @@ import org.junit.rules.ExpectedException;
 
 import seedu.address.model.AddressBook;
 import seedu.address.storage.XmlSerializableAddressBook;
-import seedu.address.testutil.AddressBookBuilder;
+import seedu.address.testutil.EntryBookBuilder;
 import seedu.address.testutil.TestUtil;
 
 public class XmlUtilTest {
@@ -85,7 +85,7 @@ public class XmlUtilTest {
         assertEquals((new AddressBook(dataToWrite)).toString(), (new AddressBook(dataFromFile)).toString());
         //TODO: use equality instead of string comparisons
 
-        AddressBookBuilder builder = new AddressBookBuilder(new AddressBook());
+        EntryBookBuilder builder = new EntryBookBuilder(new AddressBook());
         dataToWrite = new XmlSerializableAddressBook(
                 builder.withPerson(TestUtil.generateSamplePersonData().get(0)).withTag("Friends").build());
 

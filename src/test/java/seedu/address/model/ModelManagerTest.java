@@ -8,7 +8,7 @@ import java.util.HashSet;
 
 import org.junit.Test;
 
-import seedu.address.testutil.AddressBookBuilder;
+import seedu.address.testutil.EntryBookBuilder;
 import seedu.address.testutil.TypicalPersons;
 
 public class ModelManagerTest {
@@ -17,7 +17,7 @@ public class ModelManagerTest {
 
     @Test
     public void equals() throws Exception {
-        AddressBook addressBook = new AddressBookBuilder().withPerson(typicalPersons.alice)
+        AddressBook addressBook = new EntryBookBuilder().withPerson(typicalPersons.alice)
                 .withPerson(typicalPersons.benson).build();
         AddressBook differentAddressBook = new AddressBook();
         UserPrefs userPrefs = new UserPrefs();

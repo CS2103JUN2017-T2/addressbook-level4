@@ -9,11 +9,12 @@ import seedu.address.model.entry.ReadOnlyEntry;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
 
+//@@author A0126623L
 /**
  * A utility class to help with building Entry objects.
  */
 public class EntryBuilder {
-
+	
     public static final String DEFAULT_NAME = "defaultName";
     public static final String DEFAULT_TAGS = "defaultTag";
 
