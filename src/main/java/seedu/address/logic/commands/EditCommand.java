@@ -11,12 +11,11 @@ import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.model.entry.exceptions.DuplicateEntryException;
-import seedu.address.model.entry.exceptions.EntryNotFoundException;
-import seedu.address.model.entry.Name;
 import seedu.address.model.entry.Entry;
-import seedu.address.model.tag.Tag;
+import seedu.address.model.entry.Name;
 import seedu.address.model.entry.ReadOnlyEntry;
+import seedu.address.model.entry.exceptions.EntryNotFoundException;
+import seedu.address.model.tag.Tag;
 
 /**
  * Edits the details of an existing entry in the address book.
@@ -29,10 +28,8 @@ public class EditCommand extends Command {
             + "by the index number used in the last entry listing. "
             + "Existing values will be overwritten by the input values.\n"
             + "Parameters: INDEX (must be a positive integer) "
-            
-            + "[" + PREFIX_TAG + "TAG]...\n"
-            + "Example: " + COMMAND_WORD + " 1 ";
-            
+
+            + "[" + PREFIX_TAG + "TAG]...\n" + "Example: " + COMMAND_WORD + " 1 ";
 
     public static final String MESSAGE_EDIT_ENTRY_SUCCESS = "Edited Person: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
@@ -42,8 +39,10 @@ public class EditCommand extends Command {
     private final EditEntryDescriptor editEntryDescriptor;
 
     /**
-     * @param index of the person in the filtered person list to edit
-     * @param editPersonDescriptor details to edit the person with
+     * @param index
+     *            of the person in the filtered person list to edit
+     * @param editPersonDescriptor
+     *            details to edit the person with
      */
     public EditCommand(Index index, EditEntryDescriptor editPersonDescriptor) {
         requireNonNull(index);
@@ -74,11 +73,10 @@ public class EditCommand extends Command {
     }
 
     /**
-     * Creates and returns a {@code Person} with the details of {@code personToEdit}
-     * edited with {@code editPersonDescriptor}.
+     * Creates and returns a {@code Person} with the details of
+     * {@code personToEdit} edited with {@code editPersonDescriptor}.
      */
-    private static Entry createEditedEntry(ReadOnlyEntry personToEdit,
-                                             EditEntryDescriptor editPersonDescriptor) {
+    private static Entry createEditedEntry(ReadOnlyEntry personToEdit, EditEntryDescriptor editPersonDescriptor) {
         assert personToEdit != null;
 
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
@@ -101,20 +99,20 @@ public class EditCommand extends Command {
 
         // state check
         EditCommand e = (EditCommand) other;
-        return index.equals(e.index)
-                && editEntryDescriptor.equals(e.editEntryDescriptor);
+        return index.equals(e.index) && editEntryDescriptor.equals(e.editEntryDescriptor);
     }
 
     /**
-     * Stores the details to edit the person with. Each non-empty field value will replace the
-     * corresponding field value of the person.
+     * Stores the details to edit the person with. Each non-empty field value
+     * will replace the corresponding field value of the person.
      */
     public static class EditEntryDescriptor {
         private Name name;
 
         private Set<Tag> tags;
 
-        public EditEntryDescriptor() {}
+        public EditEntryDescriptor() {
+        }
 
         public EditEntryDescriptor(EditEntryDescriptor toCopy) {
             this.name = toCopy.name;
@@ -159,8 +157,7 @@ public class EditCommand extends Command {
             // state check
             EditEntryDescriptor e = (EditEntryDescriptor) other;
 
-            return getName().equals(e.getName())
-                    && getTags().equals(e.getTags());
+            return getName().equals(e.getName()) && getTags().equals(e.getTags());
         }
     }
 }

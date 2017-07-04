@@ -23,7 +23,6 @@ public class StorageManager extends ComponentManager implements Storage {
     private EntryBookStorage entryBookStorage;
     private UserPrefsStorage userPrefsStorage;
 
-
     public StorageManager(EntryBookStorage entryBookStorage, UserPrefsStorage userPrefsStorage) {
         super();
         this.entryBookStorage = entryBookStorage;
@@ -46,7 +45,6 @@ public class StorageManager extends ComponentManager implements Storage {
     public void saveUserPrefs(UserPrefs userPrefs) throws IOException {
         userPrefsStorage.saveUserPrefs(userPrefs);
     }
-
 
     // ================ EntryBook methods ==============================
 
@@ -77,7 +75,6 @@ public class StorageManager extends ComponentManager implements Storage {
         entryBookStorage.saveEntryBook(entryBook, filePath);
     }
 
-
     @Override
     @Subscribe
     public void handleEntryBookChangedEvent(EntryBookChangedEvent event) {
@@ -88,5 +85,5 @@ public class StorageManager extends ComponentManager implements Storage {
             raise(new DataSavingExceptionEvent(e));
         }
     }
-    
+
 }
