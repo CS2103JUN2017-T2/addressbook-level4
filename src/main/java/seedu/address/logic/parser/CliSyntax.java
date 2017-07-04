@@ -5,11 +5,13 @@ package seedu.address.logic.parser;
  */
 public class CliSyntax {
 
+    //@@kevinlamKB A0140633R
     /* Prefix definitions */
-    public static final Prefix PREFIX_NAME = new Prefix("n/");
-    public static final Prefix PREFIX_PHONE = new Prefix("p/");
-    public static final Prefix PREFIX_EMAIL = new Prefix("e/");
-    public static final Prefix PREFIX_ADDRESS = new Prefix("a/");
-    public static final Prefix PREFIX_TAG = new Prefix("t/");
+    public static final Prefix PREFIX_ENTRYLIST_ARCHIVE = new Prefix("/archive");
+    public static final Prefix PREFIX_ENTRYLIST_BIN = new Prefix("/bin");
+    public static final Prefix PREFIX_ENTRYBOOK_EVENT = new Prefix("/event");
+    public static final Prefix PREFIX_ENTRYBOOK_DEADLINE = new Prefix("/deadline");
+    public static final Prefix PREFIX_ENTRYBOOK_FLOATINGTASK = new Prefix("/float");
+    public static final Prefix PREFIX_TAG = new Prefix("/tag ");
 
 }

@@ -342,7 +342,7 @@ public class LogicManagerTest {
         helper.addToModel(model, threePersons);
 
         assertCommandSuccess(SelectCommand.COMMAND_WORD + " 2",
-                String.format(SelectCommand.MESSAGE_SELECT_PERSON_SUCCESS, 2), expectedModel);
+                String.format(SelectCommand.MESSAGE_SELECT_ENTRY_SUCCESS, 2), expectedModel);
         assertEquals(INDEX_SECOND_PERSON, targetedJumpIndex);
         assertEquals(model.getFilteredPersonList().get(1), threePersons.get(1));
     }
