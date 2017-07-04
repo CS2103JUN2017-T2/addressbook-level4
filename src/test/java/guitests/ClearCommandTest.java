@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.DeleteCommand;
-import seedu.address.testutil.PersonUtil;
+import seedu.address.testutil.EntryUtil;
 
 public class ClearCommandTest extends AddressBookGuiTest {
 
@@ -18,7 +18,7 @@ public class ClearCommandTest extends AddressBookGuiTest {
         assertClearCommandSuccess();
 
         //verify other commands can work after a clear command
-        commandBox.runCommand(PersonUtil.getAddCommand(td.hoon));
+        commandBox.runCommand(EntryUtil.getAddCommand(td.hoon));
         assertTrue(personListPanel.isListMatching(td.hoon));
         commandBox.runCommand(DeleteCommand.COMMAND_WORD + " 1");
         assertListSize(0);

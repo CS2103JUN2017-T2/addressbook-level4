@@ -8,8 +8,8 @@ import guitests.guihandles.PersonCardHandle;
 import seedu.address.commons.core.Messages;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.ClearCommand;
-import seedu.address.model.person.Person;
-import seedu.address.testutil.PersonUtil;
+import seedu.address.model.entry.Person;
+import seedu.address.testutil.EntryUtil;
 import seedu.address.testutil.TestUtil;
 
 public class AddCommandTest extends AddressBookGuiTest {
@@ -28,7 +28,7 @@ public class AddCommandTest extends AddressBookGuiTest {
         currentList = TestUtil.addPersonsToList(currentList, personToAdd);
 
         //add duplicate person
-        commandBox.runCommand(PersonUtil.getAddCommand(td.hoon));
+        commandBox.runCommand(EntryUtil.getAddCommand(td.hoon));
         assertResultMessage(AddCommand.MESSAGE_DUPLICATE_PERSON);
         assertTrue(personListPanel.isListMatching(currentList));
 
@@ -42,7 +42,7 @@ public class AddCommandTest extends AddressBookGuiTest {
     }
 
     private void assertAddSuccess(Person personToAdd, Person... currentList) {
-        commandBox.runCommand(PersonUtil.getAddCommand(personToAdd));
+        commandBox.runCommand(EntryUtil.getAddCommand(personToAdd));
 
         //confirm the new card contains the right data
         PersonCardHandle addedCard = personListPanel.navigateToPerson(personToAdd.getName().fullName);

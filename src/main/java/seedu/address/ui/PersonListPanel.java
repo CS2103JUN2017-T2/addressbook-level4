@@ -10,7 +10,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
-import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.model.entry.ReadOnlyPerson;
 
 /**
  * Panel containing the list of persons.

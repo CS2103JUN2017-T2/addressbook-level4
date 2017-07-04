@@ -8,23 +8,24 @@ import java.util.HashSet;
 
 import org.junit.Test;
 
-import seedu.address.testutil.AddressBookBuilder;
-import seedu.address.testutil.TypicalPersons;
+import seedu.address.testutil.EntryBookBuilder;
+import seedu.address.testutil.TypicalEntries;
 
+//@@author A0126623L
 public class ModelManagerTest {
 
-    private TypicalPersons typicalPersons = new TypicalPersons();
+    private TypicalEntries typicalEntries = new TypicalEntries();
 
     @Test
     public void equals() throws Exception {
-        AddressBook addressBook = new AddressBookBuilder().withPerson(typicalPersons.alice)
-                .withPerson(typicalPersons.benson).build();
-        AddressBook differentAddressBook = new AddressBook();
+        EntryBook entryBook = new EntryBookBuilder().withEntry(typicalEntries.alice)
+                .withEntry(typicalEntries.benson).build();
+        EntryBook differentEntryBook = new EntryBook();
         UserPrefs userPrefs = new UserPrefs();
 
         // same values -> returns true
-        ModelManager modelManager = new ModelManager(addressBook, userPrefs);
-        ModelManager modelManagerCopy = new ModelManager(addressBook, userPrefs);
+        ModelManager modelManager = new ModelManager(entryBook, userPrefs);
+        ModelManager modelManagerCopy = new ModelManager(entryBook, userPrefs);
         assertTrue(modelManager.equals(modelManagerCopy));
 
         // same object -> returns true
@@ -36,18 +37,18 @@ public class ModelManagerTest {
         // different types -> returns false
         assertFalse(modelManager.equals(5));
 
-        // different addressBook -> returns false
-        assertFalse(modelManager.equals(new ModelManager(differentAddressBook, userPrefs)));
+        // different entryBook -> returns false
+        assertFalse(modelManager.equals(new ModelManager(differentEntryBook, userPrefs)));
 
         // different filteredList -> returns false
-        modelManager.updateFilteredPersonList(new HashSet<>(
-                Arrays.asList(typicalPersons.alice.getName().fullName.split(" "))));
-        assertFalse(modelManager.equals(new ModelManager(addressBook, userPrefs)));
+        modelManager.updateFilteredFloatingTaskList(new HashSet<>(
+                Arrays.asList(typicalEntries.alice.getName().fullName.split(" "))));
+        assertFalse(modelManager.equals(new ModelManager(entryBook, userPrefs)));
         modelManager.updateFilteredListToShowAll(); // resets modelManager to initial state for upcoming tests
 
         // different userPrefs -> returns true
         UserPrefs differentUserPrefs = new UserPrefs();
-        differentUserPrefs.setAddressBookName("differentName");
-        assertTrue(modelManager.equals(new ModelManager(addressBook, differentUserPrefs)));
+        differentUserPrefs.setEntryBookName("differentName");
+        assertTrue(modelManager.equals(new ModelManager(entryBook, differentUserPrefs)));
     }
 }
