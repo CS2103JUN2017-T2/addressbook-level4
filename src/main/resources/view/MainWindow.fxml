@@ -32,6 +32,12 @@
       <Insets bottom="5" left="10" right="10" top="5" />
     </padding>
   </StackPane>
+
+  <StackPane fx:id="resultDisplayPlaceholder" maxHeight="100" minHeight="100" prefHeight="100" styleClass="pane-with-border" VBox.vgrow="NEVER">
+    <padding>
+      <Insets bottom="5" left="10" right="10" top="5" />
+    </padding>
+  </StackPane>
    <StackPane fx:id="listHeadersPanelPlaceholder" layoutX="10.0" layoutY="45.0" prefHeight="40.0" prefWidth="690.0" styleClass="pane-with-border">
       <padding>
          <Insets bottom="5" left="10" right="10" top="5" />
@@ -69,31 +75,30 @@
          </SplitPane>
       </children>
    </StackPane>
-
-  <StackPane fx:id="resultDisplayPlaceholder" maxHeight="100" minHeight="100" prefHeight="100" styleClass="pane-with-border" VBox.vgrow="NEVER">
-    <padding>
-      <Insets bottom="5" left="10" right="10" top="5" />
-    </padding>
+   <StackPane minHeight="500.0" prefHeight="100" styleClass="pane-with-border">
+      <padding>
+         <Insets bottom="5" left="10" right="10" top="5" />
+      </padding>
       <children>
          <SplitPane dividerPositions="0.33" prefHeight="160.0" prefWidth="200.0">
            <items>
              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                   <children>
-                     <StackPane fx:id="eventListPanelPlaceholder" prefHeight="86.0" prefWidth="216.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     <StackPane fx:id="eventListPanelPlaceholder" prefHeight="486.0" prefWidth="216.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                   </children>
                </AnchorPane>
              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                   <children>
-                     <SplitPane dividerPositions="0.5" prefHeight="86.0" prefWidth="442.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <SplitPane dividerPositions="0.5" prefHeight="486.0" prefWidth="442.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                        <items>
                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                               <children>
-                                 <StackPane fx:id="deadlineListPanelPlaceholder" prefHeight="84.0" prefWidth="216.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 <StackPane fx:id="deadlineListPanelPlaceholder" prefHeight="484.0" prefWidth="216.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                               </children>
                            </AnchorPane>
                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                               <children>
-                                 <StackPane fx:id="floatingTaskListPanelPlaceholder" prefHeight="84.0" prefWidth="216.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 <StackPane fx:id="floatingTaskListPanelPlaceholder" prefHeight="484.0" prefWidth="216.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                               </children>
                            </AnchorPane>
                        </items>
@@ -103,7 +108,7 @@
            </items>
          </SplitPane>
       </children>
-  </StackPane>
+   </StackPane>
 
   <StackPane fx:id="statusbarPlaceholder" VBox.vgrow="NEVER" />
 </VBox>
