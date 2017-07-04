@@ -3,8 +3,8 @@ package seedu.address.model;
 import java.util.Set;
 
 import seedu.address.commons.core.UnmodifiableObservableList;
-import seedu.address.model.entry.ReadOnlyPerson;
-import seedu.address.model.entry.exceptions.PersonNotFoundException;
+import seedu.address.model.entry.ReadOnlyEntry;
+import seedu.address.model.entry.exceptions.EntryNotFoundException;
 
 /**
  * The API of the Model component.
