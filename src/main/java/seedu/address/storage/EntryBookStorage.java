@@ -15,11 +15,6 @@ public interface EntryBookStorage {
      * Returns the file path of the data file.
      */
     String getEntryBookFilePath();
-    
-    /**
-     * Sets the file path to the given value
-     */
-    void setEntryBookFilePath(String filePath);
 
     /**
      * Returns EntryBook data as a {@link ReadOnlyEntryBook}.
@@ -27,12 +22,12 @@ public interface EntryBookStorage {
      * @throws DataConversionException if the data in storage is not in the expected format.
      * @throws IOException if there was any problem when reading from the storage.
      */
-    Optional<ReadOnlyEntryBook> readAddressBook() throws DataConversionException, IOException;
+    Optional<ReadOnlyEntryBook> readEntryBook() throws DataConversionException, IOException;
 
     /**
      * @see #getEntryBookFilePath()
      */
-    Optional<ReadOnlyEntryBook> readAddressBook(String filePath) throws DataConversionException, IOException;
+    Optional<ReadOnlyEntryBook> readEntryBook(String filePath) throws DataConversionException, IOException;
 
     /**
      * Saves the given {@link ReadOnlyEntryBook} to the storage.

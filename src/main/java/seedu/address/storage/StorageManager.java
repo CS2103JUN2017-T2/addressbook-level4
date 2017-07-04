@@ -8,25 +8,25 @@ import com.google.common.eventbus.Subscribe;
 
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
-import seedu.address.commons.events.model.AddressBookChangedEvent;
+import seedu.address.commons.events.model.EntryBookChangedEvent;
 import seedu.address.commons.events.storage.DataSavingExceptionEvent;
 import seedu.address.commons.exceptions.DataConversionException;
 import seedu.address.model.ReadOnlyEntryBook;
 import seedu.address.model.UserPrefs;
 
 /**
- * Manages storage of AddressBook data in local storage.
+ * Manages storage of EntryBook data in local storage.
  */
 public class StorageManager extends ComponentManager implements Storage {
 
     private static final Logger logger = LogsCenter.getLogger(StorageManager.class);
-    private EntryBookStorage addressBookStorage;
+    private EntryBookStorage entryBookStorage;
     private UserPrefsStorage userPrefsStorage;
 
 
-    public StorageManager(EntryBookStorage addressBookStorage, UserPrefsStorage userPrefsStorage) {
+    public StorageManager(EntryBookStorage entryBookStorage, UserPrefsStorage userPrefsStorage) {
         super();
-        this.addressBookStorage = addressBookStorage;
+        this.entryBookStorage = entryBookStorage;
         this.userPrefsStorage = userPrefsStorage;
     }
 
@@ -48,39 +48,39 @@ public class StorageManager extends ComponentManager implements Storage {
     }
 
 
-    // ================ AddressBook methods ==============================
+    // ================ EntryBook methods ==============================
 
     @Override
     public String getEntryBookFilePath() {
-        return addressBookStorage.getEntryBookFilePath();
+        return entryBookStorage.getEntryBookFilePath();
     }
 
     @Override
-    public Optional<ReadOnlyEntryBook> readAddressBook() throws DataConversionException, IOException {
-        return readAddressBook(addressBookStorage.getEntryBookFilePath());
+    public Optional<ReadOnlyEntryBook> readEntryBook() throws DataConversionException, IOException {
+        return readEntryBook(entryBookStorage.getEntryBookFilePath());
     }
 
     @Override
-    public Optional<ReadOnlyEntryBook> readAddressBook(String filePath) throws DataConversionException, IOException {
+    public Optional<ReadOnlyEntryBook> readEntryBook(String filePath) throws DataConversionException, IOException {
         logger.fine("Attempting to read data from file: " + filePath);
-        return addressBookStorage.readAddressBook(filePath);
+        return entryBookStorage.readEntryBook(filePath);
     }
 
     @Override
-    public void saveEntryBook(ReadOnlyEntryBook addressBook) throws IOException {
-        saveEntryBook(addressBook, addressBookStorage.getEntryBookFilePath());
+    public void saveEntryBook(ReadOnlyEntryBook entryBook) throws IOException {
+        saveEntryBook(entryBook, entryBookStorage.getEntryBookFilePath());
     }
 
     @Override
     public void saveEntryBook(ReadOnlyEntryBook addressBook, String filePath) throws IOException {
         logger.fine("Attempting to write to data file: " + filePath);
-        addressBookStorage.saveEntryBook(addressBook, filePath);
+        entryBookStorage.saveEntryBook(addressBook, filePath);
     }
 
 
     @Override
     @Subscribe
-    public void handleAddressBookChangedEvent(AddressBookChangedEvent event) {
+    public void handleEntryBookChangedEvent(EntryBookChangedEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "Local data changed, saving to file"));
         try {
             saveEntryBook(event.data);
@@ -88,5 +88,5 @@ public class StorageManager extends ComponentManager implements Storage {
             raise(new DataSavingExceptionEvent(e));
         }
     }
-
+    
 }
