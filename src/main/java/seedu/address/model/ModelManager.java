@@ -85,7 +85,7 @@ public class ModelManager extends ComponentManager implements Model {
      * Return a list of {@code ReadOnlyEntry} backed by the internal list of {@code entryBook}
      */
     @Override
-    public UnmodifiableObservableList<ReadOnlyEntry> getFilteredEntryList() {
+    public UnmodifiableObservableList<ReadOnlyEntry> getFilteredFloatingTaskList() {
         return new UnmodifiableObservableList<>(filteredEntries);
     }
 

@@ -31,7 +31,7 @@ public interface Model {
             throws EntryNotFoundException;
 
     /** Returns the filtered entry list as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
-    UnmodifiableObservableList<ReadOnlyEntry> getFilteredEntryList();
+    UnmodifiableObservableList<ReadOnlyEntry> getFilteredFloatingTaskList();
 
     /** Updates the filter of the filtered entry list to show all entries */
     void updateFilteredListToShowAll();
