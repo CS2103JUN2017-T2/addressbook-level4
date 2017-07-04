@@ -9,8 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.util.CollectionUtil;
-import seedu.address.model.entry.exceptions.DuplicatePersonException;
-import seedu.address.model.entry.exceptions.PersonNotFoundException;
+import seedu.address.model.entry.exceptions.EntryNotFoundException;
 
 /**
  * A list of entries that does not allow nulls.
@@ -76,7 +75,7 @@ public class EntryList implements Iterable<Entry> {
         if (!entryFoundAndDeleted) {
             throw new EntryNotFoundException();
         }
-        return EntryFoundAndDeleted;
+        return entryFoundAndDeleted;
     }
 
     public void setEntries(EntryList replacement) {
