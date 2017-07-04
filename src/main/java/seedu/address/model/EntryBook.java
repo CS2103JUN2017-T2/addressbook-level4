@@ -14,7 +14,7 @@ import javafx.collections.ObservableList;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.model.entry.Entry;
 import seedu.address.model.entry.ReadOnlyEntry;
-import seedu.address.model.entry.UniqueEntryList;
+import seedu.address.model.entry.EntryList;
 import seedu.address.model.entry.exceptions.EntryNotFoundException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
@@ -24,7 +24,7 @@ import seedu.address.model.tag.UniqueTagList;
  */
 public class EntryBook implements ReadOnlyEntryBook {
 
-    private final ActiveEntryList entries;
+    private final EntryList entries;
     private final UniqueTagList tags;
 
     /*
@@ -35,7 +35,7 @@ public class EntryBook implements ReadOnlyEntryBook {
      *   among constructors.
      */
     {
-        entries = new ActiveEntryList();
+        entries = new EntryList();
         tags = new UniqueTagList();
     }
 
@@ -128,7 +128,7 @@ public class EntryBook implements ReadOnlyEntryBook {
      *  - points to a Tag object in the master list
      *  @see #syncMasterTagListWith(Entry)
      */
-    private void syncMasterTagListWith(UniqueEntryList entries) {
+    private void syncMasterTagListWith(EntryList entries) {
         entries.forEach(this::syncMasterTagListWith);
     }
 

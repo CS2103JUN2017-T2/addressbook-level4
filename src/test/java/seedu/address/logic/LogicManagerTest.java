@@ -59,7 +59,7 @@ import seedu.address.model.entry.Name;
 import seedu.address.model.entry.Person;
 import seedu.address.model.entry.Phone;
 import seedu.address.model.tag.Tag;
-import seedu.address.testutil.PersonBuilder;
+import seedu.address.testutil.EntryBuilder;
 
 
 public class LogicManagerTest {
@@ -382,10 +382,10 @@ public class LogicManagerTest {
     @Test
     public void execute_find_onlyMatchesFullWordsInNames() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        Person pTarget1 = new PersonBuilder().withName("bla bla KEY bla").build();
-        Person pTarget2 = new PersonBuilder().withName("bla KEY bla bceofeia").build();
-        Person p1 = new PersonBuilder().withName("KE Y").build();
-        Person p2 = new PersonBuilder().withName("KEYKEYKEY sduauo").build();
+        Person pTarget1 = new EntryBuilder().withName("bla bla KEY bla").build();
+        Person pTarget2 = new EntryBuilder().withName("bla KEY bla bceofeia").build();
+        Person p1 = new EntryBuilder().withName("KE Y").build();
+        Person p2 = new EntryBuilder().withName("KEYKEYKEY sduauo").build();
 
         List<Person> fourPersons = helper.generatePersonList(p1, pTarget1, p2, pTarget2);
         Model expectedModel = new ModelManager(helper.generateAddressBook(fourPersons), new UserPrefs());
@@ -399,10 +399,10 @@ public class LogicManagerTest {
     @Test
     public void execute_find_isNotCaseSensitive() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        Person p1 = new PersonBuilder().withName("bla bla KEY bla").build();
-        Person p2 = new PersonBuilder().withName("bla KEY bla bceofeia").build();
-        Person p3 = new PersonBuilder().withName("key key").build();
-        Person p4 = new PersonBuilder().withName("KEy sduauo").build();
+        Person p1 = new EntryBuilder().withName("bla bla KEY bla").build();
+        Person p2 = new EntryBuilder().withName("bla KEY bla bceofeia").build();
+        Person p3 = new EntryBuilder().withName("key key").build();
+        Person p4 = new EntryBuilder().withName("KEy sduauo").build();
 
         List<Person> fourPersons = helper.generatePersonList(p3, p1, p4, p2);
         Model expectedModel = new ModelManager(helper.generateAddressBook(fourPersons), new UserPrefs());
@@ -416,10 +416,10 @@ public class LogicManagerTest {
     @Test
     public void execute_find_matchesIfAnyKeywordPresent() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        Person pTarget1 = new PersonBuilder().withName("bla bla KEY bla").build();
-        Person pTarget2 = new PersonBuilder().withName("bla rAnDoM bla bceofeia").build();
-        Person pTarget3 = new PersonBuilder().withName("key key").build();
-        Person p1 = new PersonBuilder().withName("sduauo").build();
+        Person pTarget1 = new EntryBuilder().withName("bla bla KEY bla").build();
+        Person pTarget2 = new EntryBuilder().withName("bla rAnDoM bla bceofeia").build();
+        Person pTarget3 = new EntryBuilder().withName("key key").build();
+        Person p1 = new EntryBuilder().withName("sduauo").build();
 
         List<Person> fourPersons = helper.generatePersonList(pTarget1, p1, pTarget2, pTarget3);
         Model expectedModel = new ModelManager(helper.generateAddressBook(fourPersons), new UserPrefs());

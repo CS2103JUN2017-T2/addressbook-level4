@@ -72,7 +72,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
-            throws DuplicateEntryException, EntryNotFoundException {
+            throws EntryNotFoundException {
         requireAllNonNull(target, editedEntry);
 
         entryBook.updateEntry(target, editedEntry);
@@ -85,7 +85,7 @@ public class ModelManager extends ComponentManager implements Model {
      * Return a list of {@code ReadOnlyEntry} backed by the internal list of {@code entryBook}
      */
     @Override
-    public UnmodifiableObservableList<ReadOnlyEntry> getFilteredEntryList() {
+    public UnmodifiableObservableList<ReadOnlyEntry> getFilteredFloatingTaskList() {
         return new UnmodifiableObservableList<>(filteredEntries);
     }
 
@@ -95,7 +95,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void updateFilteredEntryList(Set<String> keywords) {
+    public void updateFilteredFloatingTaskList(Set<String> keywords) {
         updateFilteredEntryList(new PredicateExpression(new NameQualifier(keywords)));
     }
 

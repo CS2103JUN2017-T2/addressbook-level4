@@ -19,6 +19,7 @@ import seedu.address.model.entry.ReadOnlyEntry;
 import seedu.address.model.tag.Tag;
 import seedu.address.testutil.TypicalEntries;
 
+//@@author A0126623L
 public class EntryBookTest {
 
     @Rule
@@ -40,26 +41,13 @@ public class EntryBookTest {
 
     @Test
     public void resetData_withValidReadOnlyEntryBook_replacesData() {
-        entryBook newData = new TypicalEntries().getTypicalEntryBook();
+        EntryBook newData = new TypicalEntries().getTypicalEntryBook();
         entryBook.resetData(newData);
         assertEquals(newData, entryBook);
     }
 
-    @Test
-    public void resetData_withDuplicateTags_throwsAssertionError() {
-        EntryBook typicalEntryBook = new TypicalEntries().getTypicalEntryBook();
-        List<ReadOnlyEntry> newPersons = typicalEntryBook.getEntryList();
-        List<Tag> newTags = new ArrayList<>(typicalEntryBook.getTagList());
-        // Repeat the first tag twice
-        newTags.add(newTags.get(0));
-        EntryBookStub newData = new EntryBookStub(newPersons, newTags);
-
-        thrown.expect(AssertionError.class);
-        entryBook.resetData(newData);
-    }
-
     /**
-     * A stub ReadOnlyEntryBook whose persons and tags lists can violate interface constraints.
+     * A stub ReadOnlyEntryBook whose entrys and tags lists can violate interface constraints.
      */
     private static class EntryBookStub implements ReadOnlyEntryBook {
         private final ObservableList<ReadOnlyEntry> entries = FXCollections.observableArrayList();

@@ -31,12 +31,12 @@ public interface Model {
             throws EntryNotFoundException;
 
     /** Returns the filtered entry list as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
-    UnmodifiableObservableList<ReadOnlyEntry> getFilteredEntryList();
+    UnmodifiableObservableList<ReadOnlyEntry> getFilteredFloatingTaskList();
 
     /** Updates the filter of the filtered entry list to show all entries */
     void updateFilteredListToShowAll();
 
     /** Updates the filter of the filtered entry list to filter by the given keywords*/
-    void updateFilteredEntryList(Set<String> keywords);
+    void updateFilteredFloatingTaskList(Set<String> keywords);
 
 }

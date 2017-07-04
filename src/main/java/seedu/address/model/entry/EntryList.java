@@ -13,14 +13,14 @@ import seedu.address.model.entry.exceptions.DuplicatePersonException;
 import seedu.address.model.entry.exceptions.PersonNotFoundException;
 
 /**
- * A list of entries that enforces uniqueness between its elements and does not allow nulls.
+ * A list of entries that does not allow nulls.
  *
  * Supports a minimal set of list operations.
  *
  * @see Entry#equals(Object)
  * @see CollectionUtil#elementsAreUnique(Collection)
  */
-public class UniqueEntryList implements Iterable<Entry> {
+public class EntryList implements Iterable<Entry> {
 
     private final ObservableList<Entry> internalList = FXCollections.observableArrayList();
 
@@ -79,12 +79,12 @@ public class UniqueEntryList implements Iterable<Entry> {
         return EntryFoundAndDeleted;
     }
 
-    public void setEntries(UniqueEntryList replacement) {
+    public void setEntries(EntryList replacement) {
         this.internalList.setAll(replacement.internalList);
     }
 
     public void setEntries(List<? extends ReadOnlyEntry> entries) {
-        final UniqueEntryList replacement = new UniqueEntryList();
+        final EntryList replacement = new EntryList();
         for (final ReadOnlyEntry entry : entries) {
             replacement.add(new Entry(entry));
         }
@@ -103,8 +103,8 @@ public class UniqueEntryList implements Iterable<Entry> {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof UniqueEntryList // instanceof handles nulls
-                        && this.internalList.equals(((UniqueEntryList) other).internalList));
+                || (other instanceof EntryList // instanceof handles nulls
+                        && this.internalList.equals(((EntryList) other).internalList));
     }
 
     @Override
