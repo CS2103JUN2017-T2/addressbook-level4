@@ -20,17 +20,15 @@ public interface Model {
     void deleteEntry(ReadOnlyEntry target) throws EntryNotFoundException;
 
     /** Adds the given entry */
-    void addEntry(ReadOnlyEntry entry) throws DuplicateEntryException;
+    void addEntry(ReadOnlyEntry entry);
 
     /**
      * Replaces the given entry {@code target} with {@code editedEntry}.
      *
-     * @throws DuplicateEntryException if updating the entry's details causes the entry to be equivalent to
-     *      another existing entry in the list.
      * @throws EntryNotFoundException if {@code target} could not be found in the list.
      */
     void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
-            throws DuplicateEntryException, EntryNotFoundException;
+            throws EntryNotFoundException;
 
     /** Returns the filtered entry list as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
     UnmodifiableObservableList<ReadOnlyEntry> getFilteredEntryList();
