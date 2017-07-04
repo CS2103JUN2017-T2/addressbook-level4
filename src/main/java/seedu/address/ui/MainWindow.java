@@ -142,7 +142,7 @@ public class MainWindow extends UiPart<Region> {
         deadlineListPanel = new EntryListPanel(logic.getFilteredDeadlinesList());
         deadlineListHeaderPlaceholder.getChildren().add(deadlineListPanel.getRoot());
 
-        floatingTaskListPanel = new EntryListPanel(logic.getFilteredfloatingTasksList());
+        floatingTaskListPanel = new EntryListPanel(logic.getFilteredFloatingTasksList());
         floatingTaskListHeaderPlaceholder.getChildren().add(floatingTaskListPanel.getRoot());
 
         ResultDisplay resultDisplay = new ResultDisplay();
