@@ -29,7 +29,7 @@ public class EntryCard extends UiPart<Region> {
     @FXML
     private FlowPane tags;
 
-    public PersonCard(ReadOnlyEntry entry, int displayedIndex) {
+    public EntryCard(ReadOnlyEntry entry, int displayedIndex) {
         super(FXML);
         name.setText(entry.getName().toString());
         id.setText(displayedIndex + ". ");

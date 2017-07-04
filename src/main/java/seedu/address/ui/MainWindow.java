@@ -9,6 +9,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import seedu.address.commons.core.Config;
@@ -31,9 +32,9 @@ public class MainWindow extends UiPart<Region> {
     private static final int MIN_HEIGHT = 600;
     private static final int MIN_WIDTH = 450;
 
-    private static final string EVENTS_LIST_HEADER_NAME = "Events";
-    private static final string DEADLINES_LIST_HEADER_NAME = "Deadlines";
-    private static final string FLOATING_TASKS_LIST_HEADER_NAME = "Floating Tasks";
+    private static final String EVENTS_LIST_HEADER_NAME = "Events";
+    private static final String DEADLINES_LIST_HEADER_NAME = "Deadlines";
+    private static final String FLOATING_TASKS_LIST_HEADER_NAME = "Floating Tasks";
 
 
     private Stage primaryStage;
@@ -136,7 +137,7 @@ public class MainWindow extends UiPart<Region> {
 
     void fillInnerParts() {
         eventListPanel = new EntryListPanel(logic.getFilteredEventsList());
-        entryListPanelPlaceholder.getChildren().add(eventListPanel.getRoot());
+        eventListPanelPlaceholder.getChildren().add(eventListPanel.getRoot());
 
         deadlineListPanel = new EntryListPanel(logic.getFilteredDeadlinesList());
         deadlineListHeaderPlaceholder.getChildren().add(deadlineListPanel.getRoot());
