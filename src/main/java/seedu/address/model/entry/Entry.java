@@ -33,7 +33,7 @@ public class Entry implements ReadOnlyEntry {
      * Creates a copy of the given ReadOnlyEntry.
      */
     public Entry(ReadOnlyEntry source) {
-        this(source.getName(),source.getTags());
+        this(source.getName(), source.getTags());
     }
 
     public void setName(Name name) {

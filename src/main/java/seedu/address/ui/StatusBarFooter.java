@@ -4,8 +4,6 @@ import java.util.logging.Logger;
 
 import org.controlsfx.control.StatusBar;
 
-import com.google.common.eventbus.Subscribe;
-
 import javafx.fxml.FXML;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;

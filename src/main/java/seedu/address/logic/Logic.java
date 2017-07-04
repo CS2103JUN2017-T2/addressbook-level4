@@ -12,7 +12,7 @@ import seedu.address.model.entry.ReadOnlyEntry;
 public interface Logic {
     /**
      * Executes the command and returns the result.
-     * 
+     *
      * @param commandText
      *            The command as entered by the user.
      * @return the result of the command execution.

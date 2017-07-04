@@ -24,7 +24,7 @@ public class EditCommandParser {
     /**
      * Parses the given {@code String} of arguments in the context of the
      * EditCommand and returns an EditCommand object for execution.
-     * 
+     *
      * @throws ParseException
      *             if the user input does not conform the expected format
      */

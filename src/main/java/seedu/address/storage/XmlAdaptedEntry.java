@@ -56,6 +56,6 @@ public class XmlAdaptedEntry {
         }
         final Name name = new Name(this.name);
         final Set<Tag> tags = new HashSet<>(personTags);
-        return new Entry(name,tags);
+        return new Entry(name, tags);
     }
 }
