@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.DeleteCommand;
-import seedu.address.model.person.Person;
+import seedu.address.model.entry.Person;
 import seedu.address.testutil.TestUtil;
 
 public class DeleteCommandTest extends AddressBookGuiTest {

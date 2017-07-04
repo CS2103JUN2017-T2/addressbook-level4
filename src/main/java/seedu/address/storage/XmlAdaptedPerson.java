@@ -8,12 +8,12 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlElement;
 
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.model.person.Address;
-import seedu.address.model.person.Email;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Person;
-import seedu.address.model.person.Phone;
-import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.model.entry.Address;
+import seedu.address.model.entry.Email;
+import seedu.address.model.entry.Name;
+import seedu.address.model.entry.Person;
+import seedu.address.model.entry.Phone;
+import seedu.address.model.entry.ReadOnlyPerson;
 import seedu.address.model.tag.Tag;
 
 /**

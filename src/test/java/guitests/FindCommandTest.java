@@ -8,7 +8,7 @@ import seedu.address.commons.core.Messages;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.FindCommand;
-import seedu.address.model.person.Person;
+import seedu.address.model.entry.Person;
 
 public class FindCommandTest extends AddressBookGuiTest {
 

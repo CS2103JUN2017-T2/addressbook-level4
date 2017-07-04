@@ -10,8 +10,8 @@ import seedu.address.commons.core.GuiSettings;
 public class UserPrefs {
 
     private GuiSettings guiSettings;
-    private String addressBookFilePath = "data/addressbook.xml";
-    private String addressBookName = "MyAddressBook";
+    private String entryBookFilePath = "data/entrybook.xml";
+    private String entryBookName = "MyEntryBook";
 
     public UserPrefs() {
         this.setGuiSettings(500, 500, 0, 0);
@@ -30,19 +30,19 @@ public class UserPrefs {
     }
 
     public String getAddressBookFilePath() {
-        return addressBookFilePath;
+        return entryBookFilePath;
     }
 
     public void setAddressBookFilePath(String addressBookFilePath) {
-        this.addressBookFilePath = addressBookFilePath;
+        this.entryBookFilePath = addressBookFilePath;
     }
 
     public String getAddressBookName() {
-        return addressBookName;
+        return entryBookName;
     }
 
     public void setAddressBookName(String addressBookName) {
-        this.addressBookName = addressBookName;
+        this.entryBookName = addressBookName;
     }
 
     @Override
@@ -57,21 +57,21 @@ public class UserPrefs {
         UserPrefs o = (UserPrefs) other;
 
         return Objects.equals(guiSettings, o.guiSettings)
-                && Objects.equals(addressBookFilePath, o.addressBookFilePath)
-                && Objects.equals(addressBookName, o.addressBookName);
+                && Objects.equals(entryBookFilePath, o.entryBookFilePath)
+                && Objects.equals(entryBookName, o.entryBookName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(guiSettings, addressBookFilePath, addressBookName);
+        return Objects.hash(guiSettings, entryBookFilePath, entryBookName);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Gui Settings : " + guiSettings.toString());
-        sb.append("\nLocal data file location : " + addressBookFilePath);
-        sb.append("\nAddressBook name : " + addressBookName);
+        sb.append("\nLocal data file location : " + entryBookFilePath);
+        sb.append("\nEntryBook name : " + entryBookName);
         return sb.toString();
     }
 

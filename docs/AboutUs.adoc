@@ -14,6 +14,12 @@ Responsibilities: Git, Deliverables and scheduling, Integration, Git, GUI and co
 
 '''
 
+=== http://github.com/ChuaPingChan[Chua Ping Chan]
+image::chuapingchan.png[width="150", align="left"]
+
+Role: Developer +
+Responsibilities: Model(component), Testing, Code Quality, Meeting Minutes
+
 '''
 
 == Contributors

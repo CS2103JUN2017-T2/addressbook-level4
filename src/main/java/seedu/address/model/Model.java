@@ -3,43 +3,40 @@ package seedu.address.model;
 import java.util.Set;
 
 import seedu.address.commons.core.UnmodifiableObservableList;
-import seedu.address.model.person.ReadOnlyPerson;
-import seedu.address.model.person.exceptions.DuplicatePersonException;
-import seedu.address.model.person.exceptions.PersonNotFoundException;
+import seedu.address.model.entry.ReadOnlyEntry;
+import seedu.address.model.entry.exceptions.EntryNotFoundException;
 
 /**
  * The API of the Model component.
  */
 public interface Model {
     /** Clears existing backing model and replaces with the provided new data. */
-    void resetData(ReadOnlyAddressBook newData);
+    void resetData(ReadOnlyEntryBook newData);
 
-    /** Returns the AddressBook */
-    ReadOnlyAddressBook getAddressBook();
+    /** Returns the EntryBook */
+    ReadOnlyEntryBook getEntryBook();
 
-    /** Deletes the given person. */
-    void deletePerson(ReadOnlyPerson target) throws PersonNotFoundException;
+    /** Deletes the given entry. */
+    void deleteEntry(ReadOnlyEntry target) throws EntryNotFoundException;
 
-    /** Adds the given person */
-    void addPerson(ReadOnlyPerson person) throws DuplicatePersonException;
+    /** Adds the given entry */
+    void addEntry(ReadOnlyEntry entry);
 
     /**
-     * Replaces the given person {@code target} with {@code editedPerson}.
+     * Replaces the given entry {@code target} with {@code editedEntry}.
      *
-     * @throws DuplicatePersonException if updating the person's details causes the person to be equivalent to
-     *      another existing person in the list.
-     * @throws PersonNotFoundException if {@code target} could not be found in the list.
+     * @throws EntryNotFoundException if {@code target} could not be found in the list.
      */
-    void updatePerson(ReadOnlyPerson target, ReadOnlyPerson editedPerson)
-            throws DuplicatePersonException, PersonNotFoundException;
+    void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
+            throws EntryNotFoundException;
 
-    /** Returns the filtered person list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */
-    UnmodifiableObservableList<ReadOnlyPerson> getFilteredPersonList();
+    /** Returns the filtered entry list as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
+    UnmodifiableObservableList<ReadOnlyEntry> getFilteredEntryList();
 
-    /** Updates the filter of the filtered person list to show all persons */
+    /** Updates the filter of the filtered entry list to show all entries */
     void updateFilteredListToShowAll();
 
-    /** Updates the filter of the filtered person list to filter by the given keywords*/
-    void updateFilteredPersonList(Set<String> keywords);
+    /** Updates the filter of the filtered entry list to filter by the given keywords*/
+    void updateFilteredEntryList(Set<String> keywords);
 
 }
