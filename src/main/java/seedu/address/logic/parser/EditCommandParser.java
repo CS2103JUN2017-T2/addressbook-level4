@@ -32,7 +32,13 @@ public class EditCommandParser {
                 ArgumentTokenizer.tokenize(args, PREFIX_TAG);
 
         Index index;
-
+        
+        try {
+            index = ParserUtil.parseIndex(argMultimap.getPreamble().get());
+        } catch (IllegalValueException ive) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+        }
+        
         EditEntryDescriptor editEntryDescriptor = new EditEntryDescriptor();
         try {
             ParserUtil.parseName(argMultimap.getPreamble()).ifPresent(editEntryDescriptor::setName);           
