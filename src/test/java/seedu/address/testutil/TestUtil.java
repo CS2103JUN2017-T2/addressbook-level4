@@ -17,12 +17,12 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.FileUtil;
 import seedu.address.commons.util.XmlUtil;
-import seedu.address.model.person.Address;
-import seedu.address.model.person.Email;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Person;
-import seedu.address.model.person.Phone;
-import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.model.entry.Address;
+import seedu.address.model.entry.Email;
+import seedu.address.model.entry.Name;
+import seedu.address.model.entry.Person;
+import seedu.address.model.entry.Phone;
+import seedu.address.model.entry.ReadOnlyPerson;
 
 /**
  * A utility class for test cases.

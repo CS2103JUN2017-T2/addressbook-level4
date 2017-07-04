@@ -7,7 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.Region;
 import javafx.scene.web.WebView;
 import seedu.address.MainApp;
-import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.model.entry.ReadOnlyPerson;
 
 /**
  * The Browser Panel of the App.

@@ -8,7 +8,7 @@ import org.junit.Test;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.SelectCommand;
-import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.model.entry.ReadOnlyPerson;
 
 public class SelectCommandTest extends AddressBookGuiTest {
 

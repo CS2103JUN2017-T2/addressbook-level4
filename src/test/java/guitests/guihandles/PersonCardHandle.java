@@ -9,7 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Labeled;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
-import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.model.entry.ReadOnlyPerson;
 import seedu.address.model.tag.Tag;
 
 /**
