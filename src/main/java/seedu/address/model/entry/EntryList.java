@@ -2,6 +2,7 @@ package seedu.address.model.entry;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -24,7 +25,8 @@ public class EntryList implements Iterable<Entry> {
     private final ObservableList<Entry> internalList = FXCollections.observableArrayList();
 
     /**
-     * Returns true if the list contains an equivalent entry as the given argument.
+     * Returns true if the list contains an equivalent entry as the given
+     * argument.
      */
     public boolean contains(ReadOnlyEntry toCheck) {
         requireNonNull(toCheck);
@@ -43,31 +45,35 @@ public class EntryList implements Iterable<Entry> {
     /**
      * Replaces the entry {@code target} in the list with {@code editedEntry}.
      *
-     * @throws EntryNotFoundException if {@code target} could not be found in the list.
+     * @throws EntryNotFoundException
+     *             if {@code target} could not be found in the list.
      */
-    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
-            throws EntryNotFoundException {
+    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws EntryNotFoundException {
         requireNonNull(editedEntry);
 
         int index = internalList.indexOf(target);
         if (index == -1) {
             throw new EntryNotFoundException();
         }
-        
+
         // TODO by Ping Chan: This line can probably be removed later.
         Entry entryToUpdate = internalList.get(index);
 
         entryToUpdate.resetData(editedEntry);
-        // TODO: The code below is just a workaround to notify observers of the updated entry.
-        // The right way is to implement observable properties in the Entry class.
-        // Then, EntryCard should then bind its text labels to those observable properties.
+        // TODO: The code below is just a workaround to notify observers of the
+        // updated entry.
+        // The right way is to implement observable properties in the Entry
+        // class.
+        // Then, EntryCard should then bind its text labels to those observable
+        // properties.
         internalList.set(index, entryToUpdate);
     }
 
     /**
      * Removes the equivalent entry from the list.
      *
-     * @throws EntryNotFoundException if no such entry could be found in the list.
+     * @throws EntryNotFoundException
+     *             if no such entry could be found in the list.
      */
     public boolean remove(ReadOnlyEntry toRemove) throws EntryNotFoundException {
         requireNonNull(toRemove);

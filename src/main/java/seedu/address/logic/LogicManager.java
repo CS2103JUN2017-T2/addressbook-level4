@@ -40,7 +40,7 @@ public class LogicManager extends ComponentManager implements Logic {
             history.add(commandText);
         }
     }
-    
+
     @Override
     public ObservableList<ReadOnlyEntry> getFilteredFloatingTaskList() {
         return model.getFilteredFloatingTaskList();
