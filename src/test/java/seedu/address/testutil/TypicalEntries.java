@@ -9,15 +9,15 @@ import seedu.address.model.entry.exceptions.DuplicatePersonException;
 /**
  *
  */
-public class TypicalPersons {
+public class TypicalEntries {
 
-    public static final Index INDEX_FIRST_PERSON = Index.fromOneBased(1);
-    public static final Index INDEX_SECOND_PERSON = Index.fromOneBased(2);
-    public static final Index INDEX_THIRD_PERSON = Index.fromOneBased(3);
+    public static final Index INDEX_FIRST_ENTRY = Index.fromOneBased(1);
+    public static final Index INDEX_SECOND_ENTRY = Index.fromOneBased(2);
+    public static final Index INDEX_THIRD_ENTRY = Index.fromOneBased(3);
 
     public final Person alice, benson, carl, daniel, elle, fiona, george, hoon, ida;
 
-    public TypicalPersons() {
+    public TypicalEntries() {
         try {
             alice = new PersonBuilder().withName("Alice Pauline")
                     .withAddress("123, Jurong West Ave 6, #08-111").withEmail("alice@example.com")
