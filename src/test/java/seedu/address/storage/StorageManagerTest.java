@@ -12,13 +12,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import seedu.address.commons.events.model.AddressBookChangedEvent;
+import seedu.address.commons.events.model.EntryBookChangedEvent;
 import seedu.address.commons.events.storage.DataSavingExceptionEvent;
-import seedu.address.model.AddressBook;
-import seedu.address.model.ReadOnlyAddressBook;
+import seedu.address.model.EntryBook;
+import seedu.address.model.ReadOnlyEntryBook;
 import seedu.address.model.UserPrefs;
 import seedu.address.testutil.EventsCollector;
-import seedu.address.testutil.TypicalPersons;
+import seedu.address.testutil.TypicalEntries;
 
 public class StorageManagerTest {
 
@@ -29,9 +29,9 @@ public class StorageManagerTest {
 
     @Before
     public void setUp() {
-        XmlAddressBookStorage addressBookStorage = new XmlAddressBookStorage(getTempFilePath("ab"));
+        XmlEntryBookStorage entryBookStorage = new XmlEntryBookStorage(getTempFilePath("ab"));
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(getTempFilePath("prefs"));
-        storageManager = new StorageManager(addressBookStorage, userPrefsStorage);
+        storageManager = new StorageManager(entryBookStorage, userPrefsStorage);
     }
 
 
@@ -55,30 +55,30 @@ public class StorageManagerTest {
     }
 
     @Test
-    public void addressBookReadSave() throws Exception {
+    public void entryBookReadSave() throws Exception {
         /*
          * Note: This is an integration test that verifies the StorageManager is properly wired to the
-         * {@link XmlAddressBookStorage} class.
-         * More extensive testing of UserPref saving/reading is done in {@link XmlAddressBookStorageTest} class.
+         * {@link XmlEntryBookStorage} class.
+         * More extensive testing of UserPref saving/reading is done in {@link XmlEntryBookStorageTest} class.
          */
-        AddressBook original = new TypicalPersons().getTypicalAddressBook();
-        storageManager.saveAddressBook(original);
-        ReadOnlyAddressBook retrieved = storageManager.readAddressBook().get();
-        assertEquals(original, new AddressBook(retrieved));
+        EntryBook original = new TypicalEntries().getTypicalEntryBook();
+        storageManager.saveEntryBook(original);
+        ReadOnlyEntryBook retrieved = storageManager.readEntryBook().get();
+        assertEquals(original, new EntryBook(retrieved));
     }
 
     @Test
-    public void getAddressBookFilePath() {
-        assertNotNull(storageManager.getAddressBookFilePath());
+    public void getEntryBookFilePath() {
+        assertNotNull(storageManager.getEntryBookFilePath());
     }
 
     @Test
-    public void handleAddressBookChangedEvent_exceptionThrown_eventRaised() throws IOException {
+    public void handleEntryBookChangedEvent_exceptionThrown_eventRaised() throws IOException {
         // Create a StorageManager while injecting a stub that  throws an exception when the save method is called
-        Storage storage = new StorageManager(new XmlAddressBookStorageExceptionThrowingStub("dummy"),
+        Storage storage = new StorageManager(new XmlEntryBookStorageExceptionThrowingStub("dummy"),
                                              new JsonUserPrefsStorage("dummy"));
         EventsCollector eventCollector = new EventsCollector();
-        storage.handleAddressBookChangedEvent(new AddressBookChangedEvent(new AddressBook()));
+        storage.handleEntryBookChangedEvent(new EntryBookChangedEvent(new EntryBook()));
         assertTrue(eventCollector.get(0) instanceof DataSavingExceptionEvent);
     }
 
@@ -86,14 +86,14 @@ public class StorageManagerTest {
     /**
      * A Stub class to throw an exception when the save method is called
      */
-    class XmlAddressBookStorageExceptionThrowingStub extends XmlAddressBookStorage {
+    class XmlEntryBookStorageExceptionThrowingStub extends XmlEntryBookStorage {
 
-        public XmlAddressBookStorageExceptionThrowingStub(String filePath) {
+        public XmlEntryBookStorageExceptionThrowingStub(String filePath) {
             super(filePath);
         }
 
         @Override
-        public void saveAddressBook(ReadOnlyAddressBook addressBook, String filePath) throws IOException {
+        public void saveEntryBook(ReadOnlyEntryBook entryBook, String filePath) throws IOException {
             throw new IOException("dummy exception");
         }
     }

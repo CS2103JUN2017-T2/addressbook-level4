@@ -11,43 +11,49 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.exceptions.IllegalValueException;
+<<<<<<< HEAD:src/main/java/seedu/address/storage/XmlSerializableAddressBook.java
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.entry.Person;
 import seedu.address.model.entry.ReadOnlyPerson;
+=======
+import seedu.address.model.ReadOnlyEntryBook;
+import seedu.address.model.entry.Entry;
+import seedu.address.model.entry.ReadOnlyEntry;
+>>>>>>> V0.1_dash:src/main/java/seedu/address/storage/XmlSerializableEntryBook.java
 import seedu.address.model.tag.Tag;
 
 /**
- * An Immutable AddressBook that is serializable to XML format
+ * An Immutable EntryBook that is serializable to XML format
  */
-@XmlRootElement(name = "addressbook")
-public class XmlSerializableAddressBook implements ReadOnlyAddressBook {
+@XmlRootElement(name = "entrybook")
+public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
 
     @XmlElement
-    private List<XmlAdaptedPerson> persons;
+    private List<XmlAdaptedEntry> entries;
     @XmlElement
     private List<XmlAdaptedTag> tags;
 
     /**
-     * Creates an empty XmlSerializableAddressBook.
+     * Creates an empty XmlSerializableEntryBook.
      * This empty constructor is required for marshalling.
      */
-    public XmlSerializableAddressBook() {
-        persons = new ArrayList<>();
+    public XmlSerializableEntryBook() {
+        entries = new ArrayList<>();
         tags = new ArrayList<>();
     }
 
     /**
      * Conversion
      */
-    public XmlSerializableAddressBook(ReadOnlyAddressBook src) {
+    public XmlSerializableEntryBook(ReadOnlyEntryBook src) {
         this();
-        persons.addAll(src.getPersonList().stream().map(XmlAdaptedPerson::new).collect(Collectors.toList()));
+        entries.addAll(src.getEntryList().stream().map(XmlAdaptedEntry::new).collect(Collectors.toList()));
         tags.addAll(src.getTagList().stream().map(XmlAdaptedTag::new).collect(Collectors.toList()));
     }
 
     @Override
-    public ObservableList<ReadOnlyPerson> getPersonList() {
-        final ObservableList<Person> persons = this.persons.stream().map(p -> {
+    public ObservableList<ReadOnlyEntry> getEntryList() {
+        final ObservableList<Entry> entries = this.entries.stream().map(p -> {
             try {
                 return p.toModelType();
             } catch (IllegalValueException e) {
@@ -56,7 +62,7 @@ public class XmlSerializableAddressBook implements ReadOnlyAddressBook {
                 return null;
             }
         }).collect(Collectors.toCollection(FXCollections::observableArrayList));
-        return new UnmodifiableObservableList<>(persons);
+        return new UnmodifiableObservableList<>(entries);
     }
 
     @Override
