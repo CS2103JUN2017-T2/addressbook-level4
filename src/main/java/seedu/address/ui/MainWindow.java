@@ -136,11 +136,12 @@ public class MainWindow extends UiPart<Region> {
     }
 
     void fillInnerParts() {
-        eventListPanel = new EntryListPanel(logic.getFilteredEventsList());
-        eventListPanelPlaceholder.getChildren().add(eventListPanel.getRoot());
+        // Not using two leftmost panels for now
+        //eventListPanel = new EntryListPanel(logic.getFilteredEventsList());
+        //eventListPanelPlaceholder.getChildren().add(eventListPanel.getRoot());
 
-        deadlineListPanel = new EntryListPanel(logic.getFilteredDeadlinesList());
-        deadlineListHeaderPlaceholder.getChildren().add(deadlineListPanel.getRoot());
+        //deadlineListPanel = new EntryListPanel(logic.getFilteredDeadlinesList());
+        //deadlineListHeaderPlaceholder.getChildren().add(deadlineListPanel.getRoot());
 
         floatingTaskListPanel = new EntryListPanel(logic.getFilteredFloatingTasksList());
         floatingTaskListHeaderPlaceholder.getChildren().add(floatingTaskListPanel.getRoot());
