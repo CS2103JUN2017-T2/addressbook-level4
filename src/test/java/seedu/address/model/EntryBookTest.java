@@ -41,22 +41,9 @@ public class EntryBookTest {
 
     @Test
     public void resetData_withValidReadOnlyEntryBook_replacesData() {
-        entryBook newData = new TypicalEntries().getTypicalEntryBook();
+        EntryBook newData = new TypicalEntries().getTypicalEntryBook();
         entryBook.resetData(newData);
         assertEquals(newData, entryBook);
-    }
-
-    @Test
-    public void resetData_withDuplicateTags_throwsAssertionError() {
-        EntryBook typicalEntryBook = new TypicalEntries().getTypicalEntryBook();
-        List<ReadOnlyEntry> newEntrys = typicalEntryBook.getEntryList();
-        List<Tag> newTags = new ArrayList<>(typicalEntryBook.getTagList());
-        // Repeat the first tag twice
-        newTags.add(newTags.get(0));
-        EntryBookStub newData = new EntryBookStub(newEntrys, newTags);
-
-        thrown.expect(AssertionError.class);
-        entryBook.resetData(newData);
     }
 
     /**

@@ -4,7 +4,6 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.EntryBook;
 import seedu.address.model.entry.Entry;
-import seedu.address.model.entry.exceptions.DuplicateEntryException;
 
 //@@author A0126623L
 /**
@@ -40,11 +39,7 @@ public class TypicalEntries {
 	// @@author A0126623L
 	public static void loadEntryBookWithSampleData(EntryBook eb) {
 		for (Entry entry : new TypicalEntries().getTypicalEntries()) {
-			try {
-				eb.addEntry(new Entry(entry));
-			} catch (DuplicateEntryException e) {
-				assert false : "not possible";
-			}
+			eb.addEntry(new Entry(entry));
 		}
 	}
 
