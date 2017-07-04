@@ -77,13 +77,25 @@
       <children>
          <SplitPane dividerPositions="0.33" prefHeight="160.0" prefWidth="200.0">
            <items>
-             <AnchorPane fx:id="eventListPanelPlaceholder" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                   <children>
-                     <SplitPane dividerPositions="0.5" prefHeight="86.0" prefWidth="467.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <StackPane fx:id="eventListPanelPlaceholder" prefHeight="86.0" prefWidth="216.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  </children>
+               </AnchorPane>
+             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                  <children>
+                     <SplitPane dividerPositions="0.5" prefHeight="86.0" prefWidth="442.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                        <items>
-                         <AnchorPane fx:id="deadlineListPanelPlaceholder" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
-                         <AnchorPane fx:id="floatingTaskListPanelPlaceholder" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                              <children>
+                                 <StackPane fx:id="deadlineListPanelPlaceholder" prefHeight="84.0" prefWidth="216.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              </children>
+                           </AnchorPane>
+                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                              <children>
+                                 <StackPane fx:id="floatingTaskListPanelPlaceholder" prefHeight="84.0" prefWidth="216.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              </children>
+                           </AnchorPane>
                        </items>
                      </SplitPane>
                   </children>
