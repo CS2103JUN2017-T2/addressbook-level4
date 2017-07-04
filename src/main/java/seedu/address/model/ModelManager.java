@@ -72,7 +72,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
-            throws DuplicateEntryException, EntryNotFoundException {
+            throws EntryNotFoundException {
         requireAllNonNull(target, editedEntry);
 
         entryBook.updateEntry(target, editedEntry);
