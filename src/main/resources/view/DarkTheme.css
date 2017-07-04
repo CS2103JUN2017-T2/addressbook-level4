@@ -141,6 +141,24 @@
      -fx-border-top-width: 1px;
 }
 
+.event-pane-with-border {
+     -fx-background-color: derive(#0122a7, 20%);
+     -fx-border-color: derive(#000000, 10%);
+     -fx-border-top-width: 1px;
+}
+
+.deadline-pane-with-border {
+     -fx-background-color: derive(#01a738, 20%);
+     -fx-border-color: derive(#000000, 10%);
+     -fx-border-top-width: 1px;
+}
+
+.floating-pane-with-border {
+     -fx-background-color: derive(#cfef01, 20%);
+     -fx-border-color: derive(#000000, 10%);
+     -fx-border-top-width: 1px;
+}
+
 .status-bar {
     -fx-background-color: derive(#1d1d1d, 20%);
     -fx-text-fill: black;

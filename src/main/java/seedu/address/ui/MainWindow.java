@@ -32,11 +32,6 @@ public class MainWindow extends UiPart<Region> {
     private static final int MIN_HEIGHT = 600;
     private static final int MIN_WIDTH = 450;
 
-    private static final String EVENTS_LIST_HEADER_NAME = "Events";
-    private static final String DEADLINES_LIST_HEADER_NAME = "Deadlines";
-    private static final String FLOATING_TASKS_LIST_HEADER_NAME = "Floating Tasks";
-
-
     private Stage primaryStage;
     private Logic logic;
 
@@ -52,15 +47,6 @@ public class MainWindow extends UiPart<Region> {
 
     @FXML
     private MenuItem helpMenuItem;
-
-    @FXML
-    private TextFlow eventListHeaderPlaceholder;
-
-    @FXML
-    private TextFlow deadlineListHeaderPlaceholder;
-
-    @FXML
-    private TextFlow floatingTaskListHeaderPlaceholder;
 
     @FXML
     private StackPane eventListPanelPlaceholder;
@@ -136,15 +122,15 @@ public class MainWindow extends UiPart<Region> {
     }
 
     void fillInnerParts() {
-        // Not using two leftmost panels for now
-        //eventListPanel = new EntryListPanel(logic.getFilteredEventList());
-        //eventListPanelPlaceholder.getChildren().add(eventListPanel.getRoot());
+        // All are using same list for now
+        eventListPanel = new EntryListPanel(logic.getFilteredFloatingTaskList());
+        eventListPanelPlaceholder.getChildren().add(eventListPanel.getRoot());
 
-        //deadlineListPanel = new EntryListPanel(logic.getFilteredDeadlineList());
-        //deadlineListHeaderPlaceholder.getChildren().add(deadlineListPanel.getRoot());
+        deadlineListPanel = new EntryListPanel(logic.getFilteredFloatingTaskList());
+        deadlineListPanelPlaceholder.getChildren().add(deadlineListPanel.getRoot());
 
         floatingTaskListPanel = new EntryListPanel(logic.getFilteredFloatingTaskList());
-        floatingTaskListHeaderPlaceholder.getChildren().add(floatingTaskListPanel.getRoot());
+        floatingTaskListPanelPlaceholder.getChildren().add(floatingTaskListPanel.getRoot());
 
         ResultDisplay resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
@@ -155,14 +141,6 @@ public class MainWindow extends UiPart<Region> {
         CommandBox commandBox = new CommandBox(logic);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
 
-        Text eventListHeader = new Text(EVENTS_LIST_HEADER_NAME);
-        eventListHeaderPlaceholder = new TextFlow(eventListHeader);
-
-        Text deadlineListHeader = new Text(DEADLINES_LIST_HEADER_NAME);
-        deadlineListHeaderPlaceholder = new TextFlow(deadlineListHeader);
-
-        Text floatingTaskListHeader = new Text(FLOATING_TASKS_LIST_HEADER_NAME);
-        floatingTaskListHeaderPlaceholder = new TextFlow(floatingTaskListHeader);
     }
 
     void hide() {
