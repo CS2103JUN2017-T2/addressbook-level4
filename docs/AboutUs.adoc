@@ -10,15 +10,9 @@ We are a team based in the http://www.comp.nus.edu.sg[School of Computing, Natio
 image::mattheuslee.jpg[width="150", align="left"]
 
 Role: Team Leader +
-Responsibilities: Git
+Responsibilities: Git, Deliverables and scheduling, Integration, Git, GUI and commons
 
 '''
-
-=== http://github.com/ChuaPingChan[Chua Ping Chan]
-image::chuapingchan.png[width="150", align="left"]
-
-Role: Developer +
-Responsibilities:
 
 '''
 
