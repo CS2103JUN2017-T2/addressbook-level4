@@ -14,8 +14,8 @@ import seedu.address.model.util.SampleDataUtil;
  */
 public class EntryBuilder {
 
-    public static final String DEFAULT_NAME = "CS2103 class";
-    public static final String DEFAULT_TAGS = "school";
+    public static final String DEFAULT_NAME = "defaultName";
+    public static final String DEFAULT_TAGS = "defaultTag";
 
     private Entry entry;
 
