@@ -9,11 +9,10 @@ import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.UnmodifiableObservableList;
-import seedu.address.commons.events.model.AddressBookChangedEvent;
+import seedu.address.commons.events.model.EntryBookChangedEvent;
 import seedu.address.commons.util.StringUtil;
-import seedu.address.model.person.ReadOnlyPerson;
-import seedu.address.model.person.exceptions.DuplicatePersonException;
-import seedu.address.model.person.exceptions.PersonNotFoundException;
+import seedu.address.model.entry.ReadOnlyEntry;
+import seedu.address.model.entry.exceptions.EntryNotFoundException;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -22,86 +21,86 @@ import seedu.address.model.person.exceptions.PersonNotFoundException;
 public class ModelManager extends ComponentManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
-    private final AddressBook addressBook;
-    private final FilteredList<ReadOnlyPerson> filteredPersons;
+    private final EntryBook entryBook;
+    private final FilteredList<ReadOnlyEntry> filteredEntries;
 
     /**
-     * Initializes a ModelManager with the given addressBook and userPrefs.
+     * Initializes a ModelManager with the given entryBook and userPrefs.
      */
-    public ModelManager(ReadOnlyAddressBook addressBook, UserPrefs userPrefs) {
+    public ModelManager(ReadOnlyEntryBook entryBook, UserPrefs userPrefs) {
         super();
-        requireAllNonNull(addressBook, userPrefs);
+        requireAllNonNull(entryBook, userPrefs);
 
-        logger.fine("Initializing with address book: " + addressBook + " and user prefs " + userPrefs);
+        logger.fine("Initializing with entry book: " + entryBook + " and user prefs " + userPrefs);
 
-        this.addressBook = new AddressBook(addressBook);
-        filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
+        this.entryBook = new EntryBook(entryBook);
+        filteredEntries = new FilteredList<>(this.entryBook.getEntryList());
     }
 
     public ModelManager() {
-        this(new AddressBook(), new UserPrefs());
+        this(new EntryBook(), new UserPrefs());
     }
 
     @Override
-    public void resetData(ReadOnlyAddressBook newData) {
-        addressBook.resetData(newData);
-        indicateAddressBookChanged();
+    public void resetData(ReadOnlyEntryBook newData) {
+        entryBook.resetData(newData);
+        indicateEntryBookChanged();
     }
 
     @Override
-    public ReadOnlyAddressBook getAddressBook() {
-        return addressBook;
+    public ReadOnlyEntryBook getEntryBook() {
+        return entryBook;
     }
 
     /** Raises an event to indicate the model has changed */
-    private void indicateAddressBookChanged() {
-        raise(new AddressBookChangedEvent(addressBook));
+    private void indicateEntryBookChanged() {
+        raise(new EntryBookChangedEvent(entryBook));
     }
 
     @Override
-    public synchronized void deletePerson(ReadOnlyPerson target) throws PersonNotFoundException {
-        addressBook.removePerson(target);
-        indicateAddressBookChanged();
+    public synchronized void deleteEntry(ReadOnlyEntry target) throws EntryNotFoundException {
+        entryBook.removeEntry(target);
+        indicateEntryBookChanged();
     }
 
     @Override
-    public synchronized void addPerson(ReadOnlyPerson person) throws DuplicatePersonException {
-        addressBook.addPerson(person);
+    public synchronized void addEntry(ReadOnlyEntry entry) {
+        entryBook.addEntry(entry);
         updateFilteredListToShowAll();
-        indicateAddressBookChanged();
+        indicateEntryBookChanged();
     }
 
     @Override
-    public void updatePerson(ReadOnlyPerson target, ReadOnlyPerson editedPerson)
-            throws DuplicatePersonException, PersonNotFoundException {
-        requireAllNonNull(target, editedPerson);
+    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
+            throws EntryNotFoundException {
+        requireAllNonNull(target, editedEntry);
 
-        addressBook.updatePerson(target, editedPerson);
-        indicateAddressBookChanged();
+        entryBook.updateEntry(target, editedEntry);
+        indicateEntryBookChanged();
     }
 
-    //=========== Filtered Person List Accessors =============================================================
+    //=========== Filtered Entry List Accessors =============================================================
 
     /**
-     * Return a list of {@code ReadOnlyPerson} backed by the internal list of {@code addressBook}
+     * Return a list of {@code ReadOnlyEntry} backed by the internal list of {@code entryBook}
      */
     @Override
-    public UnmodifiableObservableList<ReadOnlyPerson> getFilteredPersonList() {
-        return new UnmodifiableObservableList<>(filteredPersons);
+    public UnmodifiableObservableList<ReadOnlyEntry> getFilteredFloatingTaskList() {
+        return new UnmodifiableObservableList<>(filteredEntries);
     }
 
     @Override
     public void updateFilteredListToShowAll() {
-        filteredPersons.setPredicate(null);
+        filteredEntries.setPredicate(null);
     }
 
     @Override
-    public void updateFilteredPersonList(Set<String> keywords) {
-        updateFilteredPersonList(new PredicateExpression(new NameQualifier(keywords)));
+    public void updateFilteredFloatingTaskList(Set<String> keywords) {
+        updateFilteredEntryList(new PredicateExpression(new NameQualifier(keywords)));
     }
 
-    private void updateFilteredPersonList(Expression expression) {
-        filteredPersons.setPredicate(expression::satisfies);
+    private void updateFilteredEntryList(Expression expression) {
+        filteredEntries.setPredicate(expression::satisfies);
     }
 
     @Override
@@ -118,14 +117,14 @@ public class ModelManager extends ComponentManager implements Model {
 
         // state check
         ModelManager other = (ModelManager) obj;
-        return addressBook.equals(other.addressBook)
-                && filteredPersons.equals(other.filteredPersons);
+        return entryBook.equals(other.entryBook)
+                && filteredEntries.equals(other.filteredEntries);
     }
 
     //========== Inner classes/interfaces used for filtering =================================================
 
     interface Expression {
-        boolean satisfies(ReadOnlyPerson person);
+        boolean satisfies(ReadOnlyEntry entry);
         String toString();
     }
 
@@ -138,8 +137,8 @@ public class ModelManager extends ComponentManager implements Model {
         }
 
         @Override
-        public boolean satisfies(ReadOnlyPerson person) {
-            return qualifier.run(person);
+        public boolean satisfies(ReadOnlyEntry entry) {
+            return qualifier.run(entry);
         }
 
         @Override
@@ -149,7 +148,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     interface Qualifier {
-        boolean run(ReadOnlyPerson person);
+        boolean run(ReadOnlyEntry entry);
         String toString();
     }
 
@@ -161,9 +160,9 @@ public class ModelManager extends ComponentManager implements Model {
         }
 
         @Override
-        public boolean run(ReadOnlyPerson person) {
+        public boolean run(ReadOnlyEntry entry) {
             return nameKeyWords.stream()
-                    .filter(keyword -> StringUtil.containsWordIgnoreCase(person.getName().fullName, keyword))
+                    .filter(keyword -> StringUtil.containsWordIgnoreCase(entry.getName().fullName, keyword))
                     .findAny()
                     .isPresent();
         }

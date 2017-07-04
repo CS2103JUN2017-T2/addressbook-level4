@@ -16,15 +16,15 @@ import seedu.address.commons.events.ui.ExitAppRequestEvent;
 import seedu.address.commons.util.FxViewUtil;
 import seedu.address.logic.Logic;
 import seedu.address.model.UserPrefs;
-import seedu.address.model.person.ReadOnlyPerson;
 
+//@@author A0125586X
 /**
  * The Main Window. Provides the basic application layout containing
  * a menu bar and space where other JavaFX elements can be placed.
  */
 public class MainWindow extends UiPart<Region> {
 
-    private static final String ICON = "/images/address_book_32.png";
+    private static final String ICON = "/images/calendar.png";
     private static final String FXML = "MainWindow.fxml";
     private static final int MIN_HEIGHT = 600;
     private static final int MIN_WIDTH = 450;
@@ -33,13 +33,11 @@ public class MainWindow extends UiPart<Region> {
     private Logic logic;
 
     // Independent Ui parts residing in this Ui container
-    private BrowserPanel browserPanel;
-    private PersonListPanel personListPanel;
+    private EntryListPanel eventListPanel;
+    private EntryListPanel deadlineListPanel;
+    private EntryListPanel floatingTaskListPanel;
     private Config config;
     private UserPrefs prefs;
-
-    @FXML
-    private StackPane browserPlaceholder;
 
     @FXML
     private StackPane commandBoxPlaceholder;
@@ -48,7 +46,13 @@ public class MainWindow extends UiPart<Region> {
     private MenuItem helpMenuItem;
 
     @FXML
-    private StackPane personListPanelPlaceholder;
+    private StackPane eventListPanelPlaceholder;
+
+    @FXML
+    private StackPane deadlineListPanelPlaceholder;
+
+    @FXML
+    private StackPane floatingTaskListPanelPlaceholder;
 
     @FXML
     private StackPane resultDisplayPlaceholder;
@@ -115,20 +119,25 @@ public class MainWindow extends UiPart<Region> {
     }
 
     void fillInnerParts() {
-        browserPanel = new BrowserPanel();
-        browserPlaceholder.getChildren().add(browserPanel.getRoot());
+        // All are using same list for now
+        eventListPanel = new EntryListPanel(logic.getFilteredFloatingTaskList());
+        eventListPanelPlaceholder.getChildren().add(eventListPanel.getRoot());
 
-        personListPanel = new PersonListPanel(logic.getFilteredPersonList());
-        personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
+        deadlineListPanel = new EntryListPanel(logic.getFilteredFloatingTaskList());
+        deadlineListPanelPlaceholder.getChildren().add(deadlineListPanel.getRoot());
+
+        floatingTaskListPanel = new EntryListPanel(logic.getFilteredFloatingTaskList());
+        floatingTaskListPanelPlaceholder.getChildren().add(floatingTaskListPanel.getRoot());
 
         ResultDisplay resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
 
-        StatusBarFooter statusBarFooter = new StatusBarFooter(prefs.getAddressBookFilePath());
+        StatusBarFooter statusBarFooter = new StatusBarFooter(prefs.getEntryBookFilePath());
         statusbarPlaceholder.getChildren().add(statusBarFooter.getRoot());
 
         CommandBox commandBox = new CommandBox(logic);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
+
     }
 
     void hide() {
@@ -190,16 +199,16 @@ public class MainWindow extends UiPart<Region> {
         raise(new ExitAppRequestEvent());
     }
 
-    public PersonListPanel getPersonListPanel() {
-        return this.personListPanel;
+    public EntryListPanel getEventListPanel() {
+        return this.eventListPanel;
     }
 
-    void loadPersonPage(ReadOnlyPerson person) {
-        browserPanel.loadPersonPage(person);
+    public EntryListPanel getDeadlineListPanel() {
+        return this.deadlineListPanel;
     }
 
-    void releaseResources() {
-        browserPanel.freeResources();
+    public EntryListPanel getFloatingTaskListPanel() {
+        return this.floatingTaskListPanel;
     }
 
 }

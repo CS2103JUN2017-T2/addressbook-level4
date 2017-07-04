@@ -111,7 +111,7 @@ public class ArgumentTokenizer {
         return argMultimap;
     }
 
-    /**
+    /*
      * Returns the trimmed value of the argument in the arguments string specified by {@code currentPrefixPosition}.
      * The end position of the value is determined by {@code nextPrefixPosition}.
      */

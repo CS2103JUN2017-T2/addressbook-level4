@@ -6,49 +6,33 @@ We are a team based in the http://www.comp.nus.edu.sg[School of Computing, Natio
 
 == Project Team
 
-=== http://www.comp.nus.edu.sg/~damithch[Damith C. Rajapakse]
-image::DamithRajapakse.jpg[width="150", align="left"]
+== http://github.com/mattheuslee[Mattheus Lee]
+image::mattheuslee.jpg[width="150", align="left"]
 
-Role: Project Advisor
-
-'''
-
-=== http://github.com/lejolly[Joshua Lee]
-image::JoshuaLee.jpg[width="150", align="left"]
-
-Role: Developer +
-Responsibilities: UI
+Role: Team Leader +
+Responsibilities: Git, Deliverables and scheduling, Integration, GUI and commons
 
 '''
 
-=== http://github.com/yijinl[Leow Yijin]
-image::LeowYijin.jpg[width="150", align="left"]
+=== http://github.com/ChuaPingChan[Chua Ping Chan]
+image::chuapingchan.png[width="150", align="left"]
 
 Role: Developer +
-Responsibilities: Data
+Responsibilities: Model(component), Testing, Code Quality, Meeting Minutes
 
 '''
-
-=== http://github.com/m133225[Martin Choo]
-image::MartinChoo.jpg[width="150", align="left"]
+== http://github.com/kevinLamKB[Kevin Lam]
+image::kevinlamkb.png[width="150", align="left"]
 
 Role: Developer +
-Responsibilities: Dev Ops
+Responsibilities: Documentation, Eclipse expert, .logic component
 
 '''
-
-=== https://github.com/ndt93[Thien Nguyen]
-
-Role: Developer +
-Responsibilities: Threading
-
-'''
-
-=== http://github.com/yl-coder[You Liang]
-image::YouLiang.jpg[width="150", align="left"]
+== http://github.com/akd13[Akankshita Dash]
+image::akd13.png[width="150", align="left"]
 
 Role: Developer +
-Responsibilities: UI
+Responsibilities: Terminology and Style, SourceTree expert, Storage component
 
 '''
 
