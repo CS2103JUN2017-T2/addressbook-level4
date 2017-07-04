@@ -8,18 +8,9 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlElement;
 
 import seedu.address.commons.exceptions.IllegalValueException;
-<<<<<<< HEAD:src/main/java/seedu/address/storage/XmlAdaptedPerson.java
-import seedu.address.model.entry.Address;
-import seedu.address.model.entry.Email;
-import seedu.address.model.entry.Name;
-import seedu.address.model.entry.Person;
-import seedu.address.model.entry.Phone;
-import seedu.address.model.entry.ReadOnlyPerson;
-=======
 import seedu.address.model.entry.Entry;
 import seedu.address.model.entry.Name;
 import seedu.address.model.entry.ReadOnlyEntry;
->>>>>>> V0.1_dash:src/main/java/seedu/address/storage/XmlAdaptedEntry.java
 import seedu.address.model.tag.Tag;
 
 /**
