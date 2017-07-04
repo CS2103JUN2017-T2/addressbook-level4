@@ -12,7 +12,7 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.entry.Person;
-import seedu.address.testutil.PersonBuilder;
+import seedu.address.testutil.EntryBuilder;
 import seedu.address.testutil.TypicalPersons;
 
 /**
@@ -29,7 +29,7 @@ public class AddCommandIntegrationTest {
 
     @Test
     public void execute_newPerson_success() throws Exception {
-        Person validPerson = new PersonBuilder().build();
+        Person validPerson = new EntryBuilder().build();
 
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.addPerson(validPerson);

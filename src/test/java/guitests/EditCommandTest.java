@@ -24,7 +24,7 @@ import seedu.address.model.entry.Name;
 import seedu.address.model.entry.Person;
 import seedu.address.model.entry.Phone;
 import seedu.address.model.tag.Tag;
-import seedu.address.testutil.PersonBuilder;
+import seedu.address.testutil.EntryBuilder;
 
 // TODO: reduce GUI tests by transferring some tests to be covered by lower level tests.
 public class EditCommandTest extends AddressBookGuiTest {
@@ -41,7 +41,7 @@ public class EditCommandTest extends AddressBookGuiTest {
                 + PREFIX_TAG + "husband";
         Index addressBookIndex = INDEX_FIRST_PERSON;
 
-        Person editedPerson = new PersonBuilder().withName("Bobby").withPhone("91234567")
+        Person editedPerson = new EntryBuilder().withName("Bobby").withPhone("91234567")
                 .withEmail("bobby@example.com").withAddress("Block 123, Bobby Street 3").withTags("husband").build();
 
         assertEditSuccess(addressBookIndex, addressBookIndex, detailsToEdit, editedPerson);
@@ -54,7 +54,7 @@ public class EditCommandTest extends AddressBookGuiTest {
         Index addressBookIndex = INDEX_SECOND_PERSON;
 
         Person personToEdit = expectedPersonsList[addressBookIndex.getZeroBased()];
-        Person editedPerson = new PersonBuilder(personToEdit).withTags("sweetie", "bestie").build();
+        Person editedPerson = new EntryBuilder(personToEdit).withTags("sweetie", "bestie").build();
 
         assertEditSuccess(addressBookIndex, addressBookIndex, detailsToEdit, editedPerson);
     }
@@ -65,7 +65,7 @@ public class EditCommandTest extends AddressBookGuiTest {
         Index addressBookIndex = INDEX_SECOND_PERSON;
 
         Person personToEdit = expectedPersonsList[addressBookIndex.getZeroBased()];
-        Person editedPerson = new PersonBuilder(personToEdit).withTags().build();
+        Person editedPerson = new EntryBuilder(personToEdit).withTags().build();
 
         assertEditSuccess(addressBookIndex, addressBookIndex, detailsToEdit, editedPerson);
     }
@@ -78,7 +78,7 @@ public class EditCommandTest extends AddressBookGuiTest {
         Index addressBookIndex = INDEX_THIRD_PERSON;
 
         Person personToEdit = expectedPersonsList[addressBookIndex.getZeroBased()];
-        Person editedPerson = new PersonBuilder(personToEdit).withName("Carrle").build();
+        Person editedPerson = new EntryBuilder(personToEdit).withName("Carrle").build();
 
         assertEditSuccess(INDEX_FIRST_PERSON, addressBookIndex, detailsToEdit, editedPerson);
     }

@@ -3,25 +3,19 @@ package seedu.address.testutil;
 import java.util.Set;
 
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.model.entry.Address;
-import seedu.address.model.entry.Email;
 import seedu.address.model.entry.Name;
-import seedu.address.model.entry.Person;
-import seedu.address.model.entry.Phone;
-import seedu.address.model.entry.ReadOnlyPerson;
+import seedu.address.model.entry.Entry;
+import seedu.address.model.entry.ReadOnlyEntry;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
 
 /**
- * A utility class to help with building Person objects.
+ * A utility class to help with building Entry objects.
  */
 public class EntryBuilder {
 
-    public static final String DEFAULT_NAME = "Alice Pauline";
-    public static final String DEFAULT_PHONE = "85355255";
-    public static final String DEFAULT_EMAIL = "alice@gmail.com";
-    public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
-    public static final String DEFAULT_TAGS = "friends";
+    public static final String DEFAULT_NAME = "CS2103 class";
+    public static final String DEFAULT_TAGS = "school";
 
     private Entry entry;
 
