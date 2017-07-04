@@ -4,7 +4,7 @@ import javafx.collections.ObservableList;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.model.entry.ReadOnlyEntry;
 
 /**
  * API of the Logic component
@@ -19,13 +19,7 @@ public interface Logic {
      */
     CommandResult execute(String commandText) throws CommandException, ParseException;
 
-    //@@kevinlamkb A0140633R
-    /** Returns the filtered list of events */
-    ObservableList<ReadOnlyEntry> getFilteredEventsList();
-    
-    /** Returns the filtered list of deadlines */
-    ObservableList<ReadOnlyEntry> getFilteredDeadlinesList();
-
+    //@@kevinlamkb A0140633R   
     /** Returns the filtered list of floating tasks */
-    ObservableList<ReadOnlyEntry> getFilteredFloatingTasksList();
+    ObservableList<ReadOnlyEntry> getFilteredFloatingTaskList();
 }

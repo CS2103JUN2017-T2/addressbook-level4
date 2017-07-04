@@ -21,6 +21,13 @@ Role: Developer +
 Responsibilities:
 
 '''
+== http://github.com/kevinLamKB[Kevin Lam]
+image::kevinlamkb.png[width="150", align="left"]
+
+Role: Developer +
+Responsibilities: Documentation, Eclipse expert, .logic component
+
+'''
 
 == Contributors
 
