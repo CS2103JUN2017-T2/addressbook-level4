@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ENTRYBOOK_EVENT;
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ENTRYBOOK_DEADLINE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ENTRYBOOK_FLOATINGTASK;
 
@@ -11,6 +12,7 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.entry.ReadOnlyEntry;
 import seedu.address.model.entry.exceptions.EntryNotFoundException;
 
+
 //@@kevinlamkb A0140633R
 /**
  * Deletes an entry identified using the type of entry followed by displayed index from the last displayed list
@@ -20,13 +22,12 @@ public class DeleteCommand extends Command {
     public static final String COMMAND_WORD = "delete";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Deletes the entry identified by the index number used in the last entry listing.\n"
-            + "Parameters: /float (must be a positive integer)\n"
-            + "Example: " + COMMAND_WORD + PREFIX_ENTRYBOOK_FLOATINGTASK + " 1";
+            + ": Deletes the entry identified by keywords if it is the only task found, or deletes the task identified by the index number of the last entry listing.\n"
+            + "Format: delete + [keywords] or " + PREFIX_ENTRYBOOK_FLOATINGTASK + "INDEX (must be a positive integer)\n"
+            + "Example: " + COMMAND_WORD + " " + PREFIX_ENTRYBOOK_FLOATINGTASK + " 1";
 
-    public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person: %1$s";
-    
-    
+    public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Entry: %1$s";
+
     public final Index targetIndex;
 
     public DeleteCommand(Index targetIndex) {
