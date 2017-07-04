@@ -1,10 +1,15 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_START_DATE_ON;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_START_DATE_AT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_START_DATE_FROM;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_START_DATE_BY;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_END_DATE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_RECUR;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_RECUR_CUSTOMIZE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ENTRYBOOK_ARCHIVE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ENTRYBOOK_BIN;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.Set;
@@ -21,6 +26,7 @@ import seedu.address.model.person.Phone;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.tag.Tag;
 
+//@@kevinlamkb A0140633R
 /**
  * Parses input arguments and creates a new AddCommand object
  */
@@ -33,30 +39,29 @@ public class AddCommandParser {
      */
     public AddCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG);
+                ArgumentTokenizer.tokenize(args, PREFIX_START_DATE_ON, PREFIX_START_DATE_AT,
+                        PREFIX_START_DATE_FROM, PREFIX_START_DATE_BY, PREFIX_END_DATE,
+                        PREFIX_RECUR, PREFIX_RECUR_CUSTOMIZE,PREFIX_ENTRYBOOK_ARCHIVE,
+                        PREFIX_ENTRYBOOK_BIN, PREFIX_TAG);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_ADDRESS, PREFIX_PHONE, PREFIX_EMAIL)) {
+        if (!arePrefixesPresent(argMultimap,PREFIX_START_DATE_BY) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
 
         try {
-            Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME)).get();
-            Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE)).get();
-            Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL)).get();
-            Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS)).get();
+            Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
             Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+            ReadOnlyEntry entry = new Entry(name, tagList);
 
-            ReadOnlyPerson person = new Person(name, phone, email, address, tagList);
-
-            return new AddCommand(person);
+            return new AddCommand(entry);
         } catch (IllegalValueException ive) {
             throw new ParseException(ive.getMessage(), ive);
         }
     }
-
+    
     /**
-     * Returns true if none of the prefixes contains empty {@code Optional} values in the given
-     * {@code ArgumentMultimap}.
+     * Returns true if none of the prefixes contains empty {@code Optional}
+     * values in the given {@code ArgumentMultimap}.
      */
     private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
         return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
