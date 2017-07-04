@@ -26,10 +26,6 @@ image::kevinlamkb.png[width="150", align="left"]
 
 Role: Developer +
 Responsibilities: Documentation, Eclipse expert, .logic component
-=======
-
-Role: Developer +
-Responsibilities: Documentation, Eclipse expert, .logic component
 
 '''
 == http://github.com/akd13[Akankshita Dash]
