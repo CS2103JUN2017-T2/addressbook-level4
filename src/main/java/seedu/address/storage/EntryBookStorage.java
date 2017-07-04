@@ -15,6 +15,11 @@ public interface EntryBookStorage {
      * Returns the file path of the data file.
      */
     String getEntryBookFilePath();
+    
+    /**
+     * Sets the file path to the given value
+     */
+    void setEntryBookFilePath(String filePath);
 
     /**
      * Returns EntryBook data as a {@link ReadOnlyEntryBook}.
