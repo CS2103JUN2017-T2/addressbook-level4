@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import guitests.guihandles.PersonCardHandle;
+import guitests.guihandles.EntryCardHandle;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
@@ -17,12 +17,9 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.FileUtil;
 import seedu.address.commons.util.XmlUtil;
-import seedu.address.model.entry.Address;
-import seedu.address.model.entry.Email;
 import seedu.address.model.entry.Name;
-import seedu.address.model.entry.Person;
-import seedu.address.model.entry.Phone;
-import seedu.address.model.entry.ReadOnlyPerson;
+import seedu.address.model.entry.Entry;
+import seedu.address.model.entry.ReadOnlyEntry;
 
 /**
  * A utility class for test cases.
@@ -34,7 +31,7 @@ public class TestUtil {
      */
     public static final String SANDBOX_FOLDER = FileUtil.getPath("./src/test/data/sandbox/");
 
-    public static final Person[] SAMPLE_PERSON_DATA = getSamplePersonData();
+    public static final Entry[] SAMPLE_PERSON_DATA = getSampleEntryData();
 
     public static void assertThrows(Class<? extends Throwable> expected, Runnable executable) {
         try {
@@ -51,19 +48,19 @@ public class TestUtil {
                 String.format("Expected %s to be thrown, but nothing was thrown.", expected.getName()));
     }
 
-    private static Person[] getSamplePersonData() {
+    private static Entry[] getSampleEntryData() {
         try {
             //CHECKSTYLE.OFF: LineLength
-            return new Person[]{
-                new Person(new Name("Ali Muster"), new Phone("9482424"), new Email("hans@example.com"), new Address("4th street"), getTagSet()),
-                new Person(new Name("Boris Mueller"), new Phone("87249245"), new Email("ruth@example.com"), new Address("81th street"), getTagSet()),
-                new Person(new Name("Carl Kurz"), new Phone("95352563"), new Email("heinz@example.com"), new Address("wall street"), getTagSet()),
-                new Person(new Name("Daniel Meier"), new Phone("87652533"), new Email("cornelia@example.com"), new Address("10th street"), getTagSet()),
-                new Person(new Name("Elle Meyer"), new Phone("9482224"), new Email("werner@example.com"), new Address("michegan ave"), getTagSet()),
-                new Person(new Name("Fiona Kunz"), new Phone("9482427"), new Email("lydia@example.com"), new Address("little tokyo"), getTagSet()),
-                new Person(new Name("George Best"), new Phone("9482442"), new Email("anna@example.com"), new Address("4th street"), getTagSet()),
-                new Person(new Name("Hoon Meier"), new Phone("8482424"), new Email("stefan@example.com"), new Address("little india"), getTagSet()),
-                new Person(new Name("Ida Mueller"), new Phone("8482131"), new Email("hans@example.com"), new Address("chicago ave"), getTagSet())
+            return new Entry[]{
+                new Entry(new Name("Ali Muster"), getTagSet()),
+                new Entry(new Name("Boris Mueller"), getTagSet()),
+                new Entry(new Name("Carl Kurz"), getTagSet()),
+                new Entry(new Name("Daniel Meier"), getTagSet()),
+                new Entry(new Name("Elle Meyer"), getTagSet()),
+                new Entry(new Name("Fiona Kunz"), getTagSet()),
+                new Entry(new Name("George Best"), getTagSet()),
+                new Entry(new Name("Hoon Meier"), getTagSet()),
+                new Entry(new Name("Ida Mueller"), getTagSet())
             };
             //CHECKSTYLE.ON: LineLength
         } catch (IllegalValueException e) {
@@ -73,7 +70,7 @@ public class TestUtil {
         }
     }
 
-    public static List<Person> generateSamplePersonData() {
+    public static List<Entry> generateSampleEntryData() {
         return Arrays.asList(SAMPLE_PERSON_DATA);
     }
 
@@ -123,10 +120,10 @@ public class TestUtil {
      * @param personsToRemove The subset of persons.
      * @return The modified persons after removal of the subset from persons.
      */
-    public static Person[] removePersonsFromList(final Person[] persons, Person... personsToRemove) {
-        List<Person> listOfPersons = asList(persons);
-        listOfPersons.removeAll(asList(personsToRemove));
-        return listOfPersons.toArray(new Person[listOfPersons.size()]);
+    public static Entry[] removeEntriesFromList(final Entry[] persons, Entry... personsToRemove) {
+        List<Entry> listOfEntries = asList(persons);
+        listOfEntries.removeAll(asList(personsToRemove));
+        return listOfEntries.toArray(new Entry[listOfEntries.size()]);
     }
 
 
@@ -134,8 +131,8 @@ public class TestUtil {
      * Returns a copy of the list with the person at specified index removed.
      * @param list original list to copy from
      */
-    public static Person[] removePersonFromList(final Person[] list, Index index) {
-        return removePersonsFromList(list, list[index.getZeroBased()]);
+    public static Entry[] removeEntryFromList(final Entry[] list, Index index) {
+        return removeEntriesFromList(list, list[index.getZeroBased()]);
     }
 
     /**
@@ -144,10 +141,10 @@ public class TestUtil {
      * @param personsToAdd The persons that are to be appended behind the original array.
      * @return The modified array of persons.
      */
-    public static Person[] addPersonsToList(final Person[] persons, Person... personsToAdd) {
-        List<Person> listOfPersons = asList(persons);
-        listOfPersons.addAll(asList(personsToAdd));
-        return listOfPersons.toArray(new Person[listOfPersons.size()]);
+    public static Entry[] addEntriesToList(final Entry[] persons, Entry... personsToAdd) {
+        List<Entry> listOfEntries = asList(persons);
+        listOfEntries.addAll(asList(personsToAdd));
+        return listOfEntries.toArray(new Entry[listOfEntries.size()]);
     }
 
     private static <T> List<T> asList(T[] objs) {
@@ -158,8 +155,8 @@ public class TestUtil {
         return list;
     }
 
-    public static boolean compareCardAndPerson(PersonCardHandle card, ReadOnlyPerson person) {
-        return card.isSamePerson(person);
+    public static boolean compareCardAndEntry(EntryCardHandle card, ReadOnlyEntry person) {
+        return card.isSameEntry(person);
     }
 
 }
