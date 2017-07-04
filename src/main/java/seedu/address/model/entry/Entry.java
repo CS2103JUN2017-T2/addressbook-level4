@@ -11,8 +11,8 @@ import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 
 /**
- * Represents a Entry in the entry book.
- * Guarantees: details are present and not null, field values are validated.
+ * Represents a Entry in the entry book. Guarantees: details are present and not
+ * null, field values are validated.
  */
 public class Entry implements ReadOnlyEntry {
 
@@ -33,7 +33,7 @@ public class Entry implements ReadOnlyEntry {
      * Creates a copy of the given ReadOnlyEntry.
      */
     public Entry(ReadOnlyEntry source) {
-        this(source.getName(),source.getTags());
+        this(source.getName(), source.getTags());
     }
 
     public void setName(Name name) {

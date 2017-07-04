@@ -116,4 +116,5 @@ public class EntryList implements Iterable<Entry> {
     public int hashCode() {
         return internalList.hashCode();
     }
+
 }
