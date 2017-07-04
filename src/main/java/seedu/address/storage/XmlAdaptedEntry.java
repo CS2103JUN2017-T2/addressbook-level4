@@ -1,4 +1,3 @@
-//@@author A0132788U
 package seedu.address.storage;
 
 import java.util.ArrayList;
@@ -10,8 +9,8 @@ import javax.xml.bind.annotation.XmlElement;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.person.Name;
-import seedu.address.model.person.Person;
-import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.model.person.Entry;
+import seedu.address.model.person.ReadOnlyEntry;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -37,7 +36,7 @@ public class XmlAdaptedEntry {
      *
      * @param source future changes to this will not affect the created XmlAdaptedEntry
      */
-    public XmlAdaptedEntry(ReadOnlyPerson source) {
+    public XmlAdaptedEntry(ReadOnlyEntry source) {
         name = source.getName().fullName;
         tagged = new ArrayList<>();
         for (Tag tag : source.getTags()) {
@@ -50,13 +49,13 @@ public class XmlAdaptedEntry {
      *
      * @throws IllegalValueException if there were any data constraints violated in the adapted entry
      */
-    public Person toModelType() throws IllegalValueException {
+    public Entry toModelType() throws IllegalValueException {
         final List<Tag> personTags = new ArrayList<>();
         for (XmlAdaptedTag tag : tagged) {
             personTags.add(tag.toModelType());
         }
         final Name name = new Name(this.name);
         final Set<Tag> tags = new HashSet<>(personTags);
-        return new Person(name,tags);
+        return new Entry(name,tags);
     }
 }
