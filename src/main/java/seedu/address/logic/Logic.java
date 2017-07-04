@@ -19,7 +19,13 @@ public interface Logic {
      */
     CommandResult execute(String commandText) throws CommandException, ParseException;
 
-    /** Returns the filtered list of persons */
-    ObservableList<ReadOnlyPerson> getFilteredPersonList();
+    //@@kevinlamkb A0140633R
+    /** Returns the filtered list of events */
+    ObservableList<ReadOnlyEntry> getFilteredEventsList();
+    
+    /** Returns the filtered list of deadlines */
+    ObservableList<ReadOnlyEntry> getFilteredDeadlinesList();
 
+    /** Returns the filtered list of floating tasks */
+    ObservableList<ReadOnlyEntry> getFilteredFloatingTasksList();
 }
