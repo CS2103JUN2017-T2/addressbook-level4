@@ -1,6 +1,5 @@
 package seedu.address.model;
 
-
 import javafx.collections.ObservableList;
 import seedu.address.model.entry.ReadOnlyEntry;
 import seedu.address.model.tag.Tag;
