@@ -32,7 +32,7 @@ public class DeleteCommandParser {
     public Command parse(String args) throws ParseException {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_ENTRYBOOK_FLOATINGTASK);
 
-        if (!arePrefixesPresent(argMultimap,PREFIX_ENTRYBOOK_FLOATINGTASK)) {
+        if (!arePrefixesPresent(argMultimap, PREFIX_ENTRYBOOK_FLOATINGTASK)) {
             String trimmedArgs = argMultimap.getPreamble().get();
             if (trimmedArgs.isEmpty()) {
                 throw new ParseException(

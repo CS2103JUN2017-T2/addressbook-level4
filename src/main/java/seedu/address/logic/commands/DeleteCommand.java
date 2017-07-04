@@ -1,8 +1,5 @@
 package seedu.address.logic.commands;
 
-import static seedu.address.logic.parser.CliSyntax.PREFIX_ENTRYBOOK_EVENT;
-import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_ENTRYBOOK_DEADLINE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ENTRYBOOK_FLOATINGTASK;
 
 import seedu.address.commons.core.Messages;
@@ -23,7 +20,8 @@ public class DeleteCommand extends Command {
     public static final String COMMAND_WORD = "delete";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Deletes the entry identified by keywords if it is the only task found, or deletes the task identified by the index number of the last entry listing.\n"
+            + ": Deletes the entry identified by keywords if it is the only task found, "
+            + "or deletes the task identified by the index number of the last entry listing.\n"
             + "Format: delete + [keywords] or " + PREFIX_ENTRYBOOK_FLOATINGTASK + "INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " " + PREFIX_ENTRYBOOK_FLOATINGTASK + " 1";
 
