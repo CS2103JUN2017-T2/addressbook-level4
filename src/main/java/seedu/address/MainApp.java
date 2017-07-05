@@ -83,7 +83,7 @@ public class MainApp extends Application {
         Optional<ReadOnlyEntryBook> entryBookOptional;
         ReadOnlyEntryBook initialData;
         try {
-        	entryBookOptional = storage.readEntryBook();
+            entryBookOptional = storage.readEntryBook();
             if (!entryBookOptional.isPresent()) {
                 logger.info("Data file not found. Will be starting with an empty EntryBook");
             }

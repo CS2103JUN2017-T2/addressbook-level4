@@ -28,8 +28,8 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
     private List<XmlAdaptedTag> tags;
 
     /**
-     * Creates an empty XmlSerializableEntryBook.
-     * This empty constructor is required for marshalling.
+     * Creates an empty XmlSerializableEntryBook. This empty constructor is
+     * required for marshalling.
      */
     public XmlSerializableEntryBook() {
         entries = new ArrayList<>();
@@ -52,7 +52,7 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
                 return p.toModelType();
             } catch (IllegalValueException e) {
                 e.printStackTrace();
-                //TODO: better error handling
+                // TODO: better error handling
                 return null;
             }
         }).collect(Collectors.toCollection(FXCollections::observableArrayList));
@@ -66,7 +66,7 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
                 return t.toModelType();
             } catch (IllegalValueException e) {
                 e.printStackTrace();
-                //TODO: better error handling
+                // TODO: better error handling
                 return null;
             }
         }).collect(Collectors.toCollection(FXCollections::observableArrayList));
