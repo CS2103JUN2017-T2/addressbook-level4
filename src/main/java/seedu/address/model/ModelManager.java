@@ -80,8 +80,7 @@ public class ModelManager extends ComponentManager implements Model {
         indicateEntryBookChanged();
     }
 
-    // =========== Filtered Entry List Accessors
-    // =============================================================
+    // =========== Filtered Entry List Accessors ===========
 
     /**
      * Return a list of {@code ReadOnlyEntry} backed by the internal list of
@@ -127,8 +126,7 @@ public class ModelManager extends ComponentManager implements Model {
         return entryBook.equals(other.entryBook) && filteredEntries.equals(other.filteredEntries);
     }
 
-    // ========== Inner classes/interfaces used for filtering
-    // =================================================
+    // ========== Inner classes/interfaces used for filtering ==========
 
     interface Expression {
         boolean satisfies(ReadOnlyEntry entry);
