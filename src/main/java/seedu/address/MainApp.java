@@ -86,8 +86,10 @@ public class MainApp extends Application {
             entryBookOptional = storage.readEntryBook();
             if (!entryBookOptional.isPresent()) {
                 logger.info("Data file not found. Will be starting with an empty EntryBook");
+                initialData = new EntryBook();
+            } else {
+                initialData = entryBookOptional.get();
             }
-            initialData = new EntryBook();
         } catch (DataConversionException e) {
             logger.warning("Data file not in the correct format. Will be starting with an empty EntryBook");
             initialData = new EntryBook();
