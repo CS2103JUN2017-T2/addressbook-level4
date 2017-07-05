@@ -81,15 +81,21 @@ public class CommandBox extends UiPart<Region> {
 
     private void saveCommandtoHistory(String command) {
         commandTextHistory.add(command);
-        commandTextHistoryIdx = commandTextHistory.size() - 1;
+        commandTextHistoryIdx = commandTextHistory.size();
     }
 
     private void loadPreviousCommandIntoTextField() {
-        commandTextField.setText(commandTextHistory.get(commandTextHistoryIdx));
-        // Moves one step into the past
-        if (commandTextHistoryIdx > 0) {
+        // Special case for the first time
+        if (commandTextHistoryIdx == commandTextHistory.size()) {
             --commandTextHistoryIdx;
         }
+        // Stop at index 1 which is the first command entered
+        if (commandTextHistoryIdx > 1) {
+            --commandTextHistoryIdx;
+        }
+        commandTextField.setText(commandTextHistory.get(commandTextHistoryIdx));
+        // Position cursor at the end for easy editing
+        commandTextField.positionCaret(commandTextHistory.get(commandTextHistoryIdx).length());
     }
 
     private void loadNextCommandIntoTextField() {
@@ -98,6 +104,8 @@ public class CommandBox extends UiPart<Region> {
             ++commandTextHistoryIdx;
         }
         commandTextField.setText(commandTextHistory.get(commandTextHistoryIdx));
+        // Position cursor at the end for easy editing
+        commandTextField.positionCaret(commandTextHistory.get(commandTextHistoryIdx).length());
     }
     //@@author
 
