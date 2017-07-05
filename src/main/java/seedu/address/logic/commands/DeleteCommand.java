@@ -29,16 +29,19 @@ public class DeleteCommand extends Command {
 
     public static final String MESSAGE_DELETE_ENTRY_SUCCESS = "Deleted Entry: %1$s";
 
-    public Index targetIndex;
-    public boolean doSearch = false;
-    public Set<String> keywords;
-    public boolean doDelete = false;
+    private Index targetIndex;
+    private boolean doSearch = false;
+    private Set<String> keywords;
+    private boolean doDelete = false;
 
     public DeleteCommand(Index targetIndex, Set<String> keywords) {
         this.targetIndex = targetIndex;
         this.keywords = keywords;
     }
 
+    /*
+     * adjusts doSearch / doDelete variables in the DeleteCommand to switch the types of execute() it will carry out.
+     */
     public void checkDeleteCommand(Model model) {
         if (keywords.size() >= 1) {
             model.updateFilteredFloatingTaskList(keywords);

@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
+import seedu.address.commons.core.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.entry.Entry;
 import seedu.address.model.entry.ReadOnlyEntry;
@@ -16,16 +17,17 @@ public class AddCommand extends Command {
     public static final String COMMAND_WORD = "add";
 
     // @@kevinlamkb A0140633R
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds an entry to the entry book. " + "Parameters: "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds an entry to the entry book. " + "\n" + "Format: "
             + "NAME " + "[" + PREFIX_TAG + " TAG]...\n" + "Example: " + COMMAND_WORD + " " + "dinner with parents "
             + PREFIX_TAG + "friends " + PREFIX_TAG + "owesMoney";
 
-    public static final String MESSAGE_SUCCESS = "New entry added: %1$s";
+    public static final String MESSAGE_SUCCESS = "New entry added:" + "\n"
+                                                 + Messages.MESSAGE_ENTRY_DESCRIPTION +  "%1$s";
 
     private final Entry toAdd;
 
     /**
-     * Creates an AddCommand to add the specified {@code ReadOnlyPerson}
+     * Creates an AddCommand to add the specified {@code ReadOnlyEntry}
      */
     public AddCommand(ReadOnlyEntry entry) {
         toAdd = new Entry(entry);
