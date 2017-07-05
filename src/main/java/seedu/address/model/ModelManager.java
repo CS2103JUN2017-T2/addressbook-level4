@@ -97,6 +97,7 @@ public class ModelManager extends ComponentManager implements Model {
         filteredEntries.setPredicate(null);
     }
 
+    // @@author A0126623L
     @Override
     public void updateFilteredFloatingTaskList(Set<String> keywords) {
         for (String s : keywords) {
