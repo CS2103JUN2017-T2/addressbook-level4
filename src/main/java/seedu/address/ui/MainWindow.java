@@ -33,9 +33,9 @@ public class MainWindow extends UiPart<Region> {
     private Logic logic;
 
     // Independent Ui parts residing in this Ui container
-    private EntryListPanel eventListPanel;
-    private EntryListPanel deadlineListPanel;
-    private EntryListPanel floatingTaskListPanel;
+    private EventListPanel eventListPanel;
+    private DeadlineListPanel deadlineListPanel;
+    private FloatingTaskListPanel floatingTaskListPanel;
     private Config config;
     private UserPrefs prefs;
 
@@ -120,13 +120,13 @@ public class MainWindow extends UiPart<Region> {
 
     void fillInnerParts() {
         // All are using same list for now
-        eventListPanel = new EntryListPanel(logic.getFilteredFloatingTaskList());
+        eventListPanel = new EventListPanel(logic.getFilteredFloatingTaskList());
         eventListPanelPlaceholder.getChildren().add(eventListPanel.getRoot());
 
-        deadlineListPanel = new EntryListPanel(logic.getFilteredFloatingTaskList());
+        deadlineListPanel = new DeadlineListPanel(logic.getFilteredFloatingTaskList());
         deadlineListPanelPlaceholder.getChildren().add(deadlineListPanel.getRoot());
 
-        floatingTaskListPanel = new EntryListPanel(logic.getFilteredFloatingTaskList());
+        floatingTaskListPanel = new FloatingTaskListPanel(logic.getFilteredFloatingTaskList());
         floatingTaskListPanelPlaceholder.getChildren().add(floatingTaskListPanel.getRoot());
 
         ResultDisplay resultDisplay = new ResultDisplay();
@@ -199,15 +199,15 @@ public class MainWindow extends UiPart<Region> {
         raise(new ExitAppRequestEvent());
     }
 
-    public EntryListPanel getEventListPanel() {
+    public EventListPanel getEventListPanel() {
         return this.eventListPanel;
     }
 
-    public EntryListPanel getDeadlineListPanel() {
+    public DeadlineListPanel getDeadlineListPanel() {
         return this.deadlineListPanel;
     }
 
-    public EntryListPanel getFloatingTaskListPanel() {
+    public FloatingTaskListPanel getFloatingTaskListPanel() {
         return this.floatingTaskListPanel;
     }
 
