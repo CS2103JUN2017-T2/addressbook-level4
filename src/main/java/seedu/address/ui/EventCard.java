@@ -1,7 +1,5 @@
 package seedu.address.ui;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import seedu.address.model.entry.ReadOnlyEntry;
 
 //@author A0125586X
