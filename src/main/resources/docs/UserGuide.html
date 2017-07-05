@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="Asciidoctor 1.5.4">
+  <title>MultiTasky - User Guide</title>
+  <link rel="stylesheet" href="https://asciidoclive.com/assets/asciidoctor.js/css/asciidoctor.css">
+</head>
+
+<body class="article">
+  <div id="header">
+    <h1>MultiTasky - User Guide</h1>
+  </div>
+  <div id="content">
+    <div id="preamble">
+      <div class="sectionbody">
+        <div class="paragraph">
+          <p>By: <code>Team 2</code> Since: <code>Jun 2017</code> Licence: <code>MIT</code></p>
+        </div>
+      </div>
+      <div id="toc" class="toc">
+        <div id="toctitle"></div>
+        <ul class="sectlevel1">
+          <li><a href="#_welcome">1. Welcome</a></li>
+          <li><a href="#_getting_started">2. Getting Started</a></li>
+          <li><a href="#_features">3. Features</a>
+            <ul class="sectlevel2">
+              <li><a href="#_viewing_help_code_help_code">3.1. Viewing help : <code>help</code></a></li>
+              <li><a href="#_adding_an_entry_code_add_code">3.2. Adding an entry: <code>add</code></a></li>
+              <li><a href="#_completing_a_task_code_complete_code">3.3. Completing a task : <code>complete</code></a></li>
+              <li><a href="#_listing_all_entries_code_list_code">3.4. Listing all entries : <code>list</code></a></li>
+              <li><a href="#_editing_an_entry_code_edit_code">3.5. Editing an entry : <code>edit</code></a></li>
+              <li><a href="#_finding_an_entry_code_find_code">3.6. Finding an entry : <code>find</code></a></li>
+              <li><a href="#_deleting_an_entry_code_delete_code">3.7. Deleting an entry : <code>delete</code></a></li>
+              <li><a href="#_restoring_an_entry_code_restore_code">3.8. Restoring an entry : <code>restore</code></a></li>
+              <li><a href="#_listing_entered_commands_code_history_code">3.9. Listing entered commands : <code>history</code></a></li>
+              <li><a href="#_undo_changes_code_undo_code">3.10. Undo changes : <code>undo</code></a></li>
+              <li><a href="#_redo_changes_code_redo_code">3.11. Redo changes : <code>redo</code></a></li>
+              <li><a href="#_clearing_entries_code_clear_code">3.12. Clearing entries : <code>clear</code></a></li>
+              <li><a href="#_exiting_the_program_code_exit_code">3.13. Exiting the program : <code>exit</code></a></li>
+              <li><a href="#_saving_the_data">3.14. Saving the data</a></li>
+            </ul>
+          </li>
+          <li><a href="#_faq">4. FAQ</a></li>
+          <li><a href="#_glossary">5. Glossary</a></li>
+          <li><a href="#_command_summary">6. Command Summary</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="sect1">
+      <h2 id="_welcome">1. Welcome</h2>
+      <div class="sectionbody">
+        <div class="paragraph">
+          <p>We often find ourselves overwhelmed by different sets of tasks every single
+            day, and frequently have to spend huge amounts of time organizing and
+            remembering what to do. However, with MultiTasky and our smart key commands,
+            effortlessly organizing such tasks become a cinch, allowing you to deal
+            with your daily tasks with maximum efficiency!</p>
+        </div>
+      </div>
+    </div>
+    <div class="sect1">
+      <h2 id="_getting_started">2. Getting Started</h2>
+      <div class="sectionbody">
+        <div class="paragraph">
+          <p>Setting up MultiTasky is simple. Just follow these simple steps:</p>
+        </div>
+        <div class="olist arabic">
+          <ol class="arabic">
+            <li>
+              <p>Ensure you have Java version <code>1.8.0_60</code> or later installed
+                in your Computer. You may find the latest version of JRE8 from
+                <a
+                  href="http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html">here</a>.</p>
+              <div class="admonitionblock note">
+                <table>
+                  <tr>
+                    <td class="icon">
+                      <div class="title">Note</div>
+                    </td>
+                    <td class="content">
+                      Having any Java 8 version is not enough.<br> This app will
+                      not work with earlier versions of Java 8.
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </li>
+            <li>
+              <p>Download the latest <code>MultiTasky.jar</code> from the <a href="../../../releases">releases</a>                tab.</p>
+            </li>
+            <li>
+              <p>Copy the file to the folder you want to use as the home folder for
+                your Task Manager.</p>
+            </li>
+            <li>
+              <p>Double-click the file to start the app. The GUI should appear in a
+                few seconds.</p>
+              <div class="imageblock">
+                <div class="content">
+                  <img src="images/Ui.png" alt="Ui" width="790">
+                </div>
+              </div>
+            </li>
+            <li>
+              <p>Type the command in the command box and press <kbd>Enter</kbd> to execute
+                it.<br> e.g. typing <strong><code>help</code></strong> and pressing
+                <kbd>Enter</kbd> will open the help window.</p>
+            </li>
+            <li>
+              <p>Some example commands you can try:</p>
+              <div class="ulist">
+                <ul>
+                  <li>
+                    <p><strong><code>list</code></strong> : lists all active tasks</p>
+                  </li>
+                  <li>
+                    <p><strong><code>add</code></strong> <code>sales proposal /by 050717 1400</code>                      : adds an entry named <code>sales proposal</code> with deadline
+                      <code>5th July, 2pm</code> to the Task Manager</p>
+                  </li>
+                  <li>
+                    <p><strong><code>delete</code></strong> <code>/deadline 3</code>                      : deletes the 3rd deadline entry shown in the current list</p>
+                  </li>
+                  <li>
+                    <p><strong><code>exit</code></strong> : exits the app</p>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li>
+              <p>Refer to the <a href="#features">Features</a> section below for details
+                of each command.</p>
+            </li>
+            <li>
+              <p>The <a href="#glossary">Glossary</a> may be useful if you come across
+                unfamiliar terms used.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <div class="sect1">
+      <h2 id="_features">3. Features</h2>
+      <div class="sectionbody">
+        <div class="exampleblock">
+          <div class="content">
+            <div class="paragraph">
+              <p><strong>Command Format</strong></p>
+            </div>
+            <div class="ulist">
+              <ul>
+                <li>
+                  <p>Words in <code>UPPER_CASE</code> are the parameters.</p>
+                </li>
+                <li>
+                  <p>Items in <code>[ ]</code> are optional.</p>
+                </li>
+                <li>
+                  <p>Items separated by <code>|</code> indicate that either should be
+                    used, but not both.</p>
+                </li>
+                <li>
+                  <p>Items with <code>&#8230;&#8203;</code> after them can have multiple
+                    instances.</p>
+                </li>
+                <li>
+                  <p><code>DATE_TIME</code> format is <code>ddmmyy hhmm</code>.</p>
+                  <div class="admonitionblock note">
+                    <table>
+                      <tr>
+                        <td class="icon">
+                          <div class="title">Note</div>
+                        </td>
+                        <td class="content">
+                          You can replace date by smart keywords like <code>tomorrow</code>                          or <code>friday</code>!<br>
+                          <code>2pm</code> or <code>830am</code> can be also be used
+                          alternatively to indicate time
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="paragraph">
+          <p><strong>Defaults</strong></p>
+        </div>
+        <div class="ulist">
+          <ul>
+            <li>
+              <p>Default values used by commands can be found in the file <code>config.json</code>.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="sect2">
+          <h3 id="_viewing_help_code_help_code">3.1. Viewing help : <code>help</code></h3>
+          <div class="paragraph">
+            <p>Shows help for all the commands<br> Format: <code>help</code></p>
+          </div>
+        </div>
+        <div class="sect2">
+          <h3 id="_adding_an_entry_code_add_code">3.2. Adding an entry: <code>add</code></h3>
+          <div class="paragraph">
+            <p>Adds an entry to the active tasks<br> Format: <code>add ENTRY_NAME [/on | /at | /from | /by DATE_TIME_A] [/to DATE_TIME_B] [/every day | week | month | year [NUM_TIMES | /until END_DATE_TIME]] [/tag TAG_1 TAG_2&#8230;&#8203;]</code></p>
+          </div>
+          <div class="sidebarblock">
+            <div class="content">
+              <div class="ulist">
+                <ul>
+                  <li>
+                    <p>If no date is specified, the entry will contain no date information
+                      and automatically be classified under <code>floating entry</code></p>
+                  </li>
+                  <li>
+                    <p><code>/on</code>, or <code>at</code> can be used to create an
+                      <code>event entry</code>. The default value of 1 hour will
+                      be used to set the ending datetime.</p>
+                  </li>
+                  <li>
+                    <p><code>/from</code> should be used in conjunction with <code>/to</code>                      for <code>event entry</code> that needs adjustable ending datetime.</p>
+                  </li>
+                  <li>
+                    <p><code>/by</code> can be used to create <code>deadline entry</code>.</p>
+                  </li>
+                  <li>
+                    <p>Please be reminded that <code>DATE_TIME</code> must contain both
+                      date and time fields as described in Command Format above.</p>
+                  </li>
+                  <li>
+                    <p><code>/every</code> can be used as an optional command to create
+                      recurring tasks.</p>
+                  </li>
+                  <li>
+                    <p><code>/tag</code> can be used as an optional command to tag your
+                      entries.</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="paragraph">
+            <p><strong>Defaults from <code>config.json</code></strong>:<br></p>
+          </div>
+          <div class="ulist">
+            <ul>
+              <li>
+                <p>The default value for events can be found as <code>addDurationHours</code>.</p>
+              </li>
+              <li>
+                <p>If neither <code>NUM_TIMES</code> nor <code>END_DATE_TIME</code>                  for a recurring entry is specified, <code>recurringNumTimes</code>                  is used for the number of recurring events to add to the Task Manager.</p>
+              </li>
+            </ul>
+          </div>
+          <div class="paragraph">
+            <p>Examples:</p>
+          </div>
+          <div class="ulist">
+            <ul>
+              <li>
+                <p><code>add dinner with parents /from friday 6pm /to friday 9pm /tag family</code></p>
+              </li>
+              <li>
+                <p><code>add go to the gym /on monday 10am /every week /tag exercise, activities</code></p>
+              </li>
+              <li>
+                <p><code>add project submission /by 050717 1000 /tag school</code></p>
+              </li>
+              <li>
+                <p><code>add write novel /tag bucketlist</code></p>
+              </li>
+              <li>
+                <p><code>add clean up room</code></p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="sect2">
+          <h3 id="_completing_a_task_code_complete_code">3.3. Completing a task : <code>complete</code></h3>
+          <div class="paragraph">
+            <p>Finds and checkmarks a task as completed and moves it to archive.<br>              Format: <code>complete [KEYWORD_1 KEYWORD_2&#8230;&#8203;] | [/event | /deadline | /float INDEX]</code></p>
+          </div>
+          <div class="ulist">
+            <ul>
+              <li>
+                <p>There are two ways to select an entry to complete: searching by <code>KEYWORD</code>,
+                  or specifying the <code>INDEX</code>.</p>
+                <div class="ulist">
+                  <ul>
+                    <li>
+                      <p>The keyword searches both the entry name and tags, and a found
+                        entry must match all keywords.</p>
+                    </li>
+                    <li>
+                      <p>The search must only produce one entry to complete. If multiple
+                        entries are found to match the keyword no entries will be
+                        marked completed.</p>
+                    </li>
+                    <li>
+                      <p>The search will be done on <code>active</code>.</p>
+                    </li>
+                    <li>
+                      <p>The index refers to the index number shown in the last active
+                        entry listing. The index <strong>must be a positive integer</strong>                        1, 2, 3, &#8230;&#8203;</p>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="paragraph">
+            <p>Examples:</p>
+          </div>
+          <div class="ulist">
+            <ul>
+              <li>
+                <p><code>complete clean up room</code></p>
+              </li>
+              <li>
+                <p><code>complete /deadline 3</code></p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="sect2">
+          <h3 id="_listing_all_entries_code_list_code">3.4. Listing all entries : <code>list</code></h3>
+          <div class="paragraph">
+            <p>Displays a list of entries sorted by datetime.<br> Format: <code>list [/from START_DATE_TIME][/to END_DATE_TIME][/archive | /bin]</code></p>
+          </div>
+          <div class="sidebarblock">
+            <div class="content">
+              <div class="ulist">
+                <ul>
+                  <li>
+                    <p>By default the active entries will be listed.</p>
+                  </li>
+                  <li>
+                    <p>The <code>/archive</code> and <code>/bin</code> options are used
+                      to list archived and deleted entries respectively.</p>
+                  </li>
+                  <li>
+                    <p><code>/from</code> and <code>/to</code> are used to list entries
+                      from/upto a certain datetime.</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="paragraph">
+            <p><strong>Defaults from <code>config.json</code></strong><br></p>
+          </div>
+          <div class="ulist">
+            <ul>
+              <li>
+                <p>The default number of entries to list can be configured using <code>listNumResults</code></p>
+              </li>
+            </ul>
+          </div>
+          <div class="paragraph">
+            <p>Examples: * <code>list</code> * <code>list /to 050717 1400 /archive</code></p>
+          </div>
+        </div>
+        <div class="sect2">
+          <h3 id="_editing_an_entry_code_edit_code">3.5. Editing an entry : <code>edit</code></h3>
+          <div class="paragraph">
+            <p>Edits an existing entry in the active list.<br> Format: <code>edit [KEYWORD_1 KEYWORD_2&#8230;&#8203;] | [/event | /deadline | /float INDEX] [/name NEW_ENTRY_NAME] [/on | /at | /from | /by DATE_TIME_A] [/to DATE_TIME_B] [/every day | week | month | year [NUM_TIMES | /until STOP_DATE] [/tag TAG_1 TAG_2&#8230;&#8203;]</code></p>
+          </div>
+          <div class="sidebarblock">
+            <div class="content">
+              <div class="ulist">
+                <ul>
+                  <li>
+                    <p>There are two ways to select an entry to edit: searching by <code>KEYWORD</code>,
+                      or specifying the <code>INDEX</code>.</p>
+                    <div class="ulist">
+                      <ul>
+                        <li>
+                          <p>The keyword searches both the entry name and tags, and
+                            a found entry must match all keywords.</p>
+                        </li>
+                        <li>
+                          <p>The search must only produce one entry to modify. If multiple
+                            entries are found to match the keyword no entries will
+                            be modified.</p>
+                        </li>
+                        <li>
+                          <p>The search will be done on <code>active</code>.</p>
+                        </li>
+                        <li>
+                          <p>The index refers to the index number shown in the last
+                            active entry listing. The index <strong>must be a positive integer</strong>                            1, 2, 3, &#8230;&#8203;</p>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li>
+                    <p>At least one of the optional data fields to be edited must be
+                      provided.</p>
+                  </li>
+                  <li>
+                    <p>Existing values will be updated to the input values. If that
+                      field is not provided, the existing values are not changed.</p>
+                  </li>
+                  <li>
+                    <p>When editing tags, the existing tags of the entry will be removed
+                      and replaced with the new tags: <strong>adding of tags is not cumulative</strong>.</p>
+                    <div class="admonitionblock note">
+                      <table>
+                        <tr>
+                          <td class="icon">
+                            <div class="title">Note</div>
+                          </td>
+                          <td class="content">
+                            You can remove all of the entry&#8217;s tags by typing <code>/tag</code>                            without specifying any tags after it.
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="paragraph">
+            <p><strong>Defaults from <code>config.json</code></strong>:<br></p>
+          </div>
+          <div class="ulist">
+            <ul>
+              <li>
+                <p>If neither <code>NUM_TIMES</code> nor <code>STOP_DATE</code> for
+                  a recurring entry is specified, <code>recurringNumTimes</code>                  is used for the number of recurring events to add to the Task Manager.</p>
+              </li>
+            </ul>
+          </div>
+          <div class="paragraph">
+            <p>Examples:</p>
+          </div>
+          <div class="ulist">
+            <ul>
+              <li>
+                <p><code>edit /event 1 /on saturday 6pm</code><br> Edits the 1st entry
+                  of event list to take place on the coming Saturday at 6pm, for
+                  a duration set by <code>addDurationHours</code>.</p>
+              </li>
+              <li>
+                <p><code>edit /deadline 2 /every week 3 /tag</code><br> Edits the 2nd
+                  entry in deadline list to take place every week for 3 weeks including
+                  its current occurence, and clears all its existing tags.</p>
+              </li>
+              <li>
+                <p><code>edit zoo outing /on 200917 1200</code><br> Edits the entry
+                  matching "zoo" and "outing" to take place on 20 September, 12pm.
+                  If there are multiple entries that match the keywords, no entries
+                  are modifies.</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="sect2">
+          <h3 id="_finding_an_entry_code_find_code">3.6. Finding an entry : <code>find</code></h3>
+          <div class="paragraph">
+            <p>Finds entries which names or tags contain all of the given keywords.<br>              Format: <code>find KEYWORD_1 [KEYWORD_2 &#8230;&#8203;] [/archive|/bin]</code></p>
+          </div>
+          <div class="sidebarblock">
+            <div class="content">
+              <div class="ulist">
+                <ul>
+                  <li>
+                    <p>The find is case insensitive. e.g <code>meeting</code> will match
+                      <code>Meeting</code></p>
+                  </li>
+                  <li>
+                    <p>The order of the keywords does not matter. e.g. <code>meeting group</code>                      will match <code>group meeting</code></p>
+                  </li>
+                  <li>
+                    <p>The given keywords are matched with the name and tag of entries.</p>
+                  </li>
+                  <li>
+                    <p>Only full words will be matched e.g. <code>Meet</code> will not
+                      match <code>Meeting</code> but matches <code>meet</code>.</p>
+                  </li>
+                  <li>
+                    <p>Only entries matching all keywords will be returned. e.g. <code>group meeting</code>                      will not match <code>client meeting</code>.</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="paragraph">
+            <p><strong>Defaults from <code>config.json</code></strong>:<br></p>
+          </div>
+          <div class="ulist">
+            <ul>
+              <li>
+                <p>The maximum number of <code>find</code> results shown to the user
+                  is <code>findNumResults</code></p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="sect2">
+          <h3 id="_deleting_an_entry_code_delete_code">3.7. Deleting an entry : <code>delete</code></h3>
+          <div class="paragraph">
+            <p>Deletes the specified entry from the active entries list.<br> Format:
+              <code>delete [KEYWORD_1 KEYWORD_2&#8230;&#8203;] | [/event | /deadline | /float INDEX] [/force]</code></p>
+          </div>
+          <div class="sidebarblock">
+            <div class="content">
+              <div class="ulist">
+                <ul>
+                  <li>
+                    <p>There are two ways to select an entry to delete: searching by
+                      <code>KEYWORD</code>, or specifying the <code>INDEX</code>.</p>
+                    <div class="ulist">
+                      <ul>
+                        <li>
+                          <p>The keyword searches both the entry name and the tags,
+                            and a found entry must match all keywords.</p>
+                        </li>
+                        <li>
+                          <p>The search will be done on <code>active</code>.</p>
+                        </li>
+                        <li>
+                          <p>The index refers to the index number shown in the last
+                            active entry listing. The index <strong>must be a positive integer</strong>                            1, 2, 3, &#8230;&#8203;</p>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li>
+                    <p>Deleting an entry moves it from the <code>active</code> list
+                      to the <code>bin</code>.</p>
+                  </li>
+                  <li>
+                    <p>If multiple entries are found using the keywords, all found entries
+                      will be listed, and the user will be prompted to confirm that
+                      they want to delete all of those entries.</p>
+                    <div class="ulist">
+                      <ul>
+                        <li>
+                          <p>Using the <code>/force</code> option skips the confirmation
+                            steps.</p>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="paragraph">
+            <p>Examples:</p>
+          </div>
+          <div class="ulist">
+            <ul>
+              <li>
+                <p><code>list</code><br>
+                  <code>delete 2</code><br> Deletes the 2nd entry in the active list.</p>
+              </li>
+              <li>
+                <p><code>delete pasta dinner</code><br>
+                  <code>yes</code><br> Deletes all entries in the active list that
+                  matches "pasta" and "dinner" in the name or tag, after prompting
+                  the user to confirm if multiple entries are found.</p>
+              </li>
+              <li>
+                <p><code>delete pasta dinner /force</code><br> Deletes all entries in
+                  active entries.</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="sect2">
+          <h3 id="_restoring_an_entry_code_restore_code">3.8. Restoring an entry : <code>restore</code></h3>
+          <div class="paragraph">
+            <p>Finds and restores an archived or deleted entry back to active tasks<br>              Format: <code>restore [KEYWORD_1 KEYWORD_2&#8230;&#8203;] | [/event | /deadline | /float INDEX]</code></p>
+          </div>
+          <div class="ulist">
+            <ul>
+              <li>
+                <p>There are two ways to select an entry to restore: searching by <code>KEYWORD</code>,
+                  or specifying the <code>INDEX</code>.</p>
+                <div class="ulist">
+                  <ul>
+                    <li>
+                      <p>The keyword searches both the entry name and tags, and a found
+                        entry must match all keywords.</p>
+                    </li>
+                    <li>
+                      <p>The search must only produce one entry to modify. If multiple
+                        entries are found to match the keyword no entries will be
+                        modified.</p>
+                    </li>
+                    <li>
+                      <p>The search will be done on <code>archive</code> and <code>bin</code></p>
+                    </li>
+                    <li>
+                      <p>The index refers to the index number shown in the last active
+                        entry listing. The index <strong>must be a positive integer</strong>                        1, 2, 3, &#8230;&#8203;</p>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="sect2">
+          <h3 id="_listing_entered_commands_code_history_code">3.9. Listing entered commands : <code>history</code></h3>
+          <div class="paragraph">
+            <p>Lists all the commands that you have entered in chronological order.<br>              Format: <code>history</code></p>
+          </div>
+        </div>
+        <div class="sect2">
+          <h3 id="_undo_changes_code_undo_code">3.10. Undo changes : <code>undo</code></h3>
+          <div class="paragraph">
+            <p>Undo the changes made by the last command.<br> Format: <code>undo</code></p>
+          </div>
+          <div class="ulist">
+            <ul>
+              <li>
+                <p>Allows multiple undo&#8217;s.</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="sect2">
+          <h3 id="_redo_changes_code_redo_code">3.11. Redo changes : <code>redo</code></h3>
+          <div class="paragraph">
+            <p>Reapply the changes removed by the <code>undo</code> command.<br> Format:
+              <code>redo</code></p>
+          </div>
+          <div class="ulist">
+            <ul>
+              <li>
+                <p>Allows redoing up until the most recent change.</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="sect2">
+          <h3 id="_clearing_entries_code_clear_code">3.12. Clearing entries : <code>clear</code></h3>
+          <div class="paragraph">
+            <p>Clears all entries from sections of the Task Manager.<br> Format: <code>clear [/archive | /bin | /all]</code></p>
+          </div>
+          <div class="sidebarblock">
+            <div class="content">
+              <div class="ulist">
+                <ul>
+                  <li>
+                    <p>Defaults to clearing all entries from active list.</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sect2">
+          <h3 id="_exiting_the_program_code_exit_code">3.13. Exiting the program : <code>exit</code></h3>
+          <div class="paragraph">
+            <p>Exits the program.<br> Format: <code>exit</code></p>
+          </div>
+        </div>
+        <div class="sect2">
+          <h3 id="_saving_the_data">3.14. Saving the data</h3>
+          <div class="paragraph">
+            <p>Task Manager data are saved in the hard disk automatically after any
+              command that changes the data.<br> There is no need to save manually.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sect1">
+      <h2 id="_faq">4. FAQ</h2>
+      <div class="sectionbody">
+        <div class="paragraph">
+          <p><strong>Q</strong>: How do I transfer my data to another Computer?<br>
+            <strong>A</strong>: Install the app in the other computer and overwrite
+            the empty data file it creates with the file that contains the data of
+            your previous Task Manager folder.</p>
+        </div>
+      </div>
+    </div>
+    <div class="sect1">
+      <h2 id="_glossary">5. Glossary</h2>
+      <div class="sectionbody">
+        <div id="entry" class="paragraph">
+          <p>Entry</p>
+        </div>
+        <div class="quoteblock">
+          <blockquote>
+            <div class="paragraph">
+              <p>Any item stored in the system (e.g. events, deadlines, floating tasks).<br>                An entry <strong>must</strong> have:</p>
+            </div>
+            <div class="ulist">
+              <ul>
+                <li>
+                  <p>A name</p>
+                </li>
+              </ul>
+            </div>
+            <div class="paragraph">
+              <p>An entry <strong>can</strong> have:</p>
+            </div>
+            <div class="ulist">
+              <ul>
+                <li>
+                  <p>No specific start or end date or time <strong>or</strong></p>
+                </li>
+                <li>
+                  <p>Single specified date and/or time as a deadline <strong>or</strong></p>
+                </li>
+                <li>
+                  <p>Specified start and end date and/or time <strong>and/or</strong></p>
+                </li>
+                <li>
+                  <p>Zero or more tags</p>
+                </li>
+              </ul>
+            </div>
+          </blockquote>
+        </div>
+        <div id="event" class="paragraph">
+          <p>Event</p>
+        </div>
+        <div class="quoteblock">
+          <blockquote>
+            <div class="paragraph">
+              <p>An entry in the Task Manager with * Specified start <strong>and</strong>                end date and/or time</p>
+            </div>
+          </blockquote>
+        </div>
+        <div id="deadline" class="paragraph">
+          <p>Deadline</p>
+        </div>
+        <div class="quoteblock">
+          <blockquote>
+            <div class="paragraph">
+              <p>An entry in the Task Manager with * Single specified date and/or time
+                as a deadline</p>
+            </div>
+          </blockquote>
+        </div>
+        <div id="floatingtask" class="paragraph">
+          <p>Floating Task An entry in the Task Manager with * No specified date or
+            time associated</p>
+        </div>
+        <div id="tag" class="paragraph">
+          <p>Tag</p>
+        </div>
+        <div class="quoteblock">
+          <blockquote>
+            <div class="paragraph">
+              <p>Additional single words saved within <code>entries</code> as descriptors</p>
+            </div>
+          </blockquote>
+        </div>
+        <div id="active-list" class="paragraph">
+          <p>Active list</p>
+        </div>
+        <div class="quoteblock">
+          <blockquote>
+            <div class="paragraph">
+              <p>A list of all of the ongoing to-do entries that have not been completed/deleted
+                yet.</p>
+            </div>
+          </blockquote>
+        </div>
+        <div id="archive" class="paragraph">
+          <p>Archive</p>
+        </div>
+        <div class="quoteblock">
+          <blockquote>
+            <div class="paragraph">
+              <p>A container that stores entries marked as 'done'.</p>
+            </div>
+          </blockquote>
+        </div>
+        <div id="bin" class="paragraph">
+          <p>Bin</p>
+        </div>
+        <div class="quoteblock">
+          <blockquote>
+            <div class="paragraph">
+              <p>A container that stores entries that are deleted.</p>
+            </div>
+          </blockquote>
+        </div>
+        <div id="mainstream-os" class="paragraph">
+          <p>Mainstream OS</p>
+        </div>
+        <div class="quoteblock">
+          <blockquote>
+            <div class="paragraph">
+              <p>Windows, Linux, Unix, OS-X</p>
+            </div>
+          </blockquote>
+        </div>
+        <div id="ddmmyy-hhmm" class="paragraph">
+          <p>ddmmyy hhmm format</p>
+        </div>
+        <div class="quoteblock">
+          <blockquote>
+            <div class="paragraph">
+              <p>Refers to Date,Month,Year and Hour, Minute in 24H clock format.</p>
+            </div>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+    <div class="sect1">
+      <h2 id="_command_summary">6. Command Summary</h2>
+      <div class="sectionbody">
+        <div class="ulist">
+          <ul>
+            <li>
+              <p><strong>Help</strong> <code>help</code></p>
+            </li>
+            <li>
+              <p><strong>Add</strong> <code>add ENTRY_NAME [/on | /at | /from | /by DATE_TIME_A] [/to DATE_TIME_B] [/every day | week | month | year [NUM_TIMES | /until END_DATE_TIME]] [/tag TAG_1 TAG_2&#8230;&#8203;]</code></p>
+              <div class="ulist">
+                <ul>
+                  <li>
+                    <p>e.g. <code>add dinner with parents /from friday 6pm /to friday 9pm /tag family</code></p>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li>
+              <p><strong>Complete</strong> <code>complete [KEYWORD_1 KEYWORD_2&#8230;&#8203;] | [/event | /deadline | /float INDEX]</code></p>
+              <div class="ulist">
+                <ul>
+                  <li>
+                    <p>e,g, <code>complete clean up room</code> or <code>complete /event | /deadline | /float 3</code></p>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li>
+              <p><strong>List</strong> : <code>list [/from START_DATE_TIME][/to END_DATE_TIME][/archive | /bin]</code></p>
+              <div class="ulist">
+                <ul>
+                  <li>
+                    <p>e.g. <code>list /to wednesday 2pm /archive</code></p>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li>
+              <p><strong>Edit</strong> : <code>edit [KEYWORD_1 KEYWORD_2&#8230;&#8203;] | [/event | /deadline | /float INDEX] [/name NEW_ENTRY_NAME] [/on | /at | /from | /by DATE_TIME_A] [/to DATE_TIME_B] [/every day | week | month | year [NUM_TIMES | /until STOP_DATE] [/tag TAG_1 TAG_2&#8230;&#8203;]</code></p>
+              <div class="ulist">
+                <ul>
+                  <li>
+                    <p>e.g. <code>edit zoo outing /on 200917 1200</code></p>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li>
+              <p><strong>Find</strong> : <code>find KEYWORD_1 [KEYWORD_2 &#8230;&#8203;] [/archive|/bin]</code></p>
+              <div class="ulist">
+                <ul>
+                  <li>
+                    <p>e.g. <code>find lecture</code></p>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li>
+              <p><strong>Delete</strong> : <code>delete [KEYWORD_1 KEYWORD_2&#8230;&#8203;] | [/event | /deadline | /float INDEX] [/force]</code></p>
+              <div class="ulist">
+                <ul>
+                  <li>
+                    <p>e.g. <code>delete pasta dinner</code></p>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li>
+              <p><strong>History</strong> : <code>history</code></p>
+            </li>
+            <li>
+              <p><strong>Clear</strong> : <code>clear [/archive | /bin | /all]</code></p>
+            </li>
+            <li>
+              <p><strong>Undo</strong> : <code>undo</code></p>
+            </li>
+            <li>
+              <p><strong>Redo</strong> : <code>redo</code></p>
+            </li>
+            <li>
+              <p><strong>Exit</strong> : <code>exit</code></p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
