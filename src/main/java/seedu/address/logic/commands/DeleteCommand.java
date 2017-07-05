@@ -5,6 +5,7 @@ import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ENTRYBOOK_DEADLINE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ENTRYBOOK_FLOATINGTASK;
 
+import seedu.address.model.Model;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.core.index.Index;
@@ -12,10 +13,12 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.entry.ReadOnlyEntry;
 import seedu.address.model.entry.exceptions.EntryNotFoundException;
 
+import java.util.Set;
 
 //@@kevinlamkb A0140633R
 /**
- * Deletes an entry identified using the type of entry followed by displayed index from the last displayed list
+ * Deletes an entry identified using the type of entry followed by displayed
+ * index from the last displayed list
  */
 public class DeleteCommand extends Command {
 
@@ -26,33 +29,57 @@ public class DeleteCommand extends Command {
             + "Format: delete + [keywords] or " + PREFIX_ENTRYBOOK_FLOATINGTASK + "INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " " + PREFIX_ENTRYBOOK_FLOATINGTASK + " 1";
 
-    public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Entry: %1$s";
+    public static final String MESSAGE_DELETE_ENTRY_SUCCESS = "Deleted Entry: %1$s";
 
-    public final Index targetIndex;
+    public Index targetIndex;
+    public boolean doSearch = false;
+    public Set<String> keywords;
+    public boolean doDelete = false;
 
-    public DeleteCommand(Index targetIndex) {
+    public DeleteCommand(Index targetIndex, Set<String> keywords) {
         this.targetIndex = targetIndex;
+        this.keywords = keywords;
     }
 
+    public void checkDeleteCommand(Model model) {
+        if (keywords.size() >= 1) {
+            model.updateFilteredFloatingTaskList(keywords);
+            this.doSearch = true;
+            if (model.getFilteredFloatingTaskList().size() == 1) {
+                this.doDelete = true;
+            }
+        }
+    }
 
     @Override
     public CommandResult execute() throws CommandException {
-
         UnmodifiableObservableList<ReadOnlyEntry> lastShownList = model.getFilteredFloatingTaskList();
-
-        if (targetIndex.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
+        checkDeleteCommand(model);
+        if (!doSearch) {
+            if (targetIndex.getZeroBased() >= lastShownList.size()) {
+                throw new CommandException(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
+            }
+            ReadOnlyEntry entryToDelete = lastShownList.get(targetIndex.getZeroBased());
+            try {
+                model.deleteEntry(entryToDelete);
+            } catch (EntryNotFoundException pnfe) {
+                assert false : "The target entry cannot be missing";
+            }
+            return new CommandResult(String.format(MESSAGE_DELETE_ENTRY_SUCCESS, entryToDelete));
+        } else {
+            if (doDelete) {
+                ReadOnlyEntry entryToDelete = lastShownList.get(0);
+                try {
+                    model.deleteEntry(entryToDelete);
+                } catch (EntryNotFoundException e) {
+                    assert false : "The target entry cannot be missing";
+                }
+                return new CommandResult(String.format(MESSAGE_DELETE_ENTRY_SUCCESS, entryToDelete));
+            } else {
+                model.updateFilteredFloatingTaskList(keywords);
+                return new CommandResult(getMessageForEntryListShownSummary(lastShownList.size()));
+            }
         }
-
-        ReadOnlyEntry entryToDelete = lastShownList.get(targetIndex.getZeroBased());
-
-        try {
-            model.deleteEntry(entryToDelete);
-        } catch (EntryNotFoundException pnfe) {
-            assert false : "The target entry cannot be missing";
-        }
-
-        return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, entryToDelete));
     }
 
 }

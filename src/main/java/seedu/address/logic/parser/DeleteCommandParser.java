@@ -40,12 +40,16 @@ public class DeleteCommandParser {
             }
             final String[] keywords = trimmedArgs.split("\\s+");
             final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
-            return new FindCommand(keywordSet);
+            Index index = Index.fromZeroBased(0);
+
+            return new DeleteCommand(index,keywordSet);
         }
 
         try {
+            final Set<String> keywordSet = new HashSet<>();
             Index index = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_ENTRYBOOK_FLOATINGTASK).get());
-            return new DeleteCommand(index);
+            System.out.println(argMultimap.getValue(PREFIX_ENTRYBOOK_FLOATINGTASK).get());
+            return new DeleteCommand(index,keywordSet);
 
         } catch (IllegalValueException ive) {
             throw new ParseException(ive.getMessage(), ive);
