@@ -2,6 +2,8 @@ package seedu.address.model;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -15,8 +17,8 @@ import seedu.address.model.entry.ReadOnlyEntry;
 import seedu.address.model.entry.exceptions.EntryNotFoundException;
 
 /**
- * Represents the in-memory model of the address book data.
- * All changes to any model should be synchronized.
+ * Represents the in-memory model of the address book data. All changes to any
+ * model should be synchronized.
  */
 public class ModelManager extends ComponentManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
@@ -71,18 +73,18 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
-            throws EntryNotFoundException {
+    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws EntryNotFoundException {
         requireAllNonNull(target, editedEntry);
 
         entryBook.updateEntry(target, editedEntry);
         indicateEntryBookChanged();
     }
 
-    //=========== Filtered Entry List Accessors =============================================================
+    // =========== Filtered Entry List Accessors ===========
 
     /**
-     * Return a list of {@code ReadOnlyEntry} backed by the internal list of {@code entryBook}
+     * Return a list of {@code ReadOnlyEntry} backed by the internal list of
+     * {@code entryBook}
      */
     @Override
     public UnmodifiableObservableList<ReadOnlyEntry> getFilteredFloatingTaskList() {
@@ -94,9 +96,13 @@ public class ModelManager extends ComponentManager implements Model {
         filteredEntries.setPredicate(null);
     }
 
+    // @@author A0126623L
     @Override
     public void updateFilteredFloatingTaskList(Set<String> keywords) {
-        updateFilteredEntryList(new PredicateExpression(new NameQualifier(keywords)));
+        for (String s : keywords) {
+            final Set<String> singleKeywordSet = new HashSet<>(Arrays.asList(s));
+            updateFilteredEntryList(new PredicateExpression(new NameQualifier(singleKeywordSet)));
+        }
     }
 
     private void updateFilteredEntryList(Expression expression) {
@@ -117,14 +123,15 @@ public class ModelManager extends ComponentManager implements Model {
 
         // state check
         ModelManager other = (ModelManager) obj;
-        return entryBook.equals(other.entryBook)
-                && filteredEntries.equals(other.filteredEntries);
+        return entryBook.equals(other.entryBook) && filteredEntries.equals(other.filteredEntries);
     }
 
-    //========== Inner classes/interfaces used for filtering =================================================
+    // ========== Inner classes/interfaces used for filtering ==========
 
     interface Expression {
         boolean satisfies(ReadOnlyEntry entry);
+
+        @Override
         String toString();
     }
 
@@ -149,6 +156,8 @@ public class ModelManager extends ComponentManager implements Model {
 
     interface Qualifier {
         boolean run(ReadOnlyEntry entry);
+
+        @Override
         String toString();
     }
 
@@ -162,8 +171,7 @@ public class ModelManager extends ComponentManager implements Model {
         @Override
         public boolean run(ReadOnlyEntry entry) {
             return nameKeyWords.stream()
-                    .filter(keyword -> StringUtil.containsWordIgnoreCase(entry.getName().fullName, keyword))
-                    .findAny()
+                    .filter(keyword -> StringUtil.containsWordIgnoreCase(entry.getName().fullName, keyword)).findAny()
                     .isPresent();
         }
 
