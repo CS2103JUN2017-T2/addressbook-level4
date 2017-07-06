@@ -164,6 +164,10 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     // @@author A0126623L
+    /**
+     * Represents a qualifier can check the presence of all keywords in the name
+     * and tags of a ReadOnlyEntry.
+     */
     private class NameQualifier implements Qualifier {
 
         // TODO for ChuaPingChan:
@@ -174,14 +178,16 @@ public class ModelManager extends ComponentManager implements Model {
             this.nameKeyWords = nameKeyWords;
         }
 
+        /**
+         * Parses the and matches the words in an entry's name and tags and
+         * matches them with all keywords.
+         *
+         * @return boolean: true if all keywords are present in an entry's name
+         *         and tags.
+         */
         @Override
         public boolean run(ReadOnlyEntry entry) {
-            StringBuilder builder = new StringBuilder();
-            builder.append(entry.getName().fullName);
-            for (Tag t : entry.getTags()) {
-                builder.append(" " + t.tagName);
-            }
-            String wordsInNameAndTags = builder.toString();
+            String wordsInNameAndTags = parseWordsInNameAndTags(entry);
 
             for (String keyword : nameKeyWords) {
                 if (!StringUtil.containsWordIgnoreCase(wordsInNameAndTags, keyword)) {
@@ -189,6 +195,15 @@ public class ModelManager extends ComponentManager implements Model {
                 }
             }
             return true;
+        }
+
+        private String parseWordsInNameAndTags(ReadOnlyEntry entry) {
+            StringBuilder builder = new StringBuilder();
+            builder.append(entry.getName().fullName);
+            for (Tag t : entry.getTags()) {
+                builder.append(" " + t.tagName);
+            }
+            return builder.toString();
         }
 
         @Override
