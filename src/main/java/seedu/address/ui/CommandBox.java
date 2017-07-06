@@ -1,5 +1,7 @@
 package seedu.address.ui;
 
+import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
+
 import java.util.Stack;
 import java.util.logging.Logger;
 
@@ -65,20 +67,20 @@ public class CommandBox extends UiPart<Region> {
 
     @FXML
     private void handleCommandInputChanged() {
+        String commandText = commandTextField.getText().trim();
+        commandTextField.setText("");
+        saveCommandtoHistory(commandText);
         try {
-            String commandText = commandTextField.getText().trim();
-            saveCommandtoHistory(commandText);
             CommandResult commandResult = logic.execute(commandText);
             // process result of the command
             setStyleToIndicateCommandSuccess();
-            commandTextField.setText("");
             logger.info("Result: " + commandResult.feedbackToUser);
             raise(new NewResultAvailableEvent(commandResult.feedbackToUser));
 
         } catch (CommandException | ParseException e) {
             // handle command failure
             setStyleToIndicateCommandFailure();
-            logger.info("Invalid command: " + commandTextField.getText());
+            logger.info("Invalid command: " + commandText);
             raise(new NewResultAvailableEvent(e.getMessage()));
         }
     }
@@ -86,11 +88,11 @@ public class CommandBox extends UiPart<Region> {
     private void saveCommandtoHistory(String command) {
         // First push all commands to the past
         while (!commandTextFutureStack.empty()) {
-            System.out.println("transferring");
             commandTextPastStack.push(commandTextFutureStack.pop());
         }
         // Save this command if it's the first one or if it's different from the last one
-        if (commandTextPastStack.empty() || !commandTextPastStack.peek().equals(command)) {
+        if ((command.length() > 0)
+            && (commandTextPastStack.empty() || !commandTextPastStack.peek().equals(command))) {
             commandTextPastStack.push(command);
         }
     }

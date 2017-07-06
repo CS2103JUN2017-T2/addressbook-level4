@@ -345,6 +345,8 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |user |list the next `n` number of entries |see upcoming events to attend/tasks to finish
 
+|`* *` |user |use the up and down arrow keys to bring up previously entered commands |avoid typing out commands I've previously used
+
 |`* *` |developer |have an automated test program |check program functionality after every update
 
 |`* *` |new user |have similar syntax for most commands |use them easily without confusion
