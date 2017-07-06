@@ -35,7 +35,7 @@ public class MainWindowHandle extends GuiHandle {
         return eventListPanel;
     }
 
-    public DeadlineListPanelHandle getDeadlineListPane() {
+    public DeadlineListPanelHandle getDeadlineListPanel() {
         return deadlineListPanel;
     }
 
