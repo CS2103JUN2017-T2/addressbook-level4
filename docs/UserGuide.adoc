@@ -112,6 +112,7 @@ Examples:
 * `complete clean up room`
 * `complete /deadline 3`
 
+//<!-- @@author A0126623L -->
 === Listing all entries : `list`
 
 Displays a list of entries sorted by datetime. +
@@ -130,6 +131,7 @@ Format: `list [/from START_DATE_TIME][/to END_DATE_TIME][/archive | /bin]`
 Examples:
 * `list`
 * `list /to 050717 1400 /archive`
+//<!-- @@author -->
 
 === Editing an entry : `edit`
 
@@ -224,6 +226,7 @@ Format: `restore [KEYWORD_1 KEYWORD_2...] | [/event | /deadline | /float INDEX]`
 Lists all the commands that you have entered in chronological order. +
 Format: `history`
 
+//<!-- @@author A0126623L -->
 === Undo changes : `undo`
 
 Undo the changes made by the last command. +
@@ -237,6 +240,7 @@ Reapply the changes removed by the `undo` command. +
 Format: `redo`
 
 * Allows redoing up until the most recent change.
+//<!-- @@author -->
 
 === Clearing entries : `clear`
 
