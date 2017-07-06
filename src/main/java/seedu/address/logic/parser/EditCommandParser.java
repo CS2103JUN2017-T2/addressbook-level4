@@ -2,48 +2,81 @@ package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.logic.commands.EditByFindCommand;
+import seedu.address.logic.commands.EditByIndexCommand;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditCommand.EditEntryDescriptor;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.tag.Tag;
 
+//@@author A0140633R
 /**
  * Parses input arguments and creates a new EditCommand object
  */
 public class EditCommandParser {
 
     /**
-     * Parses the given {@code String} of arguments in the context of the
-     * EditCommand and returns an EditCommand object for execution.
+     * Parses the given {@code String} of arguments in the context of the EditCommand and returns an
+     * EditCommand object for execution.
      *
      * @throws ParseException
      *             if the user input does not conform the expected format
      */
     public EditCommand parse(String args) throws ParseException {
         requireNonNull(args);
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_TAG);
-
-        Index index;
-
-        try {
-            index = ParserUtil.parseIndex(argMultimap.getPreamble().get());
-        } catch (IllegalValueException ive) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
-        }
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_FLOATINGTASK, PREFIX_NAME,
+                PREFIX_TAG);
 
         EditEntryDescriptor editEntryDescriptor = new EditEntryDescriptor();
+        initEntryEditor(argMultimap, editEntryDescriptor);
+
+        if (ParserUtil.arePrefixesPresent(argMultimap, PREFIX_FLOATINGTASK)) {
+            Index index;
+
+            try {
+                index = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_FLOATINGTASK).get());
+            } catch (IllegalValueException ive) {
+                throw new ParseException(
+                        String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+            }
+            return new EditByIndexCommand(index, editEntryDescriptor);
+        } else {
+            String trimmedArgs = argMultimap.getPreamble().get();
+
+            if (trimmedArgs.isEmpty()) {
+                throw new ParseException(
+                        String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+            }
+            final String[] keywords = trimmedArgs.split("\\s+");
+            final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
+
+            return new EditByFindCommand(keywordSet, editEntryDescriptor);
+        }
+    }
+
+    /*
+     * Checks whether entry editor has initialized properly
+     */
+    private void initEntryEditor(ArgumentMultimap argMultimap, EditEntryDescriptor editEntryDescriptor)
+            throws ParseException {
         try {
-            ParserUtil.parseName(argMultimap.getPreamble()).ifPresent(editEntryDescriptor::setName);
-            parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editEntryDescriptor::setTags);
+            ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME))
+                    .ifPresent(editEntryDescriptor::setName);
+            parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG))
+                    .ifPresent(editEntryDescriptor::setTags);
         } catch (IllegalValueException ive) {
             throw new ParseException(ive.getMessage(), ive);
         }
@@ -51,15 +84,12 @@ public class EditCommandParser {
         if (!editEntryDescriptor.isAnyFieldEdited()) {
             throw new ParseException(EditCommand.MESSAGE_NOT_EDITED);
         }
-
-        return new EditCommand(index, editEntryDescriptor);
     }
 
     /**
-     * Parses {@code Collection<String> tags} into a {@code Set<Tag>} if
-     * {@code tags} is non-empty. If {@code tags} contain only one element which
-     * is an empty string, it will be parsed into a {@code Set<Tag>} containing
-     * zero tags.
+     * Parses {@code Collection<String> tags} into a {@code Set<Tag>} if {@code tags} is non-empty. If
+     * {@code tags} contain only one element which is an empty string, it will be parsed into a
+     * {@code Set<Tag>} containing zero tags.
      */
     private Optional<Set<Tag>> parseTagsForEdit(Collection<String> tags) throws IllegalValueException {
         assert tags != null;
