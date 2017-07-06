@@ -3,7 +3,7 @@ package seedu.address.logic.commands;
 import java.util.Set;
 
 /**
- * Finds and lists all persons in address book whose name contains any of the argument keywords.
+ * Finds and lists all entries in entry book whose name contains any of the argument keywords.
  * Keyword matching is case sensitive.
  */
 public class FindCommand extends Command {
@@ -24,7 +24,10 @@ public class FindCommand extends Command {
     @Override
     public CommandResult execute() {
         model.updateFilteredFloatingTaskList(keywords);
-        return new CommandResult(getMessageForPersonListShownSummary(model.getFilteredFloatingTaskList().size()));
+        return new CommandResult(getMessageForEntryListShownSummary(model.getFilteredFloatingTaskList().size()));
     }
 
+    public Set<String> getKeywords() {
+        return keywords;
+    }
 }
