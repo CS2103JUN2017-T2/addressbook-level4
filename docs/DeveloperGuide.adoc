@@ -397,6 +397,8 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |user |tick off sub-entries within an entry as completed |track my progress whilst i switch between projects
 
+|`* *` |user |type non-alphanumeric characters as entry names |have entry names like "Donate $100 to Animal Equality"
+
 |`* *` |user |have an option in my commands to accept any confirmation messages automatically (/force) |can save time
 
 |`*` |user with many projects |tag entries by assignment |distinguish tasks for similar assignments
