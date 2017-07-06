@@ -1,7 +1,5 @@
 package seedu.address.logic.commands;
 
-import static seedu.address.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
-
 import java.util.Set;
 
 import seedu.address.commons.core.UnmodifiableObservableList;
@@ -16,7 +14,7 @@ import seedu.address.model.entry.exceptions.EntryNotFoundException;
  */
 public class DeleteByFindCommand extends DeleteCommand {
     public static final String MESSAGE_NOT_DELETED = "More than one entry found! \n"
-            + "Use " + COMMAND_WORD + " " + PREFIX_FLOATINGTASK + " INDEX to specify which entry to delete.";
+            + "Use delete /float INDEX to specify which entry to delete.";
 
     private Set<String> keywords;
 

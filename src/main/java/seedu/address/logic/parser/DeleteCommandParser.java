@@ -6,7 +6,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Stream;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
@@ -32,7 +31,7 @@ public class DeleteCommandParser {
     public Command parse(String args) throws ParseException {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_FLOATINGTASK);
 
-        if (arePrefixesPresent(argMultimap, PREFIX_FLOATINGTASK)) {
+        if (ParserUtil.arePrefixesPresent(argMultimap, PREFIX_FLOATINGTASK)) {
             try {
                 Index index = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_FLOATINGTASK).get());
                 return new DeleteByIndexCommand(index);
@@ -52,11 +51,4 @@ public class DeleteCommandParser {
         }
     }
 
-    /**
-     * Returns true if none of the prefixes contains empty {@code Optional} values in the given
-     * {@code ArgumentMultimap}.
-     */
-    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
-        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
-    }
 }
