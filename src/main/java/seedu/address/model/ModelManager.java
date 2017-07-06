@@ -2,8 +2,6 @@ package seedu.address.model;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -15,6 +13,7 @@ import seedu.address.commons.events.model.EntryBookChangedEvent;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.model.entry.ReadOnlyEntry;
 import seedu.address.model.entry.exceptions.EntryNotFoundException;
+import seedu.address.model.tag.Tag;
 
 /**
  * Represents the in-memory model of the address book data. All changes to any
@@ -99,10 +98,7 @@ public class ModelManager extends ComponentManager implements Model {
     // @@author A0126623L
     @Override
     public void updateFilteredFloatingTaskList(Set<String> keywords) {
-        for (String s : keywords) {
-            final Set<String> singleKeywordSet = new HashSet<>(Arrays.asList(s));
-            updateFilteredEntryList(new PredicateExpression(new NameQualifier(singleKeywordSet)));
-        }
+        updateFilteredEntryList(new PredicateExpression(new NameQualifier(keywords)));
     }
 
     private void updateFilteredEntryList(Expression expression) {
@@ -129,6 +125,12 @@ public class ModelManager extends ComponentManager implements Model {
     // ========== Inner classes/interfaces used for filtering ==========
 
     interface Expression {
+        /**
+         * Evaluates whether a ReadOnlyEntry satisfies a certain condition.
+         *
+         * @param entry
+         * @return boolean
+         */
         boolean satisfies(ReadOnlyEntry entry);
 
         @Override
@@ -162,6 +164,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     private class NameQualifier implements Qualifier {
+        // TODO: change variable name to 'nameAndTagKeyWords'.
         private Set<String> nameKeyWords;
 
         NameQualifier(Set<String> nameKeyWords) {
@@ -170,9 +173,19 @@ public class ModelManager extends ComponentManager implements Model {
 
         @Override
         public boolean run(ReadOnlyEntry entry) {
-            return nameKeyWords.stream()
-                    .filter(keyword -> StringUtil.containsWordIgnoreCase(entry.getName().fullName, keyword)).findAny()
-                    .isPresent();
+            StringBuilder builder = new StringBuilder();
+            builder.append(entry.getName().fullName);
+            for (Tag t : entry.getTags()) {
+                builder.append(" " + t.tagName);
+            }
+            String wordsInNameAndTags = builder.toString();
+
+            for (String keyword : nameKeyWords) {
+                if (StringUtil.containsWordIgnoreCase(wordsInNameAndTags, keyword)) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         @Override
