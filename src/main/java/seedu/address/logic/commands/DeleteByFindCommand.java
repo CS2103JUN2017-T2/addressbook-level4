@@ -12,7 +12,7 @@ import seedu.address.model.entry.exceptions.EntryNotFoundException;
 
 //@@author A0140633R
 /*
- * Deletes an entry identified using the type of entry followed by displayed.
+ * Finds entries from given keywords and deletes entry if it is the only one found.
  */
 public class DeleteByFindCommand extends DeleteCommand {
     public static final String MESSAGE_DELETE_ENTRY_BY_FIND_FAIL = "More than one entry found! \n"
