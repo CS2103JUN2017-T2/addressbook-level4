@@ -12,6 +12,6 @@ public class CliSyntax {
     public static final Prefix PREFIX_ENTRYBOOK_EVENT = new Prefix("/event");
     public static final Prefix PREFIX_ENTRYBOOK_DEADLINE = new Prefix("/deadline");
     public static final Prefix PREFIX_ENTRYBOOK_FLOATINGTASK = new Prefix("/float");
-    public static final Prefix PREFIX_TAG = new Prefix("/tag ");
+    public static final Prefix PREFIX_TAG = new Prefix("/tag");
 
 }
