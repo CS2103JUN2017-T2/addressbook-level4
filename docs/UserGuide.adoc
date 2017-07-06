@@ -162,6 +162,7 @@ Edits the 2nd entry in deadline list to take place every week for 3 weeks includ
 * `edit zoo outing /on 200917 1200` +
 Edits the entry matching "zoo" and "outing" to take place on 20 September, 12pm. If there are multiple entries that match the keywords, no entries are modifies.
 
+//<!-- @@author A0126623L -->
 === Finding an entry : `find`
 
 Finds entries which names or tags contain all of the given keywords. +
@@ -178,6 +179,7 @@ Format: `find KEYWORD_1 [KEYWORD_2 ...] [/archive|/bin]`
 *Defaults from `config.json`*: +
 
 * The maximum number of `find` results shown to the user is `findNumResults`
+//<!-- @@author -->
 
 === Deleting an entry : `delete`
 
