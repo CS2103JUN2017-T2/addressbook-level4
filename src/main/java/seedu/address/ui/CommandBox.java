@@ -1,7 +1,5 @@
 package seedu.address.ui;
 
-import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
-
 import java.util.Stack;
 import java.util.logging.Logger;
 
