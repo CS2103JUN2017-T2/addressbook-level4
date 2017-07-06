@@ -163,8 +163,11 @@ public class ModelManager extends ComponentManager implements Model {
         String toString();
     }
 
+    // @@author A0126623L
     private class NameQualifier implements Qualifier {
-        // TODO: change variable name to 'nameAndTagKeyWords'.
+
+        // TODO for ChuaPingChan:
+        // change variable name to 'nameAndTagKeyWords'.
         private Set<String> nameKeyWords;
 
         NameQualifier(Set<String> nameKeyWords) {
@@ -181,11 +184,11 @@ public class ModelManager extends ComponentManager implements Model {
             String wordsInNameAndTags = builder.toString();
 
             for (String keyword : nameKeyWords) {
-                if (StringUtil.containsWordIgnoreCase(wordsInNameAndTags, keyword)) {
-                    return true;
+                if (!StringUtil.containsWordIgnoreCase(wordsInNameAndTags, keyword)) {
+                    return false;
                 }
             }
-            return false;
+            return true;
         }
 
         @Override
