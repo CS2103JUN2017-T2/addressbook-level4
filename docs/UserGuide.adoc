@@ -116,7 +116,7 @@ Examples:
 * `complete clean up room`
 * `complete /deadline 3`
 
-//<!-- @@author -->
+//<!-- @@author A0126623L -->
 === Listing all entries : `list`
 
 Displays a list of entries sorted by datetime. +
@@ -135,6 +135,7 @@ Format: `list [/from START_DATE_TIME][/to END_DATE_TIME][/archive | /bin]`
 Examples:
 * `list`
 * `list /to 050717 1400 /archive`
+//<!-- @@author -->
 
 === Editing an entry : `edit`
 
@@ -167,6 +168,7 @@ Edits the 2nd entry in deadline list to take place every week for 3 weeks includ
 * `edit zoo outing /on 200917 1200` +
 Edits the entry matching "zoo" and "outing" to take place on 20 September, 12pm. If there are multiple entries that match the keywords, no entries are modifies.
 
+//<!-- @@author A0126623L -->
 === Finding an entry : `find`
 
 Finds entries which names or tags contain all of the given keywords. +
@@ -183,6 +185,7 @@ Format: `find KEYWORD_1 [KEYWORD_2 ...] [/archive|/bin]`
 *Defaults from `config.json`*: +
 
 * The maximum number of `find` results shown to the user is `findNumResults`
+//<!-- @@author -->
 
 === Deleting an entry : `delete`
 
@@ -228,7 +231,7 @@ Format: `restore [KEYWORD_1 KEYWORD_2...] | [/event | /deadline | /float INDEX]`
 Lists all the commands that you have entered in chronological order. +
 Format: `history`
 
-//<!-- @@author -->
+//<!-- @@author A0126623L -->
 === Undo changes : `undo`
 
 Undo the changes made by the last command. +
@@ -242,6 +245,7 @@ Reapply the changes removed by the `undo` command. +
 Format: `redo`
 
 * Allows redoing up until the most recent change.
+//<!-- @@author -->
 
 //<!-- @@author A0140633R -->
 === Clearing entries : `clear`
