@@ -51,7 +51,6 @@ public class TestUtil {
     //@@author A0125586X
     private static Entry[] getSampleEntryData() {
         try {
-            //CHECKSTYLE.OFF: LineLength
             return new Entry[] {
                 new Entry(new Name("Take lunch to work"), getTagSet()),
                 new Entry(new Name("Take dog for walk"), getTagSet()),
@@ -63,14 +62,13 @@ public class TestUtil {
                 new Entry(new Name("Import test cases"), getTagSet()),
                 new Entry(new Name("Scold Travis"), getTagSet())
             };
-            //CHECKSTYLE.ON: LineLength
         } catch (IllegalValueException e) {
             assert false;
-            // not possible
+            // not possible to make array
             return null;
         }
     }
-    //@@author A0125586X
+    //@@author
 
     public static List<Entry> generateSampleEntryData() {
         return Arrays.asList(SAMPLE_ENTRY_DATA);
@@ -117,36 +115,36 @@ public class TestUtil {
     }
 
     /**
-     * Removes a subset from the list of persons.
-     * @param persons The list of persons
-     * @param personsToRemove The subset of persons.
-     * @return The modified persons after removal of the subset from persons.
+     * Removes a subset from the list of entries.
+     * @param entries The list of entries
+     * @param entriesToRemove The subset of entries.
+     * @return The modified entries after removal of the subset from entries.
      */
-    public static Entry[] removePersonsFromList(final Entry[] persons, Entry... personsToRemove) {
-        List<Entry> listOfPersons = asList(persons);
-        listOfPersons.removeAll(asList(personsToRemove));
-        return listOfPersons.toArray(new Entry[listOfPersons.size()]);
+    public static Entry[] removeEntriesFromList(final Entry[] entries, Entry... entriesToRemove) {
+        List<Entry> listOfEntries = asList(entries);
+        listOfEntries.removeAll(asList(entriesToRemove));
+        return listOfEntries.toArray(new Entry[listOfEntries.size()]);
     }
 
 
     /**
-     * Returns a copy of the list with the person at specified index removed.
+     * Returns a copy of the list with the entry at specified index removed.
      * @param list original list to copy from
      */
-    public static Entry[] removePersonFromList(final Entry[] list, Index index) {
-        return removePersonsFromList(list, list[index.getZeroBased()]);
+    public static Entry[] removeEntryFromList(final Entry[] list, Index index) {
+        return removeEntriesFromList(list, list[index.getZeroBased()]);
     }
 
     /**
-     * Appends persons to the array of persons.
-     * @param persons A array of persons.
-     * @param personsToAdd The persons that are to be appended behind the original array.
-     * @return The modified array of persons.
+     * Appends entries to the array of entries.
+     * @param entries A array of entries.
+     * @param entriesToAdd The entries that are to be appended behind the original array.
+     * @return The modified array of entries.
      */
-    public static Entry[] addPersonsToList(final Entry[] persons, Entry... personsToAdd) {
-        List<Entry> listOfPersons = asList(persons);
-        listOfPersons.addAll(asList(personsToAdd));
-        return listOfPersons.toArray(new Entry[listOfPersons.size()]);
+    public static Entry[] addEntriessToList(final Entry[] entries, Entry... entriesToAdd) {
+        List<Entry> listOfEntries = asList(entries);
+        listOfEntries.addAll(asList(entriesToAdd));
+        return listOfEntries.toArray(new Entry[listOfEntries.size()]);
     }
 
     private static <T> List<T> asList(T[] objs) {

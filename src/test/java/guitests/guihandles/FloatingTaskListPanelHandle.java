@@ -12,9 +12,11 @@ import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import seedu.address.TestApp;
+import seedu.address.model.entry.Entry;
 import seedu.address.model.entry.ReadOnlyEntry;
 import seedu.address.testutil.TestUtil;
 
+//@@author A0125586
 /**
  * Provides a handle for the panel containing the event entry list.
  */
@@ -54,14 +56,14 @@ public class FloatingTaskListPanelHandle extends GuiHandle {
     public boolean isListMatching(int startPosition, ReadOnlyEntry... entries) throws IllegalArgumentException {
         if (entries.length + startPosition != getListView().getItems().size()) {
             throw new IllegalArgumentException("List size mismatched\n"
-                    + "Expected " + (getListView().getItems().size() - 1) + " events");
+                    + "Expected " + (getListView().getItems().size() - 1) + " entries");
         }
         assertTrue(this.containsInOrder(startPosition, entries));
         for (int i = 0; i < entries.length; i++) {
             final int scrollTo = i + startPosition;
             guiRobot.interact(() -> getListView().scrollTo(scrollTo));
             guiRobot.sleep(200);
-            if (!TestUtil.compareCardAndPerson(getPersonCardHandle(startPosition + i), entries[i])) {
+            if (!TestUtil.compareCardAndEntry(getEntryCardHandle(startPosition + i), entries[i])) {
                 return false;
             }
         }
@@ -80,16 +82,16 @@ public class FloatingTaskListPanelHandle extends GuiHandle {
      * Returns true if the {@code entries} appear as the sub list (in that order) at position {@code startPosition}.
      */
     public boolean containsInOrder(int startPosition, ReadOnlyEntry... entries) {
-        List<ReadOnlyEntry> personsInList = getListView().getItems();
+        List<ReadOnlyEntry> entriesInList = getListView().getItems();
 
         // Return false if the list in panel is too short to contain the given list
-        if (startPosition + entries.length > personsInList.size()) {
+        if (startPosition + entries.length > entriesInList.size()) {
             return false;
         }
 
         // Return false if any of the entries doesn't match
         for (int i = 0; i < entries.length; i++) {
-            if (!personsInList.get(startPosition + i).getName().fullName.equals(entries[i].getName().fullName)) {
+            if (!entriesInList.get(startPosition + i).getName().toString().equals(entries[i].getName().toString())) {
                 return false;
             }
         }
@@ -97,23 +99,26 @@ public class FloatingTaskListPanelHandle extends GuiHandle {
         return true;
     }
 
-    public PersonCardHandle navigateToPerson(String name) {
+    /**
+     * Navigates the listview to display and select the entry that matches the {@code name}.
+     */
+    public EntryCardHandle navigateToEntry(String name) {
         guiRobot.sleep(500); //Allow a bit of time for the list to be updated
-        final Optional<ReadOnlyEntry> person = getListView().getItems().stream()
-                                                    .filter(p -> p.getName().fullName.equals(name))
-                                                    .findAny();
-        if (!person.isPresent()) {
-            throw new IllegalStateException("Name not found: " + name);
+        final Optional<ReadOnlyEntry> entry = getListView().getItems().stream()
+                                                .filter(p -> p.getName().toString().equals(name))
+                                                .findAny();
+        if (!entry.isPresent()) {
+            throw new IllegalStateException("Name of entry not found: " + name);
         }
 
-        return navigateToPerson(person.get());
+        return navigateToEntry(entry.get());
     }
 
     /**
-     * Navigates the listview to display and select the person.
+     * Navigates the listview to display and select the entry.
      */
-    public PersonCardHandle navigateToPerson(ReadOnlyEntry person) {
-        int index = getPersonIndex(person);
+    public EntryCardHandle navigateToEntry(ReadOnlyEntry entry) {
+        int index = getEntryIndex(entry);
 
         guiRobot.interact(() -> {
             getListView().scrollTo(index);
@@ -121,17 +126,17 @@ public class FloatingTaskListPanelHandle extends GuiHandle {
             getListView().getSelectionModel().select(index);
         });
         guiRobot.sleep(100);
-        return getPersonCardHandle(person);
+        return getEntryCardHandle(entry);
     }
 
 
     /**
-     * Returns the position of the person given, {@code NOT_FOUND} if not found in the list.
+     * Returns the position index of the entry given, {@code NOT_FOUND} if not found in the list.
      */
-    public int getPersonIndex(ReadOnlyEntry targetPerson) {
-        List<ReadOnlyEntry> personsInList = getListView().getItems();
-        for (int i = 0; i < personsInList.size(); i++) {
-            if (personsInList.get(i).getName().equals(targetPerson.getName())) {
+    public int getEntryIndex(ReadOnlyEntry target) {
+        List<ReadOnlyEntry> entriesInList = getListView().getItems();
+        for (int i = 0; i < entriesInList.size(); i++) {
+            if (entriesInList.get(i).getName().equals(target.getName())) {
                 return i;
             }
         }
@@ -139,23 +144,29 @@ public class FloatingTaskListPanelHandle extends GuiHandle {
     }
 
     /**
-     * Gets a person from the list by index
+     * Gets an entry from the list by index
      */
-    public ReadOnlyEntry getPerson(int index) {
+    public ReadOnlyEntry getEntry(int index) {
         return getListView().getItems().get(index);
     }
 
-    public PersonCardHandle getPersonCardHandle(int index) {
-        return getPersonCardHandle(new Person(getListView().getItems().get(index)));
+    /**
+     * Gets an entry handle for an entry in the list by index
+     */
+    public EntryCardHandle getEntryCardHandle(int index) {
+        return getEntryCardHandle(new Entry(getListView().getItems().get(index)));
     }
 
-    public PersonCardHandle getPersonCardHandle(ReadOnlyEntry person) {
+    /**
+     * Gets an entry handle for an entry in the list
+     */
+    public EntryCardHandle getEntryCardHandle(ReadOnlyEntry entry) {
         Set<Node> nodes = getAllCardNodes();
-        Optional<Node> personCardNode = nodes.stream()
-                .filter(n -> new PersonCardHandle(guiRobot, primaryStage, n).isSamePerson(person))
+        Optional<Node> entryCardNode = nodes.stream()
+                .filter(n -> new EntryCardHandle(guiRobot, primaryStage, n).isSameEntry(entry))
                 .findFirst();
-        if (personCardNode.isPresent()) {
-            return new PersonCardHandle(guiRobot, primaryStage, personCardNode.get());
+        if (entryCardNode.isPresent()) {
+            return new EntryCardHandle(guiRobot, primaryStage, entryCardNode.get());
         } else {
             return null;
         }
@@ -165,7 +176,7 @@ public class FloatingTaskListPanelHandle extends GuiHandle {
         return guiRobot.lookup(CARD_PANE_ID).queryAll();
     }
 
-    public int getNumberOfPeople() {
+    public int getNumberOfEntries() {
         return getListView().getItems().size();
     }
 }
