@@ -5,48 +5,33 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import guitests.guihandles.EntryCardHandle;
-import seedu.address.logic.commands.ClearCommand;
 import seedu.address.model.entry.Entry;
 import seedu.address.testutil.EntryUtil;
 import seedu.address.testutil.TestUtil;
 
+//@@author A0125586X
 public class AddCommandTest extends EntryBookGuiTest {
 
     @Test
     public void add_floatingTask_success() {
         Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
         Entry entryToAdd = typicalEntries.spectacles;
-        assertAddFloatingTaskSuccess(entryToAdd, currentList);
-        currentList = TestUtil.addEntriesToList(currentList, entryToAdd);
+        currentList = addFloatingTask(entryToAdd, currentList);
     }
 
     @Test
     public void add_multipleUniqueFloatingTask_success() {
         Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
         Entry entryToAdd = typicalEntries.spectacles;
-        assertAddFloatingTaskSuccess(entryToAdd, currentList);
-        currentList = TestUtil.addEntriesToList(currentList, entryToAdd);
+        currentList = addFloatingTask(entryToAdd, currentList);
         entryToAdd = typicalEntries.clean;
-        assertAddFloatingTaskSuccess(entryToAdd, currentList);
-        currentList = TestUtil.addEntriesToList(currentList, entryToAdd);
+        currentList = addFloatingTask(entryToAdd, currentList);
         entryToAdd = typicalEntries.sell;
-        assertAddFloatingTaskSuccess(entryToAdd, currentList);
-        currentList = TestUtil.addEntriesToList(currentList, entryToAdd);
+        currentList = addFloatingTask(entryToAdd, currentList);
     }
 
     /*@Test
     public void add() {
-        //add one entry
-        Entry[] currentList = td.getTypicalEntrys();
-        Entry entryToAdd = td.hoon;
-        assertAddSuccess(entryToAdd, currentList);
-        currentList = TestUtil.addEntrysToList(currentList, entryToAdd);
-
-        //add another entry
-        entryToAdd = td.ida;
-        assertAddSuccess(entryToAdd, currentList);
-        currentList = TestUtil.addEntrysToList(currentList, entryToAdd);
-
         //add duplicate entry
         commandBox.runCommand(EntryUtil.getAddCommand(td.hoon));
         assertResultMessage(AddCommand.MESSAGE_DUPLICATE_PERSON);
@@ -60,6 +45,11 @@ public class AddCommandTest extends EntryBookGuiTest {
         commandBox.runCommand("adds Johnny");
         assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
     }*/
+
+    private Entry[] addFloatingTask(Entry entryToAdd, Entry[] currentList) {
+        assertAddFloatingTaskSuccess(entryToAdd, currentList);
+        return TestUtil.addEntriesToList(currentList, entryToAdd);
+    }
 
     private void assertEventListEmpty() {
         assertTrue(eventListPanel.getNumberOfEntries() == 0);
