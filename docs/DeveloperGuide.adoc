@@ -434,7 +434,7 @@ Use case ends.
 i) MultiTasky shows an error message and prints the proper usage syntax and example command for adding new entries.
 ii) Use case resumes from step 1.
 
-<!-- @@author A0140633R -->
+//<!-- @@author A0140633R -->
 [discrete]
 === Use case: Completing an entry
 
@@ -472,7 +472,7 @@ iii) MultiTasky checks if index is valid, if not, MultiTasky shows an error mess
 iv) Use case resumes from step 2.
 
 
-<!-- @@author A0140633R -->
+//<!-- @@author A0140633R -->
 [discrete]
 === Use case: Getting daily summary
 
@@ -707,7 +707,7 @@ Cons:
 * Tasks and events are not differentiated as they have the exact same entry fields.
 * Not enough task preference default parameters for user to specify.
 
-<!-- @@author A0140633R -->
+//<!-- @@author A0140633R -->
 *Todo.txt*
 
 Developer: Gina Trapani
