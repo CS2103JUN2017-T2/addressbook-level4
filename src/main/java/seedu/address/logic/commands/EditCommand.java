@@ -31,7 +31,7 @@ public class EditCommand extends Command {
 
             + "[" + PREFIX_TAG + "TAG]...\n" + "Example: " + COMMAND_WORD + " 1 ";
 
-    public static final String MESSAGE_EDIT_ENTRY_SUCCESS = "Edited Person: %1$s";
+    public static final String MESSAGE_EDIT_ENTRY_SUCCESS = "Edited Entry: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_ENTRY = "This entry already exists in the address book.";
 
@@ -40,16 +40,16 @@ public class EditCommand extends Command {
 
     /**
      * @param index
-     *            of the person in the filtered person list to edit
-     * @param editPersonDescriptor
-     *            details to edit the person with
+     *            of the entry in the filtered entry list to edit
+     * @param editEntryDescriptor
+     *            details to edit the entry with
      */
-    public EditCommand(Index index, EditEntryDescriptor editPersonDescriptor) {
+    public EditCommand(Index index, EditEntryDescriptor editEntryDescriptor) {
         requireNonNull(index);
-        requireNonNull(editPersonDescriptor);
+        requireNonNull(editEntryDescriptor);
 
         this.index = index;
-        this.editEntryDescriptor = new EditEntryDescriptor(editPersonDescriptor);
+        this.editEntryDescriptor = new EditEntryDescriptor(editEntryDescriptor);
     }
 
     @Override
@@ -66,21 +66,21 @@ public class EditCommand extends Command {
         try {
             model.updateEntry(entryToEdit, editedEntry);
         } catch (EntryNotFoundException pnfe) {
-            throw new AssertionError("The target person cannot be missing");
+            throw new AssertionError("The target entry cannot be missing");
         }
         model.updateFilteredListToShowAll();
         return new CommandResult(String.format(MESSAGE_EDIT_ENTRY_SUCCESS, entryToEdit));
     }
 
     /**
-     * Creates and returns a {@code Person} with the details of
-     * {@code personToEdit} edited with {@code editPersonDescriptor}.
+     * Creates and returns a {@code Entry} with the details of
+     * {@code entryToEdit} edited with {@code editEntryDescriptor}.
      */
-    private static Entry createEditedEntry(ReadOnlyEntry personToEdit, EditEntryDescriptor editPersonDescriptor) {
-        assert personToEdit != null;
+    private static Entry createEditedEntry(ReadOnlyEntry entryToEdit, EditEntryDescriptor editEntryDescriptor) {
+        assert entryToEdit != null;
 
-        Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
-        Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
+        Name updatedName = editEntryDescriptor.getName().orElse(entryToEdit.getName());
+        Set<Tag> updatedTags = editEntryDescriptor.getTags().orElse(entryToEdit.getTags());
 
         return new Entry(updatedName, updatedTags);
     }
@@ -103,8 +103,8 @@ public class EditCommand extends Command {
     }
 
     /**
-     * Stores the details to edit the person with. Each non-empty field value
-     * will replace the corresponding field value of the person.
+     * Stores the details to edit the entry with. Each non-empty field value
+     * will replace the corresponding field value of the entry.
      */
     public static class EditEntryDescriptor {
         private Name name;
