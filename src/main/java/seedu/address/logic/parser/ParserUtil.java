@@ -46,6 +46,7 @@ public class ParserUtil {
      * Parses {@code Collection<String> tags} into a {@code Set<Tag>}.
      */
     public static Set<Tag> parseTags(Collection<String> tags) throws IllegalValueException {
+        requireNonNull(tags);
         final Set<Tag> tagSet = new HashSet<>();
         for (String tagString : tags) {
             for (String tagName : tagString.split("\\s+")) {
