@@ -397,7 +397,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |user |have an option in my commands to accept any confirmation messages automatically (/force) |can save time
 
-|`* *` |user |am able to search for task entries using partial words | find entries easily without remembering exact words
+|`* *` |user |be able to search for task entries using partial words | find entries easily without remembering exact words
 
 |`*` |user with many projects |tag entries by assignment |distinguish tasks for similar assignments
 
