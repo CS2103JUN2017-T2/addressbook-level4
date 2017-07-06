@@ -12,8 +12,7 @@ import seedu.address.model.Model;
 import seedu.address.model.entry.ReadOnlyEntry;
 import seedu.address.model.entry.exceptions.EntryNotFoundException;
 
-//@@kevinlamkb A0140633R
-
+//@@author A0140633R
 /*
  * Deletes an entry identified using the type of entry followed by displayed.
  */

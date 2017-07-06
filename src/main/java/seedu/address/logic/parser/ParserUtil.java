@@ -49,9 +49,11 @@ public class ParserUtil {
         requireNonNull(tags);
         final Set<Tag> tagSet = new HashSet<>();
         for (String tagString : tags) {
+            //@@author A014063R
             for (String tagName : tagString.split("\\s+")) {
                 tagSet.add(new Tag(tagName));
             }
+            //@@author
         }
         return tagSet;
     }

@@ -5,7 +5,7 @@ package seedu.address.logic.parser;
  */
 public class CliSyntax {
 
-    //@@kevinlamKB A0140633R
+    //@@author A0140633R
     /* Prefix definitions */
     public static final Prefix PREFIX_ENTRYLIST_ARCHIVE = new Prefix("/archive");
     public static final Prefix PREFIX_ENTRYLIST_BIN = new Prefix("/bin");

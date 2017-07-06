@@ -14,7 +14,6 @@ import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
-//@@kevinlamkb A0140633R
 /**
  * Parses input arguments and creates a new DeleteCommand object
  */
@@ -27,6 +26,7 @@ public class DeleteCommandParser {
      * @throws ParseException
      * if the user input does not conform the expected format
      */
+    //@@author A0140633R
     public Command parse(String args) throws ParseException {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_ENTRYBOOK_FLOATINGTASK);
 
