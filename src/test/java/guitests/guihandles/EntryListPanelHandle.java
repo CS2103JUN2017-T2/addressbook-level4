@@ -25,10 +25,11 @@ public class EntryListPanelHandle extends GuiHandle {
     public static final int NOT_FOUND = -1;
     public static final String CARD_PANE_ID = "#cardPane";
 
-    private static final String LIST_VIEW_ID = "#eventListView";
+    protected String listViewId;
 
     public EntryListPanelHandle(GuiRobot guiRobot, Stage primaryStage) {
         super(guiRobot, primaryStage, TestApp.APP_TITLE);
+        listViewId = "#entryListView";
     }
 
     public List<ReadOnlyEntry> getSelectedEntries() {
@@ -37,7 +38,7 @@ public class EntryListPanelHandle extends GuiHandle {
     }
 
     public ListView<ReadOnlyEntry> getListView() {
-        return getNode(LIST_VIEW_ID);
+        return getNode(listViewId);
     }
 
     /**
@@ -56,7 +57,8 @@ public class EntryListPanelHandle extends GuiHandle {
     public boolean isListMatching(int startPosition, ReadOnlyEntry... entries) throws IllegalArgumentException {
         if (entries.length + startPosition != getListView().getItems().size()) {
             throw new IllegalArgumentException("List size mismatched\n"
-                    + "Expected " + (getListView().getItems().size() - 1) + " entries");
+                    + "Expected " + (getListView().getItems().size() - 1) + " entries, "
+                    + "got" + (entries.length + startPosition - 1));
         }
         assertTrue(this.containsInOrder(startPosition, entries));
         for (int i = 0; i < entries.length; i++) {

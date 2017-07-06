@@ -15,20 +15,18 @@ public class TypicalEntries {
     public static final Index INDEX_SECOND_ENTRY = Index.fromOneBased(2);
     public static final Index INDEX_THIRD_ENTRY = Index.fromOneBased(3);
 
-    public final Entry lunch, dog, cat, novel, groceries, code, tasks, test, travis;
+    public final Entry cook, programming, spectacles, clean, sell;
 
     // @@author A0125586X
     public TypicalEntries() {
         try {
-            lunch = new EntryBuilder().withName("Take lunch to work").withTags("food").build();
-            dog = new EntryBuilder().withName("Take dog for walk").withTags("pets", "exercise").build();
-            cat = new EntryBuilder().withName("Fill up cat food bowl").withTags("pets").build();
-            novel = new EntryBuilder().withName("Write novel").build();
-            groceries = new EntryBuilder().withName("Buy groceries").build();
-            code = new EntryBuilder().withName("Refactor code").build();
-            tasks = new EntryBuilder().withName("Write two more tasks").build();
-            test = new EntryBuilder().withName("Import test cases").build();
-            travis = new EntryBuilder().withName("Scold Travis").build();
+            //CHECKSTYLE.OFF: LineLength
+            cook = new EntryBuilder().withName("Learn to cook").withTags("goals").build();
+            programming = new EntryBuilder().withName("Learn programming").withTags("lessons", "computer").build();
+            spectacles = new EntryBuilder().withName("Make new spectacles").withTags("health", "eyesight").build();
+            clean = new EntryBuilder().withName("Clean up room").withTags("never").build();
+            sell = new EntryBuilder().withName("Sell old things").withTags("sale", "clutter").build();
+            //CHECKSTYLE.ON: LineLength
 
         } catch (IllegalValueException e) {
             throw new AssertionError("Sample data cannot be invalid", e);
@@ -43,7 +41,11 @@ public class TypicalEntries {
     }
 
     public Entry[] getTypicalEntries() {
-        return new Entry[] { lunch, dog, cat, novel, groceries, code, tasks, test, travis };
+        return new Entry[] { cook, programming };
+    }
+
+    public Entry[] getTypicalFloatingTasks() {
+        return new Entry[] { cook, programming };
     }
 
     // @@author A0126623L

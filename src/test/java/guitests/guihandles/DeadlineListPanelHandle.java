@@ -9,9 +9,8 @@ import javafx.stage.Stage;
  */
 public class DeadlineListPanelHandle extends EntryListPanelHandle {
 
-    private static final String LIST_VIEW_ID = "#deadlineListView";
-
     public DeadlineListPanelHandle(GuiRobot guiRobot, Stage primaryStage) {
         super(guiRobot, primaryStage);
+        listViewId = "#deadlineListView";
     }
 }

@@ -141,7 +141,7 @@ public class TestUtil {
      * @param entriesToAdd The entries that are to be appended behind the original array.
      * @return The modified array of entries.
      */
-    public static Entry[] addEntriessToList(final Entry[] entries, Entry... entriesToAdd) {
+    public static Entry[] addEntriesToList(final Entry[] entries, Entry... entriesToAdd) {
         List<Entry> listOfEntries = asList(entries);
         listOfEntries.addAll(asList(entriesToAdd));
         return listOfEntries.toArray(new Entry[listOfEntries.size()]);

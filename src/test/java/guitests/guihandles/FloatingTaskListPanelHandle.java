@@ -9,9 +9,8 @@ import javafx.stage.Stage;
  */
 public class FloatingTaskListPanelHandle extends EntryListPanelHandle {
 
-    private static final String LIST_VIEW_ID = "#floatingTaskListView";
-
     public FloatingTaskListPanelHandle(GuiRobot guiRobot, Stage primaryStage) {
         super(guiRobot, primaryStage);
+        listViewId = "#floatingTaskListView";
     }
 }
