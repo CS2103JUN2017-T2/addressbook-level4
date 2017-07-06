@@ -1,6 +1,6 @@
 package seedu.address.ui;
 
-import java.util.ArrayList;
+import java.util.Stack;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
@@ -17,6 +17,12 @@ import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
 
+//@@author A0125586X
+/**
+ * Handles text input from the user into the command box.
+ * Keeps a history of previous commands entered by the user to provide
+ * Linux-style command history navigation.
+ */
 public class CommandBox extends UiPart<Region> {
 
     public static final String ERROR_STYLE_CLASS = "error";
@@ -25,9 +31,8 @@ public class CommandBox extends UiPart<Region> {
     private final Logger logger = LogsCenter.getLogger(CommandBox.class);
     private final Logic logic;
 
-    //@@author A0125586X
-    private ArrayList<String> commandTextHistory;
-    private int commandTextHistoryIdx;
+    private Stack<String> commandTextPastStack;
+    private Stack<String> commandTextFutureStack;
 
     @FXML
     private TextField commandTextField;
@@ -44,9 +49,8 @@ public class CommandBox extends UiPart<Region> {
      */
     @FXML
     private void setupHistory() {
-        commandTextHistory = new ArrayList<>();
-        commandTextHistory.add("");
-        commandTextHistoryIdx = 0;
+        commandTextPastStack = new Stack<>();
+        commandTextFutureStack = new Stack<>();
         getRoot().addEventHandler(KeyEvent.ANY, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -61,53 +65,72 @@ public class CommandBox extends UiPart<Region> {
 
     @FXML
     private void handleCommandInputChanged() {
+        String commandText = commandTextField.getText().trim();
+        commandTextField.setText("");
+        saveCommandtoHistory(commandText);
         try {
-            String commandText = commandTextField.getText();
-            saveCommandtoHistory(commandText);
             CommandResult commandResult = logic.execute(commandText);
             // process result of the command
             setStyleToIndicateCommandSuccess();
-            commandTextField.setText("");
             logger.info("Result: " + commandResult.feedbackToUser);
             raise(new NewResultAvailableEvent(commandResult.feedbackToUser));
 
         } catch (CommandException | ParseException e) {
             // handle command failure
             setStyleToIndicateCommandFailure();
-            logger.info("Invalid command: " + commandTextField.getText());
+            logger.info("Invalid command: " + commandText);
             raise(new NewResultAvailableEvent(e.getMessage()));
         }
     }
 
     private void saveCommandtoHistory(String command) {
-        commandTextHistory.add(command);
-        commandTextHistoryIdx = commandTextHistory.size();
+        // First push all commands to the past
+        while (!commandTextFutureStack.empty()) {
+            commandTextPastStack.push(commandTextFutureStack.pop());
+        }
+        // Save this command if it's the first one or if it's different from the last one
+        if ((command.length() > 0)
+            && (commandTextPastStack.empty() || !commandTextPastStack.peek().equals(command))) {
+            commandTextPastStack.push(command);
+        }
     }
 
     private void loadPreviousCommandIntoTextField() {
-        // Special case for the first time
-        if (commandTextHistoryIdx == commandTextHistory.size()) {
-            --commandTextHistoryIdx;
+        // There's history to show to the user
+        if (!commandTextPastStack.empty()) {
+            // Store whatever the user was typing if it's different from the last one
+            String command = commandTextField.getText().trim();
+            if (commandTextFutureStack.empty()
+                && !command.equals(commandTextPastStack.peek())) {
+                commandTextFutureStack.push(command);
+            }
+            // Load the previous command from the past
+            commandTextFutureStack.push(commandTextPastStack.pop());
+            commandTextField.setText(commandTextFutureStack.peek());
         }
-        // Stop at index 1 which is the first command entered
-        if (commandTextHistoryIdx > 1) {
-            --commandTextHistoryIdx;
-        }
-        commandTextField.setText(commandTextHistory.get(commandTextHistoryIdx));
-        // Position cursor at the end for easy editing
-        commandTextField.positionCaret(commandTextHistory.get(commandTextHistoryIdx).length());
+        setCursorToCommandTextFieldEnd();
     }
 
     private void loadNextCommandIntoTextField() {
-        // Moves one step towards the present
-        if (commandTextHistoryIdx < commandTextHistory.size() - 1) {
-            ++commandTextHistoryIdx;
+        // There're newer commands to show to the user
+        if (!commandTextFutureStack.empty()) {
+            String temp = commandTextFutureStack.pop();
+            // There's still at least one more command
+            if (!commandTextFutureStack.empty()) {
+                commandTextPastStack.push(temp);
+            // This is the newest command
+            } else {
+                commandTextFutureStack.push(temp);
+            }
+            commandTextField.setText(commandTextFutureStack.peek());
         }
-        commandTextField.setText(commandTextHistory.get(commandTextHistoryIdx));
-        // Position cursor at the end for easy editing
-        commandTextField.positionCaret(commandTextHistory.get(commandTextHistoryIdx).length());
+        setCursorToCommandTextFieldEnd();
     }
-    //@@author
+
+    private void setCursorToCommandTextFieldEnd() {
+        // Position cursor at the end for easy editing
+        commandTextField.positionCaret(commandTextField.getText().length());
+    }
 
     /**
      * Sets the command box style to indicate a successful command.
@@ -130,3 +153,4 @@ public class CommandBox extends UiPart<Region> {
     }
 
 }
+//@@author

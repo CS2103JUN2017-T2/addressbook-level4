@@ -345,6 +345,8 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |user |list the next `n` number of entries |see upcoming events to attend/tasks to finish
 
+|`* *` |user |use the up and down arrow keys to bring up previously entered commands |avoid typing out commands I've previously used
+
 |`* *` |developer |have an automated test program |check program functionality after every update
 
 |`* *` |new user |have similar syntax for most commands |use them easily without confusion
@@ -471,8 +473,7 @@ ii) User specifies index.
 iii) MultiTasky checks if index is valid, if not, MultiTasky shows an error message and returns to step 2a ii.
 iv) Use case resumes from step 2.
 
-
-//<!-- @@author A0140633R -->
+//<!-- @@author A0125586X -->
 [discrete]
 === Use case: Getting daily summary
 
@@ -564,6 +565,7 @@ iii) Use case resumes from step 2.
 [appendix]
 == Glossary
 
+//<!-- @@author A0125586X -->
 [[entry]]
 Entry
 ____
@@ -579,6 +581,7 @@ An entry *can* have:
 * Specified start and end date and/or time *and/or*
 * Zero or more tags
 ____
+//<!-- @@author -->
 
 [[event]]
 Event
@@ -686,6 +689,7 @@ Cons:
 * Launching is slow. Requires opening a browser and then typing in a URL. A way to work around this is to synchronise Google Calendar with another calendar application which can be open more quickly.
 //<!-- @@author -->
 
+//<!-- @@author A0125586X -->
 *Hitask*
 
 Developer: Human Computer LLC
@@ -712,6 +716,7 @@ Cons:
 * Cannot intelligently search for a free slot for an event.
 * Tasks and events are not differentiated as they have the exact same entry fields.
 * Not enough task preference default parameters for user to specify.
+//<!-- @@author -->
 
 //<!-- @@author A0140633R -->
 *Todo.txt*

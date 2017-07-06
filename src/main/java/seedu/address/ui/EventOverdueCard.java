@@ -10,12 +10,12 @@ import seedu.address.model.entry.ReadOnlyEntry;
  * used to indicate events that are over.
  */
 public class EventOverdueCard extends EntryCard {
-    private static String FXML = "EventOverdueCard.fxml";
+    private static final String FXML = "EventOverdueCard.fxml";
 
     public EventOverdueCard(ReadOnlyEntry entry, int displayedIndex) {
         super(FXML, entry, displayedIndex);
-        start_date_time.setText("0000");
-        end_date_time.setText("1000");
-        additional_info.setText("Last week!");
+        startDateTime.setText("0000");
+        endDateTime.setText("1000");
+        additionalInfo.setText("Last week!");
     }
 }

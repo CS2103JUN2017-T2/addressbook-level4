@@ -8,7 +8,7 @@ import seedu.address.model.entry.ReadOnlyEntry;
  * configuration file, allowing it to have its own separate colour and layout scheme.
  */
 public class FloatingTaskCard extends EntryCard {
-    private static String FXML = "FloatingTaskCard.fxml";
+    private static final String FXML = "FloatingTaskCard.fxml";
 
     public FloatingTaskCard(ReadOnlyEntry entry, int displayedIndex) {
         super(FXML, entry, displayedIndex);

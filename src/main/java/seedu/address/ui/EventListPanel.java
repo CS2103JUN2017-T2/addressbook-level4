@@ -29,7 +29,7 @@ public class EventListPanel extends UiPart<Region> {
 
     private void setConnections(ObservableList<ReadOnlyEntry> eventList) {
         eventListView.setItems(eventList);
-        eventListView.setCellFactory(listView -> new eventListViewCell());
+        eventListView.setCellFactory(listView -> new EventListViewCell());
     }
 
     public void scrollTo(int index) {
@@ -39,7 +39,7 @@ public class EventListPanel extends UiPart<Region> {
         });
     }
 
-    class eventListViewCell extends ListCell<ReadOnlyEntry> {
+    class EventListViewCell extends ListCell<ReadOnlyEntry> {
 
         @Override
         protected void updateItem(ReadOnlyEntry entry, boolean empty) {
