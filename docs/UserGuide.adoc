@@ -12,10 +12,12 @@ endif::[]
 
 By: `Team 2`      Since: `Jun 2017`      Licence: `MIT`
 
+//<!-- @@author A0140633R -->
 == Welcome
 
 We often find ourselves overwhelmed by different sets of tasks every single day, and frequently have to spend huge amounts of time organizing and remembering what to do. However, with MultiTasky and our smart key commands, effortlessly organizing such tasks become a cinch, allowing you to deal with your daily tasks with maximum efficiency!
 
+//<!-- @@author -->
 == Getting Started
 
 Setting up MultiTasky is simple. Just follow these simple steps:
@@ -45,7 +47,7 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 . The link:#glossary[Glossary] may be useful if you come across unfamiliar terms used.
 
 == Features
-
+//<!-- @@author A0140633R -->
 ====
 *Command Format*
 
@@ -98,6 +100,7 @@ Examples:
 * `add clean up room`
 //<!-- @@author -->
 
+//<!-- @@author A0140633R -->
 === Completing a task : `complete`
 
 Finds and checkmarks a task as completed and moves it to archive. +
@@ -114,6 +117,7 @@ Examples:
 * `complete clean up room`
 * `complete /deadline 3`
 
+//<!-- @@author A0126623L -->
 === Listing all entries : `list`
 
 Displays a list of entries sorted by datetime. +
@@ -132,6 +136,7 @@ Format: `list [/from START_DATE_TIME][/to END_DATE_TIME][/archive | /bin]`
 Examples:
 * `list`
 * `list /to 050717 1400 /archive`
+//<!-- @@author -->
 
 //<!-- @@author A0125586X -->
 === Editing an entry : `edit`
@@ -166,6 +171,7 @@ Edits the 2nd entry in deadline list to take place every week for 3 weeks includ
 Edits the entry matching "zoo" and "outing" to take place on 20 September, 12pm. If there are multiple entries that match the keywords, no entries are modifies.
 //<!-- @@author -->
 
+//<!-- @@author A0126623L -->
 === Finding an entry : `find`
 
 Finds entries which names or tags contain all of the given keywords. +
@@ -182,6 +188,7 @@ Format: `find KEYWORD_1 [KEYWORD_2 ...] [/archive|/bin]`
 *Defaults from `config.json`*: +
 
 * The maximum number of `find` results shown to the user is `findNumResults`
+//<!-- @@author -->
 
 === Deleting an entry : `delete`
 
@@ -209,6 +216,7 @@ Deletes all entries in the active list that matches "pasta" and "dinner" in the 
 * `delete pasta dinner /force` +
 Deletes all entries in active entries.
 
+//<!-- @@author A0140633R -->
 === Restoring an entry : `restore`
 
 Finds and restores an archived or deleted entry back to active tasks +
@@ -226,6 +234,7 @@ Format: `restore [KEYWORD_1 KEYWORD_2...] | [/event | /deadline | /float INDEX]`
 Lists all the commands that you have entered in chronological order. +
 Format: `history`
 
+//<!-- @@author A0126623L -->
 === Undo changes : `undo`
 
 Undo the changes made by the last command. +
@@ -239,7 +248,9 @@ Reapply the changes removed by the `undo` command. +
 Format: `redo`
 
 * Allows redoing up until the most recent change.
+//<!-- @@author -->
 
+//<!-- @@author A0140633R -->
 === Clearing entries : `clear`
 
 Clears all entries from sections of the Task Manager. +
@@ -254,6 +265,7 @@ Format: `clear [/archive | /bin | /all]`
 Exits the program. +
 Format: `exit`
 
+//<!-- @@author A0140633R -->
 === Saving the data
 
 Task Manager data are saved in the hard disk automatically after any command that changes the data. +
@@ -284,6 +296,7 @@ An entry *can* have:
 ____
 //<!-- @@author -->
 
+//<!-- @@author A0140633R -->
 [[event]]
 Event
 ____
@@ -303,6 +316,7 @@ Floating Task
 An entry in the Task Manager with
 * No specified date or time associated
 
+//<!-- @@author A0140633R -->
 [[tag]]
 Tag
 ____
@@ -333,6 +347,7 @@ ____
 Windows, Linux, Unix, OS-X
 ____
 
+//<!-- @@author A0140633R -->
 [[ddmmyy-hhmm]]
 ddmmyy hhmm format
 ____

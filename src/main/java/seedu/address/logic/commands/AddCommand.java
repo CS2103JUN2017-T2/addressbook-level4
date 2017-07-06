@@ -16,7 +16,7 @@ public class AddCommand extends Command {
 
     public static final String COMMAND_WORD = "add";
 
-    // @@kevinlamkb A0140633R
+    //@@author A0140633R
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds an entry to the entry book. " + "\n" + "Format: "
             + "NAME " + "[" + PREFIX_TAG + " TAG]...\n" + "Example: " + COMMAND_WORD + " " + "dinner with parents "
             + PREFIX_TAG + "friends " + PREFIX_TAG + "owesMoney";

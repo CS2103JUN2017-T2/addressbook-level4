@@ -13,10 +13,11 @@ import seedu.address.commons.events.model.EntryBookChangedEvent;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.model.entry.ReadOnlyEntry;
 import seedu.address.model.entry.exceptions.EntryNotFoundException;
+import seedu.address.model.tag.Tag;
 
 /**
- * Represents the in-memory model of the address book data.
- * All changes to any model should be synchronized.
+ * Represents the in-memory model of the address book data. All changes to any
+ * model should be synchronized.
  */
 public class ModelManager extends ComponentManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
@@ -71,18 +72,18 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
-            throws EntryNotFoundException {
+    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws EntryNotFoundException {
         requireAllNonNull(target, editedEntry);
 
         entryBook.updateEntry(target, editedEntry);
         indicateEntryBookChanged();
     }
 
-    //=========== Filtered Entry List Accessors =============================================================
+    // =========== Filtered Entry List Accessors ===========
 
     /**
-     * Return a list of {@code ReadOnlyEntry} backed by the internal list of {@code entryBook}
+     * Return a list of {@code ReadOnlyEntry} backed by the internal list of
+     * {@code entryBook}
      */
     @Override
     public UnmodifiableObservableList<ReadOnlyEntry> getFilteredFloatingTaskList() {
@@ -94,6 +95,7 @@ public class ModelManager extends ComponentManager implements Model {
         filteredEntries.setPredicate(null);
     }
 
+    // @@author A0126623L
     @Override
     public void updateFilteredFloatingTaskList(Set<String> keywords) {
         updateFilteredEntryList(new PredicateExpression(new NameQualifier(keywords)));
@@ -117,14 +119,21 @@ public class ModelManager extends ComponentManager implements Model {
 
         // state check
         ModelManager other = (ModelManager) obj;
-        return entryBook.equals(other.entryBook)
-                && filteredEntries.equals(other.filteredEntries);
+        return entryBook.equals(other.entryBook) && filteredEntries.equals(other.filteredEntries);
     }
 
-    //========== Inner classes/interfaces used for filtering =================================================
+    // ========== Inner classes/interfaces used for filtering ==========
 
     interface Expression {
+        /**
+         * Evaluates whether a ReadOnlyEntry satisfies a certain condition.
+         *
+         * @param entry
+         * @return boolean
+         */
         boolean satisfies(ReadOnlyEntry entry);
+
+        @Override
         String toString();
     }
 
@@ -149,22 +158,61 @@ public class ModelManager extends ComponentManager implements Model {
 
     interface Qualifier {
         boolean run(ReadOnlyEntry entry);
+
+        @Override
         String toString();
     }
 
+    // @@author A0126623L
+    /**
+     * Represents a qualifier can check the presence of all keywords in the name
+     * and tags of a ReadOnlyEntry.
+     */
     private class NameQualifier implements Qualifier {
+
+        // TODO for ChuaPingChan:
+        // change variable name to 'nameAndTagKeyWords'.
         private Set<String> nameKeyWords;
 
         NameQualifier(Set<String> nameKeyWords) {
             this.nameKeyWords = nameKeyWords;
         }
 
+        // @@author A0126623L
+        /**
+         * Matches words in an entry's name and tags and with all the keywords
+         * of a Qualifier.
+         *
+         * @return boolean: true if all keywords are present in an entry's name
+         *         and tags.
+         */
         @Override
         public boolean run(ReadOnlyEntry entry) {
-            return nameKeyWords.stream()
-                    .filter(keyword -> StringUtil.containsWordIgnoreCase(entry.getName().fullName, keyword))
-                    .findAny()
-                    .isPresent();
+            String wordsInNameAndTags = parseWordsInNameAndTags(entry);
+
+            for (String keyword : nameKeyWords) {
+                if (!StringUtil.containsWordIgnoreCase(wordsInNameAndTags, keyword)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // @@author A0126623L
+        /**
+         * Parses and concatenates all words in an entry's name and tags. " " is
+         * used as a delimiter.
+         *
+         * @param entry
+         * @return String
+         */
+        private String parseWordsInNameAndTags(ReadOnlyEntry entry) {
+            StringBuilder builder = new StringBuilder();
+            builder.append(entry.getName().fullName);
+            for (Tag t : entry.getTags()) {
+                builder.append(" " + t.tagName);
+            }
+            return builder.toString();
         }
 
         @Override
