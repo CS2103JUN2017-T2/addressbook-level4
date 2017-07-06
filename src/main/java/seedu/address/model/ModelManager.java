@@ -178,9 +178,10 @@ public class ModelManager extends ComponentManager implements Model {
             this.nameKeyWords = nameKeyWords;
         }
 
+        // @@author A0126623L
         /**
-         * Parses the and matches the words in an entry's name and tags and
-         * matches them with all keywords.
+         * Matches words in an entry's name and tags and with all the keywords
+         * of a Qualifier.
          *
          * @return boolean: true if all keywords are present in an entry's name
          *         and tags.
@@ -197,6 +198,14 @@ public class ModelManager extends ComponentManager implements Model {
             return true;
         }
 
+        // @@author A0126623L
+        /**
+         * Parses and concatenates all words in an entry's name and tags. " " is
+         * used as a delimiter.
+         *
+         * @param entry
+         * @return String
+         */
         private String parseWordsInNameAndTags(ReadOnlyEntry entry) {
             StringBuilder builder = new StringBuilder();
             builder.append(entry.getName().fullName);
