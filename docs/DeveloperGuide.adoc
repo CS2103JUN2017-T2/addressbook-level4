@@ -470,6 +470,7 @@ ii) User specifies index.
 iii) MultiTasky checks if index is valid, if not, MultiTasky shows an error message and returns to step 2a ii.
 iv) Use case resumes from step 2.
 
+//<!-- @@author A0125586X -->
 [discrete]
 === Use case: Getting daily summary
 
@@ -497,6 +498,7 @@ Use case ends.
 
 2a. The list is empty. +
 Use case ends.
+//<!-- @@author A0125586X -->
 
 [discrete]
 === Use case: Rescheduling an entry
@@ -559,6 +561,7 @@ iii) Use case resumes from step 2.
 [appendix]
 == Glossary
 
+//<!-- @@author A0125586X -->
 [[entry]]
 Entry
 ____
@@ -574,6 +577,7 @@ An entry *can* have:
 * Specified start and end date and/or time *and/or*
 * Zero or more tags
 ____
+//<!-- @@author -->
 
 [[event]]
 Event
@@ -677,6 +681,7 @@ Cons:
 * Cannot intelligently lookup a free slot to insert entries without specific times.
 * Launching is slow. Requires opening a browser and then typing in a URL. A way to work around this is to synchronise Google Calendar with another calendar application which can be open more quickly.
 
+//<!-- @@author A0125586X -->
 *Hitask*
 
 Developer: Human Computer LLC
@@ -703,6 +708,7 @@ Cons:
 * Cannot intelligently search for a free slot for an event.
 * Tasks and events are not differentiated as they have the exact same entry fields.
 * Not enough task preference default parameters for user to specify.
+//<!-- @@author -->
 
 *Todo.txt*
 

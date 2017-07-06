@@ -68,6 +68,7 @@ You can replace date by smart keywords like `tomorrow` or `friday`! +
 Shows help for all the commands +
 Format: `help`
 
+//<!-- @@author A0125586X -->
 === Adding an entry: `add`
 
 Adds an entry to the active tasks +
@@ -95,6 +96,7 @@ Examples:
 * `add project submission /by 050717 1000 /tag school`
 * `add write novel /tag bucketlist`
 * `add clean up room`
+//<!-- @@author -->
 
 === Completing a task : `complete`
 
@@ -131,6 +133,7 @@ Examples:
 * `list`
 * `list /to 050717 1400 /archive`
 
+//<!-- @@author A0125586X -->
 === Editing an entry : `edit`
 
 Edits an existing entry in the active list. +
@@ -161,6 +164,7 @@ Edits the 1st entry of event list to take place on the coming Saturday at 6pm, f
 Edits the 2nd entry in deadline list to take place every week for 3 weeks including its current occurence, and clears all its existing tags.
 * `edit zoo outing /on 200917 1200` +
 Edits the entry matching "zoo" and "outing" to take place on 20 September, 12pm. If there are multiple entries that match the keywords, no entries are modifies.
+//<!-- @@author -->
 
 === Finding an entry : `find`
 
@@ -262,6 +266,7 @@ There is no need to save manually.
 
 == Glossary
 
+//<!-- @@author A0125586X -->
 [[entry]]
 Entry
 ____
@@ -277,6 +282,7 @@ An entry *can* have:
 * Specified start and end date and/or time *and/or*
 * Zero or more tags
 ____
+//<!-- @@author -->
 
 [[event]]
 Event
