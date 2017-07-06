@@ -55,8 +55,7 @@ public class Name {
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof Name // instanceof handles nulls
-                        && this.fullName.equals(((Name) other).fullName)); // state
-                                                                           // check
+                        && this.fullName.equals(((Name) other).fullName)); // state check
     }
 
     @Override
