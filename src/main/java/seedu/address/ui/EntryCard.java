@@ -8,9 +8,14 @@ import javafx.scene.layout.Region;
 import seedu.address.model.entry.ReadOnlyEntry;
 
 //@@author A0125586X
+/**
+ * EntryCard implements a superclass for the different types of entry cards to inherit from.
+ * While an object of type EntryCard can be instantiated, the specific subclasses for each
+ * type of entry should be used instead.
+ */
 public class EntryCard extends UiPart<Region> {
 
-    private static final String FXML = "EntryListCard.fxml";
+    private static String FXML = "EntryCard.fxml";
 
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
@@ -21,22 +26,41 @@ public class EntryCard extends UiPart<Region> {
      */
 
     @FXML
-    private HBox cardPane;
+    protected HBox cardPane;
     @FXML
-    private Label name;
+    protected Label name;
     @FXML
-    private Label id;
+    protected Label id;
     @FXML
-    private FlowPane tags;
+    protected Label start_date_time;
+    @FXML
+    protected Label end_date_time;
+    @FXML
+    protected Label additional_info;
+    @FXML
+    protected FlowPane tags;
 
     public EntryCard(ReadOnlyEntry entry, int displayedIndex) {
         super(FXML);
-        name.setText(entry.getName().toString());
-        id.setText(displayedIndex + ". ");
+        initAll(entry, displayedIndex);
+    }
+
+    public EntryCard(String fxml, ReadOnlyEntry entry, int displayedIndex) {
+        super(fxml);
+        initAll(entry, displayedIndex);
+    }
+
+    protected void initAll(ReadOnlyEntry entry, int displayedIndex) {
+        initNameId(entry, displayedIndex);
         initTags(entry);
     }
 
-    private void initTags(ReadOnlyEntry entry) {
+    protected void initNameId(ReadOnlyEntry entry, int displayedIndex) {
+        name.setText(entry.getName().toString());
+        id.setText(displayedIndex + ". ");
+    }
+
+    protected void initTags(ReadOnlyEntry entry) {
         entry.getTags().forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
     }
 }

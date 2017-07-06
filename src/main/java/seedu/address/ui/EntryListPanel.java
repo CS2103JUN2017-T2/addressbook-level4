@@ -11,12 +11,13 @@ import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.entry.ReadOnlyEntry;
 
+//@author A0125586X
 /**
- * Panel containing the list of persons.
+ * Panel containing the list of entries.
  */
 public class EntryListPanel extends UiPart<Region> {
     private static final String FXML = "EntryListPanel.fxml";
-    private final Logger logger = LogsCenter.getLogger(EntryListPanel.class);
+    private Logger logger = LogsCenter.getLogger(EntryListPanel.class);
 
     @FXML
     private ListView<ReadOnlyEntry> entryListView;

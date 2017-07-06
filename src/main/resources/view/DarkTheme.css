@@ -4,9 +4,9 @@
 }
 
 .label {
-    -fx-font-size: 11pt;
+    -fx-font-size: 18pt;
     -fx-font-family: "Segoe UI Semibold";
-    -fx-text-fill: #555555;
+    -fx-text-fill: white;
     -fx-opacity: 0.9;
 }
 
@@ -27,6 +27,7 @@
 .text-field {
     -fx-font-size: 12pt;
     -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: white;
 }
 
 .tab-pane {
@@ -121,7 +122,7 @@
 
 .cell_big_label {
     -fx-font-family: "Segoe UI Semibold";
-    -fx-font-size: 16px;
+    -fx-font-size: 20px;
     -fx-text-fill: #010504;
 }
 
@@ -141,22 +142,38 @@
      -fx-border-top-width: 1px;
 }
 
-.event-pane-with-border {
-     -fx-background-color: derive(#0122a7, 20%);
+.pane-without-border {
+     -fx-background-color: derive(#1d1d1d, 20%);
+}
+
+.event-card {
+     -fx-background-color: derive(#1d1d1d, 0%);
      -fx-border-color: derive(#000000, 10%);
      -fx-border-top-width: 1px;
 }
 
-.deadline-pane-with-border {
-     -fx-background-color: derive(#01a738, 20%);
+.event-overdue-card {
+    -fx-background-color: derive(#700000, 0%);
+    -fx-border-color: derive(#000000, 10%);
+    -fx-border-top-width: 1px;
+}
+
+.deadline-card {
+     -fx-background-color: derive(#1d1d1d, 0%);
+    -fx-border-color: derive(#000000, -100%);
+    -fx-border-top-width: 1px;
+}
+
+.deadline-overdue-card {
+     -fx-background-color: derive(#700000, 0%);
      -fx-border-color: derive(#000000, 10%);
      -fx-border-top-width: 1px;
 }
 
-.floating-pane-with-border {
-     -fx-background-color: derive(#cfef01, 20%);
-     -fx-border-color: derive(#000000, 10%);
-     -fx-border-top-width: 1px;
+.floating-task-card {
+     -fx-background-color: derive(#1d1d1d, 0%);
+    -fx-border-color: derive(#000000, -100%);
+    -fx-border-top-width: 1px;
 }
 
 .status-bar {
@@ -178,6 +195,7 @@
 .status-bar .label {
     -fx-font-family: "Segoe UI Light";
     -fx-text-fill: white;
+    -fx-font-size: 12pt;
 }
 
 .status-bar-with-border {
