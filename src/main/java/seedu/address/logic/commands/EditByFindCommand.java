@@ -13,7 +13,8 @@ import seedu.address.model.entry.exceptions.EntryNotFoundException;
  * Edits an entry identified using the type of entry followed by displayed index.
  */
 public class EditByFindCommand extends EditCommand {
-    public static final String MESSAGE_NOT_EDITED = "More than one entry found! \n"
+    public static final String MESSAGE_NO_ENTRIES = "No entries found! Please try again with different keywords.";
+    public static final String MESSAGE_MULTIPLE_ENTRIES = "More than one entry found! \n"
             + "Use edit /float INDEX to specify which entry to edit.";
 
     private Set<String> keywords;
@@ -43,6 +44,10 @@ public class EditByFindCommand extends EditCommand {
             model.updateFilteredListToShowAll();
             return new CommandResult(String.format(MESSAGE_EDIT_ENTRY_SUCCESS, entryToEdit));
         }
-        return new CommandResult(String.format(MESSAGE_NOT_EDITED, entryToEdit));
+        if (model.getFilteredFloatingTaskList().size() >= 2) {
+            return new CommandResult(String.format(MESSAGE_MULTIPLE_ENTRIES, entryToEdit));
+        } else {
+            return new CommandResult(String.format(MESSAGE_NO_ENTRIES, entryToEdit));
+        }
     }
 }

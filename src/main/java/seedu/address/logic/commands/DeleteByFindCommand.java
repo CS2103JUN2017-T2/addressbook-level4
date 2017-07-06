@@ -13,7 +13,8 @@ import seedu.address.model.entry.exceptions.EntryNotFoundException;
  * Finds entries from given keywords and deletes entry if it is the only one found.
  */
 public class DeleteByFindCommand extends DeleteCommand {
-    public static final String MESSAGE_NOT_DELETED = "More than one entry found! \n"
+    public static final String MESSAGE_NO_ENTRIES = "No entries found! Please try again with different keywords.";
+    public static final String MESSAGE_MULTIPLE_ENTRIES = "More than one entry found! \n"
             + "Use delete /float INDEX to specify which entry to delete.";
 
     private Set<String> keywords;
@@ -36,7 +37,11 @@ public class DeleteByFindCommand extends DeleteCommand {
             }
             return new CommandResult(String.format(MESSAGE_DELETE_ENTRY_SUCCESS, entryToDelete));
         } else {
-            return new CommandResult(MESSAGE_NOT_DELETED);
+            if (model.getFilteredFloatingTaskList().size() >= 2) {
+                return new CommandResult(String.format(MESSAGE_MULTIPLE_ENTRIES, entryToDelete));
+            } else {
+                return new CommandResult(String.format(MESSAGE_NO_ENTRIES, entryToDelete));
+            }
         }
     }
 }

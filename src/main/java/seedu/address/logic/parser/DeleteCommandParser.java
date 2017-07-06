@@ -24,8 +24,7 @@ public class DeleteCommandParser {
      * Parses the given {@code String} of arguments in the context of the DeleteCommand and returns an
      * DeleteCommand object for execution.
      *
-     * @throws ParseException
-     *             if the user input does not conform the expected format
+     * @throws ParseException if the user input does not conform the expected format
      */
     // @@author A0140633R
     public Command parse(String args) throws ParseException {
