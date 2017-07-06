@@ -29,7 +29,7 @@ public class DeadlineListPanel extends UiPart<Region> {
 
     private void setConnections(ObservableList<ReadOnlyEntry> deadlineList) {
         deadlineListView.setItems(deadlineList);
-        deadlineListView.setCellFactory(listView -> new deadlineListViewCell());
+        deadlineListView.setCellFactory(listView -> new DeadlineListViewCell());
     }
 
     public void scrollTo(int index) {
@@ -39,7 +39,7 @@ public class DeadlineListPanel extends UiPart<Region> {
         });
     }
 
-    class deadlineListViewCell extends ListCell<ReadOnlyEntry> {
+    class DeadlineListViewCell extends ListCell<ReadOnlyEntry> {
 
         @Override
         protected void updateItem(ReadOnlyEntry entry, boolean empty) {

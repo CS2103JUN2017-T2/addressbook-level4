@@ -15,7 +15,7 @@ import seedu.address.model.entry.ReadOnlyEntry;
  */
 public class EntryCard extends UiPart<Region> {
 
-    private static String FXML = "EntryCard.fxml";
+    private static final String FXML = "EntryCard.fxml";
 
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
@@ -32,11 +32,11 @@ public class EntryCard extends UiPart<Region> {
     @FXML
     protected Label id;
     @FXML
-    protected Label start_date_time;
+    protected Label startDateTime;
     @FXML
-    protected Label end_date_time;
+    protected Label endDateTime;
     @FXML
-    protected Label additional_info;
+    protected Label additionalInfo;
     @FXML
     protected FlowPane tags;
 

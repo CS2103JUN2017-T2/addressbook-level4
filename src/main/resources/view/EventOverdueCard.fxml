@@ -37,11 +37,11 @@
                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-               <Label fx:id="start_date_time" styleClass="cell_small_label" stylesheets="@DarkTheme.css" text="\$start_date_time" />
-               <Label fx:id="end_date_time" styleClass="cell_small_label" stylesheets="@DarkTheme.css" text="\$end_date_time" GridPane.columnIndex="1" />
+               <Label fx:id="startDateTime" styleClass="cell_small_label" stylesheets="@DarkTheme.css" text="\$start_date_time" />
+               <Label fx:id="endDateTime" styleClass="cell_small_label" stylesheets="@DarkTheme.css" text="\$end_date_time" GridPane.columnIndex="1" />
             </children>
          </GridPane>
-         <Label fx:id="additional_info" styleClass="cell_small_label" text="\$additional_info" />
+         <Label fx:id="additionalInfo" styleClass="cell_small_label" text="\$additional_info" />
       <FlowPane fx:id="tags" />
     </VBox>
       <rowConstraints>

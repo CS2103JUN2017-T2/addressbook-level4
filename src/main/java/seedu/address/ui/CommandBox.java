@@ -85,10 +85,6 @@ public class CommandBox extends UiPart<Region> {
     }
 
     private void loadPreviousCommandIntoTextField() {
-        // Special case for the first time
-        if (commandTextHistoryIdx == commandTextHistory.size()) {
-            --commandTextHistoryIdx;
-        }
         // Stop at index 1 which is the first command entered
         if (commandTextHistoryIdx > 1) {
             --commandTextHistoryIdx;
@@ -99,7 +95,7 @@ public class CommandBox extends UiPart<Region> {
     }
 
     private void loadNextCommandIntoTextField() {
-        // Moves one step towards the present
+        // Stop at index commandTextHistory.size() - 1 which is the most recent command entered
         if (commandTextHistoryIdx < commandTextHistory.size() - 1) {
             ++commandTextHistoryIdx;
         }

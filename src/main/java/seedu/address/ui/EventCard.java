@@ -8,12 +8,12 @@ import seedu.address.model.entry.ReadOnlyEntry;
  * configuration file, allowing it to have its own separate colour and layout scheme.
  */
 public class EventCard extends EntryCard {
-    private static String FXML = "EventCard.fxml";
+    private static final String FXML = "EventCard.fxml";
 
     public EventCard(ReadOnlyEntry entry, int displayedIndex) {
         super(FXML, entry, displayedIndex);
-        start_date_time.setText("0000");
-        end_date_time.setText("1000");
-        additional_info.setText("Coming up tomorrow!");
+        startDateTime.setText("0000");
+        endDateTime.setText("1000");
+        additionalInfo.setText("Coming up tomorrow!");
     }
 }
