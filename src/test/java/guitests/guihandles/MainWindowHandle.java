@@ -20,20 +20,19 @@ public class MainWindowHandle extends GuiHandle {
     public MainWindowHandle(GuiRobot guiRobot, Stage primaryStage) {
         super(guiRobot, primaryStage, TestApp.APP_TITLE);
 
-        eventListPanel = new EventListPanelHandle(guiRobot, primaryStage);
+        floatingTaskListPanel = new FloatingTaskListPanelHandle(guiRobot, primaryStage);
 
-        personListPanel = new PersonListPanelHandle(guiRobot, primaryStage);
-        resultDisplay = new ResultDisplayHandle(guiRobot, primaryStage);
+        /*resultDisplay = new ResultDisplayHandle(guiRobot, primaryStage);
         commandBox = new CommandBoxHandle(guiRobot, primaryStage, TestApp.APP_TITLE);
         statusBarFooter = new StatusBarFooterHandle(guiRobot, primaryStage);
-        mainMenu = new MainMenuHandle(guiRobot, primaryStage);
+        mainMenu = new MainMenuHandle(guiRobot, primaryStage);*/
     }
 
-    public PersonListPanelHandle getPersonListPanel() {
-        return personListPanel;
+    public FloatingTaskListPanelHandle getFloatingTaskListPanel() {
+        return floatingTaskListPanel;
     }
 
-    public ResultDisplayHandle getResultDisplay() {
+    /*public ResultDisplayHandle getResultDisplay() {
         return resultDisplay;
     }
 
@@ -47,6 +46,6 @@ public class MainWindowHandle extends GuiHandle {
 
     public MainMenuHandle getMainMenu() {
         return mainMenu;
-    }
+    }*/
 
 }

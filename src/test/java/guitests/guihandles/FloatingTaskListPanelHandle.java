@@ -23,7 +23,7 @@ public class FloatingTaskListPanelHandle extends GuiHandle {
     public static final int NOT_FOUND = -1;
     public static final String CARD_PANE_ID = "#cardPane";
 
-    private static final String EVENT_LIST_VIEW_ID = "#eventListView";
+    private static final String FLOATING_TASK_LIST_VIEW_ID = "#floatingTaskListView";
 
     public FloatingTaskListPanelHandle(GuiRobot guiRobot, Stage primaryStage) {
         super(guiRobot, primaryStage, TestApp.APP_TITLE);
@@ -35,7 +35,7 @@ public class FloatingTaskListPanelHandle extends GuiHandle {
     }
 
     public ListView<ReadOnlyEntry> getListView() {
-        return getNode(EVENT_LIST_VIEW_ID);
+        return getNode(FLOATING_TASK_LIST_VIEW_ID);
     }
 
     /**

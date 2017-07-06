@@ -147,33 +147,48 @@
 }
 
 .event-card {
-     -fx-background-color: derive(#1d1d1d, 0%);
-     -fx-border-color: derive(#000000, 10%);
-     -fx-border-top-width: 1px;
+    -fx-outer-border: derive(#1d1d1d, 20%);
+    -fx-body-color: linear-gradient(to bottom, #4c4c4c, #212121);
+    -fx-background-color:
+        -fx-outer-border,
+        -fx-body-color;
+    -fx-background-insets: 0, 4;
 }
 
 .event-overdue-card {
-    -fx-background-color: derive(#700000, 0%);
-    -fx-border-color: derive(#000000, 10%);
-    -fx-border-top-width: 1px;
+    -fx-outer-border: derive(#1d1d1d, 20%);
+    -fx-body-color: linear-gradient(to bottom, #ff0000, #4c0000);
+    -fx-background-color:
+        -fx-outer-border,
+        -fx-body-color;
+    -fx-background-insets: 0, 4;
 }
 
 .deadline-card {
-     -fx-background-color: derive(#1d1d1d, 0%);
-    -fx-border-color: derive(#000000, -100%);
-    -fx-border-top-width: 1px;
+    -fx-outer-border: derive(#1d1d1d, 20%);
+    -fx-body-color: linear-gradient(to bottom, #4c4c4c, #212121);
+    -fx-background-color:
+        -fx-outer-border,
+        -fx-body-color;
+    -fx-background-insets: 0, 4;
 }
 
 .deadline-overdue-card {
-     -fx-background-color: derive(#700000, 0%);
-     -fx-border-color: derive(#000000, 10%);
-     -fx-border-top-width: 1px;
+    -fx-outer-border: derive(#1d1d1d, 20%);
+    -fx-body-color: linear-gradient(to bottom, #ff0000, #4c0000);
+    -fx-background-color:
+        -fx-outer-border,
+        -fx-body-color;
+    -fx-background-insets: 0, 4;
 }
 
 .floating-task-card {
-     -fx-background-color: derive(#1d1d1d, 0%);
-    -fx-border-color: derive(#000000, -100%);
-    -fx-border-top-width: 1px;
+    -fx-outer-border: derive(#1d1d1d, 20%);
+    -fx-body-color: linear-gradient(to bottom, #4c4c4c, #212121);
+    -fx-background-color:
+        -fx-outer-border,
+        -fx-body-color;
+    -fx-background-insets: 0, 4;
 }
 
 .status-bar {
