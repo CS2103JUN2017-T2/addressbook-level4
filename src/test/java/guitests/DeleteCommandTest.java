@@ -67,7 +67,7 @@ public class DeleteCommandTest extends EntryBookGuiTest {
 
         commandBox.runCommand(EntryUtil.getFloatingTaskDeleteByIndexCommand(index));
 
-        //confirm the list now contains all previous persons except the deleted person
+        //confirm the list now contains all previous entries except the deleted entry
         assertTrue(floatingTaskListPanel.isListMatching(expectedRemainder));
 
         //confirm the result message is correct
