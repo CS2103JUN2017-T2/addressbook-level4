@@ -205,7 +205,6 @@ public class LogicManagerTest {
     //TODO fully test out and fix this error. use Tag.MESSAGE_TAG_CONSTRAINTS for wrong tags.
     @Test
     public void execute_add_invalidEntryData() {
-
     }
 
     @Test
