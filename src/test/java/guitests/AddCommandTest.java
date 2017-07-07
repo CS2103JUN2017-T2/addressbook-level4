@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import guitests.guihandles.EntryCardHandle;
 import seedu.address.commons.core.Messages;
+import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.model.entry.Entry;
 import seedu.address.model.entry.Name;
@@ -76,10 +77,10 @@ public class AddCommandTest extends EntryBookGuiTest {
     @Test
     public void add_invalidName_errorMessage() {
         commandBox.runCommand("add");
-        assertResultMessage(Name.MESSAGE_NAME_CONSTRAINTS);
+        assertResultMessage(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
 
         commandBox.runCommand("add ");
-        assertResultMessage(Name.MESSAGE_NAME_CONSTRAINTS);
+        assertResultMessage(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
 
         commandBox.runCommand("add /");
         assertResultMessage(Name.MESSAGE_NAME_CONSTRAINTS);
@@ -94,7 +95,7 @@ public class AddCommandTest extends EntryBookGuiTest {
         assertResultMessage(Name.MESSAGE_NAME_CONSTRAINTS);
 
         commandBox.runCommand("add /tag");
-        assertResultMessage(Name.MESSAGE_NAME_CONSTRAINTS);
+        assertResultMessage(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
     }
 
     @Test

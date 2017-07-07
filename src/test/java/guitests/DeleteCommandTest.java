@@ -71,7 +71,7 @@ public class DeleteCommandTest extends EntryBookGuiTest {
         assertTrue(floatingTaskListPanel.isListMatching(expectedRemainder));
 
         //confirm the result message is correct
-        assertResultMessage(String.format(DeleteCommand.MESSAGE_DELETE_ENTRY_SUCCESS, entryToDelete));
+        assertResultMessage(String.format(DeleteCommand.MESSAGE_SUCCESS, entryToDelete));
     }
 
 }
