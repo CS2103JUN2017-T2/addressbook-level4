@@ -414,7 +414,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 |`*` |user |list entries in a calendar view |view items scheduled for specific days
 |=======================================================================
 
-
+//<!-- @@author A0140633R -->
 [appendix]
 == Use Cases
 
@@ -436,7 +436,6 @@ Use case ends.
 i) MultiTasky shows an error message and prints the proper usage syntax and example command for adding new entries.
 ii) Use case resumes from step 1.
 
-//<!-- @@author A0140633R -->
 [discrete]
 === Use case: Completing an entry
 
@@ -540,7 +539,6 @@ Use case ends.
 1. User uses the `restore` command to restore a deleted entry by providing keywords that match the entry name.
 2. MultiTasky finds the relevant entry and restores the entry. +
 Use case ends.
-//<!-- @@author -->
 
 *Extensions*
 
@@ -695,7 +693,6 @@ Cons:
 * Not ideal for capturing tasks that need to be done before a specific date/time, or after a specific date/time, or tasks without specific times.
 * Cannot intelligently lookup a free slot to insert entries without specific times.
 * Launching is slow. Requires opening a browser and then typing in a URL. A way to work around this is to synchronise Google Calendar with another calendar application which can be open more quickly.
-//<!-- @@author -->
 
 //<!-- @@author A0125586X -->
 *Hitask*
@@ -724,7 +721,6 @@ Cons:
 * Cannot intelligently search for a free slot for an event.
 * Tasks and events are not differentiated as they have the exact same entry fields.
 * Not enough task preference default parameters for user to specify.
-//<!-- @@author -->
 
 //<!-- @@author A0140633R -->
 *Todo.txt*

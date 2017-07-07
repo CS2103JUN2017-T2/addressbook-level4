@@ -98,7 +98,6 @@ Examples:
 * `add project submission /by 050717 1000 /tag school`
 * `add write novel /tag bucketlist`
 * `add clean up room`
-//<!-- @@author -->
 
 //<!-- @@author A0140633R -->
 === Completing a task : `complete`
@@ -136,7 +135,6 @@ Format: `list [/from START_DATE_TIME][/to END_DATE_TIME][/archive | /bin]`
 Examples:
 * `list`
 * `list /to 050717 1400 /archive`
-//<!-- @@author -->
 
 //<!-- @@author A0125586X -->
 === Editing an entry : `edit`
@@ -169,7 +167,6 @@ Edits the 1st entry of event list to take place on the coming Saturday at 6pm, f
 Edits the 2nd entry in deadline list to take place every week for 3 weeks including its current occurence, and clears all its existing tags.
 * `edit zoo outing /on 200917 1200` +
 Edits the entry matching "zoo" and "outing" to take place on 20 September, 12pm. If there are multiple entries that match the keywords, no entries are modifies.
-//<!-- @@author -->
 
 //<!-- @@author A0126623L -->
 === Finding an entry : `find`
@@ -188,8 +185,8 @@ Format: `find KEYWORD_1 [KEYWORD_2 ...] [/archive|/bin]`
 *Defaults from `config.json`*: +
 
 * The maximum number of `find` results shown to the user is `findNumResults`
-//<!-- @@author -->
 
+//<!-- @@author A0125586X -->
 === Deleting an entry : `delete`
 
 Deletes the specified entry from the active entries list. +
@@ -248,7 +245,6 @@ Reapply the changes removed by the `undo` command. +
 Format: `redo`
 
 * Allows redoing up until the most recent change.
-//<!-- @@author -->
 
 //<!-- @@author A0140633R -->
 === Clearing entries : `clear`
@@ -265,7 +261,7 @@ Format: `clear [/archive | /bin | /all]`
 Exits the program. +
 Format: `exit`
 
-//<!-- @@author A0140633R -->
+//<!-- @@author -->
 === Saving the data
 
 Task Manager data are saved in the hard disk automatically after any command that changes the data. +
@@ -294,7 +290,6 @@ An entry *can* have:
 * Specified start and end date and/or time *and/or*
 * Zero or more tags
 ____
-//<!-- @@author -->
 
 //<!-- @@author A0140633R -->
 [[event]]
@@ -316,7 +311,6 @@ Floating Task
 An entry in the Task Manager with
 * No specified date or time associated
 
-//<!-- @@author A0140633R -->
 [[tag]]
 Tag
 ____
@@ -329,6 +323,7 @@ ____
 A list of all of the ongoing to-do entries that have not been completed/deleted yet.
 ____
 
+//<!-- @@author A0126623L -->
 [[archive]]
 Archive
 _____
@@ -340,6 +335,7 @@ Bin
 _____
 A container that stores entries that are deleted.
 _____
+//<!-- @@author -->
 
 [[mainstream-os]]
 Mainstream OS
@@ -347,7 +343,7 @@ ____
 Windows, Linux, Unix, OS-X
 ____
 
-//<!-- @@author A0140633R -->
+//<!-- @@author A140633R -->
 [[ddmmyy-hhmm]]
 ddmmyy hhmm format
 ____
