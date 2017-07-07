@@ -45,7 +45,7 @@ public class EditByFindCommand extends EditCommand {
                 throw new AssertionError("The target entry cannot be missing");
             }
             model.updateFilteredListToShowAll();
-            return new CommandResult(String.format(MESSAGE_SUCCESS_EDIT, entryToEdit));
+            return new CommandResult(String.format(MESSAGE_SUCCESS, entryToEdit));
         }
         if (model.getFilteredFloatingTaskList().size() >= 2) {
             return new CommandResult(MESSAGE_MULTIPLE_ENTRIES);

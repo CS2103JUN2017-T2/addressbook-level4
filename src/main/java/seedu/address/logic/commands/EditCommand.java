@@ -34,7 +34,7 @@ public abstract class EditCommand extends Command {
             + PREFIX_NAME + "walk the dog " + PREFIX_TAG + "\n"
             + "tip: this example clears all tags on the task!";
 
-    public static final String MESSAGE_SUCCESS_EDIT = "Entry edited:" + "\n"
+    public static final String MESSAGE_SUCCESS = "Entry edited:" + "\n"
             + Messages.MESSAGE_ENTRY_DESCRIPTION +  "%1$s";
 
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.\n"

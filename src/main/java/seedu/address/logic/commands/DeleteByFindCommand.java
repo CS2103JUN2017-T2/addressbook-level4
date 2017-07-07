@@ -38,7 +38,7 @@ public class DeleteByFindCommand extends DeleteCommand {
             } catch (EntryNotFoundException e) {
                 assert false : "The target entry cannot be missing";
             }
-            return new CommandResult(String.format(MESSAGE_SUCCESS_DELETE, entryToDelete));
+            return new CommandResult(String.format(MESSAGE_SUCCESS, entryToDelete));
         } else {
             if (model.getFilteredFloatingTaskList().size() >= 2) {
                 return new CommandResult(String.format(MESSAGE_MULTIPLE_ENTRIES));

@@ -19,7 +19,7 @@ public abstract class DeleteCommand extends Command {
             + " (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " " + PREFIX_FLOATINGTASK + " 1";
 
-    public static final String MESSAGE_SUCCESS_DELETE = "New entry deleted:" + "\n"
+    public static final String MESSAGE_SUCCESS = "New entry deleted:" + "\n"
                                     + Messages.MESSAGE_ENTRY_DESCRIPTION +  "%1$s";
 
     protected ReadOnlyEntry entryToDelete;

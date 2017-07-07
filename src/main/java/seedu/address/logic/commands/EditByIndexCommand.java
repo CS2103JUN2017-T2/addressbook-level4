@@ -42,6 +42,6 @@ public class EditByIndexCommand extends EditCommand {
             throw new AssertionError("The target entry cannot be missing");
         }
 
-        return new CommandResult(String.format(MESSAGE_SUCCESS_EDIT, entryToEdit));
+        return new CommandResult(String.format(MESSAGE_SUCCESS, entryToEdit));
     }
 }

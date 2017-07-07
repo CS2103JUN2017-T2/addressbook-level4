@@ -4,16 +4,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.commons.core.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.model.util.SampleDataUtil.getTagSet;
-import static seedu.address.testutil.TypicalPersons.INDEX_SECOND_PERSON;
-import static seedu.address.testutil.TypicalPersons.INDEX_THIRD_PERSON;
+import static seedu.address.testutil.TypicalEntries.INDEX_SECOND_ENTRY;
+import static seedu.address.testutil.TypicalEntries.INDEX_THIRD_ENTRY;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,7 +29,7 @@ import com.google.common.eventbus.Subscribe;
 
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.index.Index;
-import seedu.address.commons.events.model.AddressBookChangedEvent;
+import seedu.address.commons.events.model.EntryBookChangedEvent;
 import seedu.address.commons.events.ui.JumpToListRequestEvent;
 import seedu.address.commons.events.ui.ShowHelpRequestEvent;
 import seedu.address.logic.commands.AddCommand;
@@ -48,16 +45,13 @@ import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.SelectCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.AddressBook;
+import seedu.address.model.EntryBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
-import seedu.address.model.ReadOnlyAddressBook;
+import seedu.address.model.ReadOnlyEntryBook;
 import seedu.address.model.UserPrefs;
-import seedu.address.model.entry.Address;
-import seedu.address.model.entry.Email;
+import seedu.address.model.entry.Entry;
 import seedu.address.model.entry.Name;
-import seedu.address.model.entry.Person;
-import seedu.address.model.entry.Phone;
 import seedu.address.model.tag.Tag;
 import seedu.address.testutil.EntryBuilder;
 
@@ -74,13 +68,13 @@ public class LogicManagerTest {
     private Logic logic;
 
     //These are for checking the correctness of the events raised
-    private ReadOnlyAddressBook latestSavedAddressBook;
+    private ReadOnlyEntryBook latestSavedEntryBook;
     private boolean helpShown;
     private Index targetedJumpIndex;
 
     @Subscribe
-    private void handleLocalModelChangedEvent(AddressBookChangedEvent abce) {
-        latestSavedAddressBook = new AddressBook(abce.data);
+    private void handleLocalModelChangedEvent(EntryBookChangedEvent abce) {
+        latestSavedEntryBook = new EntryBook(abce.data);
     }
 
     @Subscribe
@@ -99,7 +93,7 @@ public class LogicManagerTest {
         logic = new LogicManager(model);
         EventsCenter.getInstance().registerHandler(this);
 
-        latestSavedAddressBook = new AddressBook(model.getAddressBook()); // last saved assumed to be up to date
+        latestSavedEntryBook = new EntryBook(model.getEntryBook()); // last saved assumed to be up to date
         helpShown = false;
         targetedJumpIndex = null;
     }
@@ -146,7 +140,7 @@ public class LogicManagerTest {
      * @see #assertCommandBehavior(Class, String, String, Model)
      */
     private <T> void assertCommandFailure(String inputCommand, Class<T> expectedException, String expectedMessage) {
-        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        Model expectedModel = new ModelManager(model.getEntryBook(), new UserPrefs());
         assertCommandBehavior(expectedException, inputCommand, expectedMessage, expectedModel);
     }
 
@@ -154,7 +148,7 @@ public class LogicManagerTest {
      * Executes the command, confirms that the result message is correct and that the expected exception is thrown,
      * and also confirms that the following two parts of the LogicManager object's state are as expected:<br>
      *      - the internal model manager data are same as those in the {@code expectedModel} <br>
-     *      - {@code expectedModel}'s address book was saved to the storage file.
+     *      - {@code expectedModel}'s entry book was saved to the storage file.
      */
     private <T> void assertCommandBehavior(Class<T> expectedException, String inputCommand,
                                            String expectedMessage, Model expectedModel) {
@@ -169,7 +163,7 @@ public class LogicManagerTest {
         }
 
         assertEquals(expectedModel, model);
-        assertEquals(expectedModel.getAddressBook(), latestSavedAddressBook);
+        assertEquals(expectedModel.getEntryBook(), latestSavedEntryBook);
     }
 
     @Test
@@ -192,66 +186,35 @@ public class LogicManagerTest {
     @Test
     public void execute_clear() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        model.addPerson(helper.generatePerson(1));
-        model.addPerson(helper.generatePerson(2));
-        model.addPerson(helper.generatePerson(3));
+        model.addEntry(helper.generateEntry(1));
+        model.addEntry(helper.generateEntry(2));
+        model.addEntry(helper.generateEntry(3));
 
         assertCommandSuccess(ClearCommand.COMMAND_WORD, ClearCommand.MESSAGE_SUCCESS, new ModelManager());
     }
 
-
+    //@@author A0140633R
     @Test
     public void execute_add_invalidArgsFormat() {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE);
-        assertParseException(AddCommand.COMMAND_WORD + " wrong args wrong args", expectedMessage);
-        assertParseException(AddCommand.COMMAND_WORD + " " + PREFIX_NAME + "Valid Name 12345 "
-                + PREFIX_EMAIL + "valid@email.butNoPhonePrefix "
-                + PREFIX_ADDRESS + "valid,address", expectedMessage);
-        assertParseException(AddCommand.COMMAND_WORD + " " + PREFIX_NAME + "Valid Name "
-                + PREFIX_PHONE + "12345 valid@email.butNoPrefix "
-                + PREFIX_ADDRESS + "valid, address", expectedMessage);
-        assertParseException(AddCommand.COMMAND_WORD + " " + PREFIX_NAME + "Valid Name "
-                + PREFIX_PHONE + "12345 "
-                + PREFIX_EMAIL + "valid@email.butNoAddressPrefix valid, address",
-                expectedMessage);
+        assertParseException(AddCommand.COMMAND_WORD + " " + PREFIX_TAG + " tagging without name", expectedMessage);
+        //add command without args
+        assertParseException(AddCommand.COMMAND_WORD, expectedMessage);
     }
 
+    //TODO fully test out and fix this error. use Tag.MESSAGE_TAG_CONSTRAINTS for wrong tags.
     @Test
-    public void execute_add_invalidPersonData() {
-        assertParseException(AddCommand.COMMAND_WORD + " "
-                + PREFIX_NAME + "[]\\[;] "
-                + PREFIX_PHONE + "12345 "
-                + PREFIX_EMAIL + "valid@e.mail "
-                + PREFIX_ADDRESS + "valid, address",
-                Name.MESSAGE_NAME_CONSTRAINTS);
-        assertParseException(AddCommand.COMMAND_WORD + " "
-                + PREFIX_NAME + "Valid Name "
-                + PREFIX_PHONE + "not_numbers "
-                + PREFIX_EMAIL + "valid@e.mail "
-                + PREFIX_ADDRESS + "valid, address",
-                Phone.MESSAGE_PHONE_CONSTRAINTS);
-        assertParseException(AddCommand.COMMAND_WORD + " "
-                + PREFIX_NAME + "Valid Name "
-                + PREFIX_PHONE + "12345 "
-                + PREFIX_EMAIL + "notAnEmail "
-                + PREFIX_ADDRESS + "valid, address",
-                Email.MESSAGE_EMAIL_CONSTRAINTS);
-        assertParseException(AddCommand.COMMAND_WORD + " "
-                + PREFIX_NAME + "Valid Name "
-                + PREFIX_PHONE + "12345 "
-                + PREFIX_EMAIL + "valid@e.mail "
-                + PREFIX_ADDRESS + "valid, address "
-                + PREFIX_TAG + "invalid_-[.tag",
-                Tag.MESSAGE_TAG_CONSTRAINTS);
+    public void execute_add_invalidEntryData() {
+
     }
 
     @Test
     public void execute_add_successful() throws Exception {
         // setup expectations
         TestDataHelper helper = new TestDataHelper();
-        Person toBeAdded = helper.adam();
+        Entry toBeAdded = helper.adam();
         Model expectedModel = new ModelManager();
-        expectedModel.addPerson(toBeAdded);
+        expectedModel.addEntry(toBeAdded);
 
         // execute command and verify result
         assertCommandSuccess(helper.generateAddCommand(toBeAdded),
@@ -260,27 +223,12 @@ public class LogicManagerTest {
     }
 
     @Test
-    public void execute_addDuplicate_notAllowed() throws Exception {
-        // setup expectations
-        TestDataHelper helper = new TestDataHelper();
-        Person toBeAdded = helper.adam();
-
-        // setup starting state
-        model.addPerson(toBeAdded); // person already in internal address book
-
-        // execute command and verify result
-        assertCommandException(helper.generateAddCommand(toBeAdded), AddCommand.MESSAGE_DUPLICATE_PERSON);
-
-    }
-
-
-    @Test
-    public void execute_list_showsAllPersons() throws Exception {
+    public void execute_list_showsAllEntrys() throws Exception {
         // prepare expectations
         TestDataHelper helper = new TestDataHelper();
-        Model expectedModel = new ModelManager(helper.generateAddressBook(2), new UserPrefs());
+        Model expectedModel = new ModelManager(helper.generateEntryBook(2), new UserPrefs());
 
-        // prepare address book state
+        // prepare entry book state
         helper.addToModel(model, 2);
 
         assertCommandSuccess(ListCommand.COMMAND_WORD, ListCommand.MESSAGE_SUCCESS, expectedModel);
@@ -289,8 +237,8 @@ public class LogicManagerTest {
 
     /**
      * Confirms the 'invalid argument index number behaviour' for the given command
-     * targeting a single person in the shown list, using visible index.
-     * @param commandWord to test assuming it targets a single person in the last shown list
+     * targeting a single entry in the shown list, using visible index.
+     * @param commandWord to test assuming it targets a single entry in the last shown list
      *                    based on visible index.
      */
     private void assertIncorrectIndexFormatBehaviorForCommand(String commandWord, String expectedMessage)
@@ -304,22 +252,22 @@ public class LogicManagerTest {
 
     /**
      * Confirms the 'invalid argument index number behaviour' for the given command
-     * targeting a single person in the shown list, using visible index.
-     * @param commandWord to test assuming it targets a single person in the last shown list
+     * targeting a single entry in the shown list, using visible index.
+     * @param commandWord to test assuming it targets a single entry in the last shown list
      *                    based on visible index.
      */
     private void assertIndexNotFoundBehaviorForCommand(String commandWord) throws Exception {
-        String expectedMessage = MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
+        String expectedMessage = MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX;
         TestDataHelper helper = new TestDataHelper();
-        List<Person> personList = helper.generatePersonList(2);
+        List<Entry> entryList = helper.generateEntryList(2);
 
-        // set AB state to 2 persons
-        model.resetData(new AddressBook());
-        for (Person p : personList) {
-            model.addPerson(p);
+        // set AB state to 2 entries
+        model.resetData(new EntryBook());
+        for (Entry p : entryList) {
+            model.addEntry(p);
         }
 
-        assertCommandException(commandWord + " " + INDEX_THIRD_PERSON.getOneBased(), expectedMessage);
+        assertCommandException(commandWord + " " + PREFIX_FLOATINGTASK + INDEX_THIRD_ENTRY.getOneBased(), expectedMessage);
     }
 
     @Test
@@ -329,29 +277,24 @@ public class LogicManagerTest {
     }
 
     @Test
-    public void execute_selectIndexNotFound_errorMessageShown() throws Exception {
-        assertIndexNotFoundBehaviorForCommand(SelectCommand.COMMAND_WORD);
-    }
-
-    @Test
-    public void execute_select_jumpsToCorrectPerson() throws Exception {
+    public void execute_select_jumpsToCorrectEntry() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        List<Person> threePersons = helper.generatePersonList(3);
+        List<Entry> threeEntrys = helper.generateEntryList(3);
 
-        Model expectedModel = new ModelManager(helper.generateAddressBook(threePersons), new UserPrefs());
-        helper.addToModel(model, threePersons);
+        Model expectedModel = new ModelManager(helper.generateEntryBook(threeEntrys), new UserPrefs());
+        helper.addToModel(model, threeEntrys);
 
         assertCommandSuccess(SelectCommand.COMMAND_WORD + " 2",
                 String.format(SelectCommand.MESSAGE_SELECT_ENTRY_SUCCESS, 2), expectedModel);
-        assertEquals(INDEX_SECOND_PERSON, targetedJumpIndex);
-        assertEquals(model.getFilteredPersonList().get(1), threePersons.get(1));
+        assertEquals(INDEX_SECOND_ENTRY, targetedJumpIndex);
+        assertEquals(model.getFilteredFloatingTaskList().get(1), threeEntrys.get(1));
     }
 
 
     @Test
     public void execute_deleteInvalidArgsFormat_errorMessageShown() throws Exception {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE);
-        assertIncorrectIndexFormatBehaviorForCommand(DeleteCommand.COMMAND_WORD, expectedMessage);
+        assertParseException(DeleteCommand.COMMAND_WORD, expectedMessage);
     }
 
     @Test
@@ -360,16 +303,16 @@ public class LogicManagerTest {
     }
 
     @Test
-    public void execute_delete_removesCorrectPerson() throws Exception {
+    public void execute_delete_removesCorrectEntry() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        List<Person> threePersons = helper.generatePersonList(3);
+        List<Entry> threeEntrys = helper.generateEntryList(3);
 
-        Model expectedModel = new ModelManager(helper.generateAddressBook(threePersons), new UserPrefs());
-        expectedModel.deletePerson(threePersons.get(1));
-        helper.addToModel(model, threePersons);
+        Model expectedModel = new ModelManager(helper.generateEntryBook(threeEntrys), new UserPrefs());
+        expectedModel.deleteEntry(threeEntrys.get(1));
+        helper.addToModel(model, threeEntrys);
 
-        assertCommandSuccess(DeleteCommand.COMMAND_WORD + " 2",
-                String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS, threePersons.get(1)), expectedModel);
+        assertCommandSuccess(DeleteCommand.COMMAND_WORD + " /float 2",
+                String.format(DeleteCommand.MESSAGE_SUCCESS, threeEntrys.get(1)), expectedModel);
     }
 
 
@@ -382,52 +325,52 @@ public class LogicManagerTest {
     @Test
     public void execute_find_onlyMatchesFullWordsInNames() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        Person pTarget1 = new EntryBuilder().withName("bla bla KEY bla").build();
-        Person pTarget2 = new EntryBuilder().withName("bla KEY bla bceofeia").build();
-        Person p1 = new EntryBuilder().withName("KE Y").build();
-        Person p2 = new EntryBuilder().withName("KEYKEYKEY sduauo").build();
+        Entry pTarget1 = new EntryBuilder().withName("bla bla KEY bla").build();
+        Entry pTarget2 = new EntryBuilder().withName("bla KEY bla bceofeia").build();
+        Entry p1 = new EntryBuilder().withName("KE Y").build();
+        Entry p2 = new EntryBuilder().withName("KEYKEYKEY sduauo").build();
 
-        List<Person> fourPersons = helper.generatePersonList(p1, pTarget1, p2, pTarget2);
-        Model expectedModel = new ModelManager(helper.generateAddressBook(fourPersons), new UserPrefs());
-        expectedModel.updateFilteredPersonList(new HashSet<>(Collections.singletonList("KEY")));
-        helper.addToModel(model, fourPersons);
+        List<Entry> fourEntrys = helper.generateEntryList(p1, pTarget1, p2, pTarget2);
+        Model expectedModel = new ModelManager(helper.generateEntryBook(fourEntrys), new UserPrefs());
+        expectedModel.updateFilteredFloatingTaskList(new HashSet<>(Collections.singletonList("KEY")));
+        helper.addToModel(model, fourEntrys);
         assertCommandSuccess(FindCommand.COMMAND_WORD + " KEY",
-                Command.getMessageForPersonListShownSummary(expectedModel.getFilteredPersonList().size()),
+                Command.getMessageForEntryListShownSummary(expectedModel.getFilteredFloatingTaskList().size()),
                 expectedModel);
     }
 
     @Test
     public void execute_find_isNotCaseSensitive() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        Person p1 = new EntryBuilder().withName("bla bla KEY bla").build();
-        Person p2 = new EntryBuilder().withName("bla KEY bla bceofeia").build();
-        Person p3 = new EntryBuilder().withName("key key").build();
-        Person p4 = new EntryBuilder().withName("KEy sduauo").build();
+        Entry p1 = new EntryBuilder().withName("bla bla KEY bla").build();
+        Entry p2 = new EntryBuilder().withName("bla KEY bla bceofeia").build();
+        Entry p3 = new EntryBuilder().withName("key key").build();
+        Entry p4 = new EntryBuilder().withName("KEy sduauo").build();
 
-        List<Person> fourPersons = helper.generatePersonList(p3, p1, p4, p2);
-        Model expectedModel = new ModelManager(helper.generateAddressBook(fourPersons), new UserPrefs());
-        helper.addToModel(model, fourPersons);
+        List<Entry> fourEntrys = helper.generateEntryList(p3, p1, p4, p2);
+        Model expectedModel = new ModelManager(helper.generateEntryBook(fourEntrys), new UserPrefs());
+        helper.addToModel(model, fourEntrys);
 
         assertCommandSuccess(FindCommand.COMMAND_WORD + " KEY",
-                Command.getMessageForPersonListShownSummary(expectedModel.getFilteredPersonList().size()),
+                Command.getMessageForEntryListShownSummary(expectedModel.getFilteredFloatingTaskList().size()),
                 expectedModel);
     }
 
     @Test
     public void execute_find_matchesIfAnyKeywordPresent() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        Person pTarget1 = new EntryBuilder().withName("bla bla KEY bla").build();
-        Person pTarget2 = new EntryBuilder().withName("bla rAnDoM bla bceofeia").build();
-        Person pTarget3 = new EntryBuilder().withName("key key").build();
-        Person p1 = new EntryBuilder().withName("sduauo").build();
+        Entry pTarget1 = new EntryBuilder().withName("bla bla KEY bla").build();
+        Entry pTarget2 = new EntryBuilder().withName("bla rAnDoM bla bceofeia").build();
+        Entry pTarget3 = new EntryBuilder().withName("key key").build();
+        Entry p1 = new EntryBuilder().withName("sduauo").build();
 
-        List<Person> fourPersons = helper.generatePersonList(pTarget1, p1, pTarget2, pTarget3);
-        Model expectedModel = new ModelManager(helper.generateAddressBook(fourPersons), new UserPrefs());
-        expectedModel.updateFilteredPersonList(new HashSet<>(Arrays.asList("key", "rAnDoM")));
-        helper.addToModel(model, fourPersons);
+        List<Entry> fourEntrys = helper.generateEntryList(pTarget1, p1, pTarget2, pTarget3);
+        Model expectedModel = new ModelManager(helper.generateEntryBook(fourEntrys), new UserPrefs());
+        expectedModel.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList("key", "rAnDoM")));
+        helper.addToModel(model, fourEntrys);
 
         assertCommandSuccess(FindCommand.COMMAND_WORD + " key rAnDoM",
-                Command.getMessageForPersonListShownSummary(expectedModel.getFilteredPersonList().size()),
+                Command.getMessageForEntryListShownSummary(expectedModel.getFilteredFloatingTaskList().size()),
                 expectedModel);
     }
 
@@ -444,12 +387,12 @@ public class LogicManagerTest {
             assertEquals(MESSAGE_UNKNOWN_COMMAND, pe.getMessage());
         }
 
-        String invalidCommandExecute = "delete 1"; // address book is of size 0; index out of bounds
+        String invalidCommandExecute = "delete /float 1"; // entry book is of size 0; index out of bounds
         try {
             logic.execute(invalidCommandExecute);
             fail("The expected CommandException was not thrown.");
         } catch (CommandException ce) {
-            assertEquals(MESSAGE_INVALID_PERSON_DISPLAYED_INDEX, ce.getMessage());
+            assertEquals(MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX, ce.getMessage());
         }
 
         String expectedMessage = String.format(HistoryCommand.MESSAGE_SUCCESS,
@@ -462,45 +405,32 @@ public class LogicManagerTest {
      */
     class TestDataHelper {
 
-        Person adam() throws Exception {
-            Name name = new Name("Adam Brown");
-            Phone privatePhone = new Phone("111111");
-            Email email = new Email("adam@example.com");
-            Address privateAddress = new Address("111, alpha street");
+        Entry adam() throws Exception {
+            Name name = new Name("dinner with Adam Brown");
 
-            return new Person(name, privatePhone, email, privateAddress,
-                    getTagSet("tag1", "longertag2"));
+            return new Entry(name, getTagSet("tag1", "longertag2"));
         }
 
         /**
-         * Generates a valid person using the given seed.
-         * Running this function with the same parameter values guarantees the returned person will have the same state.
-         * Each unique seed will generate a unique Person object.
+         * Generates a valid entry using the given seed.
+         * Running this function with the same parameter values guarantees the returned entry will have the same state.
+         * Each unique seed will generate a unique Entry object.
          *
-         * @param seed used to generate the person data field values
+         * @param seed used to generate the entry data field values
          */
-        Person generatePerson(int seed) throws Exception {
-            // to ensure that phone numbers are at least 3 digits long, when seed is less than 3 digits
-            String phoneNumber = String.join("", Collections.nCopies(3, String.valueOf(Math.abs(seed))));
-
-            return new Person(
-                    new Name("Person " + seed),
-                    new Phone(phoneNumber),
-                    new Email(seed + "@email"),
-                    new Address("House of " + seed),
+        Entry generateEntry(int seed) throws Exception {
+            return new Entry(
+                    new Name("Entry " + seed),
                     getTagSet("tag" + Math.abs(seed), "tag" + Math.abs(seed + 1)));
         }
 
-        /** Generates the correct add command based on the person given */
-        String generateAddCommand(Person p) {
+        /** Generates the correct add command based on the entry given */
+        String generateAddCommand(Entry p) {
             StringBuffer cmd = new StringBuffer();
 
             cmd.append(AddCommand.COMMAND_WORD);
 
-            cmd.append(" " + PREFIX_NAME.getPrefix()).append(p.getName());
-            cmd.append(" " + PREFIX_EMAIL.getPrefix()).append(p.getEmail());
-            cmd.append(" " + PREFIX_PHONE.getPrefix()).append(p.getPhone());
-            cmd.append(" " + PREFIX_ADDRESS.getPrefix()).append(p.getAddress());
+            cmd.append(" ").append(p.getName());
 
             Set<Tag> tags = p.getTags();
             for (Tag t: tags) {
@@ -511,70 +441,70 @@ public class LogicManagerTest {
         }
 
         /**
-         * Generates an AddressBook with auto-generated persons.
+         * Generates an EntryBook with auto-generated entries.
          */
-        AddressBook generateAddressBook(int numGenerated) throws Exception {
-            AddressBook addressBook = new AddressBook();
-            addToAddressBook(addressBook, numGenerated);
-            return addressBook;
+        EntryBook generateEntryBook(int numGenerated) throws Exception {
+            EntryBook entryBook = new EntryBook();
+            addToEntryBook(entryBook, numGenerated);
+            return entryBook;
         }
 
         /**
-         * Generates an AddressBook based on the list of Persons given.
+         * Generates an EntryBook based on the list of Entrys given.
          */
-        AddressBook generateAddressBook(List<Person> persons) throws Exception {
-            AddressBook addressBook = new AddressBook();
-            addToAddressBook(addressBook, persons);
-            return addressBook;
+        EntryBook generateEntryBook(List<Entry> entries) throws Exception {
+            EntryBook entryBook = new EntryBook();
+            addToEntryBook(entryBook, entries);
+            return entryBook;
         }
 
         /**
-         * Adds auto-generated Person objects to the given AddressBook
-         * @param addressBook The AddressBook to which the Persons will be added
+         * Adds auto-generated Entry objects to the given EntryBook
+         * @param entryBook The EntryBook to which the Entrys will be added
          */
-        void addToAddressBook(AddressBook addressBook, int numGenerated) throws Exception {
-            addToAddressBook(addressBook, generatePersonList(numGenerated));
+        void addToEntryBook(EntryBook entryBook, int numGenerated) throws Exception {
+            addToEntryBook(entryBook, generateEntryList(numGenerated));
         }
 
         /**
-         * Adds the given list of Persons to the given AddressBook
+         * Adds the given list of Entrys to the given EntryBook
          */
-        void addToAddressBook(AddressBook addressBook, List<Person> personsToAdd) throws Exception {
-            for (Person p: personsToAdd) {
-                addressBook.addPerson(p);
+        void addToEntryBook(EntryBook entryBook, List<Entry> entriesToAdd) throws Exception {
+            for (Entry p: entriesToAdd) {
+                entryBook.addEntry(p);
             }
         }
 
         /**
-         * Adds auto-generated Person objects to the given model
-         * @param model The model to which the Persons will be added
+         * Adds auto-generated Entry objects to the given model
+         * @param model The model to which the Entrys will be added
          */
         void addToModel(Model model, int numGenerated) throws Exception {
-            addToModel(model, generatePersonList(numGenerated));
+            addToModel(model, generateEntryList(numGenerated));
         }
 
         /**
-         * Adds the given list of Persons to the given model
+         * Adds the given list of Entrys to the given model
          */
-        void addToModel(Model model, List<Person> personsToAdd) throws Exception {
-            for (Person p: personsToAdd) {
-                model.addPerson(p);
+        void addToModel(Model model, List<Entry> entriesToAdd) throws Exception {
+            for (Entry p: entriesToAdd) {
+                model.addEntry(p);
             }
         }
 
         /**
-         * Generates a list of Persons based on the flags.
+         * Generates a list of Entrys based on the flags.
          */
-        List<Person> generatePersonList(int numGenerated) throws Exception {
-            List<Person> persons = new ArrayList<>();
+        List<Entry> generateEntryList(int numGenerated) throws Exception {
+            List<Entry> entries = new ArrayList<>();
             for (int i = 1; i <= numGenerated; i++) {
-                persons.add(generatePerson(i));
+                entries.add(generateEntry(i));
             }
-            return persons;
+            return entries;
         }
 
-        List<Person> generatePersonList(Person... persons) {
-            return Arrays.asList(persons);
+        List<Entry> generateEntryList(Entry... entries) {
+            return Arrays.asList(entries);
         }
     }
 }

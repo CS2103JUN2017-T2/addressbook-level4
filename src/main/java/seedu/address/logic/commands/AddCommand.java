@@ -22,7 +22,7 @@ public class AddCommand extends Command {
             + "Example: " + COMMAND_WORD + " " + "dinner with friends "
             + PREFIX_TAG + "friends " + "owes_money";
 
-    public static final String MESSAGE_SUCCESS_ADD = "New entry added:" + "\n"
+    public static final String MESSAGE_SUCCESS = "New entry added:" + "\n"
                                                  + Messages.MESSAGE_ENTRY_DESCRIPTION +  "%1$s";
 
     private final Entry toAdd;
@@ -39,7 +39,7 @@ public class AddCommand extends Command {
         requireNonNull(model);
 
         model.addEntry(toAdd);
-        return new CommandResult(String.format(MESSAGE_SUCCESS_ADD, toAdd));
-
+        return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
     }
+
 }
