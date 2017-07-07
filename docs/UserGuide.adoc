@@ -343,7 +343,7 @@ ____
 Windows, Linux, Unix, OS-X
 ____
 
-//<!-- @@author A140633R -->
+//<!-- @@author A0140633R -->
 [[ddmmyy-hhmm]]
 ddmmyy hhmm format
 ____
