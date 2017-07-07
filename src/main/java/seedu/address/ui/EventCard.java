@@ -12,8 +12,6 @@ public class EventCard extends EntryCard {
 
     public EventCard(ReadOnlyEntry entry, int displayedIndex) {
         super(FXML, entry, displayedIndex);
-        startDateTime.setText("0000");
-        endDateTime.setText("1000");
-        additionalInfo.setText("Coming up tomorrow!");
+        //TODO fill date time and information fields
     }
 }

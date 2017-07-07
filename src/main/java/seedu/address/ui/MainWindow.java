@@ -1,5 +1,6 @@
 package seedu.address.ui;
 
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -119,11 +120,11 @@ public class MainWindow extends UiPart<Region> {
     }
 
     void fillInnerParts() {
-        // All are using same list for now
-        eventListPanel = new EventListPanel(logic.getFilteredFloatingTaskList());
+        //TODO add respective logic.getFiltered****List when API calls are ready
+        eventListPanel = new EventListPanel(FXCollections.observableArrayList());
         eventListPanelPlaceholder.getChildren().add(eventListPanel.getRoot());
 
-        deadlineListPanel = new DeadlineListPanel(logic.getFilteredFloatingTaskList());
+        deadlineListPanel = new DeadlineListPanel(FXCollections.observableArrayList());
         deadlineListPanelPlaceholder.getChildren().add(deadlineListPanel.getRoot());
 
         floatingTaskListPanel = new FloatingTaskListPanel(logic.getFilteredFloatingTaskList());

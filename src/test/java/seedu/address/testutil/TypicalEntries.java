@@ -41,7 +41,7 @@ public class TypicalEntries {
     }
 
     public Entry[] getTypicalEntries() {
-        return new Entry[] { cook, programming };
+        return new Entry[] { cook };
     }
 
     public Entry[] getTypicalFloatingTasks() {

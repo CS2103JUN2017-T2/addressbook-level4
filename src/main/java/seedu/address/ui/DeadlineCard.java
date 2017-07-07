@@ -12,7 +12,6 @@ public class DeadlineCard extends EntryCard {
 
     public DeadlineCard(ReadOnlyEntry entry, int displayedIndex) {
         super(FXML, entry, displayedIndex);
-        startDateTime.setText("0000");
-        additionalInfo.setText("Coming up tomorrow!");
+        //TODO fill date time and information fields
     }
 }

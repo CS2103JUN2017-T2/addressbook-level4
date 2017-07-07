@@ -181,4 +181,8 @@ public class EntryListPanelHandle extends GuiHandle {
     public int getNumberOfEntries() {
         return getListView().getItems().size();
     }
+
+    public boolean isEmpty() {
+        return getListView().getItems().size() == 0;
+    }
 }

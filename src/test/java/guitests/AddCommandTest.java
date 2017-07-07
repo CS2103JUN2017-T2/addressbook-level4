@@ -41,7 +41,7 @@ public class AddCommandTest extends EntryBookGuiTest {
 
     @Test
     public void add_floatingTaskToExistingList_success() {
-        Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
+        Entry[] currentList = typicalEntries.getTypicalEntries();
         Entry entryToAdd = typicalEntries.spectacles;
         currentList = addFloatingTask(entryToAdd, currentList);
         assertCleared();
@@ -49,7 +49,7 @@ public class AddCommandTest extends EntryBookGuiTest {
 
     @Test
     public void add_multipleUniqueFloatingTaskToExistingList_success() {
-        Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
+        Entry[] currentList = typicalEntries.getTypicalEntries();
         Entry entryToAdd = typicalEntries.spectacles;
         currentList = addFloatingTask(entryToAdd, currentList);
 
@@ -126,21 +126,9 @@ public class AddCommandTest extends EntryBookGuiTest {
     private void assertCleared() {
         //TODO check archive and bin as well, or check all at once
         commandBox.runCommand(ClearCommand.COMMAND_WORD);
-        assertEventListEmpty();
-        assertDeadlineListEmpty();
-        assertFloatingTaskListEmpty();
-    }
-
-    private void assertEventListEmpty() {
-        assertTrue(eventListPanel.getNumberOfEntries() == 0);
-    }
-
-    private void assertDeadlineListEmpty() {
-        assertTrue(deadlineListPanel.getNumberOfEntries() == 0);
-    }
-
-    private void assertFloatingTaskListEmpty() {
-        assertTrue(floatingTaskListPanel.getNumberOfEntries() == 0);
+        assertTrue(eventListPanel.isEmpty());
+        assertTrue(deadlineListPanel.isEmpty());
+        assertTrue(floatingTaskListPanel.isEmpty());
     }
 
     /**

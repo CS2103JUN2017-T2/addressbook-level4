@@ -14,7 +14,6 @@ public class DeadlineOverdueCard extends EntryCard {
 
     public DeadlineOverdueCard(ReadOnlyEntry entry, int displayedIndex) {
         super(FXML, entry, displayedIndex);
-        startDateTime.setText("0000");
-        additionalInfo.setText("Last week!");
+        //TODO fill date time and information fields
     }
 }

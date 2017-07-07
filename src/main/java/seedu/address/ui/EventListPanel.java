@@ -45,14 +45,10 @@ public class EventListPanel extends UiPart<Region> {
                 setGraphic(null);
                 setText(null);
             } else {
+                //TODO set as EventOverdueCard instead if event is over
                 int index = getIndex() + 1;
                 assert index > 0 : "getIndex returned invalid index";
-                // For now, first event is shown as overdue for illustration purposes
-                if (index == 1) {
-                    setGraphic(new EventOverdueCard(entry, index).getRoot());
-                } else {
-                    setGraphic(new EventCard(entry, index).getRoot());
-                }
+                setGraphic(new EventCard(entry, index).getRoot());
             }
         }
     }
