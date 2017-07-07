@@ -5,18 +5,19 @@ import static java.util.Objects.requireNonNull;
 import seedu.address.commons.exceptions.IllegalValueException;
 
 /**
- * Represents an Entry's name in the entry book. Guarantees: immutable; is valid
- * as declared in {@link #isValidName(String)}
+ * Represents an Entry's name in the entry book.
+ * Guarantees: immutable; is valid as declared in
+ * {@link #isValidName(String)}
  */
 public class Name {
 
     public static final String MESSAGE_NAME_CONSTRAINTS = "Entry names should only start "
-            + "with alphanumeric characters and it should not be blank, "
-            + "subsequent spaces and non-alphanumeric characters are allowed.";
+                                                          + "with alphanumeric characters and it should not be blank, "
+                                                          + "subsequent spaces and non-alphanumeric characters are allowed.";
 
     /*
-     * The first character of the entry must not be a whitespace, otherwise " "
-     * (a blank string) becomes a valid input.
+     * The first character of the entry must not be a whitespace, otherwise " " (a blank string)
+     * becomes a valid input.
      */
     // public static final String NAME_VALIDATION_REGEX =
     // "[\\p{Alnum}][\\p{Alnum} ]*";
@@ -27,8 +28,7 @@ public class Name {
     /**
      * Validates given name.
      *
-     * @throws IllegalValueException
-     *             if given name string is invalid.
+     * @throws IllegalValueException if given name string is invalid.
      */
     public Name(String name) throws IllegalValueException {
         requireNonNull(name);
@@ -54,8 +54,8 @@ public class Name {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof Name // instanceof handles nulls
-                        && this.fullName.equals(((Name) other).fullName)); // state check
+               || (other instanceof Name // instanceof handles nulls
+                   && this.fullName.equals(((Name) other).fullName)); // state check
     }
 
     @Override
