@@ -17,13 +17,13 @@ public class FloatingTask extends Entry {
 
     @Override
     public Calendar getStartDateAndTime() {
-        Calendar startDateAndTime = null;
+        Calendar startDateAndTime = null; // Floating tasks have no start time.
         return startDateAndTime;
     }
 
     @Override
     public Calendar getEndDateAndTime() {
-        Calendar endDateAndTime = null;
+        Calendar endDateAndTime = null; // Floating tasks have no end time.
         return endDateAndTime;
     }
 
@@ -45,7 +45,7 @@ public class FloatingTask extends Entry {
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(getName(), getStartDateAndTime(), getEndDateAndTime(), getTags());
+        return Objects.hash(getName(), getTags());
     }
 
     @Override
