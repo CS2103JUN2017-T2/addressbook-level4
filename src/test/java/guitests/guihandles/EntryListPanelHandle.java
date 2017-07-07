@@ -58,7 +58,7 @@ public class EntryListPanelHandle extends GuiHandle {
         if (entries.length + startPosition != getListView().getItems().size()) {
             throw new IllegalArgumentException("List size mismatched\n"
                     + "Expected " + (getListView().getItems().size() - 1) + " entries, "
-                    + "got" + (entries.length + startPosition - 1));
+                    + "got " + (entries.length + startPosition - 1));
         }
         assertTrue(this.containsInOrder(startPosition, entries));
         for (int i = 0; i < entries.length; i++) {

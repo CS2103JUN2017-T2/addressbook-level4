@@ -10,10 +10,10 @@ import seedu.address.model.entry.ReadOnlyEntry;
 //@@author A0125586X
 /**
  * EntryCard implements a superclass for the different types of entry cards to inherit from.
- * While an object of type EntryCard can be instantiated, the specific subclasses for each
- * type of entry should be used instead.
+ * This class is declared as abstract as the classes for each type of entry card
+ * should be instantiated instead of a generic entry card.
  */
-public class EntryCard extends UiPart<Region> {
+public abstract class EntryCard extends UiPart<Region> {
 
     private static final String FXML = "EntryCard.fxml";
 

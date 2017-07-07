@@ -25,6 +25,7 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.ReadOnlyEntryBook;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.util.SampleDataUtil;
 import seedu.address.storage.EntryBookStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
 import seedu.address.storage.Storage;
@@ -85,8 +86,8 @@ public class MainApp extends Application {
         try {
             entryBookOptional = storage.readEntryBook();
             if (!entryBookOptional.isPresent()) {
-                logger.info("Data file not found. Will be starting with an empty EntryBook");
-                initialData = new EntryBook();
+                logger.info("Data file not found. Will be using sample data");
+                initialData = SampleDataUtil.getSampleEntryBook();
             } else {
                 initialData = entryBookOptional.get();
             }
