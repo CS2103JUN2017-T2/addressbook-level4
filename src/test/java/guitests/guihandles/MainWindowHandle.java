@@ -4,7 +4,7 @@ import guitests.GuiRobot;
 import javafx.stage.Stage;
 import seedu.address.TestApp;
 
-//@@author A0125586
+//@@author A0125586X
 /**
  * Provides a handle for {@code MainWindow}.
  */

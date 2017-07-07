@@ -3,7 +3,7 @@ package guitests.guihandles;
 import guitests.GuiRobot;
 import javafx.stage.Stage;
 
-//@@author A0125586
+//@@author A0125586X
 /**
  * Provides a handle for the panel containing the floating task list.
  */

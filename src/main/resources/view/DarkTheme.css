@@ -146,6 +146,7 @@
      -fx-background-color: derive(#1d1d1d, 20%);
 }
 
+/* //@@author A0125586X */
 .event-card {
     -fx-outer-border: derive(#1d1d1d, 20%);
     -fx-body-color: linear-gradient(to bottom, #4c4c4c, #212121);
@@ -190,6 +191,7 @@
         -fx-body-color;
     -fx-background-insets: 0, 4;
 }
+/* //@@author */
 
 .status-bar {
     -fx-background-color: derive(#1d1d1d, 20%);

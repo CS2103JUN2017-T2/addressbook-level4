@@ -16,7 +16,7 @@ import seedu.address.model.entry.Entry;
 import seedu.address.model.entry.ReadOnlyEntry;
 import seedu.address.testutil.TestUtil;
 
-//@@author A0125586
+//@@author A0125586X
 /**
  * Provides a handle for the panel containing the event entry list.
  */
