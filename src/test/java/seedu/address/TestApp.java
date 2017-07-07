@@ -4,13 +4,14 @@ import java.util.function.Supplier;
 
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import seedu.address.commons.core.Config;
-import seedu.address.commons.core.GuiSettings;
-import seedu.address.model.ReadOnlyEntryBook;
-import seedu.address.model.UserPrefs;
-import seedu.address.storage.UserPrefsStorage;
-import seedu.address.storage.XmlSerializableEntryBook;
-import seedu.address.testutil.TestUtil;
+import seedu.multitasky.MainApp;
+import seedu.multitasky.commons.core.Config;
+import seedu.multitasky.commons.core.GuiSettings;
+import seedu.multitasky.model.ReadOnlyEntryBook;
+import seedu.multitasky.model.UserPrefs;
+import seedu.multitasky.storage.UserPrefsStorage;
+import seedu.multitasky.storage.XmlSerializableEntryBook;
+import seedu.multitasky.testutil.TestUtil;
 
 /**
  * This class is meant to override some properties of MainApp so that it will be suited for

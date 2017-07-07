@@ -4,8 +4,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import seedu.address.logic.commands.ClearCommand;
-import seedu.address.testutil.EntryUtil;
+import seedu.multitasky.logic.commands.ClearCommand;
+import seedu.multitasky.testutil.EntryUtil;
 
 public class ClearCommandTest extends EntryBookGuiTest {
 

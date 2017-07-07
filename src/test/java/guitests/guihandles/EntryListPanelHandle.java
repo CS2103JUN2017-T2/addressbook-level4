@@ -12,9 +12,9 @@ import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import seedu.address.TestApp;
-import seedu.address.model.entry.Entry;
-import seedu.address.model.entry.ReadOnlyEntry;
-import seedu.address.testutil.TestUtil;
+import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.model.entry.ReadOnlyEntry;
+import seedu.multitasky.testutil.TestUtil;
 
 //@@author A0125586X
 /**

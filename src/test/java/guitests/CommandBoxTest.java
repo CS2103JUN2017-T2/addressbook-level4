@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
-import seedu.address.logic.commands.ListCommand;
-import seedu.address.ui.CommandBox;
+import seedu.multitasky.logic.commands.ListCommand;
+import seedu.multitasky.ui.CommandBox;
 
 //@@author A0125586X
 public class CommandBoxTest extends EntryBookGuiTest {

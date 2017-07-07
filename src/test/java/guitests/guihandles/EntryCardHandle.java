@@ -9,8 +9,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Labeled;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
-import seedu.address.model.entry.ReadOnlyEntry;
-import seedu.address.model.tag.Tag;
+import seedu.multitasky.model.entry.ReadOnlyEntry;
+import seedu.multitasky.model.tag.Tag;
 
 //@@author A0125586X
 /**

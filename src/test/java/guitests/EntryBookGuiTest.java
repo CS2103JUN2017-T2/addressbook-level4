@@ -25,12 +25,12 @@ import guitests.guihandles.StatusBarFooterHandle;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import seedu.address.TestApp;
-import seedu.address.commons.core.EventsCenter;
-import seedu.address.commons.events.BaseEvent;
-import seedu.address.model.EntryBook;
-import seedu.address.model.entry.ReadOnlyEntry;
-import seedu.address.testutil.TestUtil;
-import seedu.address.testutil.TypicalEntries;
+import seedu.multitasky.commons.core.EventsCenter;
+import seedu.multitasky.commons.events.BaseEvent;
+import seedu.multitasky.model.EntryBook;
+import seedu.multitasky.model.entry.ReadOnlyEntry;
+import seedu.multitasky.testutil.TestUtil;
+import seedu.multitasky.testutil.TypicalEntries;
 
 //@@author A0125586X
 /**

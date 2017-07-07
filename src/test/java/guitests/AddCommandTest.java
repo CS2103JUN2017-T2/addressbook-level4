@@ -5,14 +5,14 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import guitests.guihandles.EntryCardHandle;
-import seedu.address.commons.core.Messages;
-import seedu.address.logic.commands.AddCommand;
-import seedu.address.logic.commands.ClearCommand;
-import seedu.address.model.entry.Entry;
-import seedu.address.model.entry.Name;
-import seedu.address.model.tag.Tag;
-import seedu.address.testutil.EntryUtil;
-import seedu.address.testutil.TestUtil;
+import seedu.multitasky.commons.core.Messages;
+import seedu.multitasky.logic.commands.AddCommand;
+import seedu.multitasky.logic.commands.ClearCommand;
+import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.model.entry.Name;
+import seedu.multitasky.model.tag.Tag;
+import seedu.multitasky.testutil.EntryUtil;
+import seedu.multitasky.testutil.TestUtil;
 
 //@@author A0125586X
 public class AddCommandTest extends EntryBookGuiTest {

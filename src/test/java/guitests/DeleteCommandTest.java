@@ -4,13 +4,13 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import seedu.address.commons.core.Messages;
-import seedu.address.commons.core.index.Index;
-import seedu.address.logic.commands.DeleteCommand;
-import seedu.address.model.entry.Entry;
-import seedu.address.testutil.EntryUtil;
-import seedu.address.testutil.TestUtil;
-import seedu.address.testutil.TypicalEntries;
+import seedu.multitasky.commons.core.Messages;
+import seedu.multitasky.commons.core.index.Index;
+import seedu.multitasky.logic.commands.DeleteCommand;
+import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.testutil.EntryUtil;
+import seedu.multitasky.testutil.TestUtil;
+import seedu.multitasky.testutil.TypicalEntries;
 
 public class DeleteCommandTest extends EntryBookGuiTest {
 

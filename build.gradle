@@ -13,7 +13,7 @@ plugins {
 }
 
 // Specifies the entry point of the application
-mainClassName = 'seedu.address.MainApp'
+mainClassName = 'seedu.multitasky.MainApp'
 
 allprojects {
     apply plugin: 'idea'
