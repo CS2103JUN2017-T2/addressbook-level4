@@ -6,14 +6,14 @@ import seedu.address.commons.exceptions.IllegalValueException;
 
 /**
  * Represents an Entry's name in the entry book.
- * Guarantees: immutable; is valid as declared in
- * {@link #isValidName(String)}
+ * Guarantees: immutable; is valid as declared in * {@link #isValidName(String)}
  */
 public class Name {
 
-    public static final String MESSAGE_NAME_CONSTRAINTS = "Entry names should only start "
-                                                          + "with alphanumeric characters and it should not be blank, "
-                                                          + "subsequent spaces and non-alphanumeric characters are allowed.";
+    public static final String MESSAGE_NAME_CONSTRAINTS = "Entry names should only start with "
+                                                          + "alphanumeric characters and it should "
+                                                          + "not be blank, subsequent spaces and "
+                                                          + "non-alphanumeric characters are allowed.";
 
     /*
      * The first character of the entry must not be a whitespace, otherwise " " (a blank string)
