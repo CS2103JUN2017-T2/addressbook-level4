@@ -266,7 +266,8 @@ public class LogicManagerTest {
             model.addEntry(p);
         }
 
-        assertCommandException(commandWord + " " + PREFIX_FLOATINGTASK + INDEX_THIRD_ENTRY.getOneBased(), expectedMessage);
+        assertCommandException(commandWord + " " + PREFIX_FLOATINGTASK
+                               + INDEX_THIRD_ENTRY.getOneBased(), expectedMessage);
     }
 
     @Test
