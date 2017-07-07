@@ -6,8 +6,6 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import seedu.address.commons.exceptions.IllegalValueException;
-
 public class NameTest {
 
     // @@author A0126623L
@@ -49,7 +47,7 @@ public class NameTest {
             assertFalse(name1 == name3);
             assertFalse(name1.equals(name3));
 
-        } catch (IllegalValueException e) {
+        } catch (Exception e) {
             fail("Invalid name used in test.");
         }
     }

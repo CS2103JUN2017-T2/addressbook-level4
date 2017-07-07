@@ -11,7 +11,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 public class Tag {
 
     public static final String MESSAGE_TAG_CONSTRAINTS = "Tags names should be alphanumeric";
-    public static final String TAG_VALIDATION_REGEX = "\\p{Alnum}+";
+    public static final String TAG_VALIDATION_REGEX = "[\\p{Alnum}][\\p{Alnum}\\p{S}\\p{P}]*";
 
     public final String tagName;
 
@@ -39,8 +39,8 @@ public class Tag {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof Tag // instanceof handles nulls
-                && this.tagName.equals(((Tag) other).tagName)); // state check
+               || (other instanceof Tag // instanceof handles nulls
+                   && this.tagName.equals(((Tag) other).tagName)); // state check
     }
 
     @Override
@@ -51,6 +51,7 @@ public class Tag {
     /**
      * Format state as text for viewing.
      */
+    @Override
     public String toString() {
         return '[' + tagName + ']';
     }
