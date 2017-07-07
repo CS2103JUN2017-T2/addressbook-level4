@@ -2,6 +2,7 @@ package seedu.address.logic.parser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -28,7 +29,7 @@ public class DeleteCommandParser {
      */
     // @@author A0140633R
     public Command parse(String args) throws ParseException {
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_FLOATINGTASK);
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_FLOATINGTASK, PREFIX_TAG);
 
         if (ParserUtil.arePrefixesPresent(argMultimap, PREFIX_FLOATINGTASK)) {
             try {
@@ -39,6 +40,7 @@ public class DeleteCommandParser {
             }
         } else {
             String trimmedArgs = argMultimap.getPreamble().get();
+
             if (trimmedArgs.isEmpty()) {
                 throw new ParseException(
                         String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
