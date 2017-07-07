@@ -38,13 +38,13 @@ public class EditCommandParser {
     public EditCommand parse(String args) throws ParseException {
         requireNonNull(args);
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_FLOATINGTASK, PREFIX_NAME,
-                PREFIX_TAG);
-
+                                                                  PREFIX_TAG);
+        String trimmedArgs = argMultimap.getPreamble().get();
         EditEntryDescriptor editEntryDescriptor = new EditEntryDescriptor();
-        initEntryEditor(argMultimap, editEntryDescriptor);
 
         if (ParserUtil.arePrefixesPresent(argMultimap, PREFIX_FLOATINGTASK)) {
             Index index;
+            initEntryEditor(argMultimap, editEntryDescriptor);
 
             try {
                 index = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_FLOATINGTASK).get());
@@ -54,12 +54,12 @@ public class EditCommandParser {
             }
             return new EditByIndexCommand(index, editEntryDescriptor);
         } else {
-            String trimmedArgs = argMultimap.getPreamble().get();
 
             if (trimmedArgs.isEmpty()) {
                 throw new ParseException(
                         String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
             }
+            initEntryEditor(argMultimap, editEntryDescriptor);
             final String[] keywords = trimmedArgs.split("\\s+");
             final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
 
@@ -68,7 +68,8 @@ public class EditCommandParser {
     }
 
     /*
-     * Checks whether entry editor has initialized properly
+     * Intializes the entry editor by parsing new values to replace old data. throws ParseException if entry data
+     * are of wrong format or no fields are edited.
      */
     private void initEntryEditor(ArgumentMultimap argMultimap, EditEntryDescriptor editEntryDescriptor)
             throws ParseException {

@@ -32,6 +32,6 @@ public class DeleteByIndexCommand extends DeleteCommand {
         } catch (EntryNotFoundException pnfe) {
             assert false : "The target entry cannot be missing";
         }
-        return new CommandResult(String.format(MESSAGE_DELETE_ENTRY_SUCCESS, entryToDelete));
+        return new CommandResult(String.format(MESSAGE_SUCCESS, entryToDelete));
     }
 }
