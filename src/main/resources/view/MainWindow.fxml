@@ -12,7 +12,8 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="831.0" prefWidth="1013.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<!-- @@author A0125586X -->
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="777.0" prefWidth="1013.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
   <stylesheets>
     <URL value="@DarkTheme.css" />
     <URL value="@Extensions.css" />
@@ -26,18 +27,6 @@
       <MenuItem fx:id="helpMenuItem" mnemonicParsing="false" onAction="#handleHelp" text="Help" />
     </Menu>
   </MenuBar>
-
-  <StackPane fx:id="commandBoxPlaceholder" styleClass="pane-with-border" VBox.vgrow="NEVER">
-    <padding>
-      <Insets bottom="5" left="10" right="10" top="5" />
-    </padding>
-  </StackPane>
-
-  <StackPane fx:id="resultDisplayPlaceholder" maxHeight="100" minHeight="100" prefHeight="100" styleClass="pane-with-border" VBox.vgrow="NEVER">
-    <padding>
-      <Insets bottom="5" left="10" right="10" top="5" />
-    </padding>
-  </StackPane>
    <StackPane maxHeight="50.0" minHeight="50.0" prefHeight="50.0" styleClass="pane-with-border">
       <padding>
          <Insets bottom="5" left="10" right="10" top="5" />
@@ -75,13 +64,25 @@
              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
            </rowConstraints>
             <children>
-               <StackPane fx:id="eventListPanelPlaceholder" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="331.0" styleClass="event-pane-with-border" stylesheets="@DarkTheme.css" />
-               <StackPane fx:id="deadlineListPanelPlaceholder" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="deadline-pane-with-border" stylesheets="@DarkTheme.css" GridPane.columnIndex="1" />
-               <StackPane fx:id="floatingTaskListPanelPlaceholder" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="floating-pane-with-border" stylesheets="@DarkTheme.css" GridPane.columnIndex="2" />
+               <StackPane fx:id="eventListPanelPlaceholder" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="331.0" styleClass="pane-with-border" stylesheets="@DarkTheme.css" />
+               <StackPane fx:id="deadlineListPanelPlaceholder" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="pane-with-border" stylesheets="@DarkTheme.css" GridPane.columnIndex="1" />
+               <StackPane fx:id="floatingTaskListPanelPlaceholder" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="pane-with-border" stylesheets="@DarkTheme.css" GridPane.columnIndex="2" />
             </children>
          </GridPane>
       </children>
    </StackPane>
 
-  <StackPane fx:id="statusbarPlaceholder" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" VBox.vgrow="NEVER" />
+  <StackPane fx:id="resultDisplayPlaceholder" maxHeight="100" minHeight="100" prefHeight="100" styleClass="pane-with-border" VBox.vgrow="NEVER">
+    <padding>
+      <Insets bottom="5" left="10" right="10" top="5" />
+    </padding>
+  </StackPane>
+
+  <StackPane fx:id="commandBoxPlaceholder" styleClass="pane-with-border" VBox.vgrow="NEVER">
+    <padding>
+      <Insets bottom="5" left="10" right="10" top="5" />
+    </padding>
+  </StackPane>
+
+  <StackPane fx:id="statusbarPlaceholder" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" styleClass="pane-without-border" VBox.vgrow="NEVER" />
 </VBox>
