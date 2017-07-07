@@ -2,6 +2,7 @@ package seedu.multitasky.storage;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,10 +17,11 @@ import seedu.multitasky.commons.exceptions.DataConversionException;
 import seedu.multitasky.commons.util.FileUtil;
 import seedu.multitasky.model.UserPrefs;
 
+// @@author A0132788U
+
 public class JsonUserPrefsStorageTest {
 
-    private static final String TEST_DATA_FOLDER = FileUtil
-            .getPath("./src/test/data/JsonUserPrefsStorageTest/");
+    private static final String TEST_DATA_FOLDER = FileUtil.getPath("./src/test/data/JsonUserPrefsStorageTest/");
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -27,25 +29,35 @@ public class JsonUserPrefsStorageTest {
     @Rule
     public TemporaryFolder testFolder = new TemporaryFolder();
 
+    /**
+     * Reads a null file path to throw an exception
+     */
     @Test
-    public void readUserPrefs_nullFilePath_throwsNullPointerException() throws DataConversionException {
+    public void getNullPointer() throws DataConversionException {
         thrown.expect(NullPointerException.class);
         readUserPrefs(null);
     }
 
-    private Optional<UserPrefs> readUserPrefs(String userPrefsFileInTestDataFolder)
-            throws DataConversionException {
+    private Optional<UserPrefs> readUserPrefs(String userPrefsFileInTestDataFolder) throws DataConversionException {
         String prefsFilePath = addToTestDataPathIfNotNull(userPrefsFileInTestDataFolder);
         return new JsonUserPrefsStorage(prefsFilePath).readUserPrefs(prefsFilePath);
     }
 
     @Test
-    public void readUserPrefs_missingFile_emptyResult() throws DataConversionException {
+    public void missingFile() throws DataConversionException {
         assertFalse(readUserPrefs("NonExistentFile.json").isPresent());
     }
 
+    // @@author A0132788U
+    // Confirms that file exists
     @Test
-    public void readUserPrefs_notJsonFormat_exceptionThrown() throws DataConversionException {
+    public void presentFile() throws DataConversionException {
+        assertTrue(readUserPrefs("TypicalUserPref.json").isPresent());
+    }
+
+    // Throws an exception because the file is not json formatted
+    @Test
+    public void notJsonFormat() throws DataConversionException {
         thrown.expect(DataConversionException.class);
         readUserPrefs("NotJsonFormatUserPrefs.json");
 
@@ -57,28 +69,29 @@ public class JsonUserPrefsStorageTest {
     }
 
     private String addToTestDataPathIfNotNull(String userPrefsFileInTestDataFolder) {
-        return userPrefsFileInTestDataFolder != null ? TEST_DATA_FOLDER + userPrefsFileInTestDataFolder
-                : null;
+        return userPrefsFileInTestDataFolder != null ? TEST_DATA_FOLDER + userPrefsFileInTestDataFolder : null;
     }
 
+    // Confirms user preferences from file are successfully read.
     @Test
-    public void readUserPrefs_fileInOrder_successfullyRead() throws DataConversionException {
+    public void successfullyRead() throws DataConversionException {
         UserPrefs expected = getTypicalUserPrefs();
         UserPrefs actual = readUserPrefs("TypicalUserPref.json").get();
         assertEquals(expected, actual);
     }
 
+    // Confirms user preferences from file are empty and defaults are used.
     @Test
-    public void readUserPrefs_valuesMissingFromFile_defaultValuesUsed() throws DataConversionException {
+    public void valuesMissing_defaultValuesUsed() throws DataConversionException {
         UserPrefs actual = readUserPrefs("EmptyUserPrefs.json").get();
         assertEquals(new UserPrefs(), actual);
     }
 
+    // Confirms that extra user preferences from file are ignored.
     @Test
-    public void readUserPrefs_extraValuesInFile_extraValuesIgnored() throws DataConversionException {
+    public void extraValuesInFileIgnored() throws DataConversionException {
         UserPrefs expected = getTypicalUserPrefs();
         UserPrefs actual = readUserPrefs("ExtraValuesUserPref.json").get();
-
         assertEquals(expected, actual);
     }
 
@@ -103,8 +116,7 @@ public class JsonUserPrefsStorageTest {
     }
 
     private void saveUserPrefs(UserPrefs userPrefs, String prefsFileInTestDataFolder) throws IOException {
-        new JsonUserPrefsStorage(addToTestDataPathIfNotNull(prefsFileInTestDataFolder))
-                .saveUserPrefs(userPrefs);
+        new JsonUserPrefsStorage(addToTestDataPathIfNotNull(prefsFileInTestDataFolder)).saveUserPrefs(userPrefs);
     }
 
     @Test
