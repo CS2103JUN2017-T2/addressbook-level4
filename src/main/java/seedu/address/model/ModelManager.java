@@ -10,7 +10,6 @@ import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.events.model.EntryBookChangedEvent;
-import seedu.address.commons.util.StringUtil;
 import seedu.address.model.entry.ReadOnlyEntry;
 import seedu.address.model.entry.exceptions.EntryNotFoundException;
 import seedu.address.model.tag.Tag;
@@ -191,7 +190,7 @@ public class ModelManager extends ComponentManager implements Model {
             String wordsInNameAndTags = parseWordsInNameAndTags(entry);
 
             for (String keyword : nameKeyWords) {
-                if (!StringUtil.containsWordIgnoreCase(wordsInNameAndTags, keyword)) {
+                if (!wordsInNameAndTags.toLowerCase().contains(keyword.toLowerCase())) {
                     return false;
                 }
             }

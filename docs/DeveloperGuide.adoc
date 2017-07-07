@@ -309,6 +309,7 @@ a. Include those libraries in the repo (this bloats the repo size) +
 b. Require developers to download those libraries manually (this creates extra work for developers)
 
 [appendix]
+//<!-- @@author A0132788U -->
 == User Stories
 
 Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (unlikely to have) - `*`
@@ -316,7 +317,6 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 [width="59%",cols="22%,<23%,<25%,<30%",options="header",]
 |=======================================================================
 |Priority |As a ... |I want to ... |So that I can...
-
 |`* * *` |new user |check the command summary |get help with commands
 
 |`* * *` |user |add a new entry |
@@ -397,7 +397,11 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |user |tick off sub-entries within an entry as completed |track my progress whilst i switch between projects
 
+|`* *` |user |type non-alphanumeric characters in entry name and tags |use special characters (e.g. $,_) in my entries
+
 |`* *` |user |have an option in my commands to accept any confirmation messages automatically (/force) |can save time
+
+|`* *` |user |be able to search for task entries using partial words | find entries easily without remembering exact words
 
 |`*` |user with many projects |tag entries by assignment |distinguish tasks for similar assignments
 
@@ -414,7 +418,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 |`*` |user |list entries in a calendar view |view items scheduled for specific days
 |=======================================================================
 
-
+//<!-- @@author A0140633R -->
 [appendix]
 == Use Cases
 
@@ -436,7 +440,6 @@ Use case ends.
 i) MultiTasky shows an error message and prints the proper usage syntax and example command for adding new entries.
 ii) Use case resumes from step 1.
 
-//<!-- @@author A0140633R -->
 [discrete]
 === Use case: Completing an entry
 
@@ -540,7 +543,6 @@ Use case ends.
 1. User uses the `restore` command to restore a deleted entry by providing keywords that match the entry name.
 2. MultiTasky finds the relevant entry and restores the entry. +
 Use case ends.
-//<!-- @@author -->
 
 *Extensions*
 
@@ -551,6 +553,8 @@ ii) User specifies index.
 iii) Use case resumes from step 2.
 
 [appendix]
+
+//<!-- @@author A0132788U -->
 == Non Functional Requirements
 
 . The software should work on any link:#mainstream-os[mainstream OS] as long as it has Java `1.8.0_60` or higher installed.
@@ -558,9 +562,12 @@ iii) Use case resumes from step 2.
 . A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
 . The software should use text files for storage and not relational databases.
 . The software should favor DOS style commands over Unix-style commands.
+. The software should work without requiring an installer.
 . All operations should have response time under 1 second.
 . The software should be able to work offline.
 . Basic commands on entries should be achieved within a minimum of 2 steps.
+. Commands should be intuitive and easy to learn.
+. Code should be open-source.
 
 [appendix]
 == Glossary
@@ -636,26 +643,29 @@ ____
 
 [appendix]
 == Product Survey
-
+//<!-- @@author A0132788U -->
 *Wunderlist*
 
-Developer: Christian Reber
+Developer: Christian Reber (6 WunderKinder GmbH, Microsoft)
 
 Author: Akankshita Dash
 
 Pros:
 
-* Accessible and activated easily from Desktop
-* Adds tasks in a one-shot approach (e.g. Dinner 5th July 9 pm is added on the given day and time)
-* Accessible and activated easily from Desktop
-* Available on all devices (Desktop, Mobile) offline
-* Can add floating tasks (tasks without a deadline)
+* Accessible and activated easily from Desktop.
+* Adds tasks in a one-shot approach (e.g. Dinner 5th July 9 pm is added on the given day and time).
+* Provides addition for subtasks within a task.
+* Available on all devices (Desktop, Mobile) offline.
+* Can add floating tasks (tasks without a deadline).
+* Supports multi-user collaboration.
+* Can add files to a To-Do for greater context.
 
 Cons:
 
 * Only one alarm, no multiple reminders
 * Cannot prioritize tasks
 * Cannot block slots and release them if they become free
+* Setup is a bit lengthy, and using some of the commands is not intuitive - need to Google/use Help.
 
 //<!-- @@author A0126623L -->
 *Google Calendar*
@@ -687,7 +697,6 @@ Cons:
 * Not ideal for capturing tasks that need to be done before a specific date/time, or after a specific date/time, or tasks without specific times.
 * Cannot intelligently lookup a free slot to insert entries without specific times.
 * Launching is slow. Requires opening a browser and then typing in a URL. A way to work around this is to synchronise Google Calendar with another calendar application which can be open more quickly.
-//<!-- @@author -->
 
 //<!-- @@author A0125586X -->
 *Hitask*
@@ -716,7 +725,6 @@ Cons:
 * Cannot intelligently search for a free slot for an event.
 * Tasks and events are not differentiated as they have the exact same entry fields.
 * Not enough task preference default parameters for user to specify.
-//<!-- @@author -->
 
 //<!-- @@author A0140633R -->
 *Todo.txt*

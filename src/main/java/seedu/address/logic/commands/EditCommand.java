@@ -1,10 +1,14 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.Optional;
 import java.util.Set;
 
+import seedu.address.commons.core.Messages;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.model.entry.Entry;
 import seedu.address.model.entry.Name;
@@ -19,17 +23,24 @@ public abstract class EditCommand extends Command {
 
     public static final String COMMAND_WORD = "edit";
 
-    public static final String MESSAGE_USAGE = "edit : Edits the details of the entry either identified "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + " : Edits the details of the entry either identified "
             + "by keywords given or the index number used in the last entry listing. "
             + "Existing values will be overwritten by the input values.\n"
-            + "Format: edit [keywords] or /float INDEX (must be a positive integer) /name NEW NAME "
-            + "/tag NEWTAGS\n"
-            + "Example: edit /float 1 /name new task /tag \n"
+            + "Format: " + COMMAND_WORD + " KEYWORDS or "
+            + PREFIX_FLOATINGTASK + " INDEX (must be a positive integer) "
+            + PREFIX_NAME + " NEW NAME "
+            + PREFIX_TAG + " NEWTAGS\n"
+            + "Example: " + COMMAND_WORD + " " + PREFIX_FLOATINGTASK + " 1 "
+            + PREFIX_NAME + "walk the dog " + PREFIX_TAG + "\n"
             + "tip: this example clears all tags on the task!";
 
-    public static final String MESSAGE_EDIT_ENTRY_SUCCESS = "Edited Entry: %1$s";
+    public static final String MESSAGE_SUCCESS = "Entry edited:" + "\n"
+            + Messages.MESSAGE_ENTRY_DESCRIPTION +  "%1$s";
+
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.\n"
-            + "Format: edit [keywords] or /float INDEX /name NEW NAME /tag NEWTAGS";
+            + "Format: " + COMMAND_WORD + " [keywords] or " + PREFIX_FLOATINGTASK + " INDEX "
+            + PREFIX_NAME + " NEW NAME " + PREFIX_TAG + " NEWTAGS";
+
     public static final String MESSAGE_DUPLICATE_ENTRY = "This entry already exists in the address book.";
 
     protected final EditEntryDescriptor editEntryDescriptor;

@@ -13,7 +13,7 @@ public abstract class Command {
     protected CommandHistory history;
 
     /**
-     * Constructs a feedback message to summarise an operation that displayed a listing of entries.
+     * Constructs a feedback message to summarize an operation that displayed a listing of entries.
      *
      * @param displaySize used to generate summary
      * @return summary message for entries displayed
