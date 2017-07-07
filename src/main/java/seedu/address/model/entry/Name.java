@@ -6,7 +6,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 
 /**
  * Represents an Entry's name in the entry book.
- * Guarantees: immutable; is valid as declared in * {@link #isValidName(String)}
+ * Guarantees: immutable; is valid as declared in {@link #isValidName(String)}
  */
 public class Name {
 
