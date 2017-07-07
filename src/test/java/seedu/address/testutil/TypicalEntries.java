@@ -15,7 +15,7 @@ public class TypicalEntries {
     public static final Index INDEX_SECOND_ENTRY = Index.fromOneBased(2);
     public static final Index INDEX_THIRD_ENTRY = Index.fromOneBased(3);
 
-    public final Entry cook, programming, spectacles, clean, sell;
+    public final Entry cook, programming, hire, spectacles, clean, sell;
 
     // @@author A0125586X
     public TypicalEntries() {
@@ -23,6 +23,7 @@ public class TypicalEntries {
             //CHECKSTYLE.OFF: LineLength
             cook = new EntryBuilder().withName("Learn to cook").withTags("goals").build();
             programming = new EntryBuilder().withName("Learn programming").withTags("lessons", "computer").build();
+            hire = new EntryBuilder().withName("Hire an assistant").withTags("help").build();
             spectacles = new EntryBuilder().withName("Make new spectacles").withTags("health", "eyesight").build();
             clean = new EntryBuilder().withName("Clean up room").withTags("never").build();
             sell = new EntryBuilder().withName("Sell old things").withTags("sale", "clutter").build();
@@ -41,11 +42,11 @@ public class TypicalEntries {
     }
 
     public Entry[] getTypicalEntries() {
-        return new Entry[] { cook };
+        return new Entry[] { cook, programming, hire};
     }
 
     public Entry[] getTypicalFloatingTasks() {
-        return new Entry[] { cook, programming };
+        return new Entry[] { cook, programming, hire };
     }
 
     // @@author A0126623L
