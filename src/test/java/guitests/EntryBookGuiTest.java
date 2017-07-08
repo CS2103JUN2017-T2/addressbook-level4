@@ -103,7 +103,7 @@ public abstract class EntryBookGuiTest {
      * Override this in child classes to set the data file location.
      */
     protected String getDataFileLocation() {
-        return TestApp.SAVE_LOCATION_FOR_TESTING;
+        return TestApp.TESTING_SAVE_LOCATION;
     }
 
     @After

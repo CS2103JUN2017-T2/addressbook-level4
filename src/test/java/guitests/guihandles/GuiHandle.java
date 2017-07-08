@@ -70,6 +70,28 @@ public class GuiHandle {
         guiRobot.type(KeyCode.ENTER).sleep(500);
     }
 
+    //@@author A0125586X
+    public void pressUpKey() {
+        guiRobot.type(KeyCode.UP).sleep(100);
+    }
+
+    public void pressKeypadUpKey() {
+        guiRobot.type(KeyCode.KP_UP).sleep(100);
+    }
+
+    public void pressDownKey() {
+        guiRobot.type(KeyCode.DOWN).sleep(100);
+    }
+
+    public void pressKeypadDownKey() {
+        guiRobot.type(KeyCode.KP_DOWN).sleep(100);
+    }
+
+    public void pressTabKey() {
+        guiRobot.type(KeyCode.TAB).sleep(100);
+    }
+    //@@author
+
     protected String getTextFromLabel(String fieldId, Node parentNode) {
         return ((Label) guiRobot.from(parentNode).lookup(fieldId).tryQuery().get()).getText();
     }
