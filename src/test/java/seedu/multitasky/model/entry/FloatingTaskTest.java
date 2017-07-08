@@ -70,6 +70,22 @@ public class FloatingTaskTest {
     }
 
     @Test
+    public void resetDataTest() {
+        FloatingTask tester999 = tester1;
+        assertFalse(tester999.equals(tester3));
+
+        tester999.resetData(tester3);
+        assertTrue(tester999.equals(tester3));
+    }
+
+    @Test
+    public void toStringTest() {
+        assertEquals("FloatingTask formatting is wrong",
+                     "SampleName1 Tags: [tag1set1]",
+                     tester1.toString());
+    }
+
+    @Test
     public void equalsTest() {
         // Equal
         assertTrue(tester1.equals(tester2));

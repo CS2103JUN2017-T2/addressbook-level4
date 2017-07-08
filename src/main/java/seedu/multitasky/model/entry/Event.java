@@ -93,8 +93,13 @@ public class Event extends Entry {
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
-        builder.append(getName()).append(" Start: ").append(getStartDateAndTime()).append(" End: ")
-               .append(getEndDateAndTime()).append(" Tags: ");
+
+        builder.append(getName())
+               .append(" Start: ")
+               .append(dateFormatter.format(getStartDateAndTime().getTime()))
+               .append(" End: ")
+               .append(dateFormatter.format(getEndDateAndTime().getTime()))
+               .append(" Tags: ");
         getTags().forEach(builder::append);
         return builder.toString();
     }

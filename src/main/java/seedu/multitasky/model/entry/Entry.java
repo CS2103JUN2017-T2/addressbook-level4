@@ -3,6 +3,7 @@ package seedu.multitasky.model.entry;
 import static java.util.Objects.requireNonNull;
 import static seedu.multitasky.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.text.DateFormat;
 import java.util.Collections;
 import java.util.Set;
 
@@ -17,6 +18,12 @@ abstract class Entry implements ReadOnlyEntry {
 
     private Name _name;
     private UniqueTagList _tags;
+
+    /**
+     * Date formatter for subclasses that need to format Date objects.
+     */
+    protected static DateFormat dateFormatter = DateFormat.getDateTimeInstance(DateFormat.MEDIUM,
+                                                                               DateFormat.SHORT);
 
     /**
      * Every field must be present and not null.

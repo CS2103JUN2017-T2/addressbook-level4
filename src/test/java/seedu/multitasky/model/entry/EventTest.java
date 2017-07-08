@@ -42,7 +42,7 @@ public class EventTest {
         calendar2.set(2017, 6, 8, 18, 30); // 8th July 2017, 6:30pm
 
         calendar3 = Calendar.getInstance();
-        calendar3.set(2017, 6, 9, 18, 30); // 8th July 2017, 6:30pm
+        calendar3.set(2017, 6, 9, 18, 30); // 9th July 2017, 6:30pm
 
         try {
             tagSet1 = new HashSet<>();
@@ -87,6 +87,22 @@ public class EventTest {
 
         // Different tags
         assertFalse(tester1.getTags().equals(tester6.getTags()));
+    }
+
+    @Test
+    public void resetDataTest() {
+        Event tester999 = tester1;
+        assertFalse(tester999.equals(tester3));
+
+        tester999.resetData(tester3);
+        assertTrue(tester999.equals(tester3));
+    }
+
+    @Test
+    public void toStringTest() {
+        assertEquals("Event formatting is wrong",
+                     "SampleName1 Start: Jul 7, 2017 6:30 PM End: Jul 8, 2017 6:30 PM Tags: [tag1set1]",
+                     tester1.toString());
     }
 
     @Test

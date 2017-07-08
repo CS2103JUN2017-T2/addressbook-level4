@@ -84,8 +84,10 @@ public class Deadline extends Entry {
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
-        builder.append(getName()).append(" Deadline: ")
-               .append(getEndDateAndTime()).append(" Tags: ");
+        builder.append(getName())
+               .append(" Deadline: ")
+               .append(dateFormatter.format(getEndDateAndTime().getTime()))
+               .append(" Tags: ");
         getTags().forEach(builder::append);
         return builder.toString();
     }
