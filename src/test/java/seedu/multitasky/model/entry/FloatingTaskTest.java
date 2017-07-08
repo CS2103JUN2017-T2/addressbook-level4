@@ -26,6 +26,7 @@ public class FloatingTaskTest {
     FloatingTask tester3;
     FloatingTask tester4;
 
+    // @@author A0126623L
     @Before
     public void setUp() throws Exception {
         try {
@@ -55,11 +56,13 @@ public class FloatingTaskTest {
         tester4 = new FloatingTask(name1, tagSet2);
     }
 
+    // @@author A0126623L
     @Test
     public void getNameTest() {
         assertEquals("error at getName()", "SampleName1", tester1.getName().fullName);
     }
 
+    // @@author A0126623L
     @Test
     public void getTagsTest() {
         // Same tags
@@ -69,6 +72,7 @@ public class FloatingTaskTest {
         assertFalse(tester1.getTags().equals(tester4.getTags()));
     }
 
+    // @@author A0126623L
     @Test
     public void resetDataTest() {
         FloatingTask tester999 = tester1;
@@ -78,6 +82,7 @@ public class FloatingTaskTest {
         assertTrue(tester999.equals(tester3));
     }
 
+    // @@author A0126623L
     @Test
     public void toStringTest() {
         assertEquals("FloatingTask formatting is wrong",
@@ -85,6 +90,7 @@ public class FloatingTaskTest {
                      tester1.toString());
     }
 
+    // @@author A0126623L
     @Test
     public void equalsTest() {
         // Equal

@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import seedu.multitasky.model.tag.Tag;
 
+//@@author A0126623L
 public class DeadlineTest {
 
     Calendar calendar1;
@@ -33,6 +34,7 @@ public class DeadlineTest {
     Deadline tester5;
     Deadline tester6;
 
+    // @@author A0126623L
     @Before
     public void setUp() {
         calendar1 = Calendar.getInstance();
@@ -73,11 +75,13 @@ public class DeadlineTest {
         tester5 = new Deadline(deadlineName1, calendar1, tagSet2);
     }
 
+    // @@author A0126623L
     @Test
     public void getNameTest() {
         assertEquals("error at getName()", "SampleName1", tester1.getName().fullName);
     }
 
+    // @@author A0126623L
     @Test
     public void getTagsTest() {
         // Same tags
@@ -87,6 +91,7 @@ public class DeadlineTest {
         assertFalse(tester1.getTags().equals(tester5.getTags()));
     }
 
+    // @@author A0126623L
     @Test
     public void resetDataTest() {
         Deadline tester999 = tester1;
@@ -96,6 +101,7 @@ public class DeadlineTest {
         assertTrue(tester999.equals(tester3));
     }
 
+    // @@author A0126623L
     @Test
     public void toStringTest() {
         assertEquals("Deadline formatting is wrong",
@@ -103,6 +109,7 @@ public class DeadlineTest {
                      tester1.toString());
     }
 
+    // @@author A0126623L
     @Test
     public void equalsTest() {
         // Equal

@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import seedu.multitasky.model.tag.Tag;
 
+//@@author A0126623L
 public class EventTest {
 
     Calendar calendar1;
@@ -33,6 +34,7 @@ public class EventTest {
     Event tester5;
     Event tester6;
 
+    // @@author A0126623L
     @Before
     public void setUp() {
         calendar1 = Calendar.getInstance();
@@ -75,11 +77,13 @@ public class EventTest {
         tester6 = new Event(eventName1, calendar1, calendar2, tagSet2);
     }
 
+    // @@author A0126623L
     @Test
     public void getNameTest() {
         assertEquals("error at getName()", "SampleName1", tester1.getName().fullName);
     }
 
+    // @@author A0126623L
     @Test
     public void getTagsTest() {
         // Same tags
@@ -89,6 +93,7 @@ public class EventTest {
         assertFalse(tester1.getTags().equals(tester6.getTags()));
     }
 
+    // @@author A0126623L
     @Test
     public void resetDataTest() {
         Event tester999 = tester1;
@@ -98,6 +103,7 @@ public class EventTest {
         assertTrue(tester999.equals(tester3));
     }
 
+    // @@author A0126623L
     @Test
     public void toStringTest() {
         assertEquals("Event formatting is wrong",
@@ -105,6 +111,7 @@ public class EventTest {
                      tester1.toString());
     }
 
+    // @@author A0126623L
     @Test
     public void equalsTest() {
         // Equal
