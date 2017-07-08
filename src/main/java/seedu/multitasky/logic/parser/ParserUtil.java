@@ -64,6 +64,7 @@ public class ParserUtil {
      * {@code ArgumentMultimap}.
      */
     public static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
+        requireNonNull(argumentMultimap);
         return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 }
