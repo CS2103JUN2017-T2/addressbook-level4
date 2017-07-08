@@ -50,6 +50,7 @@ public class XmlEntryBookStorageTest {
         assertFalse(readEntryBook("NonExistentFile.xml").isPresent());
     }
 
+    // @@author A0132788U
     @Test
     public void readFileWithSampleData_isPresent() throws Exception {
         assertTrue(readEntryBook("entrybook.xml").isPresent());
