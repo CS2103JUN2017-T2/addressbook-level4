@@ -1,26 +1,34 @@
 package seedu.multitasky.logic.parser;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import seedu.multitasky.commons.exceptions.IllegalValueException;
+import seedu.multitasky.logic.parser.exceptions.ParseException;
 
 // @@author A0140633R
 /*
  * Contains utility methods used for parsing strings into dates in the various parser classes.
  */
 public class DateUtil {
-    private static final String[] timeFormats = { "HH:mm", "HH-mm", "HH mm" };
+    private static final String[] timeFormats = { "HH/mm", "HH:mm", "HH-mm", "HH mm" };
     private static final String[] dateSeparators = { "/", "-", " " };
 
     private static final String DMY_FORMAT = "dd{sep}MM{sep}yyyy";
 
-    private static final String dmy_template = "\\d{2}{sep}\\d{2}{sep}\\d{4}.*";
+    private static final String dmy_template = "\\d{1,2}{sep}\\d{1,2}{sep}\\d{2,4}.*";
+    private static final String MESSAGE_FAIL = "\nFormat: dd/MM/yy HH/mm";
 
-    public static Date stringToDate(String input) {
+    /**
+     * Converts input string to Date if format conforms to standard format and returns the Date,
+     * or returns null if it fails to do so.
+     * @throws IllegalValueException if the user input does not conform to standard format.
+     */
+    public static Date stringToDate(String input) throws IllegalValueException {
         Date date = null;
         String dateFormat = getDateFormat(input);
         if (dateFormat == null) {
-            throw new IllegalArgumentException("Date is not in an accepted format " + input);
+            throw new ParseException("Date is not in an accepted format " + input + MESSAGE_FAIL);
         }
 
         for (String sep : dateSeparators) {
@@ -38,10 +46,12 @@ public class DateUtil {
                 return date;
             }
         }
-
         return date;
     }
 
+    /*
+     *
+     */
     private static String getDateFormat(String date) {
         for (String sep : dateSeparators) {
             String dmyPattern = patternForSeparator(dmy_template, sep);
@@ -59,9 +69,10 @@ public class DateUtil {
     private static Date tryParse(String input, String pattern) {
         try {
             return new SimpleDateFormat(pattern).parse(input);
-        } catch (ParseException e) {
-            //continue
+        } catch (java.text.ParseException e) {
+            // continue
         }
         return null;
     }
+
 }
