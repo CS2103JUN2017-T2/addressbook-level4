@@ -2,6 +2,7 @@ package seedu.multitasky.storage;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,10 +17,11 @@ import seedu.multitasky.commons.exceptions.DataConversionException;
 import seedu.multitasky.commons.util.FileUtil;
 import seedu.multitasky.model.UserPrefs;
 
+// @@author A0132788U
+
 public class JsonUserPrefsStorageTest {
 
-    private static final String TEST_DATA_FOLDER = FileUtil
-            .getPath("./src/test/data/JsonUserPrefsStorageTest/");
+    private static final String TEST_DATA_FOLDER = FileUtil.getPath("./src/test/data/JsonUserPrefsStorageTest/");
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -33,32 +35,37 @@ public class JsonUserPrefsStorageTest {
         readUserPrefs(null);
     }
 
-    private Optional<UserPrefs> readUserPrefs(String userPrefsFileInTestDataFolder)
-            throws DataConversionException {
+    private Optional<UserPrefs> readUserPrefs(String userPrefsFileInTestDataFolder) throws DataConversionException {
         String prefsFilePath = addToTestDataPathIfNotNull(userPrefsFileInTestDataFolder);
         return new JsonUserPrefsStorage(prefsFilePath).readUserPrefs(prefsFilePath);
     }
 
     @Test
-    public void readUserPrefs_missingFile_emptyResult() throws DataConversionException {
+    public void missingFile() throws DataConversionException {
         assertFalse(readUserPrefs("NonExistentFile.json").isPresent());
     }
 
+    // @@author A0132788U
+    // Confirms that file exists
+    @Test
+    public void readUserPrefs_presentFile_checkSuccess() throws DataConversionException {
+        assertTrue(readUserPrefs("TypicalUserPref.json").isPresent());
+    }
+
+    // Throws an exception because the file is not json formatted
     @Test
     public void readUserPrefs_notJsonFormat_exceptionThrown() throws DataConversionException {
         thrown.expect(DataConversionException.class);
         readUserPrefs("NotJsonFormatUserPrefs.json");
 
         /*
-         * IMPORTANT: Any code below an exception-throwing line (like the one
-         * above) will be ignored. That means you should not have more than one
-         * exception test in one method
+         * IMPORTANT: Any code below an exception-throwing line (like the one above) will be ignored. That means you
+         * should not have more than one exception test in one method
          */
     }
 
     private String addToTestDataPathIfNotNull(String userPrefsFileInTestDataFolder) {
-        return userPrefsFileInTestDataFolder != null ? TEST_DATA_FOLDER + userPrefsFileInTestDataFolder
-                : null;
+        return userPrefsFileInTestDataFolder != null ? TEST_DATA_FOLDER + userPrefsFileInTestDataFolder : null;
     }
 
     @Test
@@ -78,7 +85,6 @@ public class JsonUserPrefsStorageTest {
     public void readUserPrefs_extraValuesInFile_extraValuesIgnored() throws DataConversionException {
         UserPrefs expected = getTypicalUserPrefs();
         UserPrefs actual = readUserPrefs("ExtraValuesUserPref.json").get();
-
         assertEquals(expected, actual);
     }
 
@@ -103,8 +109,7 @@ public class JsonUserPrefsStorageTest {
     }
 
     private void saveUserPrefs(UserPrefs userPrefs, String prefsFileInTestDataFolder) throws IOException {
-        new JsonUserPrefsStorage(addToTestDataPathIfNotNull(prefsFileInTestDataFolder))
-                .saveUserPrefs(userPrefs);
+        new JsonUserPrefsStorage(addToTestDataPathIfNotNull(prefsFileInTestDataFolder)).saveUserPrefs(userPrefs);
     }
 
     @Test

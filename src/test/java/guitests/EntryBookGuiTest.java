@@ -24,7 +24,7 @@ import guitests.guihandles.StatusBarFooterHandle;
 
 import javafx.application.Platform;
 import javafx.stage.Stage;
-import seedu.address.TestApp;
+import seedu.multitasky.TestApp;
 import seedu.multitasky.commons.core.EventsCenter;
 import seedu.multitasky.commons.events.BaseEvent;
 import seedu.multitasky.model.EntryBook;
