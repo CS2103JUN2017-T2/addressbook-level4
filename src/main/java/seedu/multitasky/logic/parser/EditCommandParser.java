@@ -42,7 +42,12 @@ public class EditCommandParser {
         String trimmedArgs = argMultimap.getPreamble().get();
         EditEntryDescriptor editEntryDescriptor = new EditEntryDescriptor();
 
-        if (ParserUtil.arePrefixesPresent(argMultimap, PREFIX_FLOATINGTASK)) {
+        if (args.trim().isEmpty()) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+        }
+
+        if (ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK)) {
             Index index;
             initEntryEditor(argMultimap, editEntryDescriptor);
 
@@ -55,10 +60,6 @@ public class EditCommandParser {
             return new EditByIndexCommand(index, editEntryDescriptor);
         } else {
 
-            if (trimmedArgs.isEmpty()) {
-                throw new ParseException(
-                        String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
-            }
             initEntryEditor(argMultimap, editEntryDescriptor);
             final String[] keywords = trimmedArgs.split("\\s+");
             final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
