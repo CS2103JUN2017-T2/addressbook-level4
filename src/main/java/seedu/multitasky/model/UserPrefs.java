@@ -11,7 +11,9 @@ public class UserPrefs {
 
     private GuiSettings guiSettings;
     private String entryBookFilePath = "data/entrybook.xml";
+    private String entryBookSnapshot = "snapshots/entrybook";
     private String entryBookName = "MyEntryBook";
+    private static int index = 1;
 
     public UserPrefs() {
         this.setGuiSettings(500, 500, 0, 0);
@@ -37,6 +39,30 @@ public class UserPrefs {
         this.entryBookFilePath = entryBookFilePath;
     }
 
+    public String getEntryBookSnapshot() {
+        return entryBookSnapshot;
+    }
+
+    public void setEntryBookSnapshot(String entryBookSnapshot) {
+        this.entryBookSnapshot = entryBookSnapshot + Integer.toString(UserPrefs.getIndex()) + ".xml";
+    }
+
+    public void incrementIndexByOne() {
+        UserPrefs.setIndex(UserPrefs.getIndex() + 1);
+    }
+
+    public void decrementIndexByOne() {
+        UserPrefs.setIndex(UserPrefs.getIndex() - 1);
+    }
+
+    public static int getIndex() {
+        return index;
+    }
+
+    public static void setIndex(int index) {
+        UserPrefs.index = index;
+    }
+
     public String getEntryBookName() {
         return entryBookName;
     }
@@ -50,15 +76,14 @@ public class UserPrefs {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof UserPrefs)) { //this handles null as well.
+        if (!(other instanceof UserPrefs)) { // this handles null as well.
             return false;
         }
 
         UserPrefs o = (UserPrefs) other;
 
-        return Objects.equals(guiSettings, o.guiSettings)
-                && Objects.equals(entryBookFilePath, o.entryBookFilePath)
-                && Objects.equals(entryBookName, o.entryBookName);
+        return Objects.equals(guiSettings, o.guiSettings) && Objects.equals(entryBookFilePath, o.entryBookFilePath)
+               && Objects.equals(entryBookName, o.entryBookName);
     }
 
     @Override
