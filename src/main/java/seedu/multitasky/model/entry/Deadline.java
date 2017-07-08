@@ -23,7 +23,8 @@ public class Deadline extends Entry {
 
     /**
      * Creates a copy of the given ReadOnlyEntry.
-     * Pre-condition: ReadOnlyEntry must be type Deadline.
+     *
+     * @param source must be type Deadline.
      */
     public Deadline(ReadOnlyEntry source) {
         super(source.getName(), source.getTags());
@@ -35,7 +36,8 @@ public class Deadline extends Entry {
 
     /**
      * Updates this entry with the details of {@code replacement}.
-     * Pre-condition: ReadOnlyEntry must be of type Deadline.
+     * 
+     * @param replacement must be of type Deadline.
      */
     @Override
     public void resetData(ReadOnlyEntry replacement) {
