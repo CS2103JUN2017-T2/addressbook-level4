@@ -74,6 +74,11 @@ abstract class EntryList implements Iterable<Entry> {
         return entryFoundAndDeleted;
     }
 
+    /**
+     * Clears the current list of entries and add all elements from replacement.
+     * 
+     * @param replacement
+     */
     public void setEntries(EntryList replacement) {
         this.internalList.setAll(replacement.internalList);
     }

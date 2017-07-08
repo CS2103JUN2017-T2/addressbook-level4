@@ -38,10 +38,11 @@ public class EventListTest {
     static Event event2;
     static Event event3;
     static Event event4;
+    static Event event5;
 
     static EventList eventList1;
     static EventList eventList2; // This list will be meaningfully equal to eventList1
-    static EventList eventList3; // This list is different from eventList1 and eventList2
+    static EventList eventList3; // This list will be different from eventList1 and eventList2
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -74,6 +75,8 @@ public class EventListTest {
         event3 = new Event(eventName2, calendar1, calendar2, tagSet1);
         // Only start time is different from tester1
         event4 = new Event(eventName1, calendar2, calendar3, tagSet1);
+        // Only tags are different from tester1
+        event5 = new Event(eventName1, calendar2, calendar3, tagSet2);
 
         eventList1 = new EventList();
         eventList2 = new EventList();

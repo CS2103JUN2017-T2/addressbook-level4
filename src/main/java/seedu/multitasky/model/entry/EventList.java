@@ -4,15 +4,16 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.List;
 
+//@@author A0126623L
 /**
  * A list of Event objects that does not allow nulls.
- * Supports a minimal set of list operations.
  */
 public class EventList extends EntryList {
 
     /**
      * Adds an event to the list.
-     * Pre-conditions: toAdd is not null and is of type Event.
+     *
+     * @param toAdd is of type Event and must not be null.
      */
     @Override
     public void add(ReadOnlyEntry toAdd) {
