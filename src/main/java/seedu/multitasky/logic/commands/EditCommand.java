@@ -31,7 +31,7 @@ public abstract class EditCommand extends Command {
             + PREFIX_NAME + " NEW NAME "
             + PREFIX_TAG + " NEWTAGS\n"
             + "Example: " + COMMAND_WORD + " " + PREFIX_FLOATINGTASK + " 1 "
-            + PREFIX_NAME + "walk the dog " + PREFIX_TAG + "\n"
+            + PREFIX_NAME + " walk the dog " + PREFIX_TAG + "\n"
             + "tip: this example clears all tags on the task!";
 
     public static final String MESSAGE_SUCCESS = "Entry edited:" + "\n"
