@@ -30,8 +30,7 @@ public class Event extends Entry {
     public Event(ReadOnlyEntry source) {
         super(source.getName(), source.getTags());
 
-        // Checks if source is really an Event type.
-        assert (source instanceof Event);
+        // Checks if source has start and end time.
         requireAllNonNull(source.getStartDateAndTime(), source.getEndDateAndTime());
 
         setStartDateAndTime(source.getStartDateAndTime());

@@ -15,6 +15,14 @@ public class FloatingTask extends Entry {
         super(name, tags);
     }
 
+    /**
+     * Creates a copy of the given ReadOnlyEntry.
+     * Pre-condition: source must be of type FloatingTask.
+     */
+    public FloatingTask(ReadOnlyEntry source) {
+        super(source.getName(), source.getTags());
+    }
+
     @Override
     public Calendar getStartDateAndTime() {
         Calendar startDateAndTime = null; // Floating tasks have no start time.

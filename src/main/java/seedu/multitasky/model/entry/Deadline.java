@@ -28,8 +28,7 @@ public class Deadline extends Entry {
     public Deadline(ReadOnlyEntry source) {
         super(source.getName(), source.getTags());
 
-        // Checks if source is really an Event type.
-        assert (source instanceof Deadline);
+        // Checks if source has an end time.
         requireAllNonNull(source.getEndDateAndTime());
         setEndDateAndTime(source.getEndDateAndTime());
     }
