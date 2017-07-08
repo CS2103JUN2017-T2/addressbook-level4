@@ -13,8 +13,7 @@ import seedu.multitasky.storage.XmlSerializableEntryBook;
 import seedu.multitasky.testutil.TestUtil;
 
 /**
- * This class is meant to override some properties of MainApp so that it will be
- * suited for testing
+ * This class is meant to override some properties of MainApp so that it will be suited for testing
  */
 public class TestApp extends MainApp {
 
