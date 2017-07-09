@@ -31,7 +31,12 @@ public class DeleteCommandParser {
     public Command parse(String args) throws ParseException {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_FLOATINGTASK, PREFIX_TAG);
 
-        if (ParserUtil.arePrefixesPresent(argMultimap, PREFIX_FLOATINGTASK)) {
+        if (args.trim().isEmpty()) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+        }
+
+        if (ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK)) {
             try {
                 Index index = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_FLOATINGTASK).get());
                 return new DeleteByIndexCommand(index);
@@ -41,10 +46,6 @@ public class DeleteCommandParser {
         } else {
             String trimmedArgs = argMultimap.getPreamble().get();
 
-            if (trimmedArgs.isEmpty()) {
-                throw new ParseException(
-                        String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
-            }
             final String[] keywords = trimmedArgs.split("\\s+");
             final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
 
