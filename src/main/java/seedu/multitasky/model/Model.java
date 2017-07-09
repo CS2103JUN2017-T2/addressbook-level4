@@ -27,34 +27,43 @@ public interface Model {
      *
      * @throws EntryNotFoundException if {@code target} could not be found in the list.
      */
-    void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
-                                                                      throws EntryNotFoundException;
+    void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws EntryNotFoundException;
 
+    // @@author A0126623L
     /** Returns the filtered event list as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
     UnmodifiableObservableList<ReadOnlyEntry> getFilteredEventList();
 
+    // @@author A0126623L
     /** Returns the filtered deadline list as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
     UnmodifiableObservableList<ReadOnlyEntry> getFilteredDeadlineList();
 
+    // @@author A0126623L
     /** Returns the filtered floating task list as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
     UnmodifiableObservableList<ReadOnlyEntry> getFilteredFloatingTaskList();
 
+    // @@author A0126623L
     /** Updates the filter of the filtered event list to show all entries */
     void updateFilteredEventListToShowAll();
 
+    // @@author A0126623L
     /** Updates the filter of the filtered deadline list to show all entries */
     void updateFilteredDeadlineListToShowAll();
 
+    // @@author A0126623L
     /** Updates the filter of the filtered floating task list to show all entries */
     void updateFilteredFloatingTaskListToShowAll();
 
+    // @@author A0126623L
     /** Updates the filter of the filtered event list to filter by the given keywords */
     void updateFilteredEventList(Set<String> keywords);
 
+    // @@author A0126623L
     /** Updates the filter of the filtered deadline list to filter by the given keywords */
     void updateFilteredDeadlineList(Set<String> keywords);
 
+    // @@author A0126623L
     /** Updates the filter of the filtered floating task list to filter by the given keywords */
     void updateFilteredFloatingTaskList(Set<String> keywords);
 
+    // @@author
 }

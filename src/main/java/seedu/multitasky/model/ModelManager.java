@@ -14,6 +14,7 @@ import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 import seedu.multitasky.model.tag.Tag;
 
+//@@author A0126623L
 /**
  * Represents the in-memory model of the address book data. All changes to any
  * model should be synchronized.
@@ -26,6 +27,7 @@ public class ModelManager extends ComponentManager implements Model {
     private final FilteredList<ReadOnlyEntry> _filteredDeadlineList;
     private final FilteredList<ReadOnlyEntry> _filteredFloatingTaskList;
 
+    // @@author A0126623L
     /**
      * Initializes a ModelManager with the given entryBook and userPrefs.
      */
@@ -40,6 +42,7 @@ public class ModelManager extends ComponentManager implements Model {
         _filteredDeadlineList = new FilteredList<>(this._entryBook.getDeadlineList());
         _filteredFloatingTaskList = new FilteredList<>(this._entryBook.getFloatingTaskList());
     }
+    // @@author
 
     public ModelManager() {
         this(new EntryBook(), new UserPrefs());
@@ -67,11 +70,13 @@ public class ModelManager extends ComponentManager implements Model {
         indicateEntryBookChanged();
     }
 
+    // @@author A0126623L
     @Override
     public synchronized void addEntry(ReadOnlyEntry entry) {
         _entryBook.addEntry(entry);
         indicateEntryBookChanged();
     }
+    // @@author
 
     @Override
     public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws EntryNotFoundException {
@@ -83,6 +88,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     // =========== Filtered Entry List Accessors ===========
 
+    // @@author A0126623L
     /**
      * Return a list of {@code ReadOnlyEntry} backed by the internal event list of
      * {@code entryBook}
@@ -133,6 +139,7 @@ public class ModelManager extends ComponentManager implements Model {
         updateFilteredDeadlineListToShowAll();
         updateFilteredFloatingTaskListToShowAll();
     }
+    // @@author
 
     // @@author A0126623L
     @Override
@@ -164,6 +171,7 @@ public class ModelManager extends ComponentManager implements Model {
         _filteredFloatingTaskList.setPredicate(expression::satisfies);
     }
 
+    // @@author A0126623L
     @Override
     public boolean equals(Object obj) {
         // short circuit if same object
@@ -183,6 +191,7 @@ public class ModelManager extends ComponentManager implements Model {
                && _filteredDeadlineList.equals(other._filteredDeadlineList)
                && _filteredFloatingTaskList.equals(other._filteredFloatingTaskList);
     }
+    // @@author
 
     // ========== Inner classes/interfaces used for filtering ==========
 
@@ -279,5 +288,5 @@ public class ModelManager extends ComponentManager implements Model {
             return "name=" + String.join(", ", nameAndTagKeywords);
         }
     }
-
+    // @@author
 }
