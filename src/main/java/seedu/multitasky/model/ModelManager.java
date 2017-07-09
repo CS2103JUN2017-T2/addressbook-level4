@@ -78,6 +78,11 @@ public class ModelManager extends ComponentManager implements Model {
         indicateEntryBookChanged();
     }
 
+    @Override
+    public void undoPreviousAction() {
+        // TODO for Dash- implement this
+    }
+
     // =========== Filtered Entry List Accessors ===========
 
     /**

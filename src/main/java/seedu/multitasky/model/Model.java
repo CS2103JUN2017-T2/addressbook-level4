@@ -22,13 +22,15 @@ public interface Model {
     /** Adds the given entry */
     void addEntry(ReadOnlyEntry entry);
 
+    /** Undo the previous data-changing action */
+    void undoPreviousAction();
+
     /**
      * Replaces the given entry {@code target} with {@code editedEntry}.
      *
      * @throws EntryNotFoundException if {@code target} could not be found in the list.
      */
-    void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
-            throws EntryNotFoundException;
+    void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws EntryNotFoundException;
 
     /** Returns the filtered entry list as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
     UnmodifiableObservableList<ReadOnlyEntry> getFilteredFloatingTaskList();
@@ -36,7 +38,7 @@ public interface Model {
     /** Updates the filter of the filtered entry list to show all entries */
     void updateFilteredListToShowAll();
 
-    /** Updates the filter of the filtered entry list to filter by the given keywords*/
+    /** Updates the filter of the filtered entry list to filter by the given keywords */
     void updateFilteredFloatingTaskList(Set<String> keywords);
 
 }
