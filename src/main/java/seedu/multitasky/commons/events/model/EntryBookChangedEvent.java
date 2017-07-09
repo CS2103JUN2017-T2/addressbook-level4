@@ -3,7 +3,7 @@ package seedu.multitasky.commons.events.model;
 import seedu.multitasky.commons.events.BaseEvent;
 import seedu.multitasky.model.ReadOnlyEntryBook;
 
-/** Indicates the EntryBook in the model has changed*/
+/** Indicates the EntryBook in the model has changed */
 public class EntryBookChangedEvent extends BaseEvent {
 
     public final ReadOnlyEntryBook data;
@@ -14,6 +14,6 @@ public class EntryBookChangedEvent extends BaseEvent {
 
     @Override
     public String toString() {
-        return "number of persons " + data.getEntryList().size() + ", number of tags " + data.getTagList().size();
+        return "number of entries " + data.getEntryList().size() + ", number of tags " + data.getTagList().size();
     }
 }

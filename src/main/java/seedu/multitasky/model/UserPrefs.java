@@ -7,8 +7,13 @@ import seedu.multitasky.commons.core.GuiSettings;
 /**
  * Represents User's preferences.
  */
+// @@author A0132788U
 public class UserPrefs {
-
+    /** Index to maintain snapshot file number */
+    private static int index = 1;
+    /** Snapshot file path without index and xml */
+    private static String entryBookSnapshotPath = "data/snapshots/entrybook";
+    // @@author
     private GuiSettings guiSettings;
     private String entryBookFilePath = "data/entrybook.xml";
     private String entryBookName = "MyEntryBook";
@@ -37,6 +42,38 @@ public class UserPrefs {
         this.entryBookFilePath = entryBookFilePath;
     }
 
+    /**
+     * The getter and setter for the snapshot file path
+     */
+    public static String getEntryBookSnapshotPath() {
+        return entryBookSnapshotPath;
+    }
+
+    public static void setEntryBookSnapshotPath(String entryBookSnapshotPath) {
+        UserPrefs.entryBookSnapshotPath = entryBookSnapshotPath;
+    }
+
+    // @@author A0132788U
+    /**
+     * Methods to update the indices when files are created during mutation/deleted during exit
+     */
+    public static void incrementIndexByOne() {
+        UserPrefs.setIndex(UserPrefs.getIndex() + 1);
+    }
+
+    public static void decrementIndexByOne() {
+        UserPrefs.setIndex(UserPrefs.getIndex() - 1);
+    }
+
+    // @@author
+    public static int getIndex() {
+        return index;
+    }
+
+    public static void setIndex(int index) {
+        UserPrefs.index = index;
+    }
+
     public String getEntryBookName() {
         return entryBookName;
     }
@@ -50,15 +87,14 @@ public class UserPrefs {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof UserPrefs)) { //this handles null as well.
+        if (!(other instanceof UserPrefs)) { // this handles null as well.
             return false;
         }
 
         UserPrefs o = (UserPrefs) other;
 
-        return Objects.equals(guiSettings, o.guiSettings)
-                && Objects.equals(entryBookFilePath, o.entryBookFilePath)
-                && Objects.equals(entryBookName, o.entryBookName);
+        return Objects.equals(guiSettings, o.guiSettings) && Objects.equals(entryBookFilePath, o.entryBookFilePath)
+               && Objects.equals(entryBookName, o.entryBookName);
     }
 
     @Override

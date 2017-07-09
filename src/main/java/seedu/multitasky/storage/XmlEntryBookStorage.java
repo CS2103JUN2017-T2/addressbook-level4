@@ -21,13 +21,20 @@ public class XmlEntryBookStorage implements EntryBookStorage {
     private static final Logger logger = LogsCenter.getLogger(XmlEntryBookStorage.class);
 
     private String filePath;
+    private String snapshotPath;
 
     public XmlEntryBookStorage(String filePath) {
         this.filePath = filePath;
     }
 
+    @Override
     public String getEntryBookFilePath() {
         return filePath;
+    }
+
+    @Override
+    public String getEntryBookSnapshotPath() {
+        return snapshotPath;
     }
 
     @Override
@@ -37,17 +44,19 @@ public class XmlEntryBookStorage implements EntryBookStorage {
 
     /**
      * Similar to {@link #readEntryBook()}
+     *
      * @param filePath location of the data. Cannot be null
      * @throws DataConversionException if the file is not in the correct format.
      */
+    @Override
     public Optional<ReadOnlyEntryBook> readEntryBook(String filePath) throws DataConversionException,
-                                                                                 FileNotFoundException {
+                                                                      FileNotFoundException {
         requireNonNull(filePath);
 
         File entryBookFile = new File(filePath);
 
         if (!entryBookFile.exists()) {
-            logger.info("EntryBook file "  + entryBookFile + " not found");
+            logger.info("EntryBook file " + entryBookFile + " not found");
             return Optional.empty();
         }
 
@@ -63,8 +72,10 @@ public class XmlEntryBookStorage implements EntryBookStorage {
 
     /**
      * Similar to {@link #saveEntryBook(ReadOnlyEntryBook)}
+     *
      * @param filePath location of the data. Cannot be null
      */
+    @Override
     public void saveEntryBook(ReadOnlyEntryBook entryBook, String filePath) throws IOException {
         requireNonNull(entryBook);
         requireNonNull(filePath);
@@ -73,6 +84,5 @@ public class XmlEntryBookStorage implements EntryBookStorage {
         FileUtil.createIfMissing(file);
         XmlFileStorage.saveDataToFile(file, new XmlSerializableEntryBook(entryBook));
     }
-
 
 }
