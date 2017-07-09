@@ -12,6 +12,7 @@ import seedu.multitasky.logic.Logic;
 import seedu.multitasky.logic.commands.CommandResult;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
+import seedu.multitasky.ui.uiutils.CommandAutocomplete;
 import seedu.multitasky.ui.uiutils.CommandHistory;
 
 //@@author A0125586X
@@ -28,6 +29,7 @@ public class CommandBox extends UiPart<Region> {
     private final Logger logger = LogsCenter.getLogger(CommandBox.class);
     private final Logic logic;
 
+    private CommandAutocomplete commandAutocomplete;
     private CommandHistory commandHistory;
 
     @FXML
@@ -37,15 +39,14 @@ public class CommandBox extends UiPart<Region> {
         super(FXML);
         this.logic = logic;
         commandHistory = new CommandHistory(getRoot(), commandTextField);
+        commandAutocomplete = new CommandAutocomplete(getRoot(), commandTextField);
     }
 
     @FXML
     private void handleCommandInputChanged() {
-        String commandText = commandTextField.getText().trim();
         commandHistory.saveCommand();
-        commandTextField.setText("");
         try {
-            CommandResult commandResult = logic.execute(commandText);
+            CommandResult commandResult = logic.execute(commandTextField.getText().trim());
             // process result of the command
             setStyleToIndicateCommandSuccess();
             logger.info("Result: " + commandResult.feedbackToUser);
@@ -54,9 +55,10 @@ public class CommandBox extends UiPart<Region> {
         } catch (CommandException | ParseException e) {
             // handle command failure
             setStyleToIndicateCommandFailure();
-            logger.info("Invalid command: " + commandText);
+            logger.info("Invalid command: " + commandTextField.getText().trim());
             raise(new NewResultAvailableEvent(e.getMessage()));
         }
+        commandTextField.setText("");
     }
 
     /**
@@ -80,4 +82,3 @@ public class CommandBox extends UiPart<Region> {
     }
 
 }
-//@@author
