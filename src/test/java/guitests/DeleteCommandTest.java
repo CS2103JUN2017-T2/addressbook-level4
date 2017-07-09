@@ -13,6 +13,7 @@ import seedu.multitasky.testutil.EntryUtil;
 import seedu.multitasky.testutil.TestUtil;
 import seedu.multitasky.testutil.TypicalEntries;
 
+//@@author A0125586X
 public class DeleteCommandTest extends EntryBookGuiTest {
 
     @Test
@@ -65,37 +66,75 @@ public class DeleteCommandTest extends EntryBookGuiTest {
      */
     @Test
     public void delete_firstCharUppercase_success() {
-        Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
-        Index targetIndex = TypicalEntries.INDEX_FIRST_ENTRY;
         char[] commandWord = DeleteCommand.COMMAND_WORD.toCharArray();
         commandWord[0] = Character.toUpperCase(commandWord[0]);
-        Entry entryToDelete = currentList[targetIndex.getZeroBased()];
-        commandBox.runCommand(String.copyValueOf(commandWord) + " "
-                + CliSyntax.PREFIX_FLOATINGTASK + " " + targetIndex.getOneBased());
-        assertFloatingTaskDeleted(entryToDelete, currentList);
+        assertDeleteWithCommandWord(String.copyValueOf(commandWord));
     }
 
     @Test
     public void delete_lastCharUppercase_success() {
-        Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
-        Index targetIndex = TypicalEntries.INDEX_FIRST_ENTRY;
         char[] commandWord = DeleteCommand.COMMAND_WORD.toCharArray();
         commandWord[commandWord.length - 1] = Character.toUpperCase(commandWord[commandWord.length - 1]);
-        Entry entryToDelete = currentList[targetIndex.getZeroBased()];
-        commandBox.runCommand(String.copyValueOf(commandWord) + " "
-                + CliSyntax.PREFIX_FLOATINGTASK + " " + targetIndex.getOneBased());
-        assertFloatingTaskDeleted(entryToDelete, currentList);
+        assertDeleteWithCommandWord(String.copyValueOf(commandWord));
     }
 
     @Test
     public void delete_middleCharUppercase_success() {
-        Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
-        Index targetIndex = TypicalEntries.INDEX_FIRST_ENTRY;
         char[] commandWord = DeleteCommand.COMMAND_WORD.toCharArray();
         commandWord[commandWord.length / 2] = Character.toUpperCase(commandWord[commandWord.length / 2]);
+        assertDeleteWithCommandWord(String.copyValueOf(commandWord));
+    }
+
+    @Test
+    public void delete_allCharUppercase_success() {
+        String commandWord = DeleteCommand.COMMAND_WORD.toUpperCase();
+        assertDeleteWithCommandWord(commandWord);
+    }
+
+    @Test
+    public void delete_unknownCommandName_errorMessage() {
+        commandBox.runCommand("d task");
+        assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
+
+        commandBox.runCommand("del task");
+        assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
+
+        commandBox.runCommand("deletee task");
+        assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
+    }
+
+    @Test
+    public void delete_invalidCommandFormat_errorMessage() {
+        commandBox.runCommand("delete");
+        assertResultMessage(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                                          DeleteCommand.MESSAGE_USAGE));
+        commandBox.runCommand("delete ");
+        assertResultMessage(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                                          DeleteCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void delete_tabAutocompleteFromOneChar_success() {
+        assertDeleteTabAutocomplete(DeleteCommand.COMMAND_WORD.substring(0, 1));
+    }
+
+    @Test
+    public void delete_tabAutocompleteFromTwoCharr_success() {
+        assertDeleteTabAutocomplete(DeleteCommand.COMMAND_WORD.substring(0, 2));
+    }
+
+    private void assertDeleteTabAutocomplete(String input) {
+        commandBox.enterCommand(input);
+        commandBox.pressTabKey();
+        assertCommandBox(DeleteCommand.COMMAND_WORD + " ");
+    }
+
+    private void assertDeleteWithCommandWord(String commandWord) {
+        Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
+        Index targetIndex = TypicalEntries.INDEX_FIRST_ENTRY;
         Entry entryToDelete = currentList[targetIndex.getZeroBased()];
-        commandBox.runCommand(String.copyValueOf(commandWord) + " "
-                + CliSyntax.PREFIX_FLOATINGTASK + " " + targetIndex.getOneBased());
+        commandBox.runCommand(commandWord + " " + CliSyntax.PREFIX_FLOATINGTASK
+                + " " + targetIndex.getOneBased());
         assertFloatingTaskDeleted(entryToDelete, currentList);
     }
 

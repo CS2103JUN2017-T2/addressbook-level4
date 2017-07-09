@@ -137,7 +137,7 @@ public abstract class EntryBookGuiTest {
     /**
      * Asserts the size of the floating task list is equal to the given number.
      */
-    protected void floatingTaskListSize(int size) {
+    protected void assertFloatingTaskListSize(int size) {
         int numberOfEntries = floatingTaskListPanel.getNumberOfEntries();
         assertEquals(size, numberOfEntries);
     }

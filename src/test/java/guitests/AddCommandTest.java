@@ -69,48 +69,29 @@ public class AddCommandTest extends EntryBookGuiTest {
      */
     @Test
     public void add_firstCharUppercase_success() {
-        Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
-        Entry entryToAdd = typicalEntries.spectacles;
         char[] commandWord = AddCommand.COMMAND_WORD.toCharArray();
         commandWord[0] = Character.toUpperCase(commandWord[0]);
-        commandBox.runCommand(String.copyValueOf(commandWord) + " "
-                + EntryUtil.getFloatingTaskDetailsForAdd(entryToAdd));
-        assertEntryAdded(entryToAdd, currentList);
-        currentList = TestUtil.addEntriesToList(currentList, entryToAdd);
+        assertAddWithCommandWord(String.copyValueOf(commandWord));
     }
 
     @Test
     public void add_lastCharUppercase_success() {
-        Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
-        Entry entryToAdd = typicalEntries.spectacles;
         char[] commandWord = AddCommand.COMMAND_WORD.toCharArray();
         commandWord[commandWord.length - 1] = Character.toUpperCase(commandWord[commandWord.length - 1]);
-        commandBox.runCommand(String.copyValueOf(commandWord) + " "
-                + EntryUtil.getFloatingTaskDetailsForAdd(entryToAdd));
-        assertEntryAdded(entryToAdd, currentList);
-        currentList = TestUtil.addEntriesToList(currentList, entryToAdd);
+        assertAddWithCommandWord(String.copyValueOf(commandWord));
     }
 
     @Test
     public void add_middleCharUppercase_success() {
-        Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
-        Entry entryToAdd = typicalEntries.spectacles;
         char[] commandWord = AddCommand.COMMAND_WORD.toCharArray();
         commandWord[commandWord.length / 2] = Character.toUpperCase(commandWord[commandWord.length / 2]);
-        commandBox.runCommand(String.copyValueOf(commandWord) + " "
-                + EntryUtil.getFloatingTaskDetailsForAdd(entryToAdd));
-        assertEntryAdded(entryToAdd, currentList);
-        currentList = TestUtil.addEntriesToList(currentList, entryToAdd);
+        assertAddWithCommandWord(String.copyValueOf(commandWord));
     }
 
     @Test
     public void add_allCharUppercase_success() {
-        Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
-        Entry entryToAdd = typicalEntries.spectacles;
         String commandWord = AddCommand.COMMAND_WORD.toUpperCase();
-        commandBox.runCommand(commandWord + " " + EntryUtil.getFloatingTaskDetailsForAdd(entryToAdd));
-        assertEntryAdded(entryToAdd, currentList);
-        currentList = TestUtil.addEntriesToList(currentList, entryToAdd);
+        assertAddWithCommandWord(commandWord);
     }
 
     @Test
@@ -127,36 +108,33 @@ public class AddCommandTest extends EntryBookGuiTest {
 
     @Test
     public void add_tabAutocompleteFromOneChar_success() {
-        String commandWord = AddCommand.COMMAND_WORD.substring(0, 1);
-        commandBox.enterCommand(commandWord);
-        commandBox.pressTabKey();
-        assertCommandBox(AddCommand.COMMAND_WORD + " ");
+        assertAddTabAutocomplete(AddCommand.COMMAND_WORD.substring(0, 1));
     }
 
     @Test
     public void add_tabAutocompleteFromTwoChars_success() {
-        String commandWord = AddCommand.COMMAND_WORD.substring(0, 2);
-        commandBox.enterCommand(commandWord);
-        commandBox.pressTabKey();
-        assertCommandBox(AddCommand.COMMAND_WORD + " ");
+        assertAddTabAutocomplete(AddCommand.COMMAND_WORD.substring(0, 2));
     }
 
     @Test
-    public void add_invalidEntryName_errorMessage() {
+    public void add_invalidCommandFormat_errorMessage() {
         commandBox.runCommand("add");
         assertResultMessage(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
 
         commandBox.runCommand("add ");
         assertResultMessage(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
 
+        commandBox.runCommand("add /tag");
+        assertResultMessage(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void add_invalidEntryName_errorMessage() {
         commandBox.runCommand("add $");
         assertResultMessage(Name.MESSAGE_NAME_CONSTRAINTS);
 
         commandBox.runCommand("add /ta");
         assertResultMessage(Name.MESSAGE_NAME_CONSTRAINTS);
-
-        commandBox.runCommand("add /tag");
-        assertResultMessage(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
     }
 
     @Test
@@ -166,6 +144,22 @@ public class AddCommandTest extends EntryBookGuiTest {
 
         commandBox.runCommand("add task /tag $");
         assertResultMessage(Tag.MESSAGE_TAG_CONSTRAINTS);
+    }
+
+    private void assertAddTabAutocomplete(String input) {
+        commandBox.enterCommand(input);
+        commandBox.pressTabKey();
+        assertCommandBox(AddCommand.COMMAND_WORD + " ");
+    }
+
+    /**
+     * Helps with the testing of command words with different character cases
+     */
+    private void assertAddWithCommandWord(String commandWord) {
+        Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
+        Entry entryToAdd = typicalEntries.spectacles;
+        commandBox.runCommand(commandWord + " " + EntryUtil.getFloatingTaskDetailsForAdd(entryToAdd));
+        assertEntryAdded(entryToAdd, currentList);
     }
 
     /**

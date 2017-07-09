@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import guitests.guihandles.HelpWindowHandle;
+import seedu.multitasky.logic.commands.HelpCommand;
 
 //@@author A0125586X
 public class HelpWindowTest extends EntryBookGuiTest {
@@ -47,6 +48,42 @@ public class HelpWindowTest extends EntryBookGuiTest {
     @Test
     public void helpWindow_usingCommand_open() {
         assertHelpWindowOpen(commandBox.runHelpCommand());
+    }
+
+    @Test
+    public void help_tabAutocompleteFromOneChar_success() {
+        assertAddTabAutocomplete(HelpCommand.COMMAND_WORD.substring(0, 1));
+    }
+
+    @Test
+    public void help_tabAutocompleteFromTwoChars_success() {
+        assertAddTabAutocomplete(HelpCommand.COMMAND_WORD.substring(0, 2));
+    }
+
+    @Test
+    public void help_unknownCommandName_errorMessage() {
+        commandBox.runCommand("h");
+        assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
+
+        commandBox.runCommand("hel");
+        assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
+
+        commandBox.runCommand("helpp");
+        assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
+    }
+
+    private void assertHelpTabAutocomplete(String input) {
+        commandBox.enterCommand(input);
+        commandBox.pressTabKey();
+        assertCommandBox(HelpCommand.COMMAND_WORD + " ");
+    }
+
+    /**
+     * Helps with the testing of command words with different character cases
+     */
+    private void assertHelpWithCommandWord(String commandWord, HelpWindowHandle helpWindowHandle) {
+        commandBox.runCommand(commandWord);
+        assertHelpWindowOpen(helpWindowHandle)
     }
 
     private void assertHelpWindowOpen(HelpWindowHandle helpWindowHandle) {
