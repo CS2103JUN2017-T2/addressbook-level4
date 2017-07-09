@@ -29,11 +29,8 @@ public class JsonUserPrefsStorageTest {
     @Rule
     public TemporaryFolder testFolder = new TemporaryFolder();
 
-    /**
-     * Reads a null file path to throw an exception
-     */
     @Test
-    public void getNullPointer() throws DataConversionException {
+    public void readUserPrefs_nullFilePath_throwsNullPointerException() throws DataConversionException {
         thrown.expect(NullPointerException.class);
         readUserPrefs(null);
     }
@@ -51,20 +48,19 @@ public class JsonUserPrefsStorageTest {
     // @@author A0132788U
     // Confirms that file exists
     @Test
-    public void presentFile() throws DataConversionException {
+    public void readUserPrefs_presentFile_checkSuccess() throws DataConversionException {
         assertTrue(readUserPrefs("TypicalUserPref.json").isPresent());
     }
 
     // Throws an exception because the file is not json formatted
     @Test
-    public void notJsonFormat() throws DataConversionException {
+    public void readUserPrefs_notJsonFormat_exceptionThrown() throws DataConversionException {
         thrown.expect(DataConversionException.class);
         readUserPrefs("NotJsonFormatUserPrefs.json");
 
         /*
-         * IMPORTANT: Any code below an exception-throwing line (like the one
-         * above) will be ignored. That means you should not have more than one
-         * exception test in one method
+         * IMPORTANT: Any code below an exception-throwing line (like the one above) will be ignored. That means you
+         * should not have more than one exception test in one method
          */
     }
 
@@ -72,24 +68,21 @@ public class JsonUserPrefsStorageTest {
         return userPrefsFileInTestDataFolder != null ? TEST_DATA_FOLDER + userPrefsFileInTestDataFolder : null;
     }
 
-    // Confirms user preferences from file are successfully read.
     @Test
-    public void successfullyRead() throws DataConversionException {
+    public void readUserPrefs_fileInOrder_successfullyRead() throws DataConversionException {
         UserPrefs expected = getTypicalUserPrefs();
         UserPrefs actual = readUserPrefs("TypicalUserPref.json").get();
         assertEquals(expected, actual);
     }
 
-    // Confirms user preferences from file are empty and defaults are used.
     @Test
-    public void valuesMissing_defaultValuesUsed() throws DataConversionException {
+    public void readUserPrefs_valuesMissingFromFile_defaultValuesUsed() throws DataConversionException {
         UserPrefs actual = readUserPrefs("EmptyUserPrefs.json").get();
         assertEquals(new UserPrefs(), actual);
     }
 
-    // Confirms that extra user preferences from file are ignored.
     @Test
-    public void extraValuesInFileIgnored() throws DataConversionException {
+    public void readUserPrefs_extraValuesInFile_extraValuesIgnored() throws DataConversionException {
         UserPrefs expected = getTypicalUserPrefs();
         UserPrefs actual = readUserPrefs("ExtraValuesUserPref.json").get();
         assertEquals(expected, actual);
