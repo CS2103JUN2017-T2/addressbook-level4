@@ -123,6 +123,9 @@ public class DeleteCommandTest extends EntryBookGuiTest {
         assertDeleteTabAutocomplete(DeleteCommand.COMMAND_WORD.substring(0, 2));
     }
 
+    /**
+     * Confirms that the given input string will autocomplete to the correct delete command word.
+     */
     private void assertDeleteTabAutocomplete(String input) {
         commandBox.enterCommand(input);
         commandBox.pressTabKey();

@@ -143,6 +143,9 @@ public class AddCommandTest extends EntryBookGuiTest {
         assertResultMessage(Tag.MESSAGE_TAG_CONSTRAINTS);
     }
 
+    /**
+     * Confirms that the given input string will autocomplete to the correct add command word.
+     */
     private void assertAddTabAutocomplete(String input) {
         commandBox.enterCommand(input);
         commandBox.pressTabKey();

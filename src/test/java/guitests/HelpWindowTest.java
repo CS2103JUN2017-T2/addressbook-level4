@@ -73,6 +73,9 @@ public class HelpWindowTest extends EntryBookGuiTest {
         assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
     }
 
+    /**
+     * Confirms that the given input string will autocomplete to the correct help command word.
+     */
     private void assertHelpTabAutocomplete(String input) {
         commandBox.enterCommand(input);
         commandBox.pressTabKey();

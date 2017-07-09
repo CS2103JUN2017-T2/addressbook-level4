@@ -107,6 +107,9 @@ public class FindCommandTest extends EntryBookGuiTest {
         assertFindTabAutocomplete(FindCommand.COMMAND_WORD.substring(0, 2));
     }
 
+    /**
+     * Confirms that the given input string will autocomplete to the correct find command word.
+     */
     private void assertFindTabAutocomplete(String input) {
         commandBox.enterCommand(input);
         commandBox.pressTabKey();
