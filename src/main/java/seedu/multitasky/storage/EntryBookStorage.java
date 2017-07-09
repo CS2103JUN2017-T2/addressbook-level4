@@ -16,6 +16,7 @@ public interface EntryBookStorage {
      */
     String getEntryBookFilePath();
 
+    // @@author A0132788U
     /**
      * Returns the file path of the snapshot folder.
      */

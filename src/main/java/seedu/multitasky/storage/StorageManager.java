@@ -14,6 +14,7 @@ import seedu.multitasky.commons.exceptions.DataConversionException;
 import seedu.multitasky.model.ReadOnlyEntryBook;
 import seedu.multitasky.model.UserPrefs;
 
+//@@author A0132788U
 /**
  * Manages storage of EntryBook data in local storage.
  */
@@ -53,10 +54,13 @@ public class StorageManager extends ComponentManager implements Storage {
         return entryBookStorage.getEntryBookFilePath();
     }
 
+    // @@author A0132788U
+    /**
+     * Gets the proper filepath of the current snapshot with index
+     */
     @Override
     public String getEntryBookSnapshotPath() {
-        // TODO Auto-generated method stub
-        return null;
+        return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
     }
 
     @Override
@@ -81,16 +85,21 @@ public class StorageManager extends ComponentManager implements Storage {
         entryBookStorage.saveEntryBook(entryBook, filePath);
     }
 
-    public String setEntryBookSnapshotPathWithIndex() {
-        String snapshotPath = UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
+    // @@author A0132788U
+    /**
+     * Gets the filepath of the most current snapshot xml file and increments index by one.
+     */
+    public String setEntryBookSnapshotPathAndUpdateIndex() {
+        String snapshotPath = getEntryBookSnapshotPath();
         UserPrefs.incrementIndexByOne();
         return snapshotPath;
     }
 
     public void saveEntryBookSnapshot(ReadOnlyEntryBook entryBook) throws IOException {
-        saveEntryBook(entryBook, setEntryBookSnapshotPathWithIndex());
+        saveEntryBook(entryBook, setEntryBookSnapshotPathAndUpdateIndex());
     }
 
+    // @@author A0132788U
     @Override
     @Subscribe
     public void handleEntryBookChangedEvent(EntryBookChangedEvent event) {
