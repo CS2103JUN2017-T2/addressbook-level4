@@ -10,7 +10,6 @@ import java.util.Set;
 
 import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.commons.exceptions.IllegalValueException;
-import seedu.multitasky.logic.commands.Command;
 import seedu.multitasky.logic.commands.DeleteByFindCommand;
 import seedu.multitasky.logic.commands.DeleteByIndexCommand;
 import seedu.multitasky.logic.commands.DeleteCommand;
@@ -28,10 +27,15 @@ public class DeleteCommandParser {
      * @throws ParseException if the user input does not conform the expected format
      */
     // @@author A0140633R
-    public Command parse(String args) throws ParseException {
+    public DeleteCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_FLOATINGTASK, PREFIX_TAG);
 
-        if (ParserUtil.arePrefixesPresent(argMultimap, PREFIX_FLOATINGTASK)) {
+        if (args.trim().isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                                                   DeleteCommand.MESSAGE_USAGE));
+        }
+
+        if (ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK)) {
             try {
                 Index index = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_FLOATINGTASK).get());
                 return new DeleteByIndexCommand(index);
@@ -41,10 +45,6 @@ public class DeleteCommandParser {
         } else {
             String trimmedArgs = argMultimap.getPreamble().get();
 
-            if (trimmedArgs.isEmpty()) {
-                throw new ParseException(
-                        String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
-            }
             final String[] keywords = trimmedArgs.split("\\s+");
             final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
 

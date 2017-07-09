@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import seedu.multitasky.commons.core.index.Index;
@@ -23,8 +24,9 @@ public class ParserUtil {
     public static final String MESSAGE_INSUFFICIENT_PARTS = "Number of parts must be more than 1.";
 
     /**
-     * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
-     * trimmed.
+     * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces
+     * will be trimmed.
+     *
      * @throws IllegalValueException if the specified index is invalid (not non-zero unsigned integer).
      */
     public static Index parseIndex(String oneBasedIndex) throws IllegalValueException {
@@ -50,11 +52,11 @@ public class ParserUtil {
         requireNonNull(tags);
         final Set<Tag> tagSet = new HashSet<>();
         for (String tagString : tags) {
-            //@@author A014063R
+            // @@author A014063R
             for (String tagName : tagString.split("\\s+")) {
                 tagSet.add(new Tag(tagName));
             }
-            //@@author
+            // @@author
         }
         return tagSet;
     }
@@ -63,7 +65,21 @@ public class ParserUtil {
      * Returns true if none of the prefixes contains empty {@code Optional} values in the given
      * {@code ArgumentMultimap}.
      */
-    public static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
+    public static boolean areAllPrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
         return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
+    }
+
+    // @@author A0140633R
+    /**
+     * Returns true if any of the prefixes contain non-empty values in the given
+     * {@code ArgumentMultimap}.
+     */
+    public static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
+        return Stream.of(prefixes).anyMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
+    }
+
+    public static Prefix getDatePrefix(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
+        return Stream.of(prefixes).filter(prefix -> argumentMultimap.getValue(prefix).isPresent())
+                     .collect(Collectors.toList()).get(0);
     }
 }

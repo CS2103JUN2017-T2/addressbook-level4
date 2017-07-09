@@ -9,16 +9,17 @@ import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 
-
-//@@author A0140633R
+// @@author A0140633R
 /*
  * Finds entries from given keywords and deletes entry if it is the only one found.
  */
 public class DeleteByFindCommand extends DeleteCommand {
-    public static final String MESSAGE_NO_ENTRIES = "No entries found! Please try again with different keywords.";
+    public static final String MESSAGE_NO_ENTRIES = "No entries found! Please try again "
+                                                    + "with different keywords.";
 
     public static final String MESSAGE_MULTIPLE_ENTRIES = "More than one entry found! \n"
-            + "Use " + COMMAND_WORD + " " + PREFIX_FLOATINGTASK + " INDEX to specify which entry to delete.";
+                                                          + "Use " + COMMAND_WORD + " " + PREFIX_FLOATINGTASK
+                                                          + " INDEX to specify which entry to delete.";
 
     private Set<String> keywords;
 
