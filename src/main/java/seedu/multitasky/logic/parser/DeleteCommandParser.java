@@ -31,8 +31,8 @@ public class DeleteCommandParser {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_FLOATINGTASK, PREFIX_TAG);
 
         if (args.trim().isEmpty()) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                                                   DeleteCommand.MESSAGE_USAGE));
         }
 
         if (ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK)) {

@@ -7,7 +7,7 @@ import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 
-//@@author A0140633R
+// @@author A0140633R
 /*
  * Deletes an entry identified using the type of entry followed by displayed index.
  */

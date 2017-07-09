@@ -20,7 +20,7 @@ import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.tag.Tag;
 
-// @@kevinlamkb A0140633R
+// @@author A0140633R
 /**
  * Parses input arguments and creates a new AddCommand object
  */
@@ -33,14 +33,18 @@ public class AddCommandParser {
      */
     public AddCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_BY, PREFIX_AT, PREFIX_FROM,
-                                                 PREFIX_TO, PREFIX_TAG);
+                                                                  PREFIX_TO, PREFIX_TAG);
         Calendar startDate = Calendar.getInstance();
         Calendar endDate = Calendar.getInstance();
 
         // check for no args input
         if (args.trim().isEmpty()) {
-            throw new ParseException(
-                                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+        }
+
+        // check for empty name field
+        if (argMultimap.getPreamble().get().isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
 
         if (hasInvalidFlagCombination(argMultimap)) {
@@ -113,7 +117,7 @@ public class AddCommandParser {
      */
     private boolean isEvent(ArgumentMultimap argMultimap) {
         return ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_TO)
-                && ParserUtil.arePrefixesPresent(argMultimap, PREFIX_BY, PREFIX_AT, PREFIX_FROM);
+               && ParserUtil.arePrefixesPresent(argMultimap, PREFIX_BY, PREFIX_AT, PREFIX_FROM);
     }
 
     /*
@@ -122,9 +126,9 @@ public class AddCommandParser {
      */
     private boolean isDeadline(ArgumentMultimap argMultimap) {
         return ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_BY)
-                || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_AT)
-                || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FROM)
-                || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_TO);
+               || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_AT)
+               || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FROM)
+               || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_TO);
     }
 
 }

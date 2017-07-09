@@ -24,7 +24,8 @@ public class FindCommandParser {
         String trimmedArgs = args.trim();
 
         if (args.trim().isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                                                   FindCommand.MESSAGE_USAGE));
         }
 
         // keywords delimited by whitespace
