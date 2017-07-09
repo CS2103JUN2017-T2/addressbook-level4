@@ -23,8 +23,11 @@ public class EventList extends EntryList {
         internalList.add(new Event(toAdd));
     }
 
+    // @@author A0126623L
     /**
-     * Sets EventList to contain the given List of Events.
+     * Clears the current list of events and add all elements from the list of entries given.
+     *
+     * @param entries must be a list of events.
      */
     public void setEntries(List<? extends ReadOnlyEntry> entries) {
         final EventList replacement = new EventList();

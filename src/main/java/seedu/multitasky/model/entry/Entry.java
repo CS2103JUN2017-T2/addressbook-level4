@@ -14,7 +14,7 @@ import seedu.multitasky.model.tag.UniqueTagList;
  * Represents a Entry in the entry book.
  * Guarantees: details are present and not null, field values are validated.
  */
-abstract class Entry implements ReadOnlyEntry {
+public abstract class Entry implements ReadOnlyEntry {
 
     private Name _name;
     private UniqueTagList _tags;

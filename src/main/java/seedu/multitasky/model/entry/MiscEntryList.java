@@ -36,7 +36,7 @@ public class MiscEntryList extends EntryList {
      * Sets EventList to contain the reference to the entries in the given list.
      */
     public void setEntries(List<? extends ReadOnlyEntry> entries) {
-        final EventList replacement = new EventList();
+        final EntryList replacement = new EventList();
         for (final ReadOnlyEntry entry : entries) {
             replacement.add(entry);
         }

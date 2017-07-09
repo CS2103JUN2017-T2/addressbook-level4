@@ -25,9 +25,9 @@ public class DeadlineList extends EntryList {
 
     // @@author A0126623L
     /**
-     * Clears the current list of Deadlines and add all elements from the list of entries given.
+     * Clears the current list of deadlines and add all elements from the list of entries given.
      *
-     * @param entries must be a list of Deadlines.
+     * @param entries must be a list of deadlines.
      */
     public void setEntries(List<? extends ReadOnlyEntry> entries) {
         final DeadlineList replacement = new DeadlineList();

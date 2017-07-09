@@ -18,7 +18,7 @@ import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
  * @see Entry#equals(Object)
  * @see CollectionUtil#elementsAreUnique(Collection)
  */
-abstract class EntryList implements Iterable<Entry> {
+public abstract class EntryList implements Iterable<Entry> {
 
     protected final ObservableList<Entry> internalList = FXCollections.observableArrayList();
 
@@ -76,7 +76,7 @@ abstract class EntryList implements Iterable<Entry> {
 
     /**
      * Clears the current list of entries and add all elements from replacement.
-     * 
+     *
      * @param replacement
      */
     public void setEntries(EntryList replacement) {
@@ -84,7 +84,7 @@ abstract class EntryList implements Iterable<Entry> {
     }
 
     /**
-     * Replaces the entry {@code target} in the list with {@code editedEntry}.
+     * Resets the data of the entry {@code target} in the list with that of the {@code editedEntry}.
      *
      * @throws EntryNotFoundException if {@code target} could not be found in the list.
      */
@@ -99,7 +99,7 @@ abstract class EntryList implements Iterable<Entry> {
         Entry entryToUpdate = internalList.get(index);
 
         entryToUpdate.resetData(editedEntry);
-        // TODO by ChuaPingChan: The code below is just a workaround to notify observers of the
+        // TODO: The code below is just a workaround to notify observers of the
         // updated entry.
         // The right way is to implement observable properties in the Entry class.
         // Then, EntryCard should then bind its text labels to those observable properties.
