@@ -1,5 +1,6 @@
 package seedu.multitasky;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
@@ -50,7 +51,6 @@ public class MainApp extends Application {
     protected Model model;
     protected Config config;
     protected UserPrefs userPrefs;
-
 
     @Override
     public void init() throws Exception {
@@ -124,11 +124,11 @@ public class MainApp extends Application {
             initializedConfig = configOptional.orElse(new Config());
         } catch (DataConversionException e) {
             logger.warning("Config file at " + configFilePathUsed + " is not in the correct format. "
-                    + "Using default config properties");
+                           + "Using default config properties");
             initializedConfig = new Config();
         }
 
-        //Update config file in case it was missing to begin with or there are new/unused fields
+        // Update config file in case it was missing to begin with or there are new/unused fields
         try {
             ConfigUtil.saveConfig(initializedConfig, configFilePathUsed);
         } catch (IOException e) {
@@ -146,15 +146,15 @@ public class MainApp extends Application {
             Optional<UserPrefs> prefsOptional = storage.readUserPrefs();
             initializedPrefs = prefsOptional.orElse(new UserPrefs());
         } catch (DataConversionException e) {
-            logger.warning("UserPrefs file at " + prefsFilePath + " is not in the correct format. "
-                    + "Using default user prefs");
+            logger.warning(
+                "UserPrefs file at " + prefsFilePath + " is not in the correct format. " + "Using default user prefs");
             initializedPrefs = new UserPrefs();
         } catch (IOException e) {
             logger.warning("Problem while reading from the file. Will be starting with an empty EntryBook");
             initializedPrefs = new UserPrefs();
         }
 
-        //Update prefs file in case it was missing to begin with or there are new/unused fields
+        // Update prefs file in case it was missing to begin with or there are new/unused fields
         try {
             storage.saveUserPrefs(initializedPrefs);
         } catch (IOException e) {
@@ -187,9 +187,28 @@ public class MainApp extends Application {
         System.exit(0);
     }
 
+    // @@author A0132788U
+    /**
+     * Deletes all the snapshot files when the program exits as they are no longer needed.
+     */
+    public void deleteAllSnapshotFiles() {
+        String filePath;
+        File toDelete;
+        while (UserPrefs.getIndex() != 0) {
+            filePath = storage.getEntryBookSnapshotPath();
+            toDelete = new File(filePath);
+            toDelete.delete();
+            UserPrefs.decrementIndexByOne();
+        }
+    }
+
+    /**
+     * Logs the info, deletes snapshot files, and then exits the app.
+     */
     @Subscribe
     public void handleExitAppRequestEvent(ExitAppRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        deleteAllSnapshotFiles();
         this.stop();
     }
 
