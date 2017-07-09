@@ -45,6 +45,7 @@ public class TypicalEntries {
         return new Entry[] { cook, programming, hire};
     }
 
+    //@@author A0125586X
     public Entry[] getTypicalFloatingTasks() {
         return new Entry[] { cook, programming, hire };
     }

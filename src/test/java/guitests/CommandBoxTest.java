@@ -18,6 +18,11 @@ public class CommandBoxTest extends EntryBookGuiTest {
     private static final String COMMAND_THAT_SUCCEEDS = ListCommand.COMMAND_WORD;
     private static final String COMMAND_THAT_FAILS = "invalid command";
 
+    private static final String[] DUMMY_COMMANDS = {
+        "dummy command 1",
+        "dummy command 2"
+    };
+
     private ArrayList<String> defaultStyleOfCommandBox;
     private ArrayList<String> errorStyleOfCommandBox;
 
@@ -60,6 +65,36 @@ public class CommandBoxTest extends EntryBookGuiTest {
     }
 
     /**
+     * Using dummy command names as this test is only concerned with the
+     * proper retrieval of previously entered commands.
+     */
+    @Test
+    public void commandBox_upKey_retrievePreviousCommand() {
+        commandBox.runCommand(DUMMY_COMMANDS[0]);
+        commandBox.pressUpKey();
+        assertCommandBox(DUMMY_COMMANDS[0]);
+    }
+
+    @Test
+    public void commandBox_downKey_retrievePreviousCommand() {
+        commandBox.runCommand(DUMMY_COMMANDS[0]);
+        commandBox.runCommand(DUMMY_COMMANDS[1]);
+        commandBox.pressUpKey();
+        commandBox.pressUpKey();
+        commandBox.pressDownKey();
+        assertCommandBox(DUMMY_COMMANDS[1]);
+    }
+
+    @Test
+    public void commandbox_downKey_retrievedTypedCommand() {
+        commandBox.runCommand(DUMMY_COMMANDS[0]);
+        commandBox.enterCommand(DUMMY_COMMANDS[1]);
+        commandBox.pressUpKey();
+        commandBox.pressDownKey();
+        assertCommandBox(DUMMY_COMMANDS[1]);
+    }
+
+    /**
      * Runs a command that fails, then verifies that
      * - the return value of runCommand(...) is false,
      * - the text is cleared,
@@ -67,7 +102,7 @@ public class CommandBoxTest extends EntryBookGuiTest {
      */
     private void assertBehaviorForFailedCommand() {
         assertFalse(commandBox.runCommand(COMMAND_THAT_FAILS));
-        assertEquals("", commandBox.getCommandInput());
+        assertCommandBox("");
         assertEquals(errorStyleOfCommandBox, commandBox.getStyleClass());
     }
 
@@ -79,7 +114,7 @@ public class CommandBoxTest extends EntryBookGuiTest {
      */
     private void assertBehaviorForSuccessfulCommand() {
         assertTrue(commandBox.runCommand(COMMAND_THAT_SUCCEEDS));
-        assertEquals("", commandBox.getCommandInput());
+        assertCommandBox("");
         assertEquals(defaultStyleOfCommandBox, commandBox.getStyleClass());
     }
 
