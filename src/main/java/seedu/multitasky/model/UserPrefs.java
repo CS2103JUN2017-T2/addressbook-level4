@@ -9,11 +9,11 @@ import seedu.multitasky.commons.core.GuiSettings;
  */
 public class UserPrefs {
 
+    private static int index = 1;
+    private static String entryBookSnapshotPath = "data/snapshots/entrybook";
     private GuiSettings guiSettings;
     private String entryBookFilePath = "data/entrybook.xml";
-    private String entryBookSnapshot = "snapshots/entrybook";
     private String entryBookName = "MyEntryBook";
-    private static int index = 1;
 
     public UserPrefs() {
         this.setGuiSettings(500, 500, 0, 0);
@@ -39,12 +39,12 @@ public class UserPrefs {
         this.entryBookFilePath = entryBookFilePath;
     }
 
-    public String getEntryBookSnapshot() {
-        return entryBookSnapshot;
+    public static String getEntryBookSnapshotPath() {
+        return entryBookSnapshotPath;
     }
 
-    public void setEntryBookSnapshot(String entryBookSnapshot) {
-        this.entryBookSnapshot = entryBookSnapshot;
+    public static void setEntryBookSnapshotPath(String entryBookSnapshotPath) {
+        UserPrefs.entryBookSnapshotPath = entryBookSnapshotPath;
     }
 
     public static void incrementIndexByOne() {

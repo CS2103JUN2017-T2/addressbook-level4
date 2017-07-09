@@ -54,6 +54,12 @@ public class StorageManager extends ComponentManager implements Storage {
     }
 
     @Override
+    public String getEntryBookSnapshotPath() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
     public Optional<ReadOnlyEntryBook> readEntryBook() throws DataConversionException, IOException {
         return readEntryBook(entryBookStorage.getEntryBookFilePath());
     }
@@ -75,12 +81,23 @@ public class StorageManager extends ComponentManager implements Storage {
         entryBookStorage.saveEntryBook(entryBook, filePath);
     }
 
+    public String setEntryBookSnapshotPathWithIndex() {
+        String snapshotPath = UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
+        UserPrefs.incrementIndexByOne();
+        return snapshotPath;
+    }
+
+    public void saveEntryBookSnapshot(ReadOnlyEntryBook entryBook) throws IOException {
+        saveEntryBook(entryBook, setEntryBookSnapshotPathWithIndex());
+    }
+
     @Override
     @Subscribe
     public void handleEntryBookChangedEvent(EntryBookChangedEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "Local data changed, saving to file"));
         try {
             saveEntryBook(event.data);
+            saveEntryBookSnapshot(event.data);
         } catch (IOException e) {
             raise(new DataSavingExceptionEvent(e));
         }
