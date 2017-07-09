@@ -26,7 +26,7 @@ public class CommandHistory {
 
     private boolean wasUserTypedCommandSaved;
 
-    private final EventHandler<KeyEvent> eventHandler = new EventHandler<KeyEvent>() {
+    private final EventHandler<KeyEvent> arrowKeyEventHandler = new EventHandler<KeyEvent>() {
         @Override
         public void handle(KeyEvent event) {
             if (event.getCode() == KeyCode.UP || event.getCode() == KeyCode.KP_UP) {
@@ -47,7 +47,7 @@ public class CommandHistory {
         commandTextPastStack = new Stack<>();
         commandTextFutureStack = new Stack<>();
         wasUserTypedCommandSaved = false;
-        this.commandBoxRegion.addEventFilter(KeyEvent.KEY_PRESSED, eventHandler);
+        this.commandBoxRegion.addEventFilter(KeyEvent.KEY_PRESSED, arrowKeyEventHandler);
     }
 
     public void saveCommand() {
@@ -68,7 +68,7 @@ public class CommandHistory {
         }
     }
 
-    public void loadPreviousCommand() {
+    private void loadPreviousCommand() {
         // A previous command doesn't exist
         if (commandTextPastStack.empty()) {
             return;
@@ -87,7 +87,7 @@ public class CommandHistory {
         setText();
     }
 
-    public void loadNextCommand() {
+    private void loadNextCommand() {
         // A newer command doesn't exist
         if (commandTextFutureStack.empty()) {
             return;
@@ -100,7 +100,7 @@ public class CommandHistory {
         setText();
     }
 
-    public void setText() {
+    private void setText() {
         commandTextField.setText(commandTextFutureStack.peek());
         setCursorToCommandTextFieldEnd();
     }
