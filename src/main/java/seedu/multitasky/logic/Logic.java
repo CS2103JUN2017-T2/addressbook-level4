@@ -23,7 +23,7 @@ public interface Logic {
      */
     CommandResult execute(String commandText) throws CommandException, ParseException;
 
-    // @@kevinlamkb A0140633R
+    // @@author A0140633R
     /** Returns the filtered list of floating tasks */
     ObservableList<ReadOnlyEntry> getFilteredFloatingTaskList();
 }

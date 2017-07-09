@@ -20,7 +20,7 @@ import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.tag.Tag;
 
-// @@kevinlamkb A0140633R
+// @@author A0140633R
 /**
  * Parses input arguments and creates a new AddCommand object
  */
