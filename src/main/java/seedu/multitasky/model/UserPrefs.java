@@ -44,14 +44,14 @@ public class UserPrefs {
     }
 
     public void setEntryBookSnapshot(String entryBookSnapshot) {
-        this.entryBookSnapshot = entryBookSnapshot + Integer.toString(UserPrefs.getIndex()) + ".xml";
+        this.entryBookSnapshot = entryBookSnapshot;
     }
 
-    public void incrementIndexByOne() {
+    public static void incrementIndexByOne() {
         UserPrefs.setIndex(UserPrefs.getIndex() + 1);
     }
 
-    public void decrementIndexByOne() {
+    public static void decrementIndexByOne() {
         UserPrefs.setIndex(UserPrefs.getIndex() - 1);
     }
 
