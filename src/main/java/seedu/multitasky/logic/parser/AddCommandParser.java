@@ -43,6 +43,12 @@ public class AddCommandParser {
                                      String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
 
+        // check for empty name field
+        if (argMultimap.getPreamble().get().isEmpty()) {
+            throw new ParseException(
+                                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+        }
+
         if (hasInvalidFlagCombination(argMultimap)) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
