@@ -10,15 +10,17 @@ import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 
-//@@author A0140633R
+// @@author A0140633R
 /**
  * Edits an entry identified using the type of entry followed by displayed index.
  */
 public class EditByFindCommand extends EditCommand {
-    public static final String MESSAGE_NO_ENTRIES = "No entries found! Please try again with different keywords.";
+    public static final String MESSAGE_NO_ENTRIES = "No entries found! Please try again "
+                                                    + "with different keywords.";
 
     public static final String MESSAGE_MULTIPLE_ENTRIES = "More than one entry found! \n"
-            + "Use " + COMMAND_WORD + " " + PREFIX_FLOATINGTASK + " INDEX to specify which entry to edit.";
+                                                          + "Use " + COMMAND_WORD + " " + PREFIX_FLOATINGTASK
+                                                          + " INDEX to specify which entry to edit.";
 
     private Set<String> keywords;
 

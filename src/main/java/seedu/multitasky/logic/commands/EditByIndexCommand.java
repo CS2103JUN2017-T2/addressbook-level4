@@ -9,7 +9,7 @@ import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 
-//@@author A0140633R
+// @@author A0140633R
 /**
  * Edits an entry identified using the type of entry followed by displayed index.
  */

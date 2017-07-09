@@ -5,7 +5,7 @@ package seedu.multitasky.logic.parser;
  */
 public class CliSyntax {
 
-    //@@author A0140633R
+    // @@author A0140633R
     /* Prefix definitions */
 
     /* Entry data fields */

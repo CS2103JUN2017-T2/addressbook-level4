@@ -15,7 +15,7 @@ import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.tag.Tag;
 
-//@@author A0140633R
+// @@author A0140633R
 /**
  * Abstract class that contains all of the utility methods used for EditCommand sub-types.
  */
@@ -23,23 +23,24 @@ public abstract class EditCommand extends Command {
 
     public static final String COMMAND_WORD = "edit";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + " : Edits the details of the entry either identified "
-            + "by keywords given or the index number used in the last entry listing. "
-            + "Existing values will be overwritten by the input values.\n"
-            + "Format: " + COMMAND_WORD + " KEYWORDS or "
-            + PREFIX_FLOATINGTASK + " INDEX (must be a positive integer) "
-            + PREFIX_NAME + " NEW NAME "
-            + PREFIX_TAG + " NEWTAGS\n"
-            + "Example: " + COMMAND_WORD + " " + PREFIX_FLOATINGTASK + " 1 "
-            + PREFIX_NAME + " walk the dog " + PREFIX_TAG + "\n"
-            + "tip: this example clears all tags on the task!";
+    public static final String MESSAGE_USAGE = COMMAND_WORD
+                                               + " : Edits the details of the entry either identified "
+                                               + "by keywords given or the index number used in the last"
+                                               + " entry listing. Existing values will be overwritten by "
+                                               + "the input values.\n" + "Format: " + COMMAND_WORD
+                                               + " KEYWORDS or " + PREFIX_FLOATINGTASK + " INDEX "
+                                               + PREFIX_NAME + " NEW NAME " + PREFIX_TAG + " NEWTAGS\n"
+                                               + "Example: " + COMMAND_WORD + " " + PREFIX_FLOATINGTASK
+                                               + " 1 " + PREFIX_NAME + " walk the dog " + PREFIX_TAG + "\n"
+                                               + "tip: this example clears all tags on the task!";
 
     public static final String MESSAGE_SUCCESS = "Entry edited:" + "\n"
-            + Messages.MESSAGE_ENTRY_DESCRIPTION +  "%1$s";
+                                                 + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s";
 
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.\n"
-            + "Format: " + COMMAND_WORD + " [keywords] or " + PREFIX_FLOATINGTASK + " INDEX "
-            + PREFIX_NAME + " NEW NAME " + PREFIX_TAG + " NEWTAGS";
+                                                    + "Format: " + COMMAND_WORD + " [keywords] or "
+                                                    + PREFIX_FLOATINGTASK + " INDEX "
+                                                    + PREFIX_NAME + " NEW NAME " + PREFIX_TAG + " NEWTAGS";
 
     public static final String MESSAGE_DUPLICATE_ENTRY = "This entry already exists in the address book.";
 
@@ -59,7 +60,8 @@ public abstract class EditCommand extends Command {
      * Creates and returns a {@code Entry} with the details of
      * {@code entryToEdit} edited with {@code editEntryDescriptor}.
      */
-    protected static Entry createEditedEntry(ReadOnlyEntry entryToEdit, EditEntryDescriptor editEntryDescriptor) {
+    protected static Entry createEditedEntry(ReadOnlyEntry entryToEdit,
+                                             EditEntryDescriptor editEntryDescriptor) {
         assert entryToEdit != null;
 
         Name updatedName = editEntryDescriptor.getName().orElse(entryToEdit.getName());

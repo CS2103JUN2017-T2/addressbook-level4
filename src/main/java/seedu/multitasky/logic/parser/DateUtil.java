@@ -17,7 +17,7 @@ public class DateUtil {
     private static final String DMY_FORMAT = "dd{sep}MM{sep}yyyy";
 
     private static final String dmy_template = "\\d{1,2}{sep}\\d{1,2}{sep}\\d{2,4}.*";
-    //TODO to fix MESSAGE_FAIL to all be in 1 line after i find out how
+    // TODO to fix MESSAGE_FAIL to all be in 1 line after i find out how
     private static final String MESSAGE_FAIL = "\nFormat: dd/MM/yy HH/mm";
 
     /**
@@ -29,7 +29,7 @@ public class DateUtil {
     public static Date stringToDate(String input) throws IllegalValueException {
         Date date = null;
         String dateFormat = getDateFormat(input);
-        //TODO implement a check for (optional) time input
+        // TODO implement a check for (optional) time input
         if (dateFormat == null) {
             throw new ParseException("Date is not in an accepted format " + input + MESSAGE_FAIL);
         }
@@ -55,6 +55,7 @@ public class DateUtil {
     /**
      * Checks regex of input String date against dmy_template string with {sep} replaced by separators in
      * dateSeparators.
+     *
      * @return {@DMY_FORMAT} if found , else null
      */
     private static String getDateFormat(String date) {
