@@ -97,6 +97,11 @@ public class AddCommandTest {
         public void updateFilteredFloatingTaskList(Set<String> keywords) {
             fail("This method should not be called.");
         }
+
+        @Override
+        public void undoPreviousAction() {
+            fail("This method should not be called.");
+        }
     }
 
     /**
