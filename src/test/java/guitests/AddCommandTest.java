@@ -42,7 +42,7 @@ public class AddCommandTest extends EntryBookGuiTest {
 
     @Test
     public void add_floatingTaskToExistingList_success() {
-        Entry[] currentList = typicalEntries.getTypicalEntries();
+        Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
         Entry entryToAdd = typicalEntries.spectacles;
         currentList = addFloatingTask(entryToAdd, currentList);
         assertCleared();
@@ -50,7 +50,7 @@ public class AddCommandTest extends EntryBookGuiTest {
 
     @Test
     public void add_multipleUniqueFloatingTaskToExistingList_success() {
-        Entry[] currentList = typicalEntries.getTypicalEntries();
+        Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
         Entry entryToAdd = typicalEntries.spectacles;
         currentList = addFloatingTask(entryToAdd, currentList);
 
@@ -60,6 +60,57 @@ public class AddCommandTest extends EntryBookGuiTest {
         entryToAdd = typicalEntries.sell;
         currentList = addFloatingTask(entryToAdd, currentList);
         assertCleared();
+    }
+
+    /**
+     * For all mixed-case tests only floating task entries are tested,
+     * which should be suitable to test for all types since the type of task
+     * doesn't affect the parsing of the command word.
+     */
+    @Test
+    public void add_firstCharUppercase_success() {
+        Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
+        Entry entryToAdd = typicalEntries.spectacles;
+        char[] commandWord = AddCommand.COMMAND_WORD.toCharArray();
+        commandWord[0] = Character.toUpperCase(commandWord[0]);
+        commandBox.runCommand(String.copyValueOf(commandWord) + " "
+                + EntryUtil.getFloatingTaskDetailsForAdd(entryToAdd));
+        assertEntryAdded(entryToAdd, currentList);
+        currentList = TestUtil.addEntriesToList(currentList, entryToAdd);
+    }
+
+    @Test
+    public void add_lastCharUppercase_success() {
+        Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
+        Entry entryToAdd = typicalEntries.spectacles;
+        char[] commandWord = AddCommand.COMMAND_WORD.toCharArray();
+        commandWord[commandWord.length - 1] = Character.toUpperCase(commandWord[commandWord.length - 1]);
+        commandBox.runCommand(String.copyValueOf(commandWord) + " "
+                + EntryUtil.getFloatingTaskDetailsForAdd(entryToAdd));
+        assertEntryAdded(entryToAdd, currentList);
+        currentList = TestUtil.addEntriesToList(currentList, entryToAdd);
+    }
+
+    @Test
+    public void add_middleCharUppercase_success() {
+        Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
+        Entry entryToAdd = typicalEntries.spectacles;
+        char[] commandWord = AddCommand.COMMAND_WORD.toCharArray();
+        commandWord[commandWord.length / 2] = Character.toUpperCase(commandWord[commandWord.length / 2]);
+        commandBox.runCommand(String.copyValueOf(commandWord) + " "
+                + EntryUtil.getFloatingTaskDetailsForAdd(entryToAdd));
+        assertEntryAdded(entryToAdd, currentList);
+        currentList = TestUtil.addEntriesToList(currentList, entryToAdd);
+    }
+
+    @Test
+    public void add_allCharUppercase_success() {
+        Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
+        Entry entryToAdd = typicalEntries.spectacles;
+        String commandWord = AddCommand.COMMAND_WORD.toUpperCase();
+        commandBox.runCommand(commandWord + " " + EntryUtil.getFloatingTaskDetailsForAdd(entryToAdd));
+        assertEntryAdded(entryToAdd, currentList);
+        currentList = TestUtil.addEntriesToList(currentList, entryToAdd);
     }
 
     @Test
@@ -75,20 +126,14 @@ public class AddCommandTest extends EntryBookGuiTest {
     }
 
     @Test
-    public void add_invalidName_errorMessage() {
+    public void add_invalidEntryName_errorMessage() {
         commandBox.runCommand("add");
         assertResultMessage(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
 
         commandBox.runCommand("add ");
         assertResultMessage(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
 
-        commandBox.runCommand("add /");
-        assertResultMessage(Name.MESSAGE_NAME_CONSTRAINTS);
-
         commandBox.runCommand("add $");
-        assertResultMessage(Name.MESSAGE_NAME_CONSTRAINTS);
-
-        commandBox.runCommand("add ?");
         assertResultMessage(Name.MESSAGE_NAME_CONSTRAINTS);
 
         commandBox.runCommand("add /ta");
@@ -103,13 +148,7 @@ public class AddCommandTest extends EntryBookGuiTest {
         commandBox.runCommand("add task /tag");
         assertResultMessage(Tag.MESSAGE_TAG_CONSTRAINTS);
 
-        commandBox.runCommand("add task /tag /");
-        assertResultMessage(Tag.MESSAGE_TAG_CONSTRAINTS);
-
         commandBox.runCommand("add task /tag $");
-        assertResultMessage(Tag.MESSAGE_TAG_CONSTRAINTS);
-
-        commandBox.runCommand("add task /tag ?");
         assertResultMessage(Tag.MESSAGE_TAG_CONSTRAINTS);
     }
 
@@ -137,13 +176,16 @@ public class AddCommandTest extends EntryBookGuiTest {
      */
     private void assertAddFloatingTaskSuccess(Entry entryToAdd, Entry... currentList) {
         commandBox.runCommand(EntryUtil.getFloatingTaskAddCommand(entryToAdd));
+        assertEntryAdded(entryToAdd, currentList);
+    }
 
-        //confirm the new card contains the right data
-        EntryCardHandle addedCard = floatingTaskListPanel.navigateToEntry(entryToAdd.getName().toString());
-        assertMatching(entryToAdd, addedCard);
+    private void assertEntryAdded(Entry entryAdded, Entry... currentList) {
+        // Confirm that added entry is in the list
+        EntryCardHandle addedCard = floatingTaskListPanel.navigateToEntry(entryAdded.getName().toString());
+        assertMatching(entryAdded, addedCard);
 
-        //confirm the list now contains all previous entries plus the new entry
-        Entry[] expectedList = TestUtil.addEntriesToList(currentList, entryToAdd);
+        // Confirm the list now contains all previous entries plus the new entry
+        Entry[] expectedList = TestUtil.addEntriesToList(currentList, entryAdded);
         assertTrue(floatingTaskListPanel.isListMatching(expectedList));
     }
 
