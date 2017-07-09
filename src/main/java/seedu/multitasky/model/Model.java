@@ -29,41 +29,43 @@ public interface Model {
      */
     void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws EntryNotFoundException;
 
-    // @@author A0126623L
     /** Returns the filtered event list as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
     UnmodifiableObservableList<ReadOnlyEntry> getFilteredEventList();
 
-    // @@author A0126623L
     /** Returns the filtered deadline list as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
     UnmodifiableObservableList<ReadOnlyEntry> getFilteredDeadlineList();
 
-    // @@author A0126623L
     /** Returns the filtered floating task list as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
     UnmodifiableObservableList<ReadOnlyEntry> getFilteredFloatingTaskList();
 
-    // @@author A0126623L
+    /** Returns the active entry list as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
+    UnmodifiableObservableList<ReadOnlyEntry> getActiveList();
+
+    /** Returns the entry archive as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
+    UnmodifiableObservableList<ReadOnlyEntry> getArchive();
+
+    /** Returns the entry bin as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
+    UnmodifiableObservableList<ReadOnlyEntry> getBin();
+
     /** Updates the filter of the filtered event list to show all entries */
     void updateFilteredEventListToShowAll();
 
-    // @@author A0126623L
     /** Updates the filter of the filtered deadline list to show all entries */
     void updateFilteredDeadlineListToShowAll();
 
-    // @@author A0126623L
     /** Updates the filter of the filtered floating task list to show all entries */
     void updateFilteredFloatingTaskListToShowAll();
 
-    // @@author A0126623L
+    /** Updates the filter of all filtered lists to show all entries */
+    public void updateAllFilteredListToShowAll();
+
     /** Updates the filter of the filtered event list to filter by the given keywords */
     void updateFilteredEventList(Set<String> keywords);
 
-    // @@author A0126623L
     /** Updates the filter of the filtered deadline list to filter by the given keywords */
     void updateFilteredDeadlineList(Set<String> keywords);
 
-    // @@author A0126623L
     /** Updates the filter of the filtered floating task list to filter by the given keywords */
     void updateFilteredFloatingTaskList(Set<String> keywords);
 
-    // @@author
 }

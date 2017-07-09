@@ -98,6 +98,7 @@ public class ModelManager extends ComponentManager implements Model {
         return new UnmodifiableObservableList<>(_filteredEventList);
     }
 
+    // @@author A0126623L
     /**
      * Return a list of {@code ReadOnlyEntry} backed by the internal deadline list of
      * {@code entryBook}
@@ -107,6 +108,7 @@ public class ModelManager extends ComponentManager implements Model {
         return new UnmodifiableObservableList<>(_filteredDeadlineList);
     }
 
+    // @@author A0126623L
     /**
      * Return a list of {@code ReadOnlyEntry} backed by the internal floating task list of
      * {@code entryBook}
@@ -116,16 +118,37 @@ public class ModelManager extends ComponentManager implements Model {
         return new UnmodifiableObservableList<>(_filteredFloatingTaskList);
     }
 
+    // @@author A0126623L
+    @Override
+    public UnmodifiableObservableList<ReadOnlyEntry> getActiveList() {
+        return new UnmodifiableObservableList<>(_entryBook.getActiveList());
+    }
+
+    // @@author A0126623L
+    @Override
+    public UnmodifiableObservableList<ReadOnlyEntry> getArchive() {
+        return new UnmodifiableObservableList<>(_entryBook.getArchive());
+    }
+
+    // @@author A0126623L
+    @Override
+    public UnmodifiableObservableList<ReadOnlyEntry> getBin() {
+        return new UnmodifiableObservableList<>(_entryBook.getBin());
+    }
+
+    // @@author A0126623L
     @Override
     public void updateFilteredEventListToShowAll() {
         _filteredEventList.setPredicate(null);
     }
 
+    // @@author A0126623L
     @Override
     public void updateFilteredDeadlineListToShowAll() {
         _filteredDeadlineList.setPredicate(null);
     }
 
+    // @@author A0126623L
     @Override
     public void updateFilteredFloatingTaskListToShowAll() {
         _filteredFloatingTaskList.setPredicate(null);
@@ -134,6 +157,7 @@ public class ModelManager extends ComponentManager implements Model {
     /**
      * Updates all filtered list to show all entries.
      */
+    @Override
     public void updateAllFilteredListToShowAll() {
         updateFilteredEventListToShowAll();
         updateFilteredDeadlineListToShowAll();
