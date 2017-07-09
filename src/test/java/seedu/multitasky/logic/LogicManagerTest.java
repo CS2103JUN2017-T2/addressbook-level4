@@ -196,9 +196,11 @@ public class LogicManagerTest {
     @Test
     public void execute_add_invalidArgsFormat() {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE);
-        assertParseException(AddCommand.COMMAND_WORD + " " + PREFIX_TAG + " tagging without name", expectedMessage);
         //add command without args
         assertParseException(AddCommand.COMMAND_WORD, expectedMessage);
+        //add entry without name
+        expectedMessage = Name.MESSAGE_NAME_CONSTRAINTS;
+        assertParseException(AddCommand.COMMAND_WORD + " " + PREFIX_TAG + " tagging without name", expectedMessage);
     }
 
     //TODO fully test out and fix this error. use Tag.MESSAGE_TAG_CONSTRAINTS for wrong tags.

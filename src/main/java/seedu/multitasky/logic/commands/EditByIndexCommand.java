@@ -16,6 +16,7 @@ import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 public class EditByIndexCommand extends EditCommand {
 
     private final Index index;
+
     /**
      * @param index of the entry in the filtered entry list to edit
      * @param editEntryDescriptor details to edit the entry with
@@ -23,6 +24,10 @@ public class EditByIndexCommand extends EditCommand {
     public EditByIndexCommand(Index index, EditEntryDescriptor editEntryDescriptor) {
         super(editEntryDescriptor);
         this.index = index;
+    }
+
+    public Index getIndex() {
+        return index;
     }
 
     @Override
@@ -42,6 +47,32 @@ public class EditByIndexCommand extends EditCommand {
             throw new AssertionError("The target entry cannot be missing");
         }
 
+        model.updateFilteredListToShowAll();
         return new CommandResult(String.format(MESSAGE_SUCCESS, entryToEdit));
     }
+
+    @Override
+    public boolean equals(Object other) {
+        // short circuit if same object
+        if (other == this) {
+            return true;
+        }
+
+        // instanceof handles nulls and other subclasses of EditCommands
+        if (!(other instanceof EditByIndexCommand)) {
+            return false;
+        }
+
+        // state check
+        EditByIndexCommand e = (EditByIndexCommand) other;
+
+        // check for index to edit
+        if (this.getIndex() != e.getIndex()) {
+            return false;
+        }
+
+        // check equality in editEntryDescriptor.
+        return editEntryDescriptor.equals(e.editEntryDescriptor);
+    }
+
 }
