@@ -5,13 +5,15 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
+import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.model.tag.Tag;
 
 //@@author A0126623L
@@ -20,64 +22,64 @@ import seedu.multitasky.model.tag.Tag;
  */
 public class EventTest {
 
-    static Calendar calendar1;
-    static Calendar calendar2;
-    static Calendar calendar3;
+    public static final Event[] SAMPLE_EVENTS_ARRAY_DATA = getSampleEventArrayData();
 
-    static Set<Tag> tagSet1;
-    static Set<Tag> tagSet2;
-
-    static Name eventName1;
-    static Name eventName2;
-
-    static Event event1;
-    static Event event2;
-    static Event event3;
-    static Event event4;
-    static Event event5;
-    static Event event6;
+    Event event1 = SAMPLE_EVENTS_ARRAY_DATA[0];
+    Event event2 = SAMPLE_EVENTS_ARRAY_DATA[1];
+    Event event3 = SAMPLE_EVENTS_ARRAY_DATA[2];
+    Event event4 = SAMPLE_EVENTS_ARRAY_DATA[3];
+    Event event5 = SAMPLE_EVENTS_ARRAY_DATA[4];
+    Event event6 = SAMPLE_EVENTS_ARRAY_DATA[5];
 
     // @@author A0126623L
-    @BeforeClass
-    public static void setUp() {
-        calendar1 = Calendar.getInstance();
+    /**
+     * Gets an array of 6 sample events.
+     * The first two events are meaningfully equivalent, the remaining are unique.
+     *
+     * @return Event[] of 6 sample events.
+     */
+    public static Event[] getSampleEventArrayData() {
+
+        Calendar calendar1 = Calendar.getInstance();
         calendar1.set(2017, 6, 7, 18, 30); // 7th July 2017, 6:30pm
-
-        calendar2 = Calendar.getInstance();
+        Calendar calendar2 = Calendar.getInstance();
         calendar2.set(2017, 6, 8, 18, 30); // 8th July 2017, 6:30pm
-
-        calendar3 = Calendar.getInstance();
+        Calendar calendar3 = Calendar.getInstance();
         calendar3.set(2017, 6, 9, 18, 30); // 9th July 2017, 6:30pm
 
         try {
-            tagSet1 = new HashSet<>();
-            tagSet1.add(new Tag("tag1set1"));
-
-            tagSet2 = new HashSet<>();
-            tagSet2.add(new Tag("tag1set2"));
+            return new Event[] {
+                    new Event(new Name("SampleName1"), calendar1, calendar2, getTagSet("tag1")),
+                    new Event(new Name("SampleName1"), calendar1, calendar2, getTagSet("tag1")),
+                    new Event(new Name("SampleName2"), calendar1, calendar2, getTagSet("tag1")),
+                    new Event(new Name("SampleName1"), calendar2, calendar3, getTagSet("tag1")),
+                    new Event(new Name("SampleName1"), calendar1, calendar3, getTagSet("tag1")),
+                    new Event(new Name("SampleName1"), calendar1, calendar2, getTagSet("tag2"))
+            };
         } catch (Exception e) {
-            fail("Tags initialisation failed.");
+            fail("Event array initialisation failed.");
+            return null;
         }
+    }
+    // @@author
 
-        try {
-            eventName1 = new Name("SampleName1");
-            eventName2 = new Name("SampleName2");
-        } catch (Exception e) {
-            fail("Event name initialisation failed.");
+    /**
+     * Returns a tag set containing the list of strings given.
+     */
+    public static Set<Tag> getTagSet(String... strings) throws IllegalValueException {
+        HashSet<Tag> tags = new HashSet<>();
+        for (String s : strings) {
+            tags.add(new Tag(s));
         }
+        return tags;
+    }
 
-        // First tester, used for reference
-        event1 = new Event(eventName1, calendar1, calendar2, tagSet1);
-        // Same fields as tester1
-        event2 = new Event(eventName1, calendar1, calendar2, tagSet1);
-        // Only name is different from tester1
-        event3 = new Event(eventName2, calendar1, calendar2, tagSet1);
-        // Only start time is different from tester1
-        event4 = new Event(eventName1, calendar2, calendar3, tagSet1);
-        // Only end time is different from tester1
-        event5 = new Event(eventName1, calendar1, calendar3, tagSet1);
-        // Only tags are different from tester1
-        event6 = new Event(eventName1, calendar1, calendar2, tagSet2);
+    // @@author A0126623L
+    /**
+     * @return List<Event> of 10 sample elements.
+     */
+    public static List<Event> getSampleEventListData() {
+        return Arrays.asList(SAMPLE_EVENTS_ARRAY_DATA);
     }
 
     // @@author A0126623L
@@ -99,7 +101,7 @@ public class EventTest {
     // @@author A0126623L
     @Test
     public void resetDataTest() {
-        Event tester999 = new Event(eventName1, calendar1, calendar2, tagSet1);
+        Event tester999 = new Event(event1);
         assertFalse(tester999.equals(event3));
 
         tester999.resetData(event3);
@@ -110,7 +112,7 @@ public class EventTest {
     @Test
     public void toStringTest() {
         assertEquals("Event formatting is wrong",
-                     "SampleName1 Start: Jul 7, 2017 6:30 PM End: Jul 8, 2017 6:30 PM Tags: [tag1set1]",
+                     "SampleName1 Start: Jul 7, 2017 6:30 PM End: Jul 8, 2017 6:30 PM Tags: [tag1]",
                      event1.toString());
     }
 
@@ -121,8 +123,6 @@ public class EventTest {
         assertTrue(event1.equals(event2));
 
         // Not equal
-        assertFalse(eventName1.equals(eventName2));
-        assertFalse(calendar1.equals(calendar2));
         assertFalse(event1.equals(event3));
         assertFalse(event1.equals(event4));
         assertFalse(event1.equals(event5));
