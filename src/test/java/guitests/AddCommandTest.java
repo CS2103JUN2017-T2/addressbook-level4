@@ -37,7 +37,6 @@ public class AddCommandTest extends EntryBookGuiTest {
 
         entryToAdd = typicalEntries.sell;
         currentList = addFloatingTask(entryToAdd, currentList);
-        assertCleared();
     }
 
     @Test
@@ -45,7 +44,6 @@ public class AddCommandTest extends EntryBookGuiTest {
         Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
         Entry entryToAdd = typicalEntries.spectacles;
         currentList = addFloatingTask(entryToAdd, currentList);
-        assertCleared();
     }
 
     @Test
@@ -59,7 +57,6 @@ public class AddCommandTest extends EntryBookGuiTest {
 
         entryToAdd = typicalEntries.sell;
         currentList = addFloatingTask(entryToAdd, currentList);
-        assertCleared();
     }
 
     /**
