@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * A list of active entries (not marked as 'done') that does not allow nulls.
  */
-public class ActiveList extends EntryList {
+public class MiscEntryList extends EntryList {
 
     /**
      * Adds the reference to an entry to the list. It does not create new entry objects.
