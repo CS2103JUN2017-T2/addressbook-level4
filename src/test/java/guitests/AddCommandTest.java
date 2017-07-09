@@ -126,6 +126,22 @@ public class AddCommandTest extends EntryBookGuiTest {
     }
 
     @Test
+    public void add_tabAutocompleteFromOneChar_success() {
+        String commandWord = AddCommand.COMMAND_WORD.substring(0, 1);
+        commandBox.enterCommand(commandWord);
+        commandBox.pressTabKey();
+        assertCommandBox(AddCommand.COMMAND_WORD + " ");
+    }
+
+    @Test
+    public void add_tabAutocompleteFromTwoChars_success() {
+        String commandWord = AddCommand.COMMAND_WORD.substring(0, 2);
+        commandBox.enterCommand(commandWord);
+        commandBox.pressTabKey();
+        assertCommandBox(AddCommand.COMMAND_WORD + " ");
+    }
+
+    @Test
     public void add_invalidEntryName_errorMessage() {
         commandBox.runCommand("add");
         assertResultMessage(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));

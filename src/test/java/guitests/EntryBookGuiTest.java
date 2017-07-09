@@ -149,6 +149,13 @@ public abstract class EntryBookGuiTest {
         assertEquals(expected, resultDisplay.getText());
     }
 
+    /**
+     * Asserts the message shown in the Command Box area is same as the given string.
+     */
+    protected void assertCommandBox(String expected) {
+        assertEquals(expected, commandBox.getCommandInput());
+    }
+
     public void raise(BaseEvent e) {
         //JUnit doesn't run its test cases on the UI thread. Platform.runLater is used to post event on the UI thread.
         Platform.runLater(() -> EventsCenter.getInstance().post(e));
