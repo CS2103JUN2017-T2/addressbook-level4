@@ -10,6 +10,7 @@ import seedu.multitasky.commons.core.ComponentManager;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
+import seedu.multitasky.commons.events.model.EntryBookToUndoEvent;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 import seedu.multitasky.model.tag.Tag;
@@ -57,6 +58,11 @@ public class ModelManager extends ComponentManager implements Model {
         raise(new EntryBookChangedEvent(entryBook));
     }
 
+    /** Raises an event when undo is entered */
+    private void indicateUndoAction() {
+        raise(new EntryBookToUndoEvent(entryBook));
+    }
+
     @Override
     public synchronized void deleteEntry(ReadOnlyEntry target) throws EntryNotFoundException {
         entryBook.removeEntry(target);
@@ -80,7 +86,6 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void undoPreviousAction() {
-        // TODO for Dash- implement this
         indicateEntryBookChanged();
     }
 
