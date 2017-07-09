@@ -14,7 +14,6 @@ import seedu.multitasky.commons.exceptions.DataConversionException;
 import seedu.multitasky.model.ReadOnlyEntryBook;
 import seedu.multitasky.model.UserPrefs;
 
-//@@author A0132788U
 /**
  * Manages storage of EntryBook data in local storage.
  */
@@ -63,6 +62,7 @@ public class StorageManager extends ComponentManager implements Storage {
         return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
     }
 
+    // @@author
     @Override
     public Optional<ReadOnlyEntryBook> readEntryBook() throws DataConversionException, IOException {
         return readEntryBook(entryBookStorage.getEntryBookFilePath());
@@ -100,6 +100,9 @@ public class StorageManager extends ComponentManager implements Storage {
     }
 
     // @@author A0132788U
+    /**
+     * Saves the data to the entrybook at the filepath specified and also creates a snapshot in data/snapshots.
+     */
     @Override
     @Subscribe
     public void handleEntryBookChangedEvent(EntryBookChangedEvent event) {
