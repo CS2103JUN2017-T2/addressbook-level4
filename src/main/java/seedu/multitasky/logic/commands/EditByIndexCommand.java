@@ -67,7 +67,7 @@ public class EditByIndexCommand extends EditCommand {
         EditByIndexCommand e = (EditByIndexCommand) other;
 
         // check for index to edit
-        if (this.getIndex() != e.getIndex()) {
+        if (!this.getIndex().equals(e.getIndex())) {
             return false;
         }
 

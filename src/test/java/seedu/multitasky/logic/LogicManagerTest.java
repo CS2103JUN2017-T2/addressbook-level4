@@ -9,7 +9,6 @@ import static seedu.multitasky.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.multitasky.model.util.SampleDataUtil.getTagSet;
-import static seedu.multitasky.testutil.TypicalEntries.INDEX_SECOND_ENTRY;
 import static seedu.multitasky.testutil.TypicalEntries.INDEX_THIRD_ENTRY;
 
 import java.util.ArrayList;
@@ -42,7 +41,6 @@ import seedu.multitasky.logic.commands.FindCommand;
 import seedu.multitasky.logic.commands.HelpCommand;
 import seedu.multitasky.logic.commands.HistoryCommand;
 import seedu.multitasky.logic.commands.ListCommand;
-import seedu.multitasky.logic.commands.SelectCommand;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
 import seedu.multitasky.model.EntryBook;
@@ -55,7 +53,6 @@ import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.tag.Tag;
 import seedu.multitasky.testutil.EntryBuilder;
 
-
 public class LogicManagerTest {
 
     /**
@@ -67,7 +64,7 @@ public class LogicManagerTest {
     private Model model;
     private Logic logic;
 
-    //These are for checking the correctness of the events raised
+    // These are for checking the correctness of the events raised
     private ReadOnlyEntryBook latestSavedEntryBook;
     private boolean helpShown;
     private Index targetedJumpIndex;
@@ -103,16 +100,10 @@ public class LogicManagerTest {
         EventsCenter.clearSubscribers();
     }
 
-    @Test
-    public void execute_invalid() {
-        String invalidCommand = "       ";
-        assertParseException(invalidCommand,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE));
-    }
-
     /**
      * Executes the command, confirms that no exceptions are thrown and that the result message is correct.
      * Also confirms that {@code expectedModel} is as specified.
+     *
      * @see #assertCommandBehavior(Class, String, String, Model)
      */
     private void assertCommandSuccess(String inputCommand, String expectedMessage, Model expectedModel) {
@@ -120,7 +111,9 @@ public class LogicManagerTest {
     }
 
     /**
-     * Executes the command, confirms that a CommandException is thrown and that the result message is correct.
+     * Executes the command, confirms that a CommandException is thrown and that the result message is
+     * correct.
+     *
      * @see #assertCommandBehavior(Class, String, String, Model)
      */
     private void assertCommandException(String inputCommand, String expectedMessage) {
@@ -129,6 +122,7 @@ public class LogicManagerTest {
 
     /**
      * Executes the command, confirms that a ParseException is thrown and that the result message is correct.
+     *
      * @see #assertCommandBehavior(Class, String, String, Model)
      */
     private void assertParseException(String inputCommand, String expectedMessage) {
@@ -137,18 +131,21 @@ public class LogicManagerTest {
 
     /**
      * Executes the command, confirms that the exception is thrown and that the result message is correct.
+     *
      * @see #assertCommandBehavior(Class, String, String, Model)
      */
-    private <T> void assertCommandFailure(String inputCommand, Class<T> expectedException, String expectedMessage) {
+    private <T> void assertCommandFailure(String inputCommand, Class<T> expectedException,
+                                          String expectedMessage) {
         Model expectedModel = new ModelManager(model.getEntryBook(), new UserPrefs());
         assertCommandBehavior(expectedException, inputCommand, expectedMessage, expectedModel);
     }
 
     /**
-     * Executes the command, confirms that the result message is correct and that the expected exception is thrown,
+     * Executes the command, confirms that the result message is correct and that the expected exception is
+     * thrown,
      * and also confirms that the following two parts of the LogicManager object's state are as expected:<br>
-     *      - the internal model manager data are same as those in the {@code expectedModel} <br>
-     *      - {@code expectedModel}'s entry book was saved to the storage file.
+     * - the internal model manager data are same as those in the {@code expectedModel} <br>
+     * - {@code expectedModel}'s entry book was saved to the storage file.
      */
     private <T> void assertCommandBehavior(Class<T> expectedException, String inputCommand,
                                            String expectedMessage, Model expectedModel) {
@@ -167,24 +164,32 @@ public class LogicManagerTest {
     }
 
     @Test
-    public void execute_unknownCommandWord() {
+    public void execute_invalidCommand_parseException() {
+        String invalidCommand = "       ";
+        assertParseException(invalidCommand,
+                             String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void execute_unknownCommandWord_parseException() {
         String unknownCommand = "uicfhmowqewca";
         assertParseException(unknownCommand, MESSAGE_UNKNOWN_COMMAND);
     }
 
     @Test
-    public void execute_help() {
+    public void execute_help_success() {
         assertCommandSuccess(HelpCommand.COMMAND_WORD, HelpCommand.SHOWING_HELP_MESSAGE, new ModelManager());
         assertTrue(helpShown);
     }
 
     @Test
-    public void execute_exit() {
-        assertCommandSuccess(ExitCommand.COMMAND_WORD, ExitCommand.MESSAGE_EXIT_ACKNOWLEDGEMENT, new ModelManager());
+    public void execute_exit_success() {
+        assertCommandSuccess(ExitCommand.COMMAND_WORD, ExitCommand.MESSAGE_EXIT_ACKNOWLEDGEMENT,
+                             new ModelManager());
     }
 
     @Test
-    public void execute_clear() throws Exception {
+    public void execute_clear_success() throws Exception {
         TestDataHelper helper = new TestDataHelper();
         model.addEntry(helper.generateEntry(1));
         model.addEntry(helper.generateEntry(2));
@@ -194,22 +199,22 @@ public class LogicManagerTest {
     }
 
     @Test
-    public void execute_add_invalidArgsFormat() {
+    public void execute_addInvalidArgsFormat_parseException() {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE);
-        //add command without args
+        // add command without args
         assertParseException(AddCommand.COMMAND_WORD, expectedMessage);
-        //add entry without name
-        expectedMessage = Name.MESSAGE_NAME_CONSTRAINTS;
-        assertParseException(AddCommand.COMMAND_WORD + " " + PREFIX_TAG + " tagging without name", expectedMessage);
-    }
-
-    //TODO fully test out and fix this error. use Tag.MESSAGE_TAG_CONSTRAINTS for wrong tags.
-    @Test
-    public void execute_add_invalidEntryData() {
     }
 
     @Test
-    public void execute_add_successful() throws Exception {
+    public void execute_addInvalidEntryData_parseException() {
+        // add entry without name
+        String expectedMessage = Name.MESSAGE_NAME_CONSTRAINTS;
+        assertParseException(AddCommand.COMMAND_WORD + " " + PREFIX_TAG + " tagging without name",
+                             expectedMessage);
+    }
+
+    @Test
+    public void execute_addValid_success() throws Exception {
         // setup expectations
         TestDataHelper helper = new TestDataHelper();
         Entry toBeAdded = helper.adam();
@@ -218,12 +223,12 @@ public class LogicManagerTest {
 
         // execute command and verify result
         assertCommandSuccess(helper.generateAddCommand(toBeAdded),
-                String.format(AddCommand.MESSAGE_SUCCESS, toBeAdded), expectedModel);
+                             String.format(AddCommand.MESSAGE_SUCCESS, toBeAdded), expectedModel);
 
     }
 
     @Test
-    public void execute_list_showsAllEntrys() throws Exception {
+    public void execute_listShowsAllEntries_success() throws Exception {
         // prepare expectations
         TestDataHelper helper = new TestDataHelper();
         Model expectedModel = new ModelManager(helper.generateEntryBook(2), new UserPrefs());
@@ -234,27 +239,28 @@ public class LogicManagerTest {
         assertCommandSuccess(ListCommand.COMMAND_WORD, ListCommand.MESSAGE_SUCCESS, expectedModel);
     }
 
-
     /**
      * Confirms the 'invalid argument index number behaviour' for the given command
      * targeting a single entry in the shown list, using visible index.
+     *
      * @param commandWord to test assuming it targets a single entry in the last shown list
-     *                    based on visible index.
+     *        based on visible index.
      */
-    private void assertIncorrectIndexFormatBehaviorForCommand(String commandWord, String expectedMessage)
-            throws Exception {
-        assertParseException(commandWord , expectedMessage); //index missing
-        assertParseException(commandWord + " +1", expectedMessage); //index should be unsigned
-        assertParseException(commandWord + " -1", expectedMessage); //index should be unsigned
-        assertParseException(commandWord + " 0", expectedMessage); //index cannot be 0
+    private void assertIncorrectIndexFormatBehaviorForCommand(String commandWord,
+                                                              String expectedMessage) throws Exception {
+        assertParseException(commandWord, expectedMessage); // index missing
+        assertParseException(commandWord + " +1", expectedMessage); // index should be unsigned
+        assertParseException(commandWord + " -1", expectedMessage); // index should be unsigned
+        assertParseException(commandWord + " 0", expectedMessage); // index cannot be 0
         assertParseException(commandWord + " not_a_number", expectedMessage);
     }
 
     /**
      * Confirms the 'invalid argument index number behaviour' for the given command
      * targeting a single entry in the shown list, using visible index.
+     *
      * @param commandWord to test assuming it targets a single entry in the last shown list
-     *                    based on visible index.
+     *        based on visible index.
      */
     private void assertIndexNotFoundBehaviorForCommand(String commandWord) throws Exception {
         String expectedMessage = MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX;
@@ -270,27 +276,6 @@ public class LogicManagerTest {
         assertCommandException(commandWord + " " + PREFIX_FLOATINGTASK
                                + INDEX_THIRD_ENTRY.getOneBased(), expectedMessage);
     }
-
-    @Test
-    public void execute_selectInvalidArgsFormat_errorMessageShown() throws Exception {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, SelectCommand.MESSAGE_USAGE);
-        assertIncorrectIndexFormatBehaviorForCommand(SelectCommand.COMMAND_WORD, expectedMessage);
-    }
-
-    @Test
-    public void execute_select_jumpsToCorrectEntry() throws Exception {
-        TestDataHelper helper = new TestDataHelper();
-        List<Entry> threeEntrys = helper.generateEntryList(3);
-
-        Model expectedModel = new ModelManager(helper.generateEntryBook(threeEntrys), new UserPrefs());
-        helper.addToModel(model, threeEntrys);
-
-        assertCommandSuccess(SelectCommand.COMMAND_WORD + " 2",
-                String.format(SelectCommand.MESSAGE_SELECT_ENTRY_SUCCESS, 2), expectedModel);
-        assertEquals(INDEX_SECOND_ENTRY, targetedJumpIndex);
-        assertEquals(model.getFilteredFloatingTaskList().get(1), threeEntrys.get(1));
-    }
-
 
     @Test
     public void execute_deleteInvalidArgsFormat_errorMessageShown() throws Exception {
@@ -313,9 +298,8 @@ public class LogicManagerTest {
         helper.addToModel(model, threeEntrys);
 
         assertCommandSuccess(DeleteCommand.COMMAND_WORD + " /float 2",
-                String.format(DeleteCommand.MESSAGE_SUCCESS, threeEntrys.get(1)), expectedModel);
+                             String.format(DeleteCommand.MESSAGE_SUCCESS, threeEntrys.get(1)), expectedModel);
     }
-
 
     @Test
     public void execute_find_invalidArgsFormat() {
@@ -336,8 +320,9 @@ public class LogicManagerTest {
         expectedModel.updateFilteredFloatingTaskList(new HashSet<>(Collections.singletonList("KEY")));
         helper.addToModel(model, fourEntrys);
         assertCommandSuccess(FindCommand.COMMAND_WORD + " KEY",
-                Command.getMessageForEntryListShownSummary(expectedModel.getFilteredFloatingTaskList().size()),
-                expectedModel);
+                             Command.getMessageForEntryListShownSummary(expectedModel.getFilteredFloatingTaskList()
+                                                                                     .size()),
+                             expectedModel);
     }
 
     @Test
@@ -353,8 +338,9 @@ public class LogicManagerTest {
         helper.addToModel(model, fourEntrys);
 
         assertCommandSuccess(FindCommand.COMMAND_WORD + " KEY",
-                Command.getMessageForEntryListShownSummary(expectedModel.getFilteredFloatingTaskList().size()),
-                expectedModel);
+                             Command.getMessageForEntryListShownSummary(expectedModel.getFilteredFloatingTaskList()
+                                                                                     .size()),
+                             expectedModel);
     }
 
     @Test
@@ -371,8 +357,9 @@ public class LogicManagerTest {
         helper.addToModel(model, fourEntrys);
 
         assertCommandSuccess(FindCommand.COMMAND_WORD + " key rAnDoM",
-                Command.getMessageForEntryListShownSummary(expectedModel.getFilteredFloatingTaskList().size()),
-                expectedModel);
+                             Command.getMessageForEntryListShownSummary(expectedModel.getFilteredFloatingTaskList()
+                                                                                     .size()),
+                             expectedModel);
     }
 
     @Test
@@ -397,7 +384,8 @@ public class LogicManagerTest {
         }
 
         String expectedMessage = String.format(HistoryCommand.MESSAGE_SUCCESS,
-                String.join("\n", validCommand, invalidCommandParse, invalidCommandExecute));
+                                               String.join("\n", validCommand, invalidCommandParse,
+                                                           invalidCommandExecute));
         assertCommandSuccess("history", expectedMessage, model);
     }
 
@@ -414,15 +402,16 @@ public class LogicManagerTest {
 
         /**
          * Generates a valid entry using the given seed.
-         * Running this function with the same parameter values guarantees the returned entry will have the same state.
+         * Running this function with the same parameter values guarantees the returned entry will have the
+         * same state.
          * Each unique seed will generate a unique Entry object.
          *
          * @param seed used to generate the entry data field values
          */
         Entry generateEntry(int seed) throws Exception {
             return new Entry(
-                    new Name("Entry " + seed),
-                    getTagSet("tag" + Math.abs(seed), "tag" + Math.abs(seed + 1)));
+                             new Name("Entry " + seed),
+                             getTagSet("tag" + Math.abs(seed), "tag" + Math.abs(seed + 1)));
         }
 
         /** Generates the correct add command based on the entry given */
@@ -434,7 +423,7 @@ public class LogicManagerTest {
             cmd.append(" ").append(p.getName());
 
             Set<Tag> tags = p.getTags();
-            for (Tag t: tags) {
+            for (Tag t : tags) {
                 cmd.append(" " + PREFIX_TAG.getPrefix()).append(t.tagName);
             }
 
@@ -461,6 +450,7 @@ public class LogicManagerTest {
 
         /**
          * Adds auto-generated Entry objects to the given EntryBook
+         *
          * @param entryBook The EntryBook to which the Entrys will be added
          */
         void addToEntryBook(EntryBook entryBook, int numGenerated) throws Exception {
@@ -471,13 +461,14 @@ public class LogicManagerTest {
          * Adds the given list of Entrys to the given EntryBook
          */
         void addToEntryBook(EntryBook entryBook, List<Entry> entriesToAdd) throws Exception {
-            for (Entry p: entriesToAdd) {
+            for (Entry p : entriesToAdd) {
                 entryBook.addEntry(p);
             }
         }
 
         /**
          * Adds auto-generated Entry objects to the given model
+         *
          * @param model The model to which the Entrys will be added
          */
         void addToModel(Model model, int numGenerated) throws Exception {
@@ -488,7 +479,7 @@ public class LogicManagerTest {
          * Adds the given list of Entrys to the given model
          */
         void addToModel(Model model, List<Entry> entriesToAdd) throws Exception {
-            for (Entry p: entriesToAdd) {
+            for (Entry p : entriesToAdd) {
                 model.addEntry(p);
             }
         }
