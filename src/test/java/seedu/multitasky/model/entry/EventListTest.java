@@ -44,6 +44,7 @@ public class EventListTest {
     static EventList eventList2; // This list will be meaningfully equal to eventList1
     static EventList eventList3; // This list will be different from eventList1 and eventList2
 
+    // @@author A0126623L
     @BeforeClass
     public static void setUp() throws Exception {
         eventName1 = new Name("sampleName1");

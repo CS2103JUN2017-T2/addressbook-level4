@@ -10,6 +10,7 @@ import java.util.List;
  */
 public class MiscEntryList extends EntryList {
 
+    // @@author A0126623L
     /**
      * Adds the reference to an entry to the list. It does not create new entry objects.
      *
@@ -22,6 +23,7 @@ public class MiscEntryList extends EntryList {
         add((Entry) toAdd);
     }
 
+    // @@author A0126623L
     /**
      * Private helper method to add entry references to ActiveList.
      */
@@ -29,6 +31,7 @@ public class MiscEntryList extends EntryList {
         this.internalList.add(toAdd);
     }
 
+    // @@author A0126623L
     /**
      * Sets EventList to contain the reference to the entries in the given list.
      */

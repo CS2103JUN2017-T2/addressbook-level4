@@ -14,6 +14,11 @@ import org.junit.Test;
 
 import seedu.multitasky.model.tag.Tag;
 
+//@@author A0126623L
+/**
+ * TODO: Make SetUp less dependent on actual classes, e.g. create utility classes to generate
+ * Events, Deadlines and Floating Tasks.
+ */
 public class MiscEntryListTest {
 
     static Calendar calendar1;
@@ -61,6 +66,7 @@ public class MiscEntryListTest {
         floatingTask1 = new FloatingTask(name1, tagSet1);
     }
 
+    // @@author A0126623L
     public MiscEntryList createMiscEntryList() {
         MiscEntryList miscEntryListToTest = new MiscEntryList();
         miscEntryListToTest.add(event1);
@@ -69,6 +75,7 @@ public class MiscEntryListTest {
         return miscEntryListToTest;
     }
 
+    // @@author A0126623L
     @Test
     public void addTest_shouldAddReferenceAndNotCreateCopy() {
         MiscEntryList miscEntryListUnderTest = createMiscEntryList();
@@ -88,6 +95,7 @@ public class MiscEntryListTest {
 
     }
 
+    // @@author A0126623L
     @Test
     public void setEntriesTest() {
         MiscEntryList miscEntryListUnderTest = createMiscEntryList();
@@ -104,6 +112,7 @@ public class MiscEntryListTest {
                    replacement.asObservableList().get(0));
     }
 
+    // @@author A0126623L
     @Test
     public void equalsTest() {
         MiscEntryList miscEntryList1 = createMiscEntryList();
@@ -116,6 +125,7 @@ public class MiscEntryListTest {
         assertTrue(miscEntryList1.equals(miscEntryList2));
     }
 
+    // @@author A0126623L
     @Test
     public void removeTest() {
         EventList eventList = new EventList();
