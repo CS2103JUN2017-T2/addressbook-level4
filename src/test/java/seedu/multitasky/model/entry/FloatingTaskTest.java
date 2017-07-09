@@ -8,27 +8,27 @@ import static org.junit.Assert.fail;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import seedu.multitasky.model.tag.Tag;
 
 public class FloatingTaskTest {
 
-    Set<Tag> tagSet1;
-    Set<Tag> tagSet2;
+    static Set<Tag> tagSet1;
+    static Set<Tag> tagSet2;
 
-    Name name1;
-    Name name2;
+    static Name name1;
+    static Name name2;
 
-    FloatingTask tester1;
-    FloatingTask tester2;
-    FloatingTask tester3;
-    FloatingTask tester4;
+    static FloatingTask floatingTask1;
+    static FloatingTask floatingTask2;
+    static FloatingTask floatingTask3;
+    static FloatingTask floatingTask4;
 
     // @@author A0126623L
-    @Before
-    public void setUp() throws Exception {
+    @BeforeClass
+    public static void setUp() throws Exception {
         try {
             tagSet1 = new HashSet<>();
             tagSet1.add(new Tag("tag1set1"));
@@ -47,39 +47,47 @@ public class FloatingTaskTest {
         }
 
         // First tester, used for reference
-        tester1 = new FloatingTask(name1, tagSet1);
+        floatingTask1 = new FloatingTask(name1, tagSet1);
         // Same fields as tester1
-        tester2 = new FloatingTask(name1, tagSet1);
+        floatingTask2 = new FloatingTask(name1, tagSet1);
         // Only name is different from tester1
-        tester3 = new FloatingTask(name2, tagSet1);
+        floatingTask3 = new FloatingTask(name2, tagSet1);
         // Only tags are different from tester1
-        tester4 = new FloatingTask(name1, tagSet2);
+        floatingTask4 = new FloatingTask(name1, tagSet2);
+    }
+
+    // @@author A0126623L
+    /**
+     * Creates a sample FloatingTask object.
+     */
+    public static FloatingTask createFloatingTask() {
+        return floatingTask1;
     }
 
     // @@author A0126623L
     @Test
     public void getNameTest() {
-        assertEquals("error at getName()", "SampleName1", tester1.getName().fullName);
+        assertEquals("error at getName()", "SampleName1", floatingTask1.getName().fullName);
     }
 
     // @@author A0126623L
     @Test
     public void getTagsTest() {
         // Same tags
-        assertTrue(tester1.getTags().equals(tester2.getTags()));
+        assertTrue(floatingTask1.getTags().equals(floatingTask2.getTags()));
 
         // Different tags
-        assertFalse(tester1.getTags().equals(tester4.getTags()));
+        assertFalse(floatingTask1.getTags().equals(floatingTask4.getTags()));
     }
 
     // @@author A0126623L
     @Test
     public void resetDataTest() {
-        FloatingTask tester999 = tester1;
-        assertFalse(tester999.equals(tester3));
+        FloatingTask tester999 = new FloatingTask(name1, tagSet1);
+        assertFalse(tester999.equals(floatingTask3));
 
-        tester999.resetData(tester3);
-        assertTrue(tester999.equals(tester3));
+        tester999.resetData(floatingTask3);
+        assertTrue(tester999.equals(floatingTask3));
     }
 
     // @@author A0126623L
@@ -87,18 +95,18 @@ public class FloatingTaskTest {
     public void toStringTest() {
         assertEquals("FloatingTask formatting is wrong",
                      "SampleName1 Tags: [tag1set1]",
-                     tester1.toString());
+                     floatingTask1.toString());
     }
 
     // @@author A0126623L
     @Test
     public void equalsTest() {
         // Equal
-        assertTrue(tester1.equals(tester2));
+        assertTrue(floatingTask1.equals(floatingTask2));
 
         // Not equal
-        assertFalse(tester1.equals(tester3));
-        assertFalse(tester1.equals(tester4));
+        assertFalse(floatingTask1.equals(floatingTask3));
+        assertFalse(floatingTask1.equals(floatingTask4));
     }
 
 }

@@ -94,9 +94,9 @@ public class EventListTest {
 
     // @@author A0126623L
     /**
-     * Create and EventList with {event1, event3}
+     * Create an EventList with {event1, event3}
      */
-    public EventList createEventList1() {
+    public static EventList createEventList1() {
         EventList eventList1clone = new EventList();
         eventList1clone.add(event1);
         eventList1clone.add(event3);

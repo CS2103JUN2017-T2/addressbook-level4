@@ -17,22 +17,22 @@ import seedu.multitasky.model.tag.Tag;
 //@@author A0126623L
 public class DeadlineTest {
 
-    Calendar calendar1;
-    Calendar calendar2;
-    Calendar calendar3;
+    static Calendar calendar1;
+    static Calendar calendar2;
+    static Calendar calendar3;
 
-    Set<Tag> tagSet1;
-    Set<Tag> tagSet2;
+    static Set<Tag> tagSet1;
+    static Set<Tag> tagSet2;
 
-    Name deadlineName1;
-    Name deadlineName2;
+    static Name deadlineName1;
+    static Name deadlineName2;
 
-    Deadline tester1;
-    Deadline tester2;
-    Deadline tester3;
-    Deadline tester4;
-    Deadline tester5;
-    Deadline tester6;
+    static Deadline deadline1;
+    static Deadline deadline2;
+    static Deadline deadline3;
+    static Deadline deadline4;
+    static Deadline deadline5;
+    static Deadline deadline6;
 
     // @@author A0126623L
     @Before
@@ -64,41 +64,41 @@ public class DeadlineTest {
         }
 
         // First tester, used for reference
-        tester1 = new Deadline(deadlineName1, calendar1, tagSet1);
+        deadline1 = new Deadline(deadlineName1, calendar1, tagSet1);
         // Same fields as tester1
-        tester2 = new Deadline(deadlineName1, calendar1, tagSet1);
+        deadline2 = new Deadline(deadlineName1, calendar1, tagSet1);
         // Only name is different from tester1
-        tester3 = new Deadline(deadlineName2, calendar1, tagSet1);
+        deadline3 = new Deadline(deadlineName2, calendar1, tagSet1);
         // Only end time is different from tester1
-        tester4 = new Deadline(deadlineName1, calendar2, tagSet1);
+        deadline4 = new Deadline(deadlineName1, calendar2, tagSet1);
         // Only tags are different from tester1
-        tester5 = new Deadline(deadlineName1, calendar1, tagSet2);
+        deadline5 = new Deadline(deadlineName1, calendar1, tagSet2);
     }
 
     // @@author A0126623L
     @Test
     public void getNameTest() {
-        assertEquals("error at getName()", "SampleName1", tester1.getName().fullName);
+        assertEquals("error at getName()", "SampleName1", deadline1.getName().fullName);
     }
 
     // @@author A0126623L
     @Test
     public void getTagsTest() {
         // Same tags
-        assertTrue(tester1.getTags().equals(tester2.getTags()));
+        assertTrue(deadline1.getTags().equals(deadline2.getTags()));
 
         // Different tags
-        assertFalse(tester1.getTags().equals(tester5.getTags()));
+        assertFalse(deadline1.getTags().equals(deadline5.getTags()));
     }
 
     // @@author A0126623L
     @Test
     public void resetDataTest() {
-        Deadline tester999 = tester1;
-        assertFalse(tester999.equals(tester3));
+        Deadline tester999 = new Deadline(deadlineName1, calendar1, tagSet1);
+        assertFalse(tester999.equals(deadline3));
 
-        tester999.resetData(tester3);
-        assertTrue(tester999.equals(tester3));
+        tester999.resetData(deadline3);
+        assertTrue(tester999.equals(deadline3));
     }
 
     // @@author A0126623L
@@ -106,21 +106,21 @@ public class DeadlineTest {
     public void toStringTest() {
         assertEquals("Deadline formatting is wrong",
                      "SampleName1 Deadline: Jul 7, 2017 6:30 PM Tags: [tag1set1]",
-                     tester1.toString());
+                     deadline1.toString());
     }
 
     // @@author A0126623L
     @Test
     public void equalsTest() {
         // Equal
-        assertTrue(tester1.equals(tester2));
+        assertTrue(deadline1.equals(deadline2));
 
         // Not equal
         assertFalse(deadlineName1.equals(deadlineName2));
         assertFalse(calendar1.equals(calendar2));
-        assertFalse(tester1.equals(tester3));
-        assertFalse(tester1.equals(tester4));
-        assertFalse(tester1.equals(tester5));
+        assertFalse(deadline1.equals(deadline3));
+        assertFalse(deadline1.equals(deadline4));
+        assertFalse(deadline1.equals(deadline5));
     }
 
 }

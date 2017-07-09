@@ -94,9 +94,9 @@ public class DeadlineListTest {
 
     // @@author A0126623L
     /**
-     * Create and DeadlineList with {deadline1, deadline3}
+     * Create a DeadlineList with {deadline1, deadline3}
      */
-    public DeadlineList createDeadlineList1() {
+    public static DeadlineList createDeadlineList1() {
         DeadlineList deadlineList1clone = new DeadlineList();
         deadlineList1clone.add(deadline1);
         deadlineList1clone.add(deadline3);

@@ -9,34 +9,37 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import seedu.multitasky.model.tag.Tag;
 
 //@@author A0126623L
+/**
+ * TODO: Make SetUp less dependent on actual classes, e.g. create utility classes and stubs.
+ */
 public class EventTest {
 
-    Calendar calendar1;
-    Calendar calendar2;
-    Calendar calendar3;
+    static Calendar calendar1;
+    static Calendar calendar2;
+    static Calendar calendar3;
 
-    Set<Tag> tagSet1;
-    Set<Tag> tagSet2;
+    static Set<Tag> tagSet1;
+    static Set<Tag> tagSet2;
 
-    Name eventName1;
-    Name eventName2;
+    static Name eventName1;
+    static Name eventName2;
 
-    Event tester1;
-    Event tester2;
-    Event tester3;
-    Event tester4;
-    Event tester5;
-    Event tester6;
+    static Event event1;
+    static Event event2;
+    static Event event3;
+    static Event event4;
+    static Event event5;
+    static Event event6;
 
     // @@author A0126623L
-    @Before
-    public void setUp() {
+    @BeforeClass
+    public static void setUp() {
         calendar1 = Calendar.getInstance();
         calendar1.set(2017, 6, 7, 18, 30); // 7th July 2017, 6:30pm
 
@@ -64,43 +67,43 @@ public class EventTest {
         }
 
         // First tester, used for reference
-        tester1 = new Event(eventName1, calendar1, calendar2, tagSet1);
+        event1 = new Event(eventName1, calendar1, calendar2, tagSet1);
         // Same fields as tester1
-        tester2 = new Event(eventName1, calendar1, calendar2, tagSet1);
+        event2 = new Event(eventName1, calendar1, calendar2, tagSet1);
         // Only name is different from tester1
-        tester3 = new Event(eventName2, calendar1, calendar2, tagSet1);
+        event3 = new Event(eventName2, calendar1, calendar2, tagSet1);
         // Only start time is different from tester1
-        tester4 = new Event(eventName1, calendar2, calendar3, tagSet1);
+        event4 = new Event(eventName1, calendar2, calendar3, tagSet1);
         // Only end time is different from tester1
-        tester5 = new Event(eventName1, calendar1, calendar3, tagSet1);
+        event5 = new Event(eventName1, calendar1, calendar3, tagSet1);
         // Only tags are different from tester1
-        tester6 = new Event(eventName1, calendar1, calendar2, tagSet2);
+        event6 = new Event(eventName1, calendar1, calendar2, tagSet2);
     }
 
     // @@author A0126623L
     @Test
     public void getNameTest() {
-        assertEquals("error at getName()", "SampleName1", tester1.getName().fullName);
+        assertEquals("error at getName()", "SampleName1", event1.getName().fullName);
     }
 
     // @@author A0126623L
     @Test
     public void getTagsTest() {
         // Same tags
-        assertTrue(tester1.getTags().equals(tester2.getTags()));
+        assertTrue(event1.getTags().equals(event2.getTags()));
 
         // Different tags
-        assertFalse(tester1.getTags().equals(tester6.getTags()));
+        assertFalse(event1.getTags().equals(event6.getTags()));
     }
 
     // @@author A0126623L
     @Test
     public void resetDataTest() {
-        Event tester999 = tester1;
-        assertFalse(tester999.equals(tester3));
+        Event tester999 = new Event(eventName1, calendar1, calendar2, tagSet1);
+        assertFalse(tester999.equals(event3));
 
-        tester999.resetData(tester3);
-        assertTrue(tester999.equals(tester3));
+        tester999.resetData(event3);
+        assertTrue(tester999.equals(event3));
     }
 
     // @@author A0126623L
@@ -108,22 +111,22 @@ public class EventTest {
     public void toStringTest() {
         assertEquals("Event formatting is wrong",
                      "SampleName1 Start: Jul 7, 2017 6:30 PM End: Jul 8, 2017 6:30 PM Tags: [tag1set1]",
-                     tester1.toString());
+                     event1.toString());
     }
 
     // @@author A0126623L
     @Test
     public void equalsTest() {
         // Equal
-        assertTrue(tester1.equals(tester2));
+        assertTrue(event1.equals(event2));
 
         // Not equal
         assertFalse(eventName1.equals(eventName2));
         assertFalse(calendar1.equals(calendar2));
-        assertFalse(tester1.equals(tester3));
-        assertFalse(tester1.equals(tester4));
-        assertFalse(tester1.equals(tester5));
-        assertFalse(tester1.equals(tester6));
+        assertFalse(event1.equals(event3));
+        assertFalse(event1.equals(event4));
+        assertFalse(event1.equals(event5));
+        assertFalse(event1.equals(event6));
     }
 
 }
