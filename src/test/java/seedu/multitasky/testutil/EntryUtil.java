@@ -30,7 +30,7 @@ public class EntryUtil {
      * Returns the part of command string for the given {@code entry}'s details
      * for adding a floating task.
      */
-    private static String getFloatingTaskDetailsForAdd(Entry entry) {
+    public static String getFloatingTaskDetailsForAdd(Entry entry) {
         StringBuilder builder = new StringBuilder();
         builder.append(entry.getName().toString() + " ");
         builder.append(CliSyntax.PREFIX_TAG + " ");

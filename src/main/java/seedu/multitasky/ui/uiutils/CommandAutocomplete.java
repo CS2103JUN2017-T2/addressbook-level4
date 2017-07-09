@@ -53,7 +53,6 @@ public class CommandAutocomplete {
         @Override
         public void handle(KeyEvent event) {
             if (event.getCode() == KeyCode.TAB) {
-                System.out.println("triggered");
                 event.consume();
                 autocomplete();
             }
