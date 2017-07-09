@@ -72,23 +72,23 @@ public class GuiHandle {
 
     //@@author A0125586X
     public void pressUpKey() {
-        guiRobot.type(KeyCode.UP).sleep(100);
+        guiRobot.type(KeyCode.UP).sleep(250);
     }
 
     public void pressKeypadUpKey() {
-        guiRobot.type(KeyCode.KP_UP).sleep(100);
+        guiRobot.type(KeyCode.KP_UP).sleep(250);
     }
 
     public void pressDownKey() {
-        guiRobot.type(KeyCode.DOWN).sleep(100);
+        guiRobot.type(KeyCode.DOWN).sleep(250);
     }
 
     public void pressKeypadDownKey() {
-        guiRobot.type(KeyCode.KP_DOWN).sleep(100);
+        guiRobot.type(KeyCode.KP_DOWN).sleep(250);
     }
 
     public void pressTabKey() {
-        guiRobot.type(KeyCode.TAB).sleep(100);
+        guiRobot.type(KeyCode.TAB).sleep(250);
     }
     //@@author
 
