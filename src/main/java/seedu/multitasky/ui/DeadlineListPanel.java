@@ -1,5 +1,8 @@
 package seedu.multitasky.ui;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -7,6 +10,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
+import seedu.multitasky.model.entry.Deadline;
 
 //@@author A0125586X
 /**
@@ -39,16 +43,23 @@ public class DeadlineListPanel extends UiPart<Region> {
 
         @Override
         protected void updateItem(ReadOnlyEntry entry, boolean empty) {
+            assert entry instanceof Deadline : "Entry to display on DeadlineListPanel must be Deadline";
             super.updateItem(entry, empty);
 
             if (empty || entry == null) {
                 setGraphic(null);
                 setText(null);
             } else {
-                //TODO set as DeadlineOverdueCard instead of deadline is over
                 int index = getIndex() + 1;
                 assert index > 0 : "getIndex returned invalid index";
-                setGraphic(new DeadlineCard(entry, index).getRoot());
+
+                Calendar current = new GregorianCalendar();
+                // Deadline is over
+                if (current.compareTo(entry.getEndDateAndTime()) > 0) {
+                    setGraphic(new DeadlineOverdueCard(entry, index).getRoot());
+                } else {
+                    setGraphic(new DeadlineCard(entry, index).getRoot());
+                }
             }
         }
     }

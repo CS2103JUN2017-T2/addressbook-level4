@@ -1,5 +1,8 @@
 package seedu.multitasky.ui;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
+import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 
 //@author A0125586X
@@ -14,6 +17,9 @@ public class DeadlineOverdueCard extends EntryCard {
 
     public DeadlineOverdueCard(ReadOnlyEntry entry, int displayedIndex) {
         super(FXML, entry, displayedIndex);
-        //TODO fill date time and information fields
+        assert entry instanceof Deadline : "Entry to display on DeadlineListCard must be Deadline";
+
+        endDateTime.setText(formatDate(entry.getEndDateAndTime().getTime()));
+        additionalInfo.setText(prettyTimeFormatDate(entry.getEndDateAndTime().getTime()));
     }
 }
