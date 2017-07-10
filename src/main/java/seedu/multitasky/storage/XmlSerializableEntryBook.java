@@ -64,7 +64,7 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
 
     @Override
     public ObservableList<ReadOnlyEntry> getEventList() {
-        final ObservableList<Entry> entries = this.events.stream().map(p -> {
+        final ObservableList<Entry> events = this.events.stream().map(p -> {
             try {
                 return p.toModelType();
             } catch (Exception e) {
@@ -73,12 +73,12 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
                 return null;
             }
         }).collect(Collectors.toCollection(FXCollections::observableArrayList));
-        return new UnmodifiableObservableList<>(entries);
+        return new UnmodifiableObservableList<>(events);
     }
 
     @Override
     public ObservableList<ReadOnlyEntry> getDeadlineList() {
-        final ObservableList<Entry> entries = this.deadlines.stream().map(p -> {
+        final ObservableList<Entry> deadlines = this.deadlines.stream().map(p -> {
             try {
                 return p.toModelType();
             } catch (Exception e) {
@@ -87,12 +87,12 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
                 return null;
             }
         }).collect(Collectors.toCollection(FXCollections::observableArrayList));
-        return new UnmodifiableObservableList<>(entries);
+        return new UnmodifiableObservableList<>(deadlines);
     }
 
     @Override
     public ObservableList<ReadOnlyEntry> getFloatingTaskList() {
-        final ObservableList<Entry> entries = this.floatingTasks.stream().map(p -> {
+        final ObservableList<Entry> floatingTasks = this.floatingTasks.stream().map(p -> {
             try {
                 return p.toModelType();
             } catch (Exception e) {
@@ -101,12 +101,12 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
                 return null;
             }
         }).collect(Collectors.toCollection(FXCollections::observableArrayList));
-        return new UnmodifiableObservableList<>(entries);
+        return new UnmodifiableObservableList<>(floatingTasks);
     }
 
     @Override
     public ObservableList<ReadOnlyEntry> getActiveList() {
-        final ObservableList<Entry> entries = this.active.stream().map(p -> {
+        final ObservableList<Entry> actives = this.active.stream().map(p -> {
             try {
                 return p.toModelType();
             } catch (Exception e) {
@@ -115,12 +115,12 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
                 return null;
             }
         }).collect(Collectors.toCollection(FXCollections::observableArrayList));
-        return new UnmodifiableObservableList<>(entries);
+        return new UnmodifiableObservableList<>(actives);
     }
 
     @Override
     public ObservableList<ReadOnlyEntry> getArchive() {
-        final ObservableList<Entry> entries = this.archived.stream().map(p -> {
+        final ObservableList<Entry> archives = this.archived.stream().map(p -> {
             try {
                 return p.toModelType();
             } catch (Exception e) {
@@ -129,12 +129,12 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
                 return null;
             }
         }).collect(Collectors.toCollection(FXCollections::observableArrayList));
-        return new UnmodifiableObservableList<>(entries);
+        return new UnmodifiableObservableList<>(archives);
     }
 
     @Override
     public ObservableList<ReadOnlyEntry> getBin() {
-        final ObservableList<Entry> entries = this.bin.stream().map(p -> {
+        final ObservableList<Entry> bins = this.bin.stream().map(p -> {
             try {
                 return p.toModelType();
             } catch (Exception e) {
@@ -143,7 +143,7 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
                 return null;
             }
         }).collect(Collectors.toCollection(FXCollections::observableArrayList));
-        return new UnmodifiableObservableList<>(entries);
+        return new UnmodifiableObservableList<>(bins);
     }
 
     @Override
