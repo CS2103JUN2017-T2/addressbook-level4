@@ -23,7 +23,17 @@ import seedu.multitasky.model.tag.Tag;
 public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
 
     @XmlElement
-    private List<XmlAdaptedEntry> entries;
+    private List<XmlAdaptedEntry> events;
+    @XmlElement
+    private List<XmlAdaptedEntry> floatingTasks;
+    @XmlElement
+    private List<XmlAdaptedEntry> deadlines;
+    @XmlElement
+    private List<XmlAdaptedEntry> archived;
+    @XmlElement
+    private List<XmlAdaptedEntry> bin;
+    @XmlElement
+    private List<XmlAdaptedEntry> active;
     @XmlElement
     private List<XmlAdaptedTag> tags;
 
@@ -32,7 +42,12 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
      * required for marshalling.
      */
     public XmlSerializableEntryBook() {
-        entries = new ArrayList<>();
+        events = new ArrayList<>();
+        floatingTasks = new ArrayList<>();
+        deadlines = new ArrayList<>();
+        archived = new ArrayList<>();
+        bin = new ArrayList<>();
+        active = new ArrayList<>();
         tags = new ArrayList<>();
     }
 
@@ -41,15 +56,15 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
      */
     public XmlSerializableEntryBook(ReadOnlyEntryBook src) {
         this();
-        entries.addAll(src.getEventList().stream().map(XmlAdaptedEntry::new).collect(Collectors.toList()));
-        entries.addAll(src.getDeadlineList().stream().map(XmlAdaptedEntry::new).collect(Collectors.toList()));
-        entries.addAll(src.getFloatingTaskList().stream().map(XmlAdaptedEntry::new).collect(Collectors.toList()));
+        events.addAll(src.getEventList().stream().map(XmlAdaptedEntry::new).collect(Collectors.toList()));
+        deadlines.addAll(src.getDeadlineList().stream().map(XmlAdaptedEntry::new).collect(Collectors.toList()));
+        floatingTasks.addAll(src.getFloatingTaskList().stream().map(XmlAdaptedEntry::new).collect(Collectors.toList()));
         tags.addAll(src.getTagList().stream().map(XmlAdaptedTag::new).collect(Collectors.toList()));
     }
 
     @Override
     public ObservableList<ReadOnlyEntry> getEventList() {
-        final ObservableList<Entry> entries = this.entries.stream().map(p -> {
+        final ObservableList<Entry> entries = this.events.stream().map(p -> {
             try {
                 return p.toModelType();
             } catch (Exception e) {
@@ -63,7 +78,7 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
 
     @Override
     public ObservableList<ReadOnlyEntry> getDeadlineList() {
-        final ObservableList<Entry> entries = this.entries.stream().map(p -> {
+        final ObservableList<Entry> entries = this.deadlines.stream().map(p -> {
             try {
                 return p.toModelType();
             } catch (Exception e) {
@@ -77,7 +92,7 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
 
     @Override
     public ObservableList<ReadOnlyEntry> getFloatingTaskList() {
-        final ObservableList<Entry> entries = this.entries.stream().map(p -> {
+        final ObservableList<Entry> entries = this.floatingTasks.stream().map(p -> {
             try {
                 return p.toModelType();
             } catch (Exception e) {
@@ -91,7 +106,7 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
 
     @Override
     public ObservableList<ReadOnlyEntry> getActiveList() {
-        final ObservableList<Entry> entries = this.entries.stream().map(p -> {
+        final ObservableList<Entry> entries = this.active.stream().map(p -> {
             try {
                 return p.toModelType();
             } catch (Exception e) {
@@ -105,7 +120,7 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
 
     @Override
     public ObservableList<ReadOnlyEntry> getArchive() {
-        final ObservableList<Entry> entries = this.entries.stream().map(p -> {
+        final ObservableList<Entry> entries = this.archived.stream().map(p -> {
             try {
                 return p.toModelType();
             } catch (Exception e) {
@@ -119,7 +134,7 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
 
     @Override
     public ObservableList<ReadOnlyEntry> getBin() {
-        final ObservableList<Entry> entries = this.entries.stream().map(p -> {
+        final ObservableList<Entry> entries = this.bin.stream().map(p -> {
             try {
                 return p.toModelType();
             } catch (Exception e) {
