@@ -1,4 +1,4 @@
-package seedu.multitasky.ui.uiutils;
+package seedu.multitasky.ui.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,7 +9,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
-
 import seedu.multitasky.logic.commands.AddCommand;
 import seedu.multitasky.logic.commands.ClearCommand;
 import seedu.multitasky.logic.commands.DeleteCommand;
@@ -19,7 +18,6 @@ import seedu.multitasky.logic.commands.FindCommand;
 import seedu.multitasky.logic.commands.HelpCommand;
 import seedu.multitasky.logic.commands.HistoryCommand;
 import seedu.multitasky.logic.commands.ListCommand;
-import seedu.multitasky.logic.commands.SelectCommand;
 
 
 //@@author A0125586X
@@ -40,7 +38,6 @@ public class CommandAutocomplete {
         HelpCommand.COMMAND_WORD,
         HistoryCommand.COMMAND_WORD,
         ListCommand.COMMAND_WORD,
-        SelectCommand.COMMAND_WORD
     }));
 
     @FXML

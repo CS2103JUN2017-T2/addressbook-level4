@@ -12,8 +12,8 @@ import seedu.multitasky.logic.Logic;
 import seedu.multitasky.logic.commands.CommandResult;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
-import seedu.multitasky.ui.uiutils.CommandAutocomplete;
-import seedu.multitasky.ui.uiutils.CommandHistory;
+import seedu.multitasky.ui.util.CommandAutocomplete;
+import seedu.multitasky.ui.util.CommandHistory;
 
 //@@author A0125586X
 /**
