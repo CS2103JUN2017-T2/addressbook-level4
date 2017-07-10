@@ -99,10 +99,15 @@ public class DeadlineListTest {
      */
     public static DeadlineList createDeadlineList1() throws DuplicateEntryException {
         DeadlineList deadlineList1clone = new DeadlineList();
-        deadlineList1clone.add(deadline1);
-        deadlineList1clone.add(deadline3);
+        try {
+            deadlineList1clone.add(deadline1);
+            deadlineList1clone.add(deadline3);
 
-        return deadlineList1clone;
+            return deadlineList1clone;
+        } catch (DuplicateEntryException e) {
+            fail("DeadlineListTest.createDeadlineList1() failed due to duplicate entry.");
+            return null;
+        }
     }
 
     // @@author A0126623L
@@ -144,8 +149,13 @@ public class DeadlineListTest {
     public void updateEntryTest() throws EntryNotFoundException, DuplicateEntryException {
         DeadlineList deadlineListToTest = createDeadlineList1();
 
-        deadlineListToTest.updateEntry(deadline1, deadline4);
-        assertFalse(deadlineList1.asObservableList().get(0).equals(deadline4));
+        try {
+            deadlineListToTest.updateEntry(deadline1, deadline4);
+            assertFalse(deadlineList1.asObservableList().get(0).equals(deadline4));
+        } catch (DuplicateEntryException e) {
+            fail("DeadlineListTest.updateEntryTest() failed due to duplicate entry.");
+        }
+
     }
 
     // @@author A0126623L
@@ -170,8 +180,13 @@ public class DeadlineListTest {
         deadlineArrayList.add(deadline4);
         // deadlineArrayList holds the same elements as that of deadlineList3.
 
-        deadlineListToTest.setEntries(deadlineArrayList);
-        assertTrue(deadlineListToTest.equals(deadlineList3));
+        try {
+            deadlineListToTest.setEntries(deadlineArrayList);
+            assertTrue(deadlineListToTest.equals(deadlineList3));
+        } catch (DuplicateEntryException e) {
+            fail("DeadlineListTest.setEntriesTest() failed due to duplicate entry.");
+        }
+
     }
 
 }

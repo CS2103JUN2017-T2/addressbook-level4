@@ -4,6 +4,7 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 
 import java.util.Calendar;
 import java.util.HashSet;
@@ -70,10 +71,15 @@ public class MiscEntryListTest {
     // @@author A0126623L
     public MiscEntryList createMiscEntryList() throws DuplicateEntryException {
         MiscEntryList miscEntryListToTest = new MiscEntryList();
-        miscEntryListToTest.add(event1);
-        miscEntryListToTest.add(deadline1);
-        miscEntryListToTest.add(floatingTask1);
-        return miscEntryListToTest;
+        try {
+            miscEntryListToTest.add(event1);
+            miscEntryListToTest.add(deadline1);
+            miscEntryListToTest.add(floatingTask1);
+            return miscEntryListToTest;
+        } catch (DuplicateEntryException e) {
+            fail("MiscEntryListTest.createMiscEntryList() failed due to duplicated entry.");
+            return null;
+        }
     }
 
     // @@author A0126623L

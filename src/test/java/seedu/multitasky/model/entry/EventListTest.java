@@ -2,6 +2,8 @@ package seedu.multitasky.model.entry;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 
 import java.util.ArrayList;
 
@@ -31,12 +33,11 @@ public class EventListTest {
     public static EventList[] getSampleEventListArrayData() {
 
         Event[] sampleEvents = EventTest.SAMPLE_EVENTS_ARRAY_DATA;
-
-        EventList eventList1 = new EventList();
-        EventList eventList2 = new EventList();
-        EventList eventList3 = new EventList();
-
         try {
+            EventList eventList1 = new EventList();
+            EventList eventList2 = new EventList();
+            EventList eventList3 = new EventList();
+
             eventList1.add(sampleEvents[0]);
             eventList1.add(sampleEvents[2]);
 
@@ -45,12 +46,12 @@ public class EventListTest {
 
             eventList3.add(sampleEvents[0]);
             eventList3.add(sampleEvents[3]);
-        } catch (DuplicateEntryException e) {
-            assert false: "sample data cannot have errors";
-        }
-        
 
-        return new EventList[] { eventList1, eventList2, eventList3 };
+            return new EventList[] { eventList1, eventList2, eventList3 };
+        } catch (DuplicateEntryException e) {
+            fail("Error in EventListTest.getSampleEventListArrayData() due to duplication.");
+            return null;
+        }
     }
 
     EventList eventList1 = SAMPLE_EVENT_LISTS_ARRAY_DATA[0];
@@ -62,15 +63,16 @@ public class EventListTest {
      * Create an EventList with {sampleEvents[0], sampleEvents[2]}
      */
     private EventList createEventList1() {
-        EventList eventList1clone = new EventList();
         try {
+            EventList eventList1clone = new EventList();
             eventList1clone.add(sampleEvents[0]);
             eventList1clone.add(sampleEvents[2]);
-        } catch (DuplicateEntryException e) {
-            assert false: "sample data cannot have errors";
-        }
 
-        return eventList1clone;
+            return eventList1clone;
+        } catch (DuplicateEntryException e) {
+            fail("EventListTest.createEventList1() fails due to duplicate entries.");
+            return null;
+        }
     }
 
     // @@author A0126623L
@@ -111,9 +113,12 @@ public class EventListTest {
     @Test
     public void updateEntryTest() throws EntryNotFoundException, DuplicateEntryException {
         EventList eventListToTest = createEventList1();
-
-        eventListToTest.updateEntry(sampleEvents[0], sampleEvents[3]);
-        assertFalse(eventList1.asObservableList().get(0).equals(sampleEvents[3]));
+        try {
+            eventListToTest.updateEntry(sampleEvents[0], sampleEvents[3]);
+            assertFalse(eventList1.asObservableList().get(0).equals(sampleEvents[3]));
+        } catch (DuplicateEntryException e) {
+            fail("EventListTest.updateEntryTest() failed due to duplicate entry.");
+        }
     }
 
     // @@author A0126623L
@@ -139,8 +144,12 @@ public class EventListTest {
         eventArrayList.add(sampleEvents[3]);
         // eventArrayList holds the same elements as that of eventList3.
 
-        eventListToTest.setEntries(eventArrayList);
-        assertTrue(eventListToTest.equals(eventList3));
+        try {
+            eventListToTest.setEntries(eventArrayList);
+            assertTrue(eventListToTest.equals(eventList3));
+        } catch (DuplicateEntryException e) {
+            fail("EventListTest.setEntriesTest() failed due to duplicate entry.");
+        }
     }
 
 }
