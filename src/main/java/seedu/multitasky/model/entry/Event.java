@@ -54,6 +54,10 @@ public class Event extends Entry {
         _startDateAndTime = startDateAndTime;
     }
 
+    public String getStartDateAndTimeString() {
+        return dateFormatter.format(getStartDateAndTime().getTime());
+    }
+
     @Override
     public Calendar getStartDateAndTime() {
         return _startDateAndTime;
@@ -61,6 +65,10 @@ public class Event extends Entry {
 
     public void setEndDateAndTime(Calendar endDateAndTime) {
         _endDateAndTime = endDateAndTime;
+    }
+
+    public String getEndDateAndTimeString() {
+        return dateFormatter.format(getEndDateAndTime().getTime());
     }
 
     @Override
