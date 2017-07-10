@@ -3,6 +3,7 @@ package seedu.multitasky.model.entry;
 import java.util.List;
 
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
+import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 
 //@@author A0126623L
 /**
@@ -14,6 +15,7 @@ public class EventList extends EntryList {
      * Adds an event to the list.
      *
      * @param toAdd is of type Event and must not be null.
+     * @throws DuplicateEntryException if {@code toAdd} already exists in the list.
      */
     @Override
     public void add(ReadOnlyEntry toAdd) throws DuplicateEntryException {
@@ -21,7 +23,25 @@ public class EventList extends EntryList {
         assert (toAdd instanceof Event);
 
         internalList.add(new Event(toAdd));
+        sortInternalList();
     }
+
+    //@@author A0125586X
+    /**
+     * Overrides updateEntry in EntryList to sort after updating in case start date was changed.
+     *
+     * @throws EntryNotFoundException if {@code target} could not be found in the list.
+     * @throws DuplicateEntryException if {@code editedEntry} already exists in the list.
+     */
+    @Override
+    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
+            throws DuplicateEntryException, EntryNotFoundException {
+        super.updateEntry(target, editedEntry);
+        sortInternalList();
+    }
+    //@@author
+
+
 
     // @@author A0126623L
     /**
