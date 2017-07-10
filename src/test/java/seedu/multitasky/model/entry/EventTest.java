@@ -49,12 +49,12 @@ public class EventTest {
 
         try {
             return new Event[] {
-                    new Event(new Name("SampleName1"), calendar1, calendar2, getTagSet("tag1")),
-                    new Event(new Name("SampleName1"), calendar1, calendar2, getTagSet("tag1")),
-                    new Event(new Name("SampleName2"), calendar1, calendar2, getTagSet("tag1")),
-                    new Event(new Name("SampleName1"), calendar2, calendar3, getTagSet("tag1")),
-                    new Event(new Name("SampleName1"), calendar1, calendar3, getTagSet("tag1")),
-                    new Event(new Name("SampleName1"), calendar1, calendar2, getTagSet("tag2"))
+                new Event(new Name("SampleName1"), calendar1, calendar2, getTagSet("tag1")),
+                new Event(new Name("SampleName1"), calendar1, calendar2, getTagSet("tag1")),
+                new Event(new Name("SampleName2"), calendar1, calendar2, getTagSet("tag1")),
+                new Event(new Name("SampleName1"), calendar2, calendar3, getTagSet("tag1")),
+                new Event(new Name("SampleName1"), calendar1, calendar3, getTagSet("tag1")),
+                new Event(new Name("SampleName1"), calendar1, calendar2, getTagSet("tag2"))
             };
         } catch (Exception e) {
             fail("Event array initialisation failed.");

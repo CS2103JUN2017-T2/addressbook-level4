@@ -9,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.commons.util.CollectionUtil;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 
 /**
@@ -25,7 +26,12 @@ public abstract class EntryList implements Iterable<Entry> {
     /**
      * Adds an entry to the list.
      */
-    public abstract void add(ReadOnlyEntry toAdd);
+    public void add(ReadOnlyEntry toAdd) throws DuplicateEntryException {
+        requireNonNull(toAdd);
+        if (contains(toAdd)) {
+            throw new DuplicateEntryException();
+        }
+    };
 
     /**
      * Returns an unmodifiable copy of the ObservableList.
@@ -88,7 +94,8 @@ public abstract class EntryList implements Iterable<Entry> {
      *
      * @throws EntryNotFoundException if {@code target} could not be found in the list.
      */
-    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws EntryNotFoundException {
+    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
+            throws DuplicateEntryException, EntryNotFoundException {
         requireNonNull(editedEntry);
 
         int index = internalList.indexOf(target);
@@ -97,6 +104,10 @@ public abstract class EntryList implements Iterable<Entry> {
         }
 
         Entry entryToUpdate = internalList.get(index);
+
+        if (!entryToUpdate.equals(editedEntry) && internalList.contains(editedEntry)) {
+            throw new DuplicateEntryException();
+        }
 
         entryToUpdate.resetData(editedEntry);
         // TODO: The code below is just a workaround to notify observers of the

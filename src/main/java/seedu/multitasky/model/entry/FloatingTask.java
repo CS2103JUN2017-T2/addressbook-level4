@@ -23,10 +23,18 @@ public class FloatingTask extends Entry {
         super(source.getName(), source.getTags());
     }
 
+    public Calendar getStartDateAndTimeString() {
+        return null; // Floating tasks have no start time.
+    }
+
     @Override
     public Calendar getStartDateAndTime() {
         Calendar startDateAndTime = null; // Floating tasks have no start time.
         return startDateAndTime;
+    }
+
+    public Calendar getEndDateAndTimeString() {
+        return null; // Floating tasks have no end time.
     }
 
     @Override

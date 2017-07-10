@@ -47,6 +47,10 @@ public class Deadline extends Entry {
         setEndDateAndTime(replacement.getEndDateAndTime());
     }
 
+    public String getStartDateAndTimeString() {
+        return null; // Deadlines has no start time.
+    }
+
     @Override
     public Calendar getStartDateAndTime() {
         Calendar startDateAndTime = null; // Deadlines has no start time.
@@ -55,6 +59,10 @@ public class Deadline extends Entry {
 
     public void setEndDateAndTime(Calendar endDateAndTime) {
         _endDateAndTime = endDateAndTime;
+    }
+
+    public String getEndDateAndTimeString() {
+        return dateFormatter.format(getEndDateAndTime().getTime());
     }
 
     @Override

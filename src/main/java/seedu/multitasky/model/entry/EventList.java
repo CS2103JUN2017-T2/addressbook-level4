@@ -1,8 +1,8 @@
 package seedu.multitasky.model.entry;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.List;
+
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 
 //@@author A0126623L
 /**
@@ -16,8 +16,8 @@ public class EventList extends EntryList {
      * @param toAdd is of type Event and must not be null.
      */
     @Override
-    public void add(ReadOnlyEntry toAdd) {
-        requireNonNull(toAdd);
+    public void add(ReadOnlyEntry toAdd) throws DuplicateEntryException {
+        super.add(toAdd);
         assert (toAdd instanceof Event);
 
         internalList.add(new Event(toAdd));
@@ -29,7 +29,7 @@ public class EventList extends EntryList {
      *
      * @param entries must be a list of events.
      */
-    public void setEntries(List<? extends ReadOnlyEntry> entries) {
+    public void setEntries(List<? extends ReadOnlyEntry> entries) throws DuplicateEntryException {
         final EventList replacement = new EventList();
         for (final ReadOnlyEntry entry : entries) {
             replacement.add(new Event(entry));

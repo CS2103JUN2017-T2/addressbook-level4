@@ -1,8 +1,8 @@
 package seedu.multitasky.model.entry;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.List;
+
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 
 //@@author A0126623L
 /**
@@ -16,8 +16,8 @@ public class DeadlineList extends EntryList {
      * Pre-condition: toAdd is not null and is of type Deadline.
      */
     @Override
-    public void add(ReadOnlyEntry toAdd) {
-        requireNonNull(toAdd);
+    public void add(ReadOnlyEntry toAdd) throws DuplicateEntryException {
+        super.add(toAdd);
         assert (toAdd instanceof Deadline);
 
         internalList.add(new Deadline(toAdd));
@@ -29,7 +29,7 @@ public class DeadlineList extends EntryList {
      *
      * @param entries must be a list of deadlines.
      */
-    public void setEntries(List<? extends ReadOnlyEntry> entries) {
+    public void setEntries(List<? extends ReadOnlyEntry> entries) throws DuplicateEntryException {
         final DeadlineList replacement = new DeadlineList();
         for (final ReadOnlyEntry entry : entries) {
             replacement.add(new Deadline(entry));
