@@ -43,7 +43,7 @@ public class SampleDataUtil {
             sampleEntryBook.addEntry(sampleEntry);
         }
         } catch (DuplicateEntryException e) {
-            assert false : "Sample Entry Book generation failed. EntryBooks should not have duplicate tags.";
+            assert false : "Sample Entry Book generation failed. EntryBooks should not have duplicate entries.";
         }
         return sampleEntryBook;
     }
