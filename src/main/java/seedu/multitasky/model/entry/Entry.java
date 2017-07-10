@@ -16,14 +16,12 @@ import seedu.multitasky.model.tag.UniqueTagList;
  */
 public abstract class Entry implements ReadOnlyEntry {
 
-    private Name _name;
-    private UniqueTagList _tags;
-
     /**
      * Date formatter for subclasses that need to format Date objects.
      */
-    protected static DateFormat dateFormatter = DateFormat.getDateTimeInstance(DateFormat.MEDIUM,
-                                                                               DateFormat.SHORT);
+    protected static DateFormat dateFormatter = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT);
+    private Name _name;
+    private UniqueTagList _tags;
 
     /**
      * Every field must be present and not null.
