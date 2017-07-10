@@ -1,6 +1,5 @@
 package seedu.multitasky.storage;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
@@ -23,13 +22,11 @@ public class XmlAdaptedEntry {
     private String name;
 
     @XmlElement
-    private String startDateAndTime;
+    private Calendar startDateAndTime;
     @XmlElement
-    private String endDateAndTime;
+    private Calendar endDateAndTime;
     @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
-
-    private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy HH:mm");
 
     /**
      * Constructs an XmlAdaptedEntry. This is the no-arg constructor that is
@@ -43,13 +40,12 @@ public class XmlAdaptedEntry {
      * this will not affect the created XmlAdaptedEntry
      */
     public XmlAdaptedEntry(ReadOnlyEntry source) {
-        formatter.setLenient(false);
         name = source.getName().fullName;
         if (source.getStartDateAndTime() != null) {
-            startDateAndTime = formatter.format(source.getStartDateAndTime().getTime());
+            startDateAndTime = source.getStartDateAndTime();
         }
-        if (source.getStartDateAndTime() != null) {
-            endDateAndTime = formatter.format(source.getEndDateAndTime().getTime());
+        if (source.getEndDateAndTime() != null) {
+            endDateAndTime = source.getEndDateAndTime();
         }
         tagged = new ArrayList<>();
         for (Tag tag : source.getTags()) {
@@ -69,14 +65,11 @@ public class XmlAdaptedEntry {
         for (XmlAdaptedTag tag : tagged) {
             personTags.add(tag.toModelType());
         }
-        Calendar startDateAndTimeToUse = null;
-        Calendar endDateAndTimeToUse = null;
-        if (this.startDateAndTime != null) {
-            startDateAndTimeToUse.setTime(formatter.parse(this.startDateAndTime));
-        }
-        if (this.endDateAndTime != null) {
-            endDateAndTimeToUse.setTime(formatter.parse(this.endDateAndTime));
-        }
+        Calendar startDateAndTimeToUse = Calendar.getInstance();
+        Calendar endDateAndTimeToUse = Calendar.getInstance();
+        startDateAndTimeToUse.set(17, 07, 7);
+        endDateAndTimeToUse.set(17, 07, 7);
+
         final Set<Tag> tags = new HashSet<>(personTags);
         Entry entry = new EntryBuilder().withName(this.name).withStartDateAndTime(startDateAndTimeToUse)
                 .withEndDateAndTime(endDateAndTimeToUse).withTags(tags).build();
