@@ -32,7 +32,7 @@ public class NameTest {
 
     // @@author A0126623L
     @Test
-    public void equalityTests() {
+    public void equalsTest() {
 
         // initialize
         try {
