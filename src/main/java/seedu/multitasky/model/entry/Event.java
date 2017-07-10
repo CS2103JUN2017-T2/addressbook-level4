@@ -16,8 +16,9 @@ public class Event extends Entry {
     /**
      * Every field must be present and not null.
      */
-    public Event(Name name, Calendar startDateAndTime, Calendar endDateAndTime, Set<Tag> tags) {
-        super(name, tags);
+    public Event(Name name, Calendar startDateAndTime, Calendar endDateAndTime, Entry.State state,
+            Set<Tag> tags) {
+        super(name, state, tags);
         requireAllNonNull(startDateAndTime, endDateAndTime);
         _startDateAndTime = startDateAndTime;
         _endDateAndTime = endDateAndTime;
@@ -28,7 +29,7 @@ public class Event extends Entry {
      * Pre-condition: ReadOnlyEntry must be of type Event.
      */
     public Event(ReadOnlyEntry source) {
-        super(source.getName(), source.getTags());
+        super(source.getName(), source.getState(), source.getTags());
 
         // Checks if source has start and end time.
         requireAllNonNull(source.getStartDateAndTime(), source.getEndDateAndTime());

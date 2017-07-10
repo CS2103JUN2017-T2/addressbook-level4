@@ -16,8 +16,15 @@ import seedu.multitasky.model.tag.UniqueTagList;
  */
 public abstract class Entry implements ReadOnlyEntry {
 
-    private Name _name;
-    private UniqueTagList _tags;
+    // @@ author A0126623L
+    /**
+     * Represents the state of an entry.
+     * The three possible states are: ACTIVE, ARCHIVED, DELETED
+     */
+    public enum State {
+        ACTIVE, ARCHIVED, DELETED
+    };
+    // @@author
 
     // @@author A0126623L
     /**
@@ -27,20 +34,26 @@ public abstract class Entry implements ReadOnlyEntry {
                                                                                DateFormat.SHORT);
     // @@author
 
+    private Name _name;
+    private UniqueTagList _tags;
+    private State _state;
+
     /**
      * Every field must be present and not null.
+     * The instantiated Entry will be considered an active entry.
      */
-    public Entry(Name name, Set<Tag> tags) {
+    protected Entry(Name name, State state, Set<Tag> tags) {
         requireAllNonNull(name, tags);
         this._name = name;
         this._tags = new UniqueTagList(tags); // protect internal tags from changes in the arg list
+        this._state = state;
     }
 
     /**
      * Creates a copy of the given ReadOnlyEntry.
      */
     public Entry(ReadOnlyEntry source) {
-        this(source.getName(), source.getTags());
+        this(source.getName(), source.getState(), source.getTags());
     }
 
     public void setName(Name name) {
@@ -50,6 +63,15 @@ public abstract class Entry implements ReadOnlyEntry {
     @Override
     public Name getName() {
         return _name;
+    }
+
+    public void setState(State state) {
+        this._state = requireNonNull(state);
+    }
+
+    @Override
+    public State getState() {
+        return _state;
     }
 
     /**
@@ -76,6 +98,7 @@ public abstract class Entry implements ReadOnlyEntry {
 
         this.setName(replacement.getName());
         this.setTags(replacement.getTags());
+        this.setState(replacement.getState());
     }
 
 }
