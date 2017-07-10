@@ -74,7 +74,7 @@ public class DeleteCommandTest {
 
         Index outOfBoundIndex = INDEX_SECOND_ENTRY;
         // ensures that outOfBoundIndex is still in bounds of entry book list
-        assertTrue(outOfBoundIndex.getZeroBased() < model.getEntryBook().getEntryList().size());
+        assertTrue(outOfBoundIndex.getZeroBased() < model.getEntryBook().getFloatingTaskList().size());
 
         DeleteCommand deleteCommand = prepareCommand(outOfBoundIndex);
 
@@ -94,7 +94,7 @@ public class DeleteCommandTest {
      * Updates {@code model}'s filtered list to show only the first entry from the entry book.
      */
     private void showFirstEntryOnly(Model model) {
-        ReadOnlyEntry entry = model.getEntryBook().getEntryList().get(0);
+        ReadOnlyEntry entry = model.getEntryBook().getFloatingTaskList().get(0);
         final String[] splitName = entry.getName().fullName.split("\\s+");
         model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList(splitName)));
 
@@ -106,7 +106,6 @@ public class DeleteCommandTest {
      */
     private void showNoEntry(Model model) {
         model.updateFilteredFloatingTaskList(Collections.emptySet());
-
         assert model.getFilteredFloatingTaskList().isEmpty();
     }
 }

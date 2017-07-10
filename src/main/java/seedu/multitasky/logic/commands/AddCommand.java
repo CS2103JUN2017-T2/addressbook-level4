@@ -6,6 +6,7 @@ import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_TAG;
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 
 /**
@@ -31,7 +32,7 @@ public class AddCommand extends Command {
      * Creates an AddCommand to add the specified {@code ReadOnlyEntry}
      */
     public AddCommand(ReadOnlyEntry entry) {
-        toAdd = new Entry(entry);
+        toAdd = new FloatingTask(entry);
     }
 
     @Override
