@@ -1,6 +1,7 @@
 package seedu.multitasky.model.util;
 
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.Set;
 
 import seedu.multitasky.commons.exceptions.IllegalValueException;
@@ -29,8 +30,8 @@ public class EntryBuilder {
 
     private String name;
     private Set<Tag> tags;
-    private Calendar startDateAndTime;
-    private Calendar endDateAndTime;
+    private Calendar startDateAndTime = null;
+    private Calendar endDateAndTime = null;
 
     private Entry entry;
 
@@ -44,7 +45,14 @@ public class EntryBuilder {
      * Initializes the EntryBuilder with the data of {@code entryToCopy}.
      */
     public EntryBuilder(ReadOnlyEntry entryToCopy) {
-        this.entry = new FloatingTask(entryToCopy);
+        if (entryToCopy instanceof Event) {
+            this.entry = new Event(entryToCopy);
+        } else if (entryToCopy instanceof Deadline) {
+            this.entry = new Deadline(entryToCopy);
+        } else {
+            assert (entryToCopy instanceof FloatingTask);
+            this.entry = new FloatingTask(entryToCopy);
+        }
     }
 
     public EntryBuilder withName(String name) throws IllegalValueException {
@@ -85,6 +93,39 @@ public class EntryBuilder {
 
         }
         return entry;
+    }
+
+    /**
+     * Builds an appropriate entry (i.e. Event, Deadline, FloatingTask, ...) based on the given argument.
+     *
+     * @return
+     * @throws IllegalValueException
+     */
+    public static ReadOnlyEntry build(Name name, Calendar startDateAndTime,
+                                      Calendar endDateAndTime, String... tags)
+            throws IllegalValueException {
+
+        HashSet<Tag> tagSet = new HashSet<>();
+        for (String s : tags) {
+            tagSet.add(new Tag(s));
+        }
+
+        if (startDateAndTime == null) {
+            // Floating task
+            if (endDateAndTime == null) {
+                return new FloatingTask(name, tagSet);
+                // Deadline
+            } else {
+                return new Deadline(name, endDateAndTime, tagSet);
+            }
+            // Event
+        } else if (endDateAndTime != null) {
+            return new Event(name, startDateAndTime, endDateAndTime, tagSet);
+            // Unknown combination of present start date but no end date
+        } else {
+            assert false : "Error in EntryBuilder.";
+            return null;
+        }
     }
 
 }
