@@ -14,6 +14,9 @@ public class EntryBookChangedEvent extends BaseEvent {
 
     @Override
     public String toString() {
-        return "number of entries " + data.getEntryList().size() + ", number of tags " + data.getTagList().size();
+        return "number of events " + data.getEventList().size()
+                + ", number of deadlines " + data.getDeadlineList().size()
+                + ", number of floating tasks " + data.getFloatingTaskList().size()
+                + ", number of tags " + data.getTagList().size();
     }
 }

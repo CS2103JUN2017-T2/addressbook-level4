@@ -5,6 +5,7 @@ import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.FloatingTask;
+import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.util.EntryBuilder;
 import seedu.multitasky.model.util.SampleDataUtil;
 
@@ -24,8 +25,7 @@ public class TypicalEntries {
     public TypicalEntries() {
         try {
             //CHECKSTYLE.OFF: LineLength
-            cook = new FloatingTask(new Name("Learn to cook"), SampleDataUtil.getTagSet("goals"));
-
+            cook = new EntryBuilder().withName("Learn to cook").withTags("goals").build();
             programming = new EntryBuilder().withName("Learn programming").withTags("lessons", "computer").build();
             hire = new EntryBuilder().withName("Hire an assistant").withTags("help").build();
             spectacles = new EntryBuilder().withName("Make new spectacles").withTags("health", "eyesight").build();
@@ -33,7 +33,7 @@ public class TypicalEntries {
             sell = new EntryBuilder().withName("Sell old things").withTags("sale", "clutter").build();
             //CHECKSTYLE.ON: LineLength
 
-        } catch (IllegalValueException e) {
+        } catch (Exception e) {
             throw new AssertionError("Sample data cannot be invalid", e);
         }
     }
