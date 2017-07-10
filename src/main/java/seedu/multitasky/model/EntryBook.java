@@ -58,6 +58,7 @@ public class EntryBook implements ReadOnlyEntryBook {
         _tags = new UniqueTagList();
     }
 
+    // TODO: This may later be removed.
     public EntryBook() {
     }
 
@@ -71,8 +72,17 @@ public class EntryBook implements ReadOnlyEntryBook {
 
     //// list overwrite operations
 
-    public void setActiveList(List<? extends ReadOnlyEntry> entries) throws DuplicateEntryException {
-        this._activeList.setEntries(entries);
+    // @@author A0126623L
+    private void setActiveList(ReadOnlyEntryBook entries) throws DuplicateEntryException {
+        for (ReadOnlyEntry entry : entries.getEventList()) {
+            this._activeList.add(entry);
+        }
+        for (ReadOnlyEntry entry : entries.getDeadlineList()) {
+            this._activeList.add(entry);
+        }
+        for (ReadOnlyEntry entry : entries.getFloatingTaskList()) {
+            this._activeList.add(entry);
+        }
     }
 
     public void setArchive(List<? extends ReadOnlyEntry> entries) throws DuplicateEntryException {
@@ -104,7 +114,7 @@ public class EntryBook implements ReadOnlyEntryBook {
         requireNonNull(newData);
 
         try {
-            setActiveList(newData.getActiveList());
+            setActiveList(newData);
             setArchive(newData.getArchive());
             setBin(newData.getBin());
             setEventList(newData.getEventList());
