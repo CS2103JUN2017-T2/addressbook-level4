@@ -49,9 +49,11 @@ import seedu.multitasky.model.ModelManager;
 import seedu.multitasky.model.ReadOnlyEntryBook;
 import seedu.multitasky.model.UserPrefs;
 import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.Name;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.tag.Tag;
-import seedu.multitasky.testutil.EntryBuilder;
+import seedu.multitasky.model.util.EntryBuilder;
 
 public class LogicManagerTest {
 
@@ -154,7 +156,7 @@ public class LogicManagerTest {
             CommandResult result = logic.execute(inputCommand);
             assertEquals(expectedException, null);
             assertEquals(expectedMessage, result.feedbackToUser);
-        } catch (CommandException | ParseException e) {
+        } catch (CommandException | ParseException | DuplicateEntryException e) {
             assertEquals(expectedException, e.getClass());
             assertEquals(expectedMessage, e.getMessage());
         }
@@ -397,7 +399,7 @@ public class LogicManagerTest {
         Entry adam() throws Exception {
             Name name = new Name("dinner with Adam Brown");
 
-            return new Entry(name, getTagSet("tag1", "longertag2"));
+            return new FloatingTask(name, getTagSet("tag1", "longertag2"));
         }
 
         /**
@@ -409,7 +411,7 @@ public class LogicManagerTest {
          * @param seed used to generate the entry data field values
          */
         Entry generateEntry(int seed) throws Exception {
-            return new Entry(
+            return new FloatingTask(
                              new Name("Entry " + seed),
                              getTagSet("tag" + Math.abs(seed), "tag" + Math.abs(seed + 1)));
         }

@@ -1,17 +1,18 @@
 package seedu.multitasky.storage;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlElement;
 
-import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.model.entry.Entry;
-import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.tag.Tag;
+import seedu.multitasky.model.util.EntryBuilder;
 
 /**
  * JAXB-friendly version of the Entry.
@@ -22,7 +23,13 @@ public class XmlAdaptedEntry {
     private String name;
 
     @XmlElement
+    private String startDateAndTime;
+    @XmlElement
+    private String endDateAndTime;
+    @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
+
+    private SimpleDateFormat formatter = new SimpleDateFormat("d/M/y H:mm");
 
     /**
      * Constructs an XmlAdaptedEntry. This is the no-arg constructor that is
@@ -36,7 +43,10 @@ public class XmlAdaptedEntry {
      * this will not affect the created XmlAdaptedEntry
      */
     public XmlAdaptedEntry(ReadOnlyEntry source) {
+        formatter.setLenient(false);
         name = source.getName().fullName;
+        startDateAndTime = formatter.format(source.getStartDateAndTime().getTime());
+        endDateAndTime = formatter.format(source.getEndDateAndTime().getTime());
         tagged = new ArrayList<>();
         for (Tag tag : source.getTags()) {
             tagged.add(new XmlAdaptedTag(tag));
@@ -47,17 +57,21 @@ public class XmlAdaptedEntry {
      * Converts this jaxb-friendly adapted entry object into the model's Entry
      * object.
      *
-     * @throws IllegalValueException
-     *             if there were any data constraints violated in the adapted
-     *             entry
+     * @throws Exception
      */
-    public Entry toModelType() throws IllegalValueException {
-        final List<Tag> entryTags = new ArrayList<>();
+    @SuppressWarnings("null")
+    public Entry toModelType() throws Exception {
+        final List<Tag> personTags = new ArrayList<>();
         for (XmlAdaptedTag tag : tagged) {
-            entryTags.add(tag.toModelType());
+            personTags.add(tag.toModelType());
         }
-        final Name name = new Name(this.name);
-        final Set<Tag> tags = new HashSet<>(entryTags);
-        return new Entry(name, tags);
+        Calendar startDateAndTimeToUse = null;
+        Calendar endDateAndTimeToUse = null;
+        startDateAndTimeToUse.setTime(formatter.parse(this.startDateAndTime));
+        endDateAndTimeToUse.setTime(formatter.parse(this.endDateAndTime));
+        final Set<Tag> tags = new HashSet<>(personTags);
+        Entry entry = new EntryBuilder().withName(this.name).withStartDateAndTime(startDateAndTimeToUse)
+            .withEndDateAndTime(endDateAndTimeToUse).withTags(tags).build();
+        return entry;
     }
 }

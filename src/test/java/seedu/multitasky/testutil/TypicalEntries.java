@@ -4,6 +4,10 @@ import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.model.entry.FloatingTask;
+import seedu.multitasky.model.entry.Name;
+import seedu.multitasky.model.util.EntryBuilder;
+import seedu.multitasky.model.util.SampleDataUtil;
 
 //@@author A0125586X
 /**
@@ -29,20 +33,26 @@ public class TypicalEntries {
             sell = new EntryBuilder().withName("Sell old things").withTags("sale", "clutter").build();
             //CHECKSTYLE.ON: LineLength
 
-        } catch (IllegalValueException e) {
+        } catch (Exception e) {
             throw new AssertionError("Sample data cannot be invalid", e);
         }
     }
 
     // @@author A0126623L
     public static void loadEntryBookWithSampleData(EntryBook entryBook) {
-        for (Entry entry : new TypicalEntries().getTypicalEntries()) {
-            entryBook.addEntry(new Entry(entry));
+        try {
+            // TODO add events and deadlines
+            for (Entry entry: new TypicalEntries().getTypicalFloatingTasks()) {
+                entryBook.addEntry(new FloatingTask(entry));
+            }
+        } catch (Exception e) {
+            assert false : "Sample entries cannot have errors";
         }
+        
     }
 
     public Entry[] getTypicalEntries() {
-        return new Entry[] { cook, programming, hire};
+        return new Entry[] { cook, programming, hire };
     }
 
     //@@author A0125586X

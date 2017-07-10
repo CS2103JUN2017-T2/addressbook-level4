@@ -2,6 +2,7 @@ package seedu.multitasky.ui;
 
 import java.util.logging.Logger;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -12,8 +13,9 @@ import seedu.multitasky.logic.Logic;
 import seedu.multitasky.logic.commands.CommandResult;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
-import seedu.multitasky.ui.uiutils.CommandAutocomplete;
-import seedu.multitasky.ui.uiutils.CommandHistory;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
+import seedu.multitasky.ui.util.CommandAutocomplete;
+import seedu.multitasky.ui.util.CommandHistory;
 
 //@@author A0125586X
 /**
@@ -40,10 +42,23 @@ public class CommandBox extends UiPart<Region> {
         this.logic = logic;
         commandHistory = new CommandHistory(getRoot(), commandTextField);
         commandAutocomplete = new CommandAutocomplete(getRoot(), commandTextField);
+        setCommandTextFieldFocus();
+    }
+
+    /**
+     * Requests focus on the command text field once the main UI window is open,
+     * so that the user can immediately begin typing.
+     */
+    private void setCommandTextFieldFocus() {
+        Platform.runLater(new Runnable() {
+            public void run() {
+                commandTextField.requestFocus();
+            }
+        });
     }
 
     @FXML
-    private void handleCommandInputChanged() {
+    private void handleCommandInputChanged() throws DuplicateEntryException {
         commandHistory.saveCommand();
         try {
             CommandResult commandResult = logic.execute(commandTextField.getText().trim());
@@ -56,6 +71,10 @@ public class CommandBox extends UiPart<Region> {
             // handle command failure
             setStyleToIndicateCommandFailure();
             logger.info("Invalid command: " + commandTextField.getText().trim());
+            raise(new NewResultAvailableEvent(e.getMessage()));
+        } catch (DuplicateEntryException e) {
+            setStyleToIndicateCommandFailure();
+            logger.info("Unable to add duplicate entry with command: " + commandTextField.getText().trim());
             raise(new NewResultAvailableEvent(e.getMessage()));
         }
         commandTextField.setText("");

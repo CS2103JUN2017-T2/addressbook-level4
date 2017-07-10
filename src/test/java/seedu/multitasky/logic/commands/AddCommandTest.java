@@ -17,9 +17,10 @@ import seedu.multitasky.logic.CommandHistory;
 import seedu.multitasky.model.Model;
 import seedu.multitasky.model.ReadOnlyEntryBook;
 import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
-import seedu.multitasky.testutil.EntryBuilder;
+import seedu.multitasky.model.util.EntryBuilder;
 
 public class AddCommandTest {
 
@@ -56,10 +57,8 @@ public class AddCommandTest {
      * A default model stub that have all of the methods failing.
      */
     private class ModelStub implements Model {
-        @Override
-        public void addEntry(ReadOnlyEntry entry) {
-            fail("This method should not be called.");
-        }
+
+
 
         @Override
         public void resetData(ReadOnlyEntryBook newData) {
@@ -78,8 +77,25 @@ public class AddCommandTest {
         }
 
         @Override
-        public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) {
+        public void addEntry(ReadOnlyEntry entry) {
             fail("This method should not be called.");
+        }
+
+        @Override
+        public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws EntryNotFoundException {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public UnmodifiableObservableList<ReadOnlyEntry> getFilteredEventList() {
+            fail("This method should not be called.");
+            return null;
+        }
+
+        @Override
+        public UnmodifiableObservableList<ReadOnlyEntry> getFilteredDeadlineList() {
+            fail("This method should not be called.");
+            return null;
         }
 
         @Override
@@ -89,7 +105,50 @@ public class AddCommandTest {
         }
 
         @Override
-        public void updateFilteredListToShowAll() {
+        public UnmodifiableObservableList<ReadOnlyEntry> getActiveList() {
+            fail("This method should not be called.");
+            return null;
+        }
+
+        @Override
+        public UnmodifiableObservableList<ReadOnlyEntry> getArchive() {
+            fail("This method should not be called.");
+            return null;
+        }
+
+        @Override
+        public UnmodifiableObservableList<ReadOnlyEntry> getBin() {
+            fail("This method should not be called.");
+            return null;
+        }
+
+        @Override
+        public void updateFilteredEventListToShowAll() {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void updateFilteredDeadlineListToShowAll() {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void updateFilteredFloatingTaskListToShowAll() {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void updateAllFilteredListToShowAll() {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void updateFilteredEventList(Set<String> keywords) {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void updateFilteredDeadlineList(Set<String> keywords) {
             fail("This method should not be called.");
         }
 
@@ -97,6 +156,12 @@ public class AddCommandTest {
         public void updateFilteredFloatingTaskList(Set<String> keywords) {
             fail("This method should not be called.");
         }
+
+        @Override
+        public void undoPreviousAction() {
+            fail("This method should not be called.");
+        }
+
     }
 
     /**
@@ -107,7 +172,7 @@ public class AddCommandTest {
 
         @Override
         public void addEntry(ReadOnlyEntry entry) {
-            entrysAdded.add(new Entry(entry));
+            entrysAdded.add(new FloatingTask(entry));
         }
     }
 

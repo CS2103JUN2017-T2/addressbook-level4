@@ -11,6 +11,7 @@ import java.util.Set;
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.commons.util.CollectionUtil;
 import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.tag.Tag;
@@ -67,7 +68,7 @@ public abstract class EditCommand extends Command {
         Name updatedName = editEntryDescriptor.getName().orElse(entryToEdit.getName());
         Set<Tag> updatedTags = editEntryDescriptor.getTags().orElse(entryToEdit.getTags());
 
-        return new Entry(updatedName, updatedTags);
+        return new FloatingTask(updatedName, updatedTags);
     }
 
     @Override

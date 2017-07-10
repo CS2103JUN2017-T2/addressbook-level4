@@ -4,9 +4,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import seedu.multitasky.commons.exceptions.IllegalValueException;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.ReadOnlyEntryBook;
 import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.tag.Tag;
 
@@ -16,15 +18,15 @@ public class SampleDataUtil {
         try {
             //CHECKSTYLE.OFF: LineLength
             return new Entry[] {
-                new Entry(new Name("Take lunch to work"), getTagSet()),
-                new Entry(new Name("Take dog for walk"), getTagSet()),
-                new Entry(new Name("Fill up cat food bowl"), getTagSet()),
-                new Entry(new Name("Write novel"), getTagSet()),
-                new Entry(new Name("Buy groceries"), getTagSet()),
-                new Entry(new Name("Refactor code"), getTagSet()),
-                new Entry(new Name("Write two more tasks"), getTagSet()),
-                new Entry(new Name("Import test cases"), getTagSet()),
-                new Entry(new Name("Scold Travis"), getTagSet())
+                new FloatingTask(new Name("Take lunch to work"), getTagSet()),
+                new FloatingTask(new Name("Take dog for walk"), getTagSet()),
+                new FloatingTask(new Name("Fill up cat food bowl"), getTagSet()),
+                new FloatingTask(new Name("Write novel"), getTagSet()),
+                new FloatingTask(new Name("Buy groceries"), getTagSet()),
+                new FloatingTask(new Name("Refactor code"), getTagSet()),
+                new FloatingTask(new Name("Write two more tasks"), getTagSet()),
+                new FloatingTask(new Name("Import test cases"), getTagSet()),
+                new FloatingTask(new Name("Scold Travis"), getTagSet())
             };
             //CHECKSTYLE.ON: LineLength
         } catch (IllegalValueException e) {
@@ -36,8 +38,12 @@ public class SampleDataUtil {
     public static ReadOnlyEntryBook getSampleEntryBook() {
         //TODO write catch block for DuplicateEntryException
         EntryBook sampleEntryBook = new EntryBook();
+        try {
         for (Entry sampleEntry : getSampleEntries()) {
             sampleEntryBook.addEntry(sampleEntry);
+        }
+        } catch (DuplicateEntryException e) {
+            assert false : "Sample Entry Book generation failed. EntryBooks should not have duplicate entries.";
         }
         return sampleEntryBook;
     }
