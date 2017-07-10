@@ -11,8 +11,10 @@ import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 import seedu.multitasky.model.tag.Tag;
+import seedu.multitasky.model.entry.exceptions.*;
 
 //@@author A0126623L
 /**
@@ -72,14 +74,15 @@ public class ModelManager extends ComponentManager implements Model {
 
     // @@author A0126623L
     @Override
-    public synchronized void addEntry(ReadOnlyEntry entry) {
+    public synchronized void addEntry(ReadOnlyEntry entry) throws DuplicateEntryException {
         _entryBook.addEntry(entry);
         indicateEntryBookChanged();
     }
     // @@author
 
     @Override
-    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws EntryNotFoundException {
+    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
+            throws DuplicateEntryException, EntryNotFoundException {
         requireAllNonNull(target, editedEntry);
 
         _entryBook.updateEntry(target, editedEntry);

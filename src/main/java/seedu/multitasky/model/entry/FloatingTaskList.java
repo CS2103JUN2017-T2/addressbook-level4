@@ -1,8 +1,8 @@
 package seedu.multitasky.model.entry;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.List;
+
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 
 public class FloatingTaskList extends EntryList {
 
@@ -11,8 +11,8 @@ public class FloatingTaskList extends EntryList {
      * Pre-conditions: toAdd is not null and is of type FloatingTask.
      */
     @Override
-    public void add(ReadOnlyEntry toAdd) {
-        requireNonNull(toAdd);
+    public void add(ReadOnlyEntry toAdd) throws DuplicateEntryException {
+        super.add(toAdd);
         assert (toAdd instanceof FloatingTask);
 
         internalList.add(new FloatingTask(toAdd));
@@ -24,10 +24,10 @@ public class FloatingTaskList extends EntryList {
      *
      * @param entries must be a list of floating tasks.
      */
-    public void setEntries(List<? extends ReadOnlyEntry> entries) {
+    public void setEntries(List<? extends ReadOnlyEntry> entries) throws DuplicateEntryException {
         final FloatingTaskList replacement = new FloatingTaskList();
         for (final ReadOnlyEntry entry : entries) {
-            replacement.add(new Event(entry));
+            replacement.add(new FloatingTask(entry));
         }
         super.setEntries(replacement);
     }

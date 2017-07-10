@@ -22,6 +22,7 @@ import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.FloatingTaskList;
 import seedu.multitasky.model.entry.MiscEntryList;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 import seedu.multitasky.model.tag.Tag;
 import seedu.multitasky.model.tag.UniqueTagList;
@@ -70,27 +71,27 @@ public class EntryBook implements ReadOnlyEntryBook {
 
     //// list overwrite operations
 
-    public void setActiveList(List<? extends ReadOnlyEntry> entries) {
+    public void setActiveList(List<? extends ReadOnlyEntry> entries) throws DuplicateEntryException {
         this._activeList.setEntries(entries);
     }
 
-    public void setArchive(List<? extends ReadOnlyEntry> entries) {
+    public void setArchive(List<? extends ReadOnlyEntry> entries) throws DuplicateEntryException {
         this._archive.setEntries(entries);
     }
 
-    public void setBin(List<? extends ReadOnlyEntry> entries) {
+    public void setBin(List<? extends ReadOnlyEntry> entries) throws DuplicateEntryException {
         this._bin.setEntries(entries);
     }
 
-    public void setEventList(List<? extends ReadOnlyEntry> entries) {
+    public void setEventList(List<? extends ReadOnlyEntry> entries) throws DuplicateEntryException {
         this._eventList.setEntries(entries);
     }
 
-    public void setDeadlineList(List<? extends ReadOnlyEntry> entries) {
+    public void setDeadlineList(List<? extends ReadOnlyEntry> entries) throws DuplicateEntryException {
         this._deadlineList.setEntries(entries);
     }
 
-    public void setFloatingTaskList(List<? extends ReadOnlyEntry> entries) {
+    public void setFloatingTaskList(List<? extends ReadOnlyEntry> entries) throws DuplicateEntryException {
         this._floatingTaskList.setEntries(entries);
     }
 
@@ -101,12 +102,16 @@ public class EntryBook implements ReadOnlyEntryBook {
     public void resetData(ReadOnlyEntryBook newData) {
         requireNonNull(newData);
 
-        setActiveList(newData.getActiveList());
-        setArchive(newData.getArchive());
-        setBin(newData.getBin());
-        setEventList(newData.getEventList());
-        setDeadlineList(newData.getDeadlineList());
-        setFloatingTaskList(newData.getFloatingTaskList());
+        try {
+            setActiveList(newData.getActiveList());
+            setArchive(newData.getArchive());
+            setBin(newData.getBin());
+            setEventList(newData.getEventList());
+            setDeadlineList(newData.getDeadlineList());
+            setFloatingTaskList(newData.getFloatingTaskList());
+        } catch (DuplicateEntryException e) {
+            assert false : "EntryBooks should not have duplicate entries";
+        }
 
         try {
             setTags(newData.getTagList());
@@ -125,7 +130,7 @@ public class EntryBook implements ReadOnlyEntryBook {
      * Also checks the new entry's tags and updates {@link #tags} with any new tags found,
      * and updates the Tag objects in the entry to point to those in {@link #tags}.
      */
-    public void addEntry(ReadOnlyEntry e) {
+    public void addEntry(ReadOnlyEntry e) throws DuplicateEntryException {
         addToEntrySubTypeList(e);
 
         Entry newEntry = convertToEntrySubType(e);
@@ -136,7 +141,7 @@ public class EntryBook implements ReadOnlyEntryBook {
     /**
      * Add a given ReadOnlyEntry to one of either active, deadline or floating task list.
      */
-    private void addToEntrySubTypeList(ReadOnlyEntry newEntry) {
+    private void addToEntrySubTypeList(ReadOnlyEntry newEntry) throws DuplicateEntryException {
         if (newEntry instanceof Event) {
             _eventList.add(newEntry);
         } else if (newEntry instanceof Deadline) {
@@ -154,9 +159,8 @@ public class EntryBook implements ReadOnlyEntryBook {
      * @throws EntryNotFoundException if {@code target} could not be found in the list.
      * @see #syncMasterTagListWith(Entry)
      */
-    public void updateEntry(ReadOnlyEntry target,
-                            ReadOnlyEntry editedReadOnlyEntry)
-            throws EntryNotFoundException {
+    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedReadOnlyEntry)
+            throws DuplicateEntryException, EntryNotFoundException {
         requireNonNull(editedReadOnlyEntry);
 
         _activeList.updateEntry(target, editedReadOnlyEntry);
