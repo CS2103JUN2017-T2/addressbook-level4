@@ -4,6 +4,9 @@ import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.model.entry.FloatingTask;
+import seedu.multitasky.model.util.EntryBuilder;
+import seedu.multitasky.model.util.SampleDataUtil;
 
 //@@author A0125586X
 /**
@@ -21,7 +24,8 @@ public class TypicalEntries {
     public TypicalEntries() {
         try {
             //CHECKSTYLE.OFF: LineLength
-            cook = new EntryBuilder().withName("Learn to cook").withTags("goals").build();
+            cook = new FloatingTask(new Name("Learn to cook"), SampleDataUtil.getTagSet("goals"));
+
             programming = new EntryBuilder().withName("Learn programming").withTags("lessons", "computer").build();
             hire = new EntryBuilder().withName("Hire an assistant").withTags("help").build();
             spectacles = new EntryBuilder().withName("Make new spectacles").withTags("health", "eyesight").build();
@@ -36,13 +40,14 @@ public class TypicalEntries {
 
     // @@author A0126623L
     public static void loadEntryBookWithSampleData(EntryBook entryBook) {
-        for (Entry entry : new TypicalEntries().getTypicalEntries()) {
-            entryBook.addEntry(new Entry(entry));
+        // TODO add events and deadlines
+        for (Entry entry: new TypicalEntries().getTypicalFloatingTasks()) {
+            entryBook.addEntry(new FloatingTask(entry));
         }
     }
 
     public Entry[] getTypicalEntries() {
-        return new Entry[] { cook, programming, hire};
+        return new Entry[] { cook, programming, hire };
     }
 
     //@@author A0125586X

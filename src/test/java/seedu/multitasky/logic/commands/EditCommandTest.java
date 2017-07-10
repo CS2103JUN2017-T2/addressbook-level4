@@ -24,8 +24,8 @@ import seedu.multitasky.model.ModelManager;
 import seedu.multitasky.model.UserPrefs;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
+import seedu.multitasky.model.util.EntryBuilder;
 import seedu.multitasky.testutil.EditEntryDescriptorBuilder;
-import seedu.multitasky.testutil.EntryBuilder;
 import seedu.multitasky.testutil.TypicalEntries;
 
 /**
@@ -116,7 +116,7 @@ public class EditCommandTest {
         showFirstEntryOnly();
         Index outOfBoundIndex = INDEX_SECOND_ENTRY;
         // ensures that outOfBoundIndex is still in bounds of entry book list
-        assertTrue(outOfBoundIndex.getZeroBased() < model.getEntryBook().getEntryList().size());
+        assertTrue(outOfBoundIndex.getZeroBased() < model.getEntryBook().getFloatingTaskList().size());
 
         EditCommand editCommand = prepareCommand(outOfBoundIndex,
                 new EditEntryDescriptorBuilder().withName(VALID_NAME_BOB).build());
@@ -162,7 +162,7 @@ public class EditCommandTest {
      * Updates the filtered list to show only the first person in the {@code model}'s entry book.
      */
     private void showFirstEntryOnly() {
-        ReadOnlyEntry person = model.getEntryBook().getEntryList().get(0);
+        ReadOnlyEntry person = model.getEntryBook().getFloatingTaskList().get(0);
         final String[] splitName = person.getName().fullName.split("\\s+");
         model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList(splitName)));
 

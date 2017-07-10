@@ -36,7 +36,7 @@ public class Deadline extends Entry {
 
     /**
      * Updates this entry with the details of {@code replacement}.
-     * 
+     *
      * @param replacement must be of type Deadline.
      */
     @Override
