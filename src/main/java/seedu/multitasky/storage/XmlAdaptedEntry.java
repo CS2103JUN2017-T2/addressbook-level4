@@ -1,17 +1,18 @@
 package seedu.multitasky.storage;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlElement;
 
-import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.tag.Tag;
+import seedu.multitasky.model.util.EntryBuilder;
 
 /**
  * JAXB-friendly version of the Entry.
@@ -22,11 +23,13 @@ public class XmlAdaptedEntry {
     private String name;
 
     @XmlElement
-    private String startDateAndTime;
+    private Calendar startDateAndTime;
     @XmlElement
-    private String endDateAndTime;
+    private Calendar endDateAndTime;
     @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
+
+    private EntryBuilder entryBuilder;
 
     /**
      * Constructs an XmlAdaptedEntry. This is the no-arg constructor that is
@@ -41,6 +44,8 @@ public class XmlAdaptedEntry {
      */
     public XmlAdaptedEntry(ReadOnlyEntry source) {
         name = source.getName().fullName;
+        startDateAndTime = source.getStartDateAndTime();
+        endDateAndTime = source.getEndDateAndTime();
         tagged = new ArrayList<>();
         for (Tag tag : source.getTags()) {
             tagged.add(new XmlAdaptedTag(tag));
@@ -51,17 +56,15 @@ public class XmlAdaptedEntry {
      * Converts this jaxb-friendly adapted entry object into the model's Entry
      * object.
      *
-     * @throws IllegalValueException
-     *             if there were any data constraints violated in the adapted
-     *             entry
+     * @throws Exception
      */
-    public Entry toModelType() throws IllegalValueException {
+    public Entry toModelType() throws Exception {
         final List<Tag> entryTags = new ArrayList<>();
         for (XmlAdaptedTag tag : tagged) {
             entryTags.add(tag.toModelType());
         }
         final Name name = new Name(this.name);
         final Set<Tag> tags = new HashSet<>(entryTags);
-        return new Entry(name, tags);
+        return entryBuilder.build();
     }
 }
