@@ -22,6 +22,7 @@ public class DeadlineList extends EntryList {
 
         internalList.add(new Deadline(toAdd));
     }
+    // @@author
 
     // @@author A0126623L
     /**
@@ -36,5 +37,6 @@ public class DeadlineList extends EntryList {
         }
         super.setEntries(replacement);
     }
+    // @@author
 
 }

@@ -49,6 +49,7 @@ public class FloatingTask extends Entry {
                || this.isSameStateAs((ReadOnlyEntry) other);
     }
 
+    // @@author A0126623L
     /**
      * Compares the state with another Floating Task.
      */
@@ -57,6 +58,7 @@ public class FloatingTask extends Entry {
         return (other instanceof FloatingTask // instanceof handles nulls
                 && this.getName().equals(other.getName()) && this.getTags().equals(other.getTags()));
     }
+    // @@author
 
     @Override
     public int hashCode() {
@@ -64,6 +66,7 @@ public class FloatingTask extends Entry {
         return Objects.hash(getName(), getTags());
     }
 
+    // @@author A0126623L
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
@@ -71,4 +74,5 @@ public class FloatingTask extends Entry {
         getTags().forEach(builder::append);
         return builder.toString();
     }
+    // @@author
 }

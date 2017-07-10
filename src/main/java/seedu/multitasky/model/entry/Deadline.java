@@ -76,6 +76,7 @@ public class Deadline extends Entry {
                || this.isSameStateAs((ReadOnlyEntry) other);
     }
 
+    // @@author A0126623L
     @Override
     public boolean isSameStateAs(ReadOnlyEntry other) {
         return (other instanceof Deadline
@@ -83,6 +84,7 @@ public class Deadline extends Entry {
                 && this.getEndDateAndTime().equals(other.getEndDateAndTime())
                 && this.getTags().equals(other.getTags()));
     }
+    // @@author
 
     @Override
     public int hashCode() {
@@ -90,6 +92,7 @@ public class Deadline extends Entry {
         return Objects.hash(getName(), getEndDateAndTime(), getTags());
     }
 
+    // @@author A0126623L
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
@@ -100,5 +103,6 @@ public class Deadline extends Entry {
         getTags().forEach(builder::append);
         return builder.toString();
     }
+    // @@author
 
 }

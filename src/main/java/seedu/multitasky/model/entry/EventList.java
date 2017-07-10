@@ -10,6 +10,7 @@ import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
  */
 public class EventList extends EntryList {
 
+    // @@author A0126623L
     /**
      * Adds an event to the list.
      *
@@ -22,6 +23,7 @@ public class EventList extends EntryList {
 
         internalList.add(new Event(toAdd));
     }
+    // @@author
 
     // @@author A0126623L
     /**
@@ -36,5 +38,6 @@ public class EventList extends EntryList {
         }
         super.setEntries(replacement);
     }
+    // @@author
 
 }
