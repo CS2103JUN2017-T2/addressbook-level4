@@ -79,7 +79,6 @@ public class XmlAdaptedEntry {
         }
         final Set<Tag> tags = new HashSet<>(personTags);
         Entry entry = new EntryBuilder().withName(this.name).withTags(tags).build();
-        System.out.println("This is the entry" + entry.toString());
         return entry;
     }
 }
