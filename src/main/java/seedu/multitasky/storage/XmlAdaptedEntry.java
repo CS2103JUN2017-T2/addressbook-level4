@@ -29,7 +29,7 @@ public class XmlAdaptedEntry {
     @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
 
-    private SimpleDateFormat formatter = new SimpleDateFormat("d/M/y H:mm");
+    private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy HH:mm");
 
     /**
      * Constructs an XmlAdaptedEntry. This is the no-arg constructor that is
@@ -78,7 +78,8 @@ public class XmlAdaptedEntry {
             endDateAndTimeToUse.setTime(formatter.parse(this.endDateAndTime));
         }
         final Set<Tag> tags = new HashSet<>(personTags);
-        Entry entry = new EntryBuilder().withName(this.name).withTags(tags).build();
+        Entry entry = new EntryBuilder().withName(this.name).withStartDateAndTime(startDateAndTimeToUse)
+                .withEndDateAndTime(endDateAndTimeToUse).withTags(tags).build();
         return entry;
     }
 }
