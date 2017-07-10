@@ -51,7 +51,7 @@ import seedu.multitasky.model.UserPrefs;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.tag.Tag;
-import seedu.multitasky.testutil.EntryBuilder;
+import seedu.multitasky.model.util.EntryBuilder;
 
 public class LogicManagerTest {
 
