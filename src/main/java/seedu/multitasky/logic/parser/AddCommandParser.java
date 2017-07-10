@@ -80,11 +80,9 @@ public class AddCommandParser {
         } else if (isEvent(argMultimap)) {
             try {
                 Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
-                //TODO clean up method to allow more prefixes entered.
-                // assumes only from and at for start date prefix.
-                Prefix startDatePrefix = argMultimap.getValue(PREFIX_FROM).isPresent() ? PREFIX_FROM : PREFIX_AT;
-                // assumes only by and to for end date prefix.
-                Prefix endDatePrefix = argMultimap.getValue(PREFIX_TO).isPresent() ? PREFIX_TO : PREFIX_BY;
+                //TODO RENAME MMETHOD LATER
+                Prefix startDatePrefix = ParserUtil.getDatePrefix(argMultimap, PREFIX_FROM, PREFIX_AT);
+                Prefix endDatePrefix = ParserUtil.getDatePrefix(argMultimap, PREFIX_TO, PREFIX_BY);
 
                 endDate = DateUtil.stringToCalendar(argMultimap.getValue(endDatePrefix).get(),
                                                     null);
