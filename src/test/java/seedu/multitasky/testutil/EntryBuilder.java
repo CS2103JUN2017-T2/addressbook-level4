@@ -4,6 +4,7 @@ import java.util.Set;
 
 import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.tag.Tag;
@@ -23,14 +24,14 @@ public class EntryBuilder {
     public EntryBuilder() throws IllegalValueException {
         Name defaultName = new Name(DEFAULT_NAME);
         Set<Tag> defaultTags = SampleDataUtil.getTagSet(DEFAULT_TAGS);
-        this.entry = new Entry(defaultName, defaultTags);
+        this.entry = new FloatingTask(defaultName, defaultTags);
     }
 
     /**
      * Initializes the EntryBuilder with the data of {@code entryToCopy}.
      */
     public EntryBuilder(ReadOnlyEntry entryToCopy) {
-        this.entry = new Entry(entryToCopy);
+        this.entry = new FloatingTask(entryToCopy);
     }
 
     public EntryBuilder withName(String name) throws IllegalValueException {
@@ -38,7 +39,7 @@ public class EntryBuilder {
         return this;
     }
 
-    public EntryBuilder withTags(String ... tags) throws IllegalValueException {
+    public EntryBuilder withTags(String... tags) throws IllegalValueException {
         this.entry.setTags(SampleDataUtil.getTagSet(tags));
         return this;
     }

@@ -27,7 +27,7 @@ public class TagTest {
 
     // @@author A0126623L
     @Test
-    public void equalityTests() {
+    public void equalsTest() {
 
         // initialize
         try {
