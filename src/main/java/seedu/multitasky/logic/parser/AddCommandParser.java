@@ -1,6 +1,5 @@
 package seedu.multitasky.logic.parser;
 
-import static java.util.Objects.requireNonNull;
 import static seedu.multitasky.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_AT;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_BY;
@@ -9,12 +8,13 @@ import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_TO;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Set;
 
 import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.logic.commands.AddCommand;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
+import seedu.multitasky.model.entry.Deadline;
+import seedu.multitasky.model.entry.Event;
 import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
@@ -34,8 +34,8 @@ public class AddCommandParser {
     public AddCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_BY, PREFIX_AT, PREFIX_FROM,
                                                                   PREFIX_TO, PREFIX_TAG);
-        Calendar startDate = Calendar.getInstance();
-        Calendar endDate = Calendar.getInstance();
+        Calendar startDate = null;
+        Calendar endDate = null;
 
         // check for no args input
         if (args.trim().isEmpty()) {
@@ -62,32 +62,41 @@ public class AddCommandParser {
                 throw new ParseException(ive.getMessage(), ive);
             }
 
-        } else if (isEvent(argMultimap)) {
+        } else if (isDeadline(argMultimap)) {
             try {
                 Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
 
-                Prefix datePrefix = ParserUtil.getDatePrefix(argMultimap, PREFIX_AT,
-                                                             PREFIX_BY, PREFIX_FROM);
-                Date firstDate = DateUtil.stringToDate(argMultimap.getValue(datePrefix).get());
-                requireNonNull(firstDate);
-                startDate.setTime(firstDate);
-                Date secondDate = DateUtil.stringToDate(argMultimap.getValue(PREFIX_TO).get());
-                requireNonNull(secondDate);
-                endDate.setTime(secondDate);
-                System.out.println(startDate.getTime());
-                System.out.println(endDate.getTime());
-
+                // only PREFIX_BY to indicate deadline.
+                Prefix datePrefix = PREFIX_BY;
+                endDate = DateUtil.stringToCalendar(argMultimap.getValue(datePrefix).get(),
+                                                    null);
                 Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
-                ReadOnlyEntry entry = new FloatingTask(name, tagList);
+                ReadOnlyEntry entry = new Deadline(name, endDate, tagList);
+
                 return new AddCommand(entry);
 
             } catch (IllegalValueException ive) {
                 throw new ParseException(ive.getMessage(), ive);
             }
 
-        } else if (isDeadline(argMultimap)) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                                                   AddCommand.MESSAGE_USAGE));
+        } else if (isEvent(argMultimap)) {
+            try {
+                Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
+                //TODO RENAME MMETHOD LATER
+                Prefix startDatePrefix = ParserUtil.getDatePrefix(argMultimap, PREFIX_FROM, PREFIX_AT);
+                Prefix endDatePrefix = ParserUtil.getDatePrefix(argMultimap, PREFIX_TO, PREFIX_BY);
+
+                endDate = DateUtil.stringToCalendar(argMultimap.getValue(endDatePrefix).get(),
+                                                    null);
+                startDate = DateUtil.stringToCalendar(argMultimap.getValue(startDatePrefix).get(), endDate);
+                Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+                ReadOnlyEntry entry = new Event(name, startDate, endDate , tagList);
+
+                return new AddCommand(entry);
+
+            } catch (IllegalValueException ive) {
+                throw new ParseException(ive.getMessage(), ive);
+            }
 
         } else {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
@@ -100,10 +109,10 @@ public class AddCommandParser {
      */
     private boolean hasInvalidFlagCombination(ArgumentMultimap argMultimap) {
         return ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FROM, PREFIX_AT)
-               || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FROM, PREFIX_BY)
-               || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_BY, PREFIX_AT);
+               || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_TO, PREFIX_BY);
     }
 
+    //TODO to improve by giving ArgumentMultimap the method instead, use contains()?
     /*
      * Returns true if flags present in argMultimap indicate to add a floating task entry.
      */
@@ -113,22 +122,20 @@ public class AddCommandParser {
 
     /*
      * Returns true if flags present in argMultimap indicate to add an event entry.
-     * MUST have ONE of /by, /at, /from AND /to
+     * MUST have ONE of /from or /at AND ONE of /by or /to, but should not have both tgt.
      */
     private boolean isEvent(ArgumentMultimap argMultimap) {
-        return ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_TO)
-               && ParserUtil.arePrefixesPresent(argMultimap, PREFIX_BY, PREFIX_AT, PREFIX_FROM);
+        return ParserUtil.arePrefixesPresent(argMultimap, PREFIX_FROM, PREFIX_AT)
+               && ParserUtil.arePrefixesPresent(argMultimap, PREFIX_BY, PREFIX_TO);
     }
 
     /*
      * Returns true if flags present in argMultimap indicate to add a deadline entry.
-     * Either
+     * MUST have /by ONLY
      */
     private boolean isDeadline(ArgumentMultimap argMultimap) {
         return ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_BY)
-               || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_AT)
-               || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FROM)
-               || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_TO);
+               && (!ParserUtil.arePrefixesPresent(argMultimap, PREFIX_AT, PREFIX_FROM, PREFIX_TO));
     }
 
 }
