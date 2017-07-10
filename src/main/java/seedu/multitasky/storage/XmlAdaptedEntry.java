@@ -22,6 +22,10 @@ public class XmlAdaptedEntry {
     private String name;
 
     @XmlElement
+    private String startDateAndTime;
+    @XmlElement
+    private String endDateAndTime;
+    @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
 
     /**
