@@ -1,8 +1,8 @@
 package seedu.multitasky.model.entry;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.List;
+
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 
 //@@author A0126623L
 /**
@@ -17,8 +17,8 @@ public class MiscEntryList extends EntryList {
      * @param toAdd is a subclass of Entry and must not be null.
      */
     @Override
-    public void add(ReadOnlyEntry toAdd) {
-        requireNonNull(toAdd);
+    public void add(ReadOnlyEntry toAdd) throws DuplicateEntryException {
+        super.add(toAdd);
         assert (toAdd instanceof Entry);
         add((Entry) toAdd);
     }
@@ -35,8 +35,8 @@ public class MiscEntryList extends EntryList {
     /**
      * Sets EventList to contain the reference to the entries in the given list.
      */
-    public void setEntries(List<? extends ReadOnlyEntry> entries) {
-        final EntryList replacement = new EventList();
+    public void setEntries(List<? extends ReadOnlyEntry> entries) throws DuplicateEntryException {
+        final MiscEntryList replacement = new MiscEntryList();
         for (final ReadOnlyEntry entry : entries) {
             replacement.add(entry);
         }
