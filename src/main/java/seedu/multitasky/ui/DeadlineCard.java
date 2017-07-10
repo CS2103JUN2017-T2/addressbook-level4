@@ -1,7 +1,5 @@
 package seedu.multitasky.ui;
 
-import org.ocpsoft.prettytime.PrettyTime;
-
 import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 

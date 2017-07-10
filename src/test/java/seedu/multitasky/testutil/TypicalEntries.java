@@ -48,7 +48,7 @@ public class TypicalEntries {
         } catch (Exception e) {
             assert false : "Sample entries cannot have errors";
         }
-        
+
     }
 
     public Entry[] getTypicalEntries() {

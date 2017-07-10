@@ -2,7 +2,6 @@ package seedu.multitasky.model.entry;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Collection;
 import java.util.Iterator;
 
 import javafx.collections.FXCollections;

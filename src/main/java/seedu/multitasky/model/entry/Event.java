@@ -84,8 +84,7 @@ public class Event extends Entry {
 
     @Override
     public boolean isSameStateAs(ReadOnlyEntry other) {
-        return (other instanceof Event && this.getName().equals(other.getName()) // instanceof
-                                                                                 // handles nulls
+        return (other instanceof Event && this.getName().equals(other.getName()) // instanceof handles nulls
                 && this.getStartDateAndTime().equals(other.getStartDateAndTime())
                 && this.getEndDateAndTime().equals(other.getEndDateAndTime())
                 && this.getTags().equals(other.getTags()));
