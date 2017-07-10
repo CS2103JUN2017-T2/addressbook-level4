@@ -20,7 +20,7 @@ import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
-import seedu.multitasky.testutil.EntryBuilder;
+import seedu.multitasky.model.util.EntryBuilder;
 
 public class AddCommandTest {
 

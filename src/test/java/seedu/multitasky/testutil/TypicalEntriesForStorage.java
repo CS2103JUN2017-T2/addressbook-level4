@@ -3,6 +3,7 @@ package seedu.multitasky.testutil;
 import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.model.util.EntryBuilder;
 
 //@@author A0132788U
 /**

@@ -24,8 +24,8 @@ import seedu.multitasky.model.ModelManager;
 import seedu.multitasky.model.UserPrefs;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
+import seedu.multitasky.model.util.EntryBuilder;
 import seedu.multitasky.testutil.EditEntryDescriptorBuilder;
-import seedu.multitasky.testutil.EntryBuilder;
 import seedu.multitasky.testutil.TypicalEntries;
 
 /**

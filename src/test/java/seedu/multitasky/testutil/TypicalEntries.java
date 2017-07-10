@@ -5,6 +5,7 @@ import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.FloatingTask;
+import seedu.multitasky.model.util.EntryBuilder;
 import seedu.multitasky.model.util.SampleDataUtil;
 
 //@@author A0125586X
