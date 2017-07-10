@@ -10,6 +10,7 @@ import seedu.multitasky.model.Model;
 import seedu.multitasky.model.ModelManager;
 import seedu.multitasky.model.UserPrefs;
 import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.util.EntryBuilder;
 import seedu.multitasky.testutil.TypicalEntries;
 
@@ -26,7 +27,7 @@ public class AddCommandIntegrationTest {
     }
 
     @Test
-    public void execute_newEntry_success() throws Exception {
+    public void execute_newEntry_success() throws Exception, DuplicateEntryException {
         Entry validEntry = new EntryBuilder().build();
 
         Model expectedModel = new ModelManager(model.getEntryBook(), new UserPrefs());

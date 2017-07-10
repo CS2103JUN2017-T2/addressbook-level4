@@ -27,8 +27,13 @@ public class TypicalEntriesForStorage {
     }
 
     public static void loadEntryBookWithSampleData(EntryBook entryBook) {
-        for (Entry entry : new TypicalEntries().getTypicalFloatingTasks()) {
-            entryBook.addEntry(new FloatingTask(entry));
+        try {
+            // TODO add events and deadlines
+            for (Entry entry: new TypicalEntries().getTypicalFloatingTasks()) {
+                entryBook.addEntry(new FloatingTask(entry));
+            }
+        } catch (Exception e) {
+            assert false : "Sample entries cannot have errors";
         }
     }
 

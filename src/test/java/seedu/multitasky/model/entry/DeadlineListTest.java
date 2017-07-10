@@ -13,6 +13,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javafx.collections.ObservableList;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 import seedu.multitasky.model.tag.Tag;
 
@@ -96,12 +97,17 @@ public class DeadlineListTest {
     /**
      * Create a DeadlineList with {deadline1, deadline3}
      */
-    public static DeadlineList createDeadlineList1() {
+    public static DeadlineList createDeadlineList1() throws DuplicateEntryException {
         DeadlineList deadlineList1clone = new DeadlineList();
-        deadlineList1clone.add(deadline1);
-        deadlineList1clone.add(deadline3);
+        try {
+            deadlineList1clone.add(deadline1);
+            deadlineList1clone.add(deadline3);
 
-        return deadlineList1clone;
+            return deadlineList1clone;
+        } catch (DuplicateEntryException e) {
+            fail("DeadlineListTest.createDeadlineList1() failed due to duplicate entry.");
+            return null;
+        }
     }
 
     // @@author A0126623L
@@ -123,7 +129,7 @@ public class DeadlineListTest {
 
     // @@author A0126623L
     @Test
-    public void removeTest() throws EntryNotFoundException {
+    public void removeTest() throws EntryNotFoundException, DuplicateEntryException {
         DeadlineList deadlineListToTest = createDeadlineList1();
 
         deadlineListToTest.remove(deadline1);
@@ -132,7 +138,7 @@ public class DeadlineListTest {
 
     // @@author A0126623L
     @Test(expected = Exception.class)
-    public void removeTest_returnEntryNotFoundException() throws EntryNotFoundException {
+    public void removeTest_returnEntryNotFoundException() throws EntryNotFoundException, DuplicateEntryException {
         DeadlineList deadlineListToTest = createDeadlineList1();
 
         deadlineListToTest.remove(deadline4);
@@ -140,11 +146,16 @@ public class DeadlineListTest {
 
     // @@author A0126623L
     @Test
-    public void updateEntryTest() throws EntryNotFoundException {
+    public void updateEntryTest() throws EntryNotFoundException, DuplicateEntryException {
         DeadlineList deadlineListToTest = createDeadlineList1();
 
-        deadlineListToTest.updateEntry(deadline1, deadline4);
-        assertFalse(deadlineList1.asObservableList().get(0).equals(deadline4));
+        try {
+            deadlineListToTest.updateEntry(deadline1, deadline4);
+            assertFalse(deadlineList1.asObservableList().get(0).equals(deadline4));
+        } catch (DuplicateEntryException e) {
+            fail("DeadlineListTest.updateEntryTest() failed due to duplicate entry.");
+        }
+
     }
 
     // @@author A0126623L
@@ -152,7 +163,7 @@ public class DeadlineListTest {
      * Note: This test method relies on the correct functioning of the equals() method.
      */
     @Test
-    public void setEntriesTest_newDeadlineList_equalsMethodReturnsFalse() {
+    public void setEntriesTest_newDeadlineList_equalsMethodReturnsFalse() throws DuplicateEntryException {
         DeadlineList deadlineListToTest = createDeadlineList1();
 
         deadlineListToTest.setEntries(deadlineList3);
@@ -161,7 +172,7 @@ public class DeadlineListTest {
 
     // @@author A0126623L
     @Test
-    public void setEntriesTest() {
+    public void setEntriesTest() throws DuplicateEntryException {
         DeadlineList deadlineListToTest = createDeadlineList1();
 
         ArrayList<Deadline> deadlineArrayList = new ArrayList<>();
@@ -169,8 +180,13 @@ public class DeadlineListTest {
         deadlineArrayList.add(deadline4);
         // deadlineArrayList holds the same elements as that of deadlineList3.
 
-        deadlineListToTest.setEntries(deadlineArrayList);
-        assertTrue(deadlineListToTest.equals(deadlineList3));
+        try {
+            deadlineListToTest.setEntries(deadlineArrayList);
+            assertTrue(deadlineListToTest.equals(deadlineList3));
+        } catch (DuplicateEntryException e) {
+            fail("DeadlineListTest.setEntriesTest() failed due to duplicate entry.");
+        }
+
     }
 
 }
