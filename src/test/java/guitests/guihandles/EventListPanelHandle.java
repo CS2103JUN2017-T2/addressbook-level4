@@ -2,6 +2,7 @@ package guitests.guihandles;
 
 import guitests.GuiRobot;
 import javafx.stage.Stage;
+import seedu.multitasky.model.entry.Event;
 
 //@@author A0125586X
 /**
@@ -12,5 +13,13 @@ public class EventListPanelHandle extends EntryListPanelHandle {
     public EventListPanelHandle(GuiRobot guiRobot, Stage primaryStage) {
         super(guiRobot, primaryStage);
         listViewId = "#eventListView";
+    }
+
+    @Override
+    /**
+     * Gets an entry handle for a event entry in the list by index
+     */
+    public EntryCardHandle getEntryCardHandle(int index) {
+        return getEntryCardHandle(new Event(getListView().getItems().get(index)));
     }
 }

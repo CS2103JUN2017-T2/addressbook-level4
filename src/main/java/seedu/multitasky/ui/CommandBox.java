@@ -2,6 +2,7 @@ package seedu.multitasky.ui;
 
 import java.util.logging.Logger;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -40,6 +41,19 @@ public class CommandBox extends UiPart<Region> {
         this.logic = logic;
         commandHistory = new CommandHistory(getRoot(), commandTextField);
         commandAutocomplete = new CommandAutocomplete(getRoot(), commandTextField);
+        setCommandTextFieldFocus();
+    }
+
+    /**
+     * Requests focus on the command text field once the main UI window is open,
+     * so that the user can immediately begin typing.
+     */
+    private void setCommandTextFieldFocus() {
+        Platform.runLater(new Runnable() {
+            public void run() {
+                commandTextField.requestFocus();
+            }
+        });
     }
 
     @FXML

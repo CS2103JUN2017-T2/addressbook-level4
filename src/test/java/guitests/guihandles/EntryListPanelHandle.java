@@ -156,7 +156,7 @@ public class EntryListPanelHandle extends GuiHandle {
      * Gets an entry handle for an entry in the list by index
      */
     public EntryCardHandle getEntryCardHandle(int index) {
-        return getEntryCardHandle(new Entry(getListView().getItems().get(index)));
+        return null;
     }
 
     /**

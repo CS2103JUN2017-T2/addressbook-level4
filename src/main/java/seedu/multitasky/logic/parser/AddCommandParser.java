@@ -15,7 +15,7 @@ import java.util.Set;
 import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.logic.commands.AddCommand;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
-import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.tag.Tag;
@@ -55,7 +55,7 @@ public class AddCommandParser {
             try {
                 Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
                 Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
-                ReadOnlyEntry entry = new Entry(name, tagList);
+                ReadOnlyEntry entry = new FloatingTask(name, tagList);
                 return new AddCommand(entry);
 
             } catch (IllegalValueException ive) {
@@ -78,7 +78,7 @@ public class AddCommandParser {
                 System.out.println(endDate.getTime());
 
                 Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
-                ReadOnlyEntry entry = new Entry(name, tagList);
+                ReadOnlyEntry entry = new FloatingTask(name, tagList);
                 return new AddCommand(entry);
 
             } catch (IllegalValueException ive) {
