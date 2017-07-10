@@ -15,7 +15,6 @@ import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 import seedu.multitasky.model.tag.Tag;
-import seedu.multitasky.model.entry.exceptions.*;
 
 //@@author A0126623L
 /**
@@ -69,7 +68,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     /** Raises an event when undo is entered */
     private void indicateUndoAction() {
-        raise(new EntryBookToUndoEvent(entryBook));
+        raise(new EntryBookToUndoEvent(_entryBook));
     }
 
     @Override
@@ -87,8 +86,8 @@ public class ModelManager extends ComponentManager implements Model {
     // @@author
 
     @Override
-    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
-            throws DuplicateEntryException, EntryNotFoundException {
+    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws DuplicateEntryException,
+                                                                             EntryNotFoundException {
         requireAllNonNull(target, editedEntry);
 
         _entryBook.updateEntry(target, editedEntry);
@@ -224,8 +223,7 @@ public class ModelManager extends ComponentManager implements Model {
 
         // state check
         ModelManager other = (ModelManager) obj;
-        return _entryBook.equals(other._entryBook)
-               && _filteredEventList.equals(other._filteredEventList)
+        return _entryBook.equals(other._entryBook) && _filteredEventList.equals(other._filteredEventList)
                && _filteredDeadlineList.equals(other._filteredDeadlineList)
                && _filteredFloatingTaskList.equals(other._filteredFloatingTaskList);
     }
