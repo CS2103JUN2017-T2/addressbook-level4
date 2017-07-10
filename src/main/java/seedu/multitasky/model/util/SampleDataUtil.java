@@ -13,35 +13,35 @@ import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.tag.Tag;
 
 public class SampleDataUtil {
-    //@@author A0125586X
+    // @@author A0125586X
     public static Entry[] getSampleEntries() {
         try {
-            //CHECKSTYLE.OFF: LineLength
+            // CHECKSTYLE.OFF: LineLength
             return new Entry[] {
-                new FloatingTask(new Name("Take lunch to work"), getTagSet()),
-                new FloatingTask(new Name("Take dog for walk"), getTagSet()),
-                new FloatingTask(new Name("Fill up cat food bowl"), getTagSet()),
-                new FloatingTask(new Name("Write novel"), getTagSet()),
-                new FloatingTask(new Name("Buy groceries"), getTagSet()),
-                new FloatingTask(new Name("Refactor code"), getTagSet()),
-                new FloatingTask(new Name("Write two more tasks"), getTagSet()),
-                new FloatingTask(new Name("Import test cases"), getTagSet()),
-                new FloatingTask(new Name("Scold Travis"), getTagSet())
+                    new FloatingTask(new Name("Take lunch to work"), getTagSet()),
+                    new FloatingTask(new Name("Take dog for walk"), getTagSet()),
+                    new FloatingTask(new Name("Fill up cat food bowl"), getTagSet()),
+                    new FloatingTask(new Name("Write novel"), getTagSet()),
+                    new FloatingTask(new Name("Buy groceries"), getTagSet()),
+                    new FloatingTask(new Name("Refactor code"), getTagSet()),
+                    new FloatingTask(new Name("Write two more tasks"), getTagSet()),
+                    new FloatingTask(new Name("Import test cases"), getTagSet()),
+                    new FloatingTask(new Name("Scold Travis"), getTagSet())
             };
-            //CHECKSTYLE.ON: LineLength
+            // CHECKSTYLE.ON: LineLength
         } catch (IllegalValueException e) {
             throw new AssertionError("sample data cannot be invalid", e);
         }
     }
-    //@@author
+    // @@author
 
     public static ReadOnlyEntryBook getSampleEntryBook() {
-        //TODO write catch block for DuplicateEntryException
+        // TODO write catch block for DuplicateEntryException
         EntryBook sampleEntryBook = new EntryBook();
         try {
-        for (Entry sampleEntry : getSampleEntries()) {
-            sampleEntryBook.addEntry(sampleEntry);
-        }
+            for (Entry sampleEntry : getSampleEntries()) {
+                sampleEntryBook.addEntry(sampleEntry);
+            }
         } catch (DuplicateEntryException e) {
             assert false : "Sample Entry Book generation failed. EntryBooks should not have duplicate entries.";
         }

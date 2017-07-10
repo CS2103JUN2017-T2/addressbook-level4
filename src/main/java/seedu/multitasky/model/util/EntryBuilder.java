@@ -81,20 +81,21 @@ public class EntryBuilder {
             // Floating task
             if (endDateAndTime == null) {
                 entry = new FloatingTask(new Name(name), tags);
-            // Deadline
+                // Deadline
             } else {
                 entry = new Deadline(new Name(name), endDateAndTime, tags);
             }
-        // Event
+            // Event
         } else if (endDateAndTime != null) {
             entry = new Event(new Name(name), startDateAndTime, endDateAndTime, tags);
-        // Unknown combination of present start date but no end date
+            // Unknown combination of present start date but no end date
         } else {
 
         }
         return entry;
     }
 
+    // @@author A0126623L
     /**
      * Builds an appropriate entry (i.e. Event, Deadline, FloatingTask, ...) based on the given argument.
      *
