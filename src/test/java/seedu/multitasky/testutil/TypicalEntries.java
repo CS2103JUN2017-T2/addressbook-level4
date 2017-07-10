@@ -1,13 +1,10 @@
 package seedu.multitasky.testutil;
 
 import seedu.multitasky.commons.core.index.Index;
-import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.FloatingTask;
-import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.util.EntryBuilder;
-import seedu.multitasky.model.util.SampleDataUtil;
 
 //@@author A0125586X
 /**
