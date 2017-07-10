@@ -50,7 +50,7 @@ public class ListCommandTest {
      * Updates the filtered list to show only the first entry in the {@code model}'s address book.
      */
     private void showFirstEntryOnly(Model model) {
-        ReadOnlyEntry entry = model.getEntryBook().getEntryList().get(0);
+        ReadOnlyEntry entry = model.getEntryBook().getFloatingTaskList().get(0);
         final String[] splitName = entry.getName().fullName.split("\\s+");
         model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList(splitName)));
 

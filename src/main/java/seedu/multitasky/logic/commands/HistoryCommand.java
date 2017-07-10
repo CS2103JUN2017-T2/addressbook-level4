@@ -2,6 +2,8 @@ package seedu.multitasky.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import seedu.multitasky.logic.CommandHistory;
@@ -24,7 +26,10 @@ public class HistoryCommand extends Command {
             return new CommandResult(MESSAGE_NO_HISTORY);
         }
 
-        return new CommandResult(String.format(MESSAGE_SUCCESS, String.join("\n", previousCommands)));
+        List<String> temp = new ArrayList<>();
+        temp.addAll(previousCommands);
+        Collections.reverse(temp);
+        return new CommandResult(String.format(MESSAGE_SUCCESS, String.join("\n", temp)));
     }
 
     @Override

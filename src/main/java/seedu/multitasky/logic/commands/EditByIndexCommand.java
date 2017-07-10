@@ -47,7 +47,7 @@ public class EditByIndexCommand extends EditCommand {
             throw new AssertionError("The target entry cannot be missing");
         }
 
-        model.updateFilteredListToShowAll();
+        model.updateAllFilteredListToShowAll();
         return new CommandResult(String.format(MESSAGE_SUCCESS, entryToEdit));
     }
 
