@@ -262,7 +262,7 @@ public class ModelManager extends ComponentManager implements Model {
      */
     private class NameQualifier implements Qualifier {
 
-        // TODO for ChuaPingChan:
+        // TODO:
         // change variable name to 'nameAndTagKeyWords'.
         private Set<String> nameAndTagKeywords;
 
