@@ -63,6 +63,12 @@ public class StorageManager extends ComponentManager implements Storage {
         return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
     }
 
+    @Override
+    public String getPreviousEntryBookSnapshotPath() {
+        UserPrefs.decrementIndexByOne();
+        return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
+    }
+
     // @@author
     @Override
     public Optional<ReadOnlyEntryBook> readEntryBook() throws DataConversionException, IOException {
@@ -84,6 +90,10 @@ public class StorageManager extends ComponentManager implements Storage {
     public void saveEntryBook(ReadOnlyEntryBook entryBook, String filePath) throws IOException {
         logger.fine("Attempting to write to data file: " + filePath);
         entryBookStorage.saveEntryBook(entryBook, filePath);
+    }
+
+    public void loadPreviousEntryBook(ReadOnlyEntryBook entryBook) throws IOException {
+        saveEntryBook(entryBook, entryBookStorage.getPreviousEntryBookSnapshotPath());
     }
 
     // @@author A0132788U
@@ -120,7 +130,7 @@ public class StorageManager extends ComponentManager implements Storage {
     public void handleEntryBookToUndoEvent(EntryBookToUndoEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "Load previous snapshot"));
         try {
-            saveEntryBook(event.data);
+            loadPreviousEntryBook(event.data);
         } catch (IOException e) {
             raise(new DataSavingExceptionEvent(e));
         }

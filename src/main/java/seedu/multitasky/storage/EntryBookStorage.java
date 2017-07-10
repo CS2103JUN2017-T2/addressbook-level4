@@ -48,4 +48,6 @@ public interface EntryBookStorage {
      */
     void saveEntryBook(ReadOnlyEntryBook entryBook, String filePath) throws IOException;
 
+    String getPreviousEntryBookSnapshotPath();
+
 }
