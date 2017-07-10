@@ -45,8 +45,12 @@ public class XmlAdaptedEntry {
     public XmlAdaptedEntry(ReadOnlyEntry source) {
         formatter.setLenient(false);
         name = source.getName().fullName;
-        // startDateAndTime = formatter.format(source.getStartDateAndTime().getTime());
-        // endDateAndTime = formatter.format(source.getEndDateAndTime().getTime());
+        if (source.getStartDateAndTime() != null) {
+            startDateAndTime = formatter.format(source.getStartDateAndTime().getTime());
+        }
+        if (source.getStartDateAndTime() != null) {
+            endDateAndTime = formatter.format(source.getEndDateAndTime().getTime());
+        }
         tagged = new ArrayList<>();
         for (Tag tag : source.getTags()) {
             tagged.add(new XmlAdaptedTag(tag));
