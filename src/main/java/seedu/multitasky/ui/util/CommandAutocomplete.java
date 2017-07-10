@@ -1,4 +1,4 @@
-package seedu.multitasky.ui.uiutils;
+package seedu.multitasky.ui.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
