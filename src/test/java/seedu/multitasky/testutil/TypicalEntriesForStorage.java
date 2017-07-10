@@ -30,6 +30,7 @@ public class TypicalEntriesForStorage {
     public static void loadEntryBookWithSampleData(EntryBook entryBook) throws DuplicateEntryException {
         for (Entry entry : new TypicalEntries().getTypicalFloatingTasks()) {
             entryBook.addEntry(new FloatingTask(entry));
+
         }
     }
 

@@ -13,6 +13,7 @@ import seedu.multitasky.logic.Logic;
 import seedu.multitasky.logic.commands.CommandResult;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.ui.util.CommandAutocomplete;
 import seedu.multitasky.ui.util.CommandHistory;
 
@@ -57,7 +58,7 @@ public class CommandBox extends UiPart<Region> {
     }
 
     @FXML
-    private void handleCommandInputChanged() {
+    private void handleCommandInputChanged() throws DuplicateEntryException {
         commandHistory.saveCommand();
         try {
             CommandResult commandResult = logic.execute(commandTextField.getText().trim());
@@ -70,6 +71,10 @@ public class CommandBox extends UiPart<Region> {
             // handle command failure
             setStyleToIndicateCommandFailure();
             logger.info("Invalid command: " + commandTextField.getText().trim());
+            raise(new NewResultAvailableEvent(e.getMessage()));
+        } catch (DuplicateEntryException e) {
+            setStyleToIndicateCommandFailure();
+            logger.info("Unable to add duplicate entry with command: " + commandTextField.getText().trim());
             raise(new NewResultAvailableEvent(e.getMessage()));
         }
         commandTextField.setText("");

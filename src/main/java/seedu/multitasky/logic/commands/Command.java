@@ -4,6 +4,7 @@ import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.logic.CommandHistory;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.model.Model;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 
 /**
  * Represents a command with hidden internal logic and the ability to be executed.
@@ -27,8 +28,9 @@ public abstract class Command {
      *
      * @return feedback message of the operation result for display
      * @throws CommandException If an error occurs during command execution.
+     * @throws DuplicateEntryException If the command attempts to add a duplicate entry to the model.
      */
-    public abstract CommandResult execute() throws CommandException;
+    public abstract CommandResult execute() throws CommandException, DuplicateEntryException;
 
     /**
      * Provides any needed dependencies to the command.
