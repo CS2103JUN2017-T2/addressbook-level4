@@ -66,6 +66,11 @@ public class EntryBuilder {
         return this;
     }
 
+    public EntryBuilder withTags(Set<Tag> tags) throws IllegalValueException {
+        this.entry.setTags(tags);
+        return this;
+    }
+
     public EntryBuilder withStartDateAndTime(Calendar startDateAndTime) {
         this.startDateAndTime = startDateAndTime;
         return this;
@@ -81,14 +86,14 @@ public class EntryBuilder {
             // Floating task
             if (endDateAndTime == null) {
                 entry = new FloatingTask(new Name(name), tags);
-            // Deadline
+                // Deadline
             } else {
                 entry = new Deadline(new Name(name), endDateAndTime, tags);
             }
-        // Event
+            // Event
         } else if (endDateAndTime != null) {
             entry = new Event(new Name(name), startDateAndTime, endDateAndTime, tags);
-        // Unknown combination of present start date but no end date
+            // Unknown combination of present start date but no end date
         } else {
 
         }
@@ -101,9 +106,8 @@ public class EntryBuilder {
      * @return
      * @throws IllegalValueException
      */
-    public static ReadOnlyEntry build(Name name, Calendar startDateAndTime,
-                                      Calendar endDateAndTime, String... tags)
-            throws IllegalValueException {
+    public static ReadOnlyEntry build(Name name, Calendar startDateAndTime, Calendar endDateAndTime,
+                                      String... tags) throws IllegalValueException {
 
         HashSet<Tag> tagSet = new HashSet<>();
         for (String s : tags) {

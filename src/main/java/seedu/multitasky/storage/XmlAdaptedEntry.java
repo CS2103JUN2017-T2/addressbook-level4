@@ -3,7 +3,9 @@ package seedu.multitasky.storage;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlElement;
 
@@ -59,12 +61,17 @@ public class XmlAdaptedEntry {
      */
     @SuppressWarnings("null")
     public Entry toModelType() throws Exception {
+        final List<Tag> personTags = new ArrayList<>();
+        for (XmlAdaptedTag tag : tagged) {
+            personTags.add(tag.toModelType());
+        }
         Calendar startDateAndTimeToUse = null;
         Calendar endDateAndTimeToUse = null;
         startDateAndTimeToUse.setTime(formatter.parse(this.startDateAndTime));
         endDateAndTimeToUse.setTime(formatter.parse(this.endDateAndTime));
+        final Set<Tag> tags = new HashSet<>(personTags);
         Entry entry = new EntryBuilder().withName(this.name).withStartDateAndTime(startDateAndTimeToUse)
-            .withEndDateAndTime(endDateAndTimeToUse).withTags(tagged.toString()).build();
+            .withEndDateAndTime(endDateAndTimeToUse).withTags(tags).build();
         return entry;
     }
 }

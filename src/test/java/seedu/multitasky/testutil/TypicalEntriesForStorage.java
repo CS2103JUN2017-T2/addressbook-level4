@@ -3,6 +3,7 @@ package seedu.multitasky.testutil;
 import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.FloatingTask;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.util.EntryBuilder;
 
 //@@author A0132788U
@@ -26,7 +27,7 @@ public class TypicalEntriesForStorage {
         }
     }
 
-    public static void loadEntryBookWithSampleData(EntryBook entryBook) {
+    public static void loadEntryBookWithSampleData(EntryBook entryBook) throws DuplicateEntryException {
         for (Entry entry : new TypicalEntries().getTypicalFloatingTasks()) {
             entryBook.addEntry(new FloatingTask(entry));
         }
@@ -36,7 +37,7 @@ public class TypicalEntriesForStorage {
         return new Entry[] { project, journal, eat };
     }
 
-    public EntryBook getTypicalEntryBook() {
+    public EntryBook getTypicalEntryBook() throws DuplicateEntryException {
         EntryBook entryBook = new EntryBook();
         loadEntryBookWithSampleData(entryBook);
         return entryBook;
