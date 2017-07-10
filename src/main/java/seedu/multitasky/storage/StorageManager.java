@@ -63,8 +63,10 @@ public class StorageManager extends ComponentManager implements Storage {
         return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
     }
 
-    @Override
-    public String getPreviousEntryBookSnapshotPath() {
+    /**
+     * Gets the proper filepath of the previous snapshot for undo with index
+     */
+    public static String getPreviousEntryBookSnapshotPath() {
         UserPrefs.decrementIndexByOne();
         return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
     }
@@ -92,8 +94,9 @@ public class StorageManager extends ComponentManager implements Storage {
         entryBookStorage.saveEntryBook(entryBook, filePath);
     }
 
-    public void loadPreviousEntryBook(ReadOnlyEntryBook entryBook) throws IOException {
-        saveEntryBook(entryBook, entryBookStorage.getPreviousEntryBookSnapshotPath());
+    public Optional<ReadOnlyEntryBook> loadPreviousEntryBook(ReadOnlyEntryBook entryBook)
+            throws IOException, DataConversionException {
+        return entryBookStorage.readEntryBook(getPreviousEntryBookSnapshotPath());
     }
 
     // @@author A0132788U
@@ -125,9 +128,8 @@ public class StorageManager extends ComponentManager implements Storage {
         }
     }
 
-    // TO IMPLEMENT - change data to previous snapshot
     @Subscribe
-    public void handleEntryBookToUndoEvent(EntryBookToUndoEvent event) {
+    public void handleEntryBookToUndoEvent(EntryBookToUndoEvent event) throws DataConversionException {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "Load previous snapshot"));
         try {
             loadPreviousEntryBook(event.data);

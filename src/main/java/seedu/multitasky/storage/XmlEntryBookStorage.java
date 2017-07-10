@@ -38,7 +38,6 @@ public class XmlEntryBookStorage implements EntryBookStorage {
         return snapshotPath;
     }
 
-    @Override
     public String getPreviousEntryBookSnapshotPath() {
         return previousSnapshotPath;
     }
