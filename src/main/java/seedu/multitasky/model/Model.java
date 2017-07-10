@@ -27,16 +27,45 @@ public interface Model {
      *
      * @throws EntryNotFoundException if {@code target} could not be found in the list.
      */
-    void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
-            throws EntryNotFoundException;
+    void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws EntryNotFoundException;
 
-    /** Returns the filtered entry list as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
+    /** Returns the filtered event list as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
+    UnmodifiableObservableList<ReadOnlyEntry> getFilteredEventList();
+
+    /** Returns the filtered deadline list as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
+    UnmodifiableObservableList<ReadOnlyEntry> getFilteredDeadlineList();
+
+    /** Returns the filtered floating task list as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
     UnmodifiableObservableList<ReadOnlyEntry> getFilteredFloatingTaskList();
 
-    /** Updates the filter of the filtered entry list to show all entries */
-    void updateFilteredListToShowAll();
+    /** Returns the active entry list as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
+    UnmodifiableObservableList<ReadOnlyEntry> getActiveList();
 
-    /** Updates the filter of the filtered entry list to filter by the given keywords*/
+    /** Returns the entry archive as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
+    UnmodifiableObservableList<ReadOnlyEntry> getArchive();
+
+    /** Returns the entry bin as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
+    UnmodifiableObservableList<ReadOnlyEntry> getBin();
+
+    /** Updates the filter of the filtered event list to show all entries */
+    void updateFilteredEventListToShowAll();
+
+    /** Updates the filter of the filtered deadline list to show all entries */
+    void updateFilteredDeadlineListToShowAll();
+
+    /** Updates the filter of the filtered floating task list to show all entries */
+    void updateFilteredFloatingTaskListToShowAll();
+
+    /** Updates the filter of all filtered lists to show all entries */
+    public void updateAllFilteredListToShowAll();
+
+    /** Updates the filter of the filtered event list to filter by the given keywords */
+    void updateFilteredEventList(Set<String> keywords);
+
+    /** Updates the filter of the filtered deadline list to filter by the given keywords */
+    void updateFilteredDeadlineList(Set<String> keywords);
+
+    /** Updates the filter of the filtered floating task list to filter by the given keywords */
     void updateFilteredFloatingTaskList(Set<String> keywords);
 
 }
