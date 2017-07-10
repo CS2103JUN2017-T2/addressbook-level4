@@ -5,7 +5,7 @@ import java.util.Set;
 import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
-import seedu.multitasky.model.entry.exceptions.*;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 
 /**
  * The API of the Model component.
