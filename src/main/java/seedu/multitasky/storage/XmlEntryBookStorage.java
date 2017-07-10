@@ -50,7 +50,7 @@ public class XmlEntryBookStorage implements EntryBookStorage {
      */
     @Override
     public Optional<ReadOnlyEntryBook> readEntryBook(String filePath) throws DataConversionException,
-                                                                      FileNotFoundException {
+            FileNotFoundException {
         requireNonNull(filePath);
 
         File entryBookFile = new File(filePath);

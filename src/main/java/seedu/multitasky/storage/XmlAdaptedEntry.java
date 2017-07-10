@@ -59,7 +59,7 @@ public class XmlAdaptedEntry {
      *
      * @throws Exception
      */
-    @SuppressWarnings("null")
+
     public Entry toModelType() throws Exception {
         final List<Tag> personTags = new ArrayList<>();
         for (XmlAdaptedTag tag : tagged) {
@@ -67,11 +67,15 @@ public class XmlAdaptedEntry {
         }
         Calendar startDateAndTimeToUse = null;
         Calendar endDateAndTimeToUse = null;
-        startDateAndTimeToUse.setTime(formatter.parse(this.startDateAndTime));
-        endDateAndTimeToUse.setTime(formatter.parse(this.endDateAndTime));
+        if (this.startDateAndTime != null) {
+            startDateAndTimeToUse.setTime(formatter.parse(this.startDateAndTime));
+        }
+        if (this.endDateAndTime != null) {
+            endDateAndTimeToUse.setTime(formatter.parse(this.endDateAndTime));
+        }
         final Set<Tag> tags = new HashSet<>(personTags);
         Entry entry = new EntryBuilder().withName(this.name).withStartDateAndTime(startDateAndTimeToUse)
-            .withEndDateAndTime(endDateAndTimeToUse).withTags(tags).build();
+                .withEndDateAndTime(endDateAndTimeToUse).withTags(tags).build();
         return entry;
     }
 }

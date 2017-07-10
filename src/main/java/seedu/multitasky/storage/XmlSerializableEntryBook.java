@@ -90,6 +90,48 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
     }
 
     @Override
+    public ObservableList<ReadOnlyEntry> getActiveList() {
+        final ObservableList<Entry> entries = this.entries.stream().map(p -> {
+            try {
+                return p.toModelType();
+            } catch (Exception e) {
+                e.printStackTrace();
+                // TODO: better error handling
+                return null;
+            }
+        }).collect(Collectors.toCollection(FXCollections::observableArrayList));
+        return new UnmodifiableObservableList<>(entries);
+    }
+
+    @Override
+    public ObservableList<ReadOnlyEntry> getArchive() {
+        final ObservableList<Entry> entries = this.entries.stream().map(p -> {
+            try {
+                return p.toModelType();
+            } catch (Exception e) {
+                e.printStackTrace();
+                // TODO: better error handling
+                return null;
+            }
+        }).collect(Collectors.toCollection(FXCollections::observableArrayList));
+        return new UnmodifiableObservableList<>(entries);
+    }
+
+    @Override
+    public ObservableList<ReadOnlyEntry> getBin() {
+        final ObservableList<Entry> entries = this.entries.stream().map(p -> {
+            try {
+                return p.toModelType();
+            } catch (Exception e) {
+                e.printStackTrace();
+                // TODO: better error handling
+                return null;
+            }
+        }).collect(Collectors.toCollection(FXCollections::observableArrayList));
+        return new UnmodifiableObservableList<>(entries);
+    }
+
+    @Override
     public ObservableList<Tag> getTagList() {
         final ObservableList<Tag> tags = this.tags.stream().map(t -> {
             try {
@@ -101,22 +143,6 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
             }
         }).collect(Collectors.toCollection(FXCollections::observableArrayList));
         return new UnmodifiableObservableList<>(tags);
-    }
-
-    /* Not implemented yet for V0.3 */
-    @Override
-    public ObservableList<ReadOnlyEntry> getActiveList() {
-        return null;
-    }
-
-    @Override
-    public ObservableList<ReadOnlyEntry> getArchive() {
-        return null;
-    }
-
-    @Override
-    public ObservableList<ReadOnlyEntry> getBin() {
-        return null;
     }
 
 }
