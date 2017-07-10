@@ -15,7 +15,7 @@ import seedu.multitasky.commons.exceptions.DataConversionException;
 import seedu.multitasky.commons.util.FileUtil;
 import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.ReadOnlyEntryBook;
-import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.testutil.TypicalEntriesForStorage;
 
 //@@author A0132788U
@@ -81,14 +81,14 @@ public class XmlEntryBookStorageTest {
         assertEquals(original, new EntryBook(readBack));
 
         // Modify data, overwrite exiting file, and read back
-        original.addEntry(new Entry(te.project));
-        original.addEntry(new Entry(te.journal));
+        original.addEntry(new FloatingTask(te.project));
+        original.addEntry(new FloatingTask(te.journal));
         xmlEntryBookStorage.saveEntryBook(original, filePath);
         readBack = xmlEntryBookStorage.readEntryBook(filePath).get();
         assertEquals(original, new EntryBook(readBack));
 
         // Save and read without specifying file path
-        original.addEntry(new Entry(te.decorate));
+        original.addEntry(new FloatingTask(te.decorate));
         xmlEntryBookStorage.saveEntryBook(original); // file path not specified
         readBack = xmlEntryBookStorage.readEntryBook().get(); // file path not specified
         assertEquals(original, new EntryBook(readBack));

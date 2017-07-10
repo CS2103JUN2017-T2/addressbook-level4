@@ -15,6 +15,7 @@ import seedu.multitasky.model.Model;
 import seedu.multitasky.model.ModelManager;
 import seedu.multitasky.model.UserPrefs;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.testutil.TypicalEntries;
 
 /**
@@ -63,7 +64,7 @@ public class ListCommandTest {
      * - the address book and the filtered entry list in the {@code model} matches that of {@code expectedModel}
      */
     public static void assertCommandSuccess(Command command, Model model, String expectedMessage, Model expectedModel)
-            throws CommandException {
+            throws CommandException, DuplicateEntryException {
         CommandResult result = command.execute();
         assertEquals(expectedMessage, result.feedbackToUser);
         assertEquals(expectedModel, model);

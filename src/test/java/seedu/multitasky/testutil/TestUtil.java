@@ -58,16 +58,16 @@ public class TestUtil {
     private static FloatingTask[] getSampleFloatingTaskArrayData() {
         try {
             return new FloatingTask[] {
-                    new FloatingTask(new Name("Take lunch to work"), getTagSet()),
-                    new FloatingTask(new Name("Take dog for walk"), getTagSet()),
-                    new FloatingTask(new Name("Fill up cat food bowl"), getTagSet()),
-                    new FloatingTask(new Name("Write novel"), getTagSet()),
-                    new FloatingTask(new Name("Buy groceries"), getTagSet()),
-                    new FloatingTask(new Name("Refactor code"), getTagSet()),
-                    new FloatingTask(new Name("Write two more tasks"), getTagSet()),
-                    new FloatingTask(new Name("Import test cases"), getTagSet()),
-                    new FloatingTask(new Name("Scold Travis"), getTagSet()),
-                    new FloatingTask(new Name("Get dinner"), getTagSet())
+                new FloatingTask(new Name("Take lunch to work"), getTagSet()),
+                new FloatingTask(new Name("Take dog for walk"), getTagSet()),
+                new FloatingTask(new Name("Fill up cat food bowl"), getTagSet()),
+                new FloatingTask(new Name("Write novel"), getTagSet()),
+                new FloatingTask(new Name("Buy groceries"), getTagSet()),
+                new FloatingTask(new Name("Refactor code"), getTagSet()),
+                new FloatingTask(new Name("Write two more tasks"), getTagSet()),
+                new FloatingTask(new Name("Import test cases"), getTagSet()),
+                new FloatingTask(new Name("Scold Travis"), getTagSet()),
+                new FloatingTask(new Name("Get dinner"), getTagSet())
             };
         } catch (IllegalValueException e) {
             fail("TestUtil floating task array generation failed.");
@@ -78,7 +78,7 @@ public class TestUtil {
 
     // @@author A0126623L
     /**
-     * @return List<FloatingTask> of 10 sample elements.
+     * @return List&lt;FloatingTask&gt; of 10 sample elements.
      */
     public static List<FloatingTask> getSampleFloatingTaskListData() {
         return Arrays.asList(SAMPLE_FLOATING_TASK_ARRAY_DATA);

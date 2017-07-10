@@ -9,6 +9,7 @@ import com.google.common.eventbus.Subscribe;
 import seedu.multitasky.commons.core.ComponentManager;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
+import seedu.multitasky.commons.events.model.EntryBookToUndoEvent;
 import seedu.multitasky.commons.events.storage.DataSavingExceptionEvent;
 import seedu.multitasky.commons.exceptions.DataConversionException;
 import seedu.multitasky.model.ReadOnlyEntryBook;
@@ -99,7 +100,6 @@ public class StorageManager extends ComponentManager implements Storage {
         saveEntryBook(entryBook, setEntryBookSnapshotPathAndUpdateIndex());
     }
 
-    // @@author A0132788U
     /**
      * Saves the data to the entrybook at the filepath specified and also creates a snapshot in data/snapshots.
      */
@@ -110,6 +110,17 @@ public class StorageManager extends ComponentManager implements Storage {
         try {
             saveEntryBook(event.data);
             saveEntryBookSnapshot(event.data);
+        } catch (IOException e) {
+            raise(new DataSavingExceptionEvent(e));
+        }
+    }
+
+    // TO IMPLEMENT - change data to previous snapshot
+    @Subscribe
+    public void handleEntryBookToUndoEvent(EntryBookToUndoEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Load previous snapshot"));
+        try {
+            saveEntryBook(event.data);
         } catch (IOException e) {
             raise(new DataSavingExceptionEvent(e));
         }

@@ -96,8 +96,8 @@ public abstract class EntryList implements Iterable<Entry> {
      *
      * @throws EntryNotFoundException if {@code target} could not be found in the list.
      */
-    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
-            throws DuplicateEntryException, EntryNotFoundException {
+    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws DuplicateEntryException,
+                                                                             EntryNotFoundException {
         requireNonNull(editedEntry);
 
         int index = internalList.indexOf(target);

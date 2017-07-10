@@ -1,8 +1,9 @@
 package seedu.multitasky.testutil;
 
-import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.model.entry.FloatingTask;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.util.EntryBuilder;
 
 //@@author A0132788U
@@ -21,14 +22,15 @@ public class TypicalEntriesForStorage {
             decorate = new EntryBuilder().withName("Decorate new room").withTags("organize").build();
             // Manually added
             project = new EntryBuilder().withName("Finish 2103 project").withTags("important").build();
-        } catch (IllegalValueException e) {
+        } catch (Exception e) {
             throw new AssertionError("Sample data cannot be invalid", e);
         }
     }
 
-    public static void loadEntryBookWithSampleData(EntryBook entryBook) {
-        for (Entry entry : new TypicalEntries().getTypicalEntries()) {
-            entryBook.addEntry(new Entry(entry));
+    public static void loadEntryBookWithSampleData(EntryBook entryBook) throws DuplicateEntryException {
+        for (Entry entry : new TypicalEntries().getTypicalFloatingTasks()) {
+            entryBook.addEntry(new FloatingTask(entry));
+
         }
     }
 
@@ -36,7 +38,7 @@ public class TypicalEntriesForStorage {
         return new Entry[] { project, journal, eat };
     }
 
-    public EntryBook getTypicalEntryBook() {
+    public EntryBook getTypicalEntryBook() throws DuplicateEntryException {
         EntryBook entryBook = new EntryBook();
         loadEntryBookWithSampleData(entryBook);
         return entryBook;

@@ -8,6 +8,7 @@ import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 
 /**
  * Adds an entry to the entry book.
@@ -36,7 +37,7 @@ public class AddCommand extends Command {
     }
 
     @Override
-    public CommandResult execute() throws CommandException {
+    public CommandResult execute() throws CommandException, DuplicateEntryException {
         requireNonNull(model);
 
         model.addEntry(toAdd);
