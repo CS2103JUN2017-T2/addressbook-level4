@@ -37,7 +37,7 @@ public class EntryBook implements ReadOnlyEntryBook {
     private final EventList _eventList;
     private final DeadlineList _deadlineList;
     private final FloatingTaskList _floatingTaskList;
-    private final UniqueTagList tags;
+    private final UniqueTagList _tags;
 
     /*
      * The 'unusual' code block below is an non-static initialization block, sometimes used to avoid
@@ -54,7 +54,7 @@ public class EntryBook implements ReadOnlyEntryBook {
         _eventList = new EventList();
         _deadlineList = new DeadlineList();
         _floatingTaskList = new FloatingTaskList();
-        tags = new UniqueTagList();
+        _tags = new UniqueTagList();
     }
 
     public EntryBook() {
@@ -95,7 +95,7 @@ public class EntryBook implements ReadOnlyEntryBook {
     }
 
     public void setTags(Collection<Tag> tags) throws UniqueTagList.DuplicateTagException {
-        this.tags.setTags(tags);
+        this._tags.setTags(tags);
     }
 
     public void resetData(ReadOnlyEntryBook newData) {
@@ -155,7 +155,8 @@ public class EntryBook implements ReadOnlyEntryBook {
      * @see #syncMasterTagListWith(Entry)
      */
     public void updateEntry(ReadOnlyEntry target,
-                            ReadOnlyEntry editedReadOnlyEntry) throws EntryNotFoundException {
+                            ReadOnlyEntry editedReadOnlyEntry)
+            throws EntryNotFoundException {
         requireNonNull(editedReadOnlyEntry);
 
         _activeList.updateEntry(target, editedReadOnlyEntry);
@@ -193,12 +194,12 @@ public class EntryBook implements ReadOnlyEntryBook {
      */
     private void syncMasterTagListWith(Entry entry) {
         final UniqueTagList entryTags = new UniqueTagList(entry.getTags());
-        tags.mergeFrom(entryTags);
+        _tags.mergeFrom(entryTags);
 
         // Create map with values = tag object references in the master list
         // used for checking entry tag references
         final Map<Tag, Tag> masterTagObjects = new HashMap<>();
-        tags.forEach(tag -> masterTagObjects.put(tag, tag));
+        _tags.forEach(tag -> masterTagObjects.put(tag, tag));
 
         // Rebuild the list of entry tags to point to the relevant tags in the master tag list.
         final Set<Tag> correctTagReferences = new HashSet<>();
@@ -253,7 +254,7 @@ public class EntryBook implements ReadOnlyEntryBook {
     //// tag-level operations
 
     public void addTag(Tag t) throws UniqueTagList.DuplicateTagException {
-        tags.add(t);
+        _tags.add(t);
     }
 
     //// util methods
@@ -263,7 +264,7 @@ public class EntryBook implements ReadOnlyEntryBook {
      */
     @Override
     public String toString() {
-        return _activeList.asObservableList().size() + " active entries, " + tags.asObservableList().size()
+        return _activeList.asObservableList().size() + " active entries, " + _tags.asObservableList().size()
                + " tags";
         // TODO: refine later
     }
@@ -300,7 +301,7 @@ public class EntryBook implements ReadOnlyEntryBook {
 
     @Override
     public ObservableList<Tag> getTagList() {
-        return new UnmodifiableObservableList<>(tags.asObservableList());
+        return new UnmodifiableObservableList<>(_tags.asObservableList());
     }
 
     @Override
@@ -313,7 +314,7 @@ public class EntryBook implements ReadOnlyEntryBook {
                    && this.getEventList().equals(((EntryBook) other).getEventList())
                    && this.getDeadlineList().equals(((EntryBook) other).getDeadlineList())
                    && this.getFloatingTaskList().equals(((EntryBook) other).getFloatingTaskList())
-                   && this.tags.equalsOrderInsensitive(((EntryBook) other).tags));
+                   && this._tags.equalsOrderInsensitive(((EntryBook) other)._tags));
     }
 
     @Override
