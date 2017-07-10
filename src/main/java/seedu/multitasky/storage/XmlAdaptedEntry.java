@@ -45,8 +45,8 @@ public class XmlAdaptedEntry {
     public XmlAdaptedEntry(ReadOnlyEntry source) {
         formatter.setLenient(false);
         name = source.getName().fullName;
-        startDateAndTime = formatter.format(source.getStartDateAndTime().getTime());
-        endDateAndTime = formatter.format(source.getEndDateAndTime().getTime());
+        // startDateAndTime = formatter.format(source.getStartDateAndTime().getTime());
+        // endDateAndTime = formatter.format(source.getEndDateAndTime().getTime());
         tagged = new ArrayList<>();
         for (Tag tag : source.getTags()) {
             tagged.add(new XmlAdaptedTag(tag));
@@ -74,8 +74,8 @@ public class XmlAdaptedEntry {
             endDateAndTimeToUse.setTime(formatter.parse(this.endDateAndTime));
         }
         final Set<Tag> tags = new HashSet<>(personTags);
-        Entry entry = new EntryBuilder().withName(this.name).withStartDateAndTime(startDateAndTimeToUse)
-                .withEndDateAndTime(endDateAndTimeToUse).withTags(tags).build();
+        Entry entry = new EntryBuilder().withName(this.name).withTags(tags).build();
+        System.out.println("This is the entry" + entry.toString());
         return entry;
     }
 }
