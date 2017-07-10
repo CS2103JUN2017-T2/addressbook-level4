@@ -10,6 +10,7 @@ import seedu.multitasky.model.tag.Tag;
 
 public class Deadline extends Entry {
 
+    private Calendar _startDateAndTime;
     private Calendar _endDateAndTime;
 
     /**
@@ -18,6 +19,7 @@ public class Deadline extends Entry {
     public Deadline(Name name, Calendar endDateAndTime, Set<Tag> tags) {
         super(name, tags);
         requireAllNonNull(endDateAndTime);
+        _startDateAndTime = null;
         _endDateAndTime = endDateAndTime;
     }
 
@@ -53,8 +55,7 @@ public class Deadline extends Entry {
 
     @Override
     public Calendar getStartDateAndTime() {
-        Calendar startDateAndTime = null; // Deadlines has no start time.
-        return startDateAndTime;
+        return _startDateAndTime; // Deadlines has no start time.
     }
 
     public void setEndDateAndTime(Calendar endDateAndTime) {

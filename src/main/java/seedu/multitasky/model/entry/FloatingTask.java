@@ -8,11 +8,16 @@ import seedu.multitasky.model.tag.Tag;
 
 public class FloatingTask extends Entry {
 
+    private Calendar _startDateAndTime;
+    private Calendar _endDateAndTime;
+
     /**
      * Every field must be present and not null.
      */
     public FloatingTask(Name name, Set<Tag> tags) {
         super(name, tags);
+        _startDateAndTime = null;
+        _endDateAndTime = null;
     }
 
     /**
@@ -29,8 +34,7 @@ public class FloatingTask extends Entry {
 
     @Override
     public Calendar getStartDateAndTime() {
-        Calendar startDateAndTime = null; // Floating tasks have no start time.
-        return startDateAndTime;
+        return _startDateAndTime;
     }
 
     public Calendar getEndDateAndTimeString() {
@@ -39,8 +43,7 @@ public class FloatingTask extends Entry {
 
     @Override
     public Calendar getEndDateAndTime() {
-        Calendar endDateAndTime = null; // Floating tasks have no end time.
-        return endDateAndTime;
+        return _endDateAndTime;
     }
 
     @Override
