@@ -41,16 +41,46 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
      */
     public XmlSerializableEntryBook(ReadOnlyEntryBook src) {
         this();
-        entries.addAll(src.getEntryList().stream().map(XmlAdaptedEntry::new).collect(Collectors.toList()));
+        entries.addAll(src.getEventList().stream().map(XmlAdaptedEntry::new).collect(Collectors.toList()));
+        entries.addAll(src.getDeadlineList().stream().map(XmlAdaptedEntry::new).collect(Collectors.toList()));
+        entries.addAll(src.getFloatingTaskList().stream().map(XmlAdaptedEntry::new).collect(Collectors.toList()));
         tags.addAll(src.getTagList().stream().map(XmlAdaptedTag::new).collect(Collectors.toList()));
     }
 
     @Override
-    public ObservableList<ReadOnlyEntry> getEntryList() {
+    public ObservableList<ReadOnlyEntry> getEventList() {
         final ObservableList<Entry> entries = this.entries.stream().map(p -> {
             try {
                 return p.toModelType();
-            } catch (IllegalValueException e) {
+            } catch (Exception e) {
+                e.printStackTrace();
+                // TODO: better error handling
+                return null;
+            }
+        }).collect(Collectors.toCollection(FXCollections::observableArrayList));
+        return new UnmodifiableObservableList<>(entries);
+    }
+
+    @Override
+    public ObservableList<ReadOnlyEntry> getDeadlineList() {
+        final ObservableList<Entry> entries = this.entries.stream().map(p -> {
+            try {
+                return p.toModelType();
+            } catch (Exception e) {
+                e.printStackTrace();
+                // TODO: better error handling
+                return null;
+            }
+        }).collect(Collectors.toCollection(FXCollections::observableArrayList));
+        return new UnmodifiableObservableList<>(entries);
+    }
+
+    @Override
+    public ObservableList<ReadOnlyEntry> getFloatingTaskList() {
+        final ObservableList<Entry> entries = this.entries.stream().map(p -> {
+            try {
+                return p.toModelType();
+            } catch (Exception e) {
                 e.printStackTrace();
                 // TODO: better error handling
                 return null;
@@ -71,6 +101,22 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
             }
         }).collect(Collectors.toCollection(FXCollections::observableArrayList));
         return new UnmodifiableObservableList<>(tags);
+    }
+
+    /* Not implemented yet for V0.3 */
+    @Override
+    public ObservableList<ReadOnlyEntry> getActiveList() {
+        return null;
+    }
+
+    @Override
+    public ObservableList<ReadOnlyEntry> getArchive() {
+        return null;
+    }
+
+    @Override
+    public ObservableList<ReadOnlyEntry> getBin() {
+        return null;
     }
 
 }
