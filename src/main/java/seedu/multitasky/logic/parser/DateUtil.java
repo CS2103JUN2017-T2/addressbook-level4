@@ -18,10 +18,10 @@ public class DateUtil {
     private static final String[] timeSeparators = { ":", "-", "/" };
 
     // {sep} represents a date separator and {tsep} represents time separator.
-    private static final String DATETIME_REGEX_TEMPLATE = "\\d{1,2}{sep}\\d{1,2}{sep}\\d{2,4}"
+    private static final String DATETIME_REGEX_TEMPLATE = "\\d{1,2}{sep}\\d{1,2}{sep}\\d{1,4}"
                                                           + "\\s+\\d{1,2}{tsep}\\d{1,2}";
-    private static final String DATETIME_TEMPLATE = "d{sep}M{sep}yy H{tsep}m";
-    private static final String MESSAGE_FAIL = "\nAccepted DateTime Format: dd/MM/yy HH/mm";
+    private static final String DATETIME_TEMPLATE = "d{sep}M{sep}y H{tsep}m";
+    private static final String MESSAGE_FAIL = "\nAccepted DateTime Format: dd/MM/yy HH:mm";
 
     /**
      * Converts input string to Calendar if format conforms to standard format and returns the Calendar.
