@@ -12,6 +12,7 @@ import java.util.Set;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.tag.Tag;
 
 //@@author A0126623L
@@ -67,7 +68,7 @@ public class MiscEntryListTest {
     }
 
     // @@author A0126623L
-    public MiscEntryList createMiscEntryList() {
+    public MiscEntryList createMiscEntryList() throws DuplicateEntryException {
         MiscEntryList miscEntryListToTest = new MiscEntryList();
         miscEntryListToTest.add(event1);
         miscEntryListToTest.add(deadline1);
@@ -77,7 +78,7 @@ public class MiscEntryListTest {
 
     // @@author A0126623L
     @Test
-    public void addTest_shouldAddReferenceAndNotCreateCopy() {
+    public void addTest_shouldAddReferenceAndNotCreateCopy() throws DuplicateEntryException {
         MiscEntryList miscEntryListUnderTest = createMiscEntryList();
 
         assertSame("ActiveList add method doesn't actually add Entry reference",
@@ -97,7 +98,7 @@ public class MiscEntryListTest {
 
     // @@author A0126623L
     @Test
-    public void setEntriesTest() {
+    public void setEntriesTest() throws DuplicateEntryException {
         MiscEntryList miscEntryListUnderTest = createMiscEntryList();
         MiscEntryList replacement = new MiscEntryList();
         replacement.add(floatingTask1);
@@ -114,7 +115,7 @@ public class MiscEntryListTest {
 
     // @@author A0126623L
     @Test
-    public void equalsTest() {
+    public void equalsTest() throws DuplicateEntryException {
         MiscEntryList miscEntryList1 = createMiscEntryList();
         MiscEntryList miscEntryList2 = createMiscEntryList();
         // miscEntryList1 and 2 are different objects but they are meaningfully equivalent
@@ -127,7 +128,7 @@ public class MiscEntryListTest {
 
     // @@author A0126623L
     @Test
-    public void removeTest() {
+    public void removeTest() throws DuplicateEntryException {
         EventList eventList = new EventList();
         Event dummyEvent = new Event(name1, calendar1, calendar2, tagSet1);
 

@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import javafx.collections.ObservableList;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 
 //@@author A0126623L
 /**
@@ -35,14 +36,19 @@ public class EventListTest {
         EventList eventList2 = new EventList();
         EventList eventList3 = new EventList();
 
-        eventList1.add(sampleEvents[0]);
-        eventList1.add(sampleEvents[2]);
+        try {
+            eventList1.add(sampleEvents[0]);
+            eventList1.add(sampleEvents[2]);
 
-        eventList2.add(sampleEvents[0]);
-        eventList2.add(sampleEvents[2]);
+            eventList2.add(sampleEvents[0]);
+            eventList2.add(sampleEvents[2]);
 
-        eventList3.add(sampleEvents[0]);
-        eventList3.add(sampleEvents[3]);
+            eventList3.add(sampleEvents[0]);
+            eventList3.add(sampleEvents[3]);
+        } catch (DuplicateEntryException e) {
+            assert false: "sample data cannot have errors";
+        }
+        
 
         return new EventList[] { eventList1, eventList2, eventList3 };
     }
@@ -57,8 +63,12 @@ public class EventListTest {
      */
     private EventList createEventList1() {
         EventList eventList1clone = new EventList();
-        eventList1clone.add(sampleEvents[0]);
-        eventList1clone.add(sampleEvents[2]);
+        try {
+            eventList1clone.add(sampleEvents[0]);
+            eventList1clone.add(sampleEvents[2]);
+        } catch (DuplicateEntryException e) {
+            assert false: "sample data cannot have errors";
+        }
 
         return eventList1clone;
     }
@@ -99,7 +109,7 @@ public class EventListTest {
 
     // @@author A0126623L
     @Test
-    public void updateEntryTest() throws EntryNotFoundException {
+    public void updateEntryTest() throws EntryNotFoundException, DuplicateEntryException {
         EventList eventListToTest = createEventList1();
 
         eventListToTest.updateEntry(sampleEvents[0], sampleEvents[3]);
@@ -121,7 +131,7 @@ public class EventListTest {
     // @@author A0126623L
     @Ignore
     @Test
-    public void setEntriesTest() {
+    public void setEntriesTest() throws DuplicateEntryException {
         EventList eventListToTest = createEventList1();
 
         ArrayList<Event> eventArrayList = new ArrayList<>();

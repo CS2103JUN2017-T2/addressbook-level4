@@ -13,6 +13,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javafx.collections.ObservableList;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 import seedu.multitasky.model.tag.Tag;
 
@@ -96,7 +97,7 @@ public class DeadlineListTest {
     /**
      * Create a DeadlineList with {deadline1, deadline3}
      */
-    public static DeadlineList createDeadlineList1() {
+    public static DeadlineList createDeadlineList1() throws DuplicateEntryException {
         DeadlineList deadlineList1clone = new DeadlineList();
         deadlineList1clone.add(deadline1);
         deadlineList1clone.add(deadline3);
@@ -123,7 +124,7 @@ public class DeadlineListTest {
 
     // @@author A0126623L
     @Test
-    public void removeTest() throws EntryNotFoundException {
+    public void removeTest() throws EntryNotFoundException, DuplicateEntryException {
         DeadlineList deadlineListToTest = createDeadlineList1();
 
         deadlineListToTest.remove(deadline1);
@@ -132,7 +133,7 @@ public class DeadlineListTest {
 
     // @@author A0126623L
     @Test(expected = Exception.class)
-    public void removeTest_returnEntryNotFoundException() throws EntryNotFoundException {
+    public void removeTest_returnEntryNotFoundException() throws EntryNotFoundException, DuplicateEntryException {
         DeadlineList deadlineListToTest = createDeadlineList1();
 
         deadlineListToTest.remove(deadline4);
@@ -140,7 +141,7 @@ public class DeadlineListTest {
 
     // @@author A0126623L
     @Test
-    public void updateEntryTest() throws EntryNotFoundException {
+    public void updateEntryTest() throws EntryNotFoundException, DuplicateEntryException {
         DeadlineList deadlineListToTest = createDeadlineList1();
 
         deadlineListToTest.updateEntry(deadline1, deadline4);
@@ -152,7 +153,7 @@ public class DeadlineListTest {
      * Note: This test method relies on the correct functioning of the equals() method.
      */
     @Test
-    public void setEntriesTest_newDeadlineList_equalsMethodReturnsFalse() {
+    public void setEntriesTest_newDeadlineList_equalsMethodReturnsFalse() throws DuplicateEntryException {
         DeadlineList deadlineListToTest = createDeadlineList1();
 
         deadlineListToTest.setEntries(deadlineList3);
@@ -161,7 +162,7 @@ public class DeadlineListTest {
 
     // @@author A0126623L
     @Test
-    public void setEntriesTest() {
+    public void setEntriesTest() throws DuplicateEntryException {
         DeadlineList deadlineListToTest = createDeadlineList1();
 
         ArrayList<Deadline> deadlineArrayList = new ArrayList<>();
