@@ -72,8 +72,7 @@ public class EntryUtil {
                .append(CliSyntax.PREFIX_TO + " ")
                .append(getDateDetailsAsInputString(entry.getEndDateAndTime()) + " ");
         builder.append(CliSyntax.PREFIX_TAG + " ");
-        entry.getTags().stream().forEach(
-                                         s -> builder.append(s.tagName + " "));
+        entry.getTags().stream().forEach(s -> builder.append(s.tagName + " "));
         return builder.toString();
     }
 
@@ -88,8 +87,7 @@ public class EntryUtil {
                .append(CliSyntax.PREFIX_BY + " ")
                .append(getDateDetailsAsInputString(entry.getEndDateAndTime()) + " ");
         builder.append(CliSyntax.PREFIX_TAG + " ");
-        entry.getTags().stream().forEach(
-                                         s -> builder.append(s.tagName + " "));
+        entry.getTags().stream().forEach(s -> builder.append(s.tagName + " "));
         return builder.toString();
     }
 
@@ -102,8 +100,7 @@ public class EntryUtil {
         StringBuilder builder = new StringBuilder();
         builder.append(entry.getName().toString() + " ");
         builder.append(CliSyntax.PREFIX_TAG + " ");
-        entry.getTags().stream().forEach(
-                                         s -> builder.append(s.tagName + " "));
+        entry.getTags().stream().forEach(s -> builder.append(s.tagName + " "));
         return builder.toString();
     }
 
