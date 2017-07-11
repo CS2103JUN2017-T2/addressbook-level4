@@ -107,9 +107,8 @@ public class EntryBuilder {
      * @return
      * @throws IllegalValueException
      */
-    
-    public Entry build(Name name, Calendar startDateAndTime, Calendar endDateAndTime,
-                       String... tags)
+
+    public Entry build(Name name, Calendar startDateAndTime, Calendar endDateAndTime, String... tags)
             throws IllegalValueException {
 
         HashSet<Tag> tagSet = new HashSet<>();
