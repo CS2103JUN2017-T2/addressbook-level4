@@ -13,7 +13,6 @@ import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.tag.Tag;
 
-//@@author A0125586X
 /**
  * A utility class to help with building Entry objects.
  */
