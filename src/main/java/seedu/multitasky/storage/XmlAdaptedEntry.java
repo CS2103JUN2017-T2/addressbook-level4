@@ -18,6 +18,7 @@ import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.tag.Tag;
 import seedu.multitasky.model.util.EntryBuilder;
 
+//@@author A0132788U
 /**
  * JAXB-friendly version of the Entry.
  */
