@@ -181,7 +181,6 @@ Given below is the Sequence Diagram for interactions within the `Logic` componen
 
 image::DeleteEntrySdForLogic1.png[width="800"]
 
-=======
 _Figure 2.3.1 : Interactions Inside the Logic Component for the `delete /float 1` Command_
 
 //<!-- @@author A0126623L -->
