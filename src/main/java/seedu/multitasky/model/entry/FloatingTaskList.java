@@ -6,9 +6,12 @@ import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 
 public class FloatingTaskList extends EntryList {
 
+    // @@author A0126623L
     /**
      * Adds a floating task to the list.
      * Pre-conditions: toAdd is not null and is of type FloatingTask.
+     *
+     * @throws DuplicateEntryException if {@code toAdd} already exists in the list.
      */
     @Override
     public void add(ReadOnlyEntry toAdd) throws DuplicateEntryException {
@@ -17,6 +20,7 @@ public class FloatingTaskList extends EntryList {
 
         internalList.add(new FloatingTask(toAdd));
     }
+    // @@author
 
     // @@author A0126623L
     /**
@@ -31,4 +35,5 @@ public class FloatingTaskList extends EntryList {
         }
         super.setEntries(replacement);
     }
+    // @@author
 }
