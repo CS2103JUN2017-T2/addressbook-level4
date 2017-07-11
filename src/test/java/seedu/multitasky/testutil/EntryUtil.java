@@ -8,6 +8,7 @@ import seedu.multitasky.logic.commands.DeleteCommand;
 import seedu.multitasky.logic.parser.CliSyntax;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.Event;
+import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.FloatingTask;
 
 //@@author A0125586X
@@ -68,7 +69,7 @@ public class EntryUtil {
      * for adding an event.
      */
     public static String getDeadlineDetailsForAdd(Entry entry) {
-        assert entry instanceof Event;
+        assert entry instanceof Deadline;
         StringBuilder builder = new StringBuilder();
         builder.append(entry.getName().toString() + " ")
                .append(CliSyntax.PREFIX_BY + " ")

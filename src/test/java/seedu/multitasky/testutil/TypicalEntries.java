@@ -7,6 +7,7 @@ import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.Event;
+import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.util.EntryBuilder;
 
@@ -64,7 +65,7 @@ public class TypicalEntries {
                 entryBook.addEntry(new Event(entry));
             }
             for (Entry entry: new TypicalEntries().getTypicalEvents()) {
-                entryBook.addEntry(new Event(entry));
+                entryBook.addEntry(new Deadline(entry));
             }
             for (Entry entry: new TypicalEntries().getTypicalFloatingTasks()) {
                 entryBook.addEntry(new FloatingTask(entry));
@@ -73,10 +74,6 @@ public class TypicalEntries {
             assert false : "Sample entries cannot have errors";
         }
 
-    }
-
-    public Entry[] getTypicalEntries() {
-        return new Entry[] { cook, programming, hire };
     }
 
     //@@author A0125586X
