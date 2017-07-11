@@ -6,7 +6,7 @@
 :imagesDir: images
 :experimental:
 ifdef::env-github[]
-z:tip-caption: :bulb:
+:tip-caption: :bulb:
 :note-caption: :information_source:
 endif::[]
 
