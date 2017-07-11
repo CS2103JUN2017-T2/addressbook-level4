@@ -7,7 +7,7 @@ import seedu.multitasky.model.entry.ReadOnlyEntry;
 
 // @@author A0140633R
 /*
- * Abstract class that carries message format for all of the sub-types of delete commands.
+ * Abstract class that represents what Command word and confirmation messages a delete command will be using.
  */
 public abstract class DeleteCommand extends Command {
     public static final String COMMAND_WORD = "delete";
@@ -21,7 +21,7 @@ public abstract class DeleteCommand extends Command {
                                                + "Example: " + COMMAND_WORD + " "
                                                + PREFIX_FLOATINGTASK + " 1";
 
-    public static final String MESSAGE_SUCCESS = "New entry deleted:" + "\n"
+    public static final String MESSAGE_SUCCESS = "Entry deleted:" + "\n"
                                                  + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s";
 
     protected ReadOnlyEntry entryToDelete;

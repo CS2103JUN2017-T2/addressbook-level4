@@ -56,4 +56,5 @@ public class EditByFindCommand extends EditCommand {
             return new CommandResult(MESSAGE_NO_ENTRIES);
         }
     }
+
 }

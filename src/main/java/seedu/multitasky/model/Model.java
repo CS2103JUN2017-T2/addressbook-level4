@@ -18,7 +18,7 @@ public interface Model {
     ReadOnlyEntryBook getEntryBook();
 
     /** Deletes the given entry. */
-    void deleteEntry(ReadOnlyEntry target) throws EntryNotFoundException;
+    void deleteEntry(ReadOnlyEntry target) throws DuplicateEntryException, EntryNotFoundException;
 
     /** Adds the given entry */
     void addEntry(ReadOnlyEntry entry) throws DuplicateEntryException;
@@ -32,7 +32,7 @@ public interface Model {
      * @throws EntryNotFoundException if {@code target} could not be found in the list.
      */
     void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws DuplicateEntryException,
-                                                                      EntryNotFoundException;
+            EntryNotFoundException;
 
     /** Returns the filtered event list as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
     UnmodifiableObservableList<ReadOnlyEntry> getFilteredEventList();

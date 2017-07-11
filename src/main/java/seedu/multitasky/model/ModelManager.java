@@ -72,8 +72,10 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public synchronized void deleteEntry(ReadOnlyEntry target) throws EntryNotFoundException {
+    public synchronized void deleteEntry(ReadOnlyEntry target)
+            throws DuplicateEntryException, EntryNotFoundException {
         _entryBook.removeEntry(target);
+
         indicateEntryBookChanged();
     }
 

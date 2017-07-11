@@ -100,12 +100,14 @@ public class EntryBuilder {
         return entry;
     }
 
+    // @@author A0126623L
     /**
      * Builds an appropriate entry (i.e. Event, Deadline, FloatingTask, ...) based on the given argument.
      *
      * @return
      * @throws IllegalValueException
      */
+    
     public Entry build(Name name, Calendar startDateAndTime, Calendar endDateAndTime,
                        String... tags)
             throws IllegalValueException {
@@ -132,5 +134,6 @@ public class EntryBuilder {
             return null;
         }
     }
+    // @@author
 
 }

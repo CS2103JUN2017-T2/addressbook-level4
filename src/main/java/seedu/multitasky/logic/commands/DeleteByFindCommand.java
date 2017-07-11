@@ -1,10 +1,14 @@
 package seedu.multitasky.logic.commands;
 
+import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_DEADLINE;
+import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_EVENT;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
-import seedu.multitasky.commons.core.UnmodifiableObservableList;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
@@ -18,8 +22,15 @@ public class DeleteByFindCommand extends DeleteCommand {
                                                     + "with different keywords.";
 
     public static final String MESSAGE_MULTIPLE_ENTRIES = "More than one entry found! \n"
-                                                          + "Use " + COMMAND_WORD + " " + PREFIX_FLOATINGTASK
+                                                          + "Use " + COMMAND_WORD + " [ "
+                                                          + String.join(" , ", PREFIX_EVENT.toString(),
+                                                                        PREFIX_DEADLINE.toString(),
+                                                                        PREFIX_FLOATINGTASK.toString())
+                                                          + " ]"
                                                           + " INDEX to specify which entry to delete.";
+
+    // TODO find out how to bring this message into the ui window
+    public static final String MESSAGE_AFTER_KEYWORD_DELETE = "\nOne entry found and deleted! Listing all entries now.";
 
     private Set<String> keywords;
 
@@ -28,24 +39,36 @@ public class DeleteByFindCommand extends DeleteCommand {
     }
 
     @Override
-    public CommandResult execute() throws CommandException {
-        UnmodifiableObservableList<ReadOnlyEntry> lastShownList = model.getFilteredFloatingTaskList();
+    public CommandResult execute() throws CommandException , DuplicateEntryException {
 
+        // update all 3 lists with new keywords.
+        model.updateFilteredDeadlineList(keywords);
+        model.updateFilteredEventList(keywords);
         model.updateFilteredFloatingTaskList(keywords);
-        if (model.getFilteredFloatingTaskList().size() == 1) {
-            entryToDelete = lastShownList.get(0);
+
+        // find out whether only 1 entry is found.
+        List<ReadOnlyEntry> tempAllList = new ArrayList<>();
+        tempAllList.addAll(model.getFilteredDeadlineList());
+        tempAllList.addAll(model.getFilteredEventList());
+        tempAllList.addAll(model.getFilteredFloatingTaskList());
+
+        if (tempAllList.size() == 1) {
+            entryToDelete = tempAllList.get(0);
             try {
                 model.deleteEntry(entryToDelete);
             } catch (EntryNotFoundException e) {
                 assert false : "The target entry cannot be missing";
             }
+            model.updateAllFilteredListToShowAll();
             return new CommandResult(String.format(MESSAGE_SUCCESS, entryToDelete));
         } else {
-            if (model.getFilteredFloatingTaskList().size() >= 2) {
-                return new CommandResult(String.format(MESSAGE_MULTIPLE_ENTRIES));
+            if (tempAllList.size() >= 2) {
+                return new CommandResult(MESSAGE_MULTIPLE_ENTRIES);
             } else {
-                return new CommandResult(String.format(MESSAGE_NO_ENTRIES));
+                assert (tempAllList.size() == 0);
+                return new CommandResult(MESSAGE_NO_ENTRIES);
             }
         }
     }
+
 }
