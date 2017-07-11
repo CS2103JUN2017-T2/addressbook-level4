@@ -72,7 +72,7 @@ public class XmlAdaptedEntry {
 
     /**
      * This converts a String to a Calendar object to be passed back to Model.
-     * 
+     *
      * @throws Exception
      */
     public Calendar convertStringToDate(String given) throws Exception {
