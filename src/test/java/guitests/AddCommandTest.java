@@ -86,7 +86,7 @@ public class AddCommandTest extends EntryBookGuiTest {
     @Test
     public void add_eventToExistingList_success() {
         Entry[] currentList = typicalEntries.getTypicalEvents();
-        Entry entryToAdd = typicalEntries.cat;
+        Entry entryToAdd = typicalEntries.movie;
         currentList = assertAddEvent(entryToAdd, currentList);
     }
 
@@ -110,10 +110,10 @@ public class AddCommandTest extends EntryBookGuiTest {
     @Test
     public void add_multipleUniqueEventToExistingList_success() {
         Entry[] currentList = typicalEntries.getTypicalEvents();
-        Entry entryToAdd = typicalEntries.cat;
+        Entry entryToAdd = typicalEntries.movie;
         currentList = assertAddEvent(entryToAdd, currentList);
 
-        entryToAdd = typicalEntries.movie;
+        entryToAdd = typicalEntries.opening;
         currentList = assertAddEvent(entryToAdd, currentList);
     }
 

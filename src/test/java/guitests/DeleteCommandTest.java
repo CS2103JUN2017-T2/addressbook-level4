@@ -16,6 +16,37 @@ import seedu.multitasky.testutil.TypicalEntries;
 //@@author A0125586X
 public class DeleteCommandTest extends EntryBookGuiTest {
 
+    /*********************
+     * Deleting by Index *
+     ********************/
+    @Test
+    public void delete_firstEventByIndex_success() {
+        Entry[] currentList = typicalEntries.getTypicalEvents();
+        Index targetIndex = TypicalEntries.INDEX_FIRST_ENTRY;
+        assertDeleteEventSuccess(targetIndex, currentList);
+    }
+
+    @Test
+    public void delete_lastEventByIndex_success() {
+        Entry[] currentList = typicalEntries.getTypicalEvents();
+        Index targetIndex = Index.fromOneBased(currentList.length);
+        assertDeleteEventSuccess(targetIndex, currentList);
+    }
+
+    @Test
+    public void delete_firstDeadlineByIndex_success() {
+        Entry[] currentList = typicalEntries.getTypicalDeadlines();
+        Index targetIndex = TypicalEntries.INDEX_FIRST_ENTRY;
+        assertDeleteDeadlineSuccess(targetIndex, currentList);
+    }
+
+    @Test
+    public void delete_lastDeadlineByIndex_success() {
+        Entry[] currentList = typicalEntries.getTypicalDeadlines();
+        Index targetIndex = Index.fromOneBased(currentList.length);
+        assertDeleteDeadlineSuccess(targetIndex, currentList);
+    }
+
     @Test
     public void delete_firstFloatingTaskByIndex_success() {
         Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
@@ -31,13 +62,6 @@ public class DeleteCommandTest extends EntryBookGuiTest {
     }
 
     @Test
-    public void delete_middleFloatingTaskByIndex_success() {
-        Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
-        Index targetIndex = Index.fromOneBased(currentList.length / 2);
-        assertDeleteFloatingTaskSuccess(targetIndex, currentList);
-    }
-
-    @Test
     public void delete_invalidFloatingTaskIndex_errorMessage() {
         Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
         Index targetIndex = Index.fromOneBased(currentList.length + 1);
@@ -45,6 +69,36 @@ public class DeleteCommandTest extends EntryBookGuiTest {
         assertResultMessage(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
     }
 
+    /***********************
+     * Deleting by Keyword *
+     ***********************/
+    @Test
+    public void delete_floatingTaskKeyword_singleMatch() {
+
+    }
+
+    /**************************************
+     * Different types of invalid wording *
+     **************************************/
+    @Test
+    public void delete_unknownCommandName_errorMessage() {
+        commandBox.runCommand("delet");
+        assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
+
+        commandBox.runCommand("deletee");
+        assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
+    }
+
+    @Test
+    public void delete_invalidCommandFormat_errorMessage() {
+        commandBox.runCommand("delete");
+        assertResultMessage(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                                          DeleteCommand.MESSAGE_USAGE));
+    }
+
+    /*******************************
+     * Mixed-case and autocomplete *
+     ******************************/
     /**
      * For all mixed-case tests only floating task entries are tested,
      * which should be suitable to test for all types since the type of task
@@ -78,35 +132,10 @@ public class DeleteCommandTest extends EntryBookGuiTest {
     }
 
     @Test
-    public void delete_unknownCommandName_errorMessage() {
-        commandBox.runCommand("d task");
-        assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
-
-        commandBox.runCommand("del task");
-        assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
-
-        commandBox.runCommand("deletee task");
-        assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
-    }
-
-    @Test
-    public void delete_invalidCommandFormat_errorMessage() {
-        commandBox.runCommand("delete");
-        assertResultMessage(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                                          DeleteCommand.MESSAGE_USAGE));
-        commandBox.runCommand("delete ");
-        assertResultMessage(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                                          DeleteCommand.MESSAGE_USAGE));
-    }
-
-    @Test
-    public void delete_tabAutocompleteFromOneChar_success() {
-        assertDeleteTabAutocomplete(DeleteCommand.COMMAND_WORD.substring(0, 1));
-    }
-
-    @Test
-    public void delete_tabAutocompleteFromTwoCharr_success() {
-        assertDeleteTabAutocomplete(DeleteCommand.COMMAND_WORD.substring(0, 2));
+    public void delete_tabAutocomplete_success() {
+        for (int i = 1; i < DeleteCommand.COMMAND_WORD.length(); ++i) {
+            assertDeleteTabAutocomplete(DeleteCommand.COMMAND_WORD.substring(0, i));
+        }
     }
 
     /**
@@ -128,6 +157,26 @@ public class DeleteCommandTest extends EntryBookGuiTest {
     }
 
     /**
+     * Runs the delete command to delete the event at {@code index} and confirms the result is correct.
+     * @param currentList A copy of the current list of events (before deletion).
+     */
+    private void assertDeleteEventSuccess(Index index, final Entry[] currentList) {
+        Entry entryToDelete = currentList[index.getZeroBased()];
+        commandBox.runCommand(EntryUtil.getEventDeleteByIndexCommand(index));
+        assertEventDeleted(entryToDelete, currentList);
+    }
+
+    /**
+     * Runs the delete command to delete the deadline at {@code index} and confirms the result is correct.
+     * @param currentList A copy of the current list of deadlines (before deletion).
+     */
+    private void assertDeleteDeadlineSuccess(Index index, final Entry[] currentList) {
+        Entry entryToDelete = currentList[index.getZeroBased()];
+        commandBox.runCommand(EntryUtil.getDeadlineDeleteByIndexCommand(index));
+        assertDeadlineDeleted(entryToDelete, currentList);
+    }
+
+    /**
      * Runs the delete command to delete the floating task at {@code index} and confirms the result is correct.
      * @param currentList A copy of the current list of floating tasks (before deletion).
      */
@@ -135,6 +184,18 @@ public class DeleteCommandTest extends EntryBookGuiTest {
         Entry entryToDelete = currentList[index.getZeroBased()];
         commandBox.runCommand(EntryUtil.getFloatingTaskDeleteByIndexCommand(index));
         assertFloatingTaskDeleted(entryToDelete, currentList);
+    }
+
+    private void assertEventDeleted(Entry entryDeleted, final Entry[] currentList) {
+        Entry[] expectedList = TestUtil.removeEntriesFromList(currentList, entryDeleted);
+        assertTrue(eventListPanel.isListMatching(expectedList));
+        assertResultMessage(String.format(DeleteCommand.MESSAGE_SUCCESS, entryDeleted));
+    }
+
+    private void assertDeadlineDeleted(Entry entryDeleted, final Entry[] currentList) {
+        Entry[] expectedList = TestUtil.removeEntriesFromList(currentList, entryDeleted);
+        assertTrue(deadlineListPanel.isListMatching(expectedList));
+        assertResultMessage(String.format(DeleteCommand.MESSAGE_SUCCESS, entryDeleted));
     }
 
     private void assertFloatingTaskDeleted(Entry entryDeleted, final Entry[] currentList) {

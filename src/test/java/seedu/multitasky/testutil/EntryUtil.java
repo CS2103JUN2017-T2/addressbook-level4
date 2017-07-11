@@ -39,6 +39,20 @@ public class EntryUtil {
     }
 
     /**
+     * Returns a delete command string for deleting an event by index.
+     */
+    public static String getEventDeleteByIndexCommand(Index index) {
+        return DeleteCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_EVENT + " " + index.getOneBased();
+    }
+
+    /**
+     * Returns a delete command string for deleting a deadline by index.
+     */
+    public static String getDeadlineDeleteByIndexCommand(Index index) {
+        return DeleteCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_DEADLINE + " " + index.getOneBased();
+    }
+
+    /**
      * Returns a delete command string for deleting a floating task by index.
      */
     public static String getFloatingTaskDeleteByIndexCommand(Index index) {
