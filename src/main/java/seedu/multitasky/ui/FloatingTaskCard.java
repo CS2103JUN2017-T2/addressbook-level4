@@ -1,5 +1,6 @@
 package seedu.multitasky.ui;
 
+import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 
 //@author A0125586X
@@ -12,5 +13,6 @@ public class FloatingTaskCard extends EntryCard {
 
     public FloatingTaskCard(ReadOnlyEntry entry, int displayedIndex) {
         super(FXML, entry, displayedIndex);
+        assert entry instanceof FloatingTask : "Entry to display on FloatingTaskCard must be FloatingTask";
     }
 }

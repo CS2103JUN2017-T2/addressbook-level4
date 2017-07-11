@@ -100,9 +100,10 @@ public class EntryUtil {
      * Returns a string version of the calendar date that is ready for use in input
      */
     public static String getDateDetailsAsInputString(Calendar calendar) {
+        assert calendar != null;
         StringBuilder builder = new StringBuilder();
         builder.append(calendar.get(Calendar.DAY_OF_MONTH) + "/")
-               .append((calendar.get(Calendar.MONTH) + 1) + "/")
+               .append((calendar.get(Calendar.MONTH) + 1) + "/") // +1 due to MONTH being 0-based (JAN = 0)
                .append(calendar.get(Calendar.YEAR) + " ")
                .append(calendar.get(Calendar.HOUR_OF_DAY) + ":")
                .append(calendar.get(Calendar.MINUTE));

@@ -21,9 +21,9 @@ public class TypicalEntries {
     public static final Index INDEX_THIRD_ENTRY = Index.fromOneBased(3);
 
     // Events
-    public final Entry dinner, cat;
+    public final Entry dinner, cat, movie;
     // Deadlines
-    public final Entry paper, submission;
+    public final Entry paper, submission, upgrade;
     // Floating tasks
     public final Entry cook, programming, hire, spectacles, clean, sell;
 
@@ -38,11 +38,18 @@ public class TypicalEntries {
             cat = new EntryBuilder().withName("Feed the cat").withTags("dinner")
                   .withStartDateAndTime(new GregorianCalendar(2017, Calendar.JULY, 12, 19, 00))
                   .withEndDateAndTime(new GregorianCalendar(2017, Calendar.JULY, 12, 21, 00)).build();
+            movie = new EntryBuilder().withName("Watch Spiderman").withTags("marvel")
+                    .withStartDateAndTime(new GregorianCalendar(2017, Calendar.JULY, 15, 15, 00))
+                    .withEndDateAndTime(new GregorianCalendar(2017, Calendar.JULY, 15, 17, 30)).build();
+
             // Deadlines
             paper = new EntryBuilder().withName("CS2103 finals").withTags("school", "study")
                     .withEndDateAndTime(new GregorianCalendar(2017, Calendar.JULY, 28, 10, 0)).build();
             submission = new EntryBuilder().withName("Submit assignment").withTags("school")
                          .withEndDateAndTime(new GregorianCalendar(2017, Calendar.JULY, 12, 16, 00)).build();
+            upgrade = new EntryBuilder().withName("Upgrade computer").withTags("project")
+                      .withEndDateAndTime(new GregorianCalendar(2017, Calendar.DECEMBER, 1, 00, 00)).build();
+
             // Floating tasks
             cook = new EntryBuilder().withName("Learn to cook").withTags("goals").build();
             programming = new EntryBuilder().withName("Learn programming").withTags("lessons", "computer").build();
@@ -64,7 +71,7 @@ public class TypicalEntries {
             for (Entry entry: new TypicalEntries().getTypicalEvents()) {
                 entryBook.addEntry(new Event(entry));
             }
-            for (Entry entry: new TypicalEntries().getTypicalEvents()) {
+            for (Entry entry: new TypicalEntries().getTypicalDeadlines()) {
                 entryBook.addEntry(new Deadline(entry));
             }
             for (Entry entry: new TypicalEntries().getTypicalFloatingTasks()) {
@@ -84,7 +91,7 @@ public class TypicalEntries {
         return new Entry[] { paper };
     }
     public Entry[] getTypicalFloatingTasks() {
-        return new Entry[] { cook, programming, hire };
+        return new Entry[] { cook, programming };
     }
     //@@author
 

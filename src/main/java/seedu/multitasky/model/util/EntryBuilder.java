@@ -61,11 +61,13 @@ public class EntryBuilder {
     }
 
     public EntryBuilder withTags(String... tags) throws IllegalValueException {
+        this.tags = SampleDataUtil.getTagSet(tags);
         this.entry.setTags(SampleDataUtil.getTagSet(tags));
         return this;
     }
 
     public EntryBuilder withTags(Set<Tag> tags) throws IllegalValueException {
+        this.tags = tags;
         this.entry.setTags(tags);
         return this;
     }
