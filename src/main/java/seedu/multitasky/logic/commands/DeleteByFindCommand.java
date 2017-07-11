@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
@@ -38,7 +39,7 @@ public class DeleteByFindCommand extends DeleteCommand {
     }
 
     @Override
-    public CommandResult execute() throws CommandException {
+    public CommandResult execute() throws CommandException , DuplicateEntryException {
 
         // update all 3 lists with new keywords.
         model.updateFilteredDeadlineList(keywords);
