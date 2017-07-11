@@ -43,11 +43,21 @@ public class EntryBuilder {
         Objects.requireNonNull(entryToCopy);
         if (entryToCopy instanceof Event) {
             this.entry = new Event(entryToCopy);
+            name = entryToCopy.getName().toString();
+            startDateAndTime = entryToCopy.getStartDateAndTime();
+            endDateAndTime = entryToCopy.getEndDateAndTime();
+            tags = entryToCopy.getTags();
+
         } else if (entryToCopy instanceof Deadline) {
             this.entry = new Deadline(entryToCopy);
+            name = entryToCopy.getName().toString();
+            endDateAndTime = entryToCopy.getEndDateAndTime();
+            tags = entryToCopy.getTags();
         } else {
             assert (entryToCopy instanceof FloatingTask);
             this.entry = new FloatingTask(entryToCopy);
+            name = entryToCopy.getName().toString();
+            tags = entryToCopy.getTags();
         }
     }
 

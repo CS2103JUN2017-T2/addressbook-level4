@@ -21,7 +21,7 @@ import seedu.multitasky.model.util.TagSetBuilder;
 //@@author A0126623L
 public class DeadlineTest {
 
-    public static final Deadline[] SAMPLE_EVENTS_ARRAY_DATA = getSampleDeadlineArrayData();
+    public static final Deadline[] SAMPLE_DEADLINES_ARRAY_DATA = getSampleDeadlineArrayData();
 
     // @@author A0126623L
     /**
@@ -59,11 +59,11 @@ public class DeadlineTest {
     // @@author A0126623L
     @Before
     public void setUp() {
-        deadline1 = SAMPLE_EVENTS_ARRAY_DATA[0];
-        deadline2 = SAMPLE_EVENTS_ARRAY_DATA[1];
-        deadline3 = SAMPLE_EVENTS_ARRAY_DATA[2];
-        deadline4 = SAMPLE_EVENTS_ARRAY_DATA[3];
-        deadline5 = SAMPLE_EVENTS_ARRAY_DATA[4];
+        deadline1 = SAMPLE_DEADLINES_ARRAY_DATA[0];
+        deadline2 = SAMPLE_DEADLINES_ARRAY_DATA[1];
+        deadline3 = SAMPLE_DEADLINES_ARRAY_DATA[2];
+        deadline4 = SAMPLE_DEADLINES_ARRAY_DATA[3];
+        deadline5 = SAMPLE_DEADLINES_ARRAY_DATA[4];
     }
 
     // @@author A0126623L
@@ -91,9 +91,9 @@ public class DeadlineTest {
 
             Deadline tester999 = (Deadline) tempDeadline;
             assertFalse(tester999.equals(deadline3));
-
             tester999.resetData(deadline3);
             assertTrue(tester999.equals(deadline3));
+
         } catch (Exception e) {
             fail("DeadlineTest.resetDataTest() failed.");
         }
