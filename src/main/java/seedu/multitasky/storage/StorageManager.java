@@ -67,13 +67,16 @@ public class StorageManager extends ComponentManager implements Storage {
         return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
     }
 
+    /**
+     * Gets the filepath for deletion during exitApp event
+     */
     @Override
     public String getFilePathForDeletion() {
         return UserPrefs.getEntryBookSnapshotPath() + numSnapshots + ".xml";
     }
 
     /**
-     * Gets the proper filepath of the previous snapshot for undo with index
+     * Gets the proper filepath of the previous snapshot needed for undo
      */
     public static String getPreviousEntryBookSnapshotPath() {
         UserPrefs.decrementIndexByOne();
@@ -104,12 +107,15 @@ public class StorageManager extends ComponentManager implements Storage {
         entryBookStorage.saveEntryBook(entryBook, filePath);
     }
 
+    // @@author A0132788U
+    /**
+     * Loads data from previousSnapshotPath for undoAction.
+     */
     public EntryBook loadUndoData() throws FileNotFoundException, DataConversionException {
         ReadOnlyEntryBook undoData = XmlFileStorage.loadDataFromSaveFile(new File(getPreviousEntryBookSnapshotPath()));
         return new EntryBook(undoData);
     }
 
-    // @@author A0132788U
     /**
      * Gets the filepath of the most current snapshot xml file and increments index by one.
      */
@@ -120,6 +126,9 @@ public class StorageManager extends ComponentManager implements Storage {
         return snapshotPath;
     }
 
+    /**
+     * Saves the entryBookSnapshot at the file path given by above method.
+     */
     public void saveEntryBookSnapshot(ReadOnlyEntryBook entryBook) throws IOException {
         saveEntryBook(entryBook, setEntryBookSnapshotPathAndUpdateIndex());
     }
@@ -151,6 +160,10 @@ public class StorageManager extends ComponentManager implements Storage {
         }
     }
 
+    /**
+     * Saves data from the previous snapshot to the current entrybook and passes back
+     * the event data to ModelManager to reset and update the display.
+     */
     @Override
     @Subscribe
     public void handleEntryBookToUndoEvent(EntryBookToUndoEvent event) throws DataConversionException {

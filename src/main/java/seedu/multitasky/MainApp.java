@@ -186,6 +186,7 @@ public class MainApp extends Application {
         System.exit(0);
     }
 
+    // @@author A0132788U
     /**
      * Logs the info, deletes snapshot files, and then exits the app.
      */
@@ -195,6 +196,7 @@ public class MainApp extends Application {
         event.deleteAllSnapshotFiles(storage);
         this.stop();
     }
+    // @@author
 
     public static void main(String[] args) {
         launch(args);

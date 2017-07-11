@@ -25,6 +25,7 @@ public class ExitAppRequestEvent extends BaseEvent {
             StorageManager.decrementNumSnapshots();
         }
     }
+    // @@author
 
     @Override
     public String toString() {

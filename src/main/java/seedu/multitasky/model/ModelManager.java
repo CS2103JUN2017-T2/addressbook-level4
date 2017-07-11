@@ -66,12 +66,20 @@ public class ModelManager extends ComponentManager implements Model {
         raise(new EntryBookChangedEvent(_entryBook));
     }
 
+    // @@author A0132788U
     /** Raises an event when undo is entered */
     private void indicateUndoAction() {
         EntryBookToUndoEvent undoEvent;
         raise(undoEvent = new EntryBookToUndoEvent(_entryBook));
         _entryBook.resetData(undoEvent.getData());
     }
+
+    @Override
+    public void undoPreviousAction() {
+        indicateUndoAction();
+    }
+
+    // @@author
 
     @Override
     public synchronized void deleteEntry(ReadOnlyEntry target)
@@ -96,11 +104,6 @@ public class ModelManager extends ComponentManager implements Model {
 
         _entryBook.updateEntry(target, editedEntry);
         indicateEntryBookChanged();
-    }
-
-    @Override
-    public void undoPreviousAction() {
-        indicateUndoAction();
     }
 
     // =========== Filtered Entry List Accessors ===========
