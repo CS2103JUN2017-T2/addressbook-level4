@@ -100,6 +100,7 @@ public class EntryBuilder {
         return entry;
     }
 
+    // @@author A0126623L
     /**
      * Builds an appropriate entry (i.e. Event, Deadline, FloatingTask, ...) based on the given argument.
      *
@@ -107,7 +108,8 @@ public class EntryBuilder {
      * @throws IllegalValueException
      */
     public static ReadOnlyEntry build(Name name, Calendar startDateAndTime, Calendar endDateAndTime,
-                                      String... tags) throws IllegalValueException {
+                                      String... tags)
+            throws IllegalValueException {
 
         HashSet<Tag> tagSet = new HashSet<>();
         for (String s : tags) {
@@ -131,5 +133,6 @@ public class EntryBuilder {
             return null;
         }
     }
+    // @@author
 
 }
