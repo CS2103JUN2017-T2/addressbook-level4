@@ -23,7 +23,7 @@ public class TypicalEntries {
     public static final Index INDEX_THIRD_ENTRY = Index.fromOneBased(3);
 
     // Events
-    public final Entry dinner, cat, movie;
+    public final Entry dinner, cat, movie, opening;
     // Deadlines
     public final Entry paper, submission, upgrade;
     // Floating tasks
@@ -42,6 +42,9 @@ public class TypicalEntries {
             movie = new EntryBuilder().withName("Watch Spiderman").withTags("marvel")
                     .withStartDateAndTime(new GregorianCalendar(2017, Calendar.JULY, 15, 15, 00))
                     .withEndDateAndTime(new GregorianCalendar(2017, Calendar.JULY, 15, 17, 30)).build();
+            opening = new EntryBuilder().withName("Attend exhibition opening").withTags("dressup")
+                      .withStartDateAndTime(new GregorianCalendar(2017, Calendar.OCTOBER, 7, 18, 00))
+                      .withEndDateAndTime(new GregorianCalendar(2017, Calendar.OCTOBER, 7, 21, 00)).build();
 
             // Deadlines
             paper = new EntryBuilder().withName("CS2103 finals").withTags("school", "study")
@@ -84,6 +87,7 @@ public class TypicalEntries {
         }
 
     }
+    //@@author
 
     public Entry[] getTypicalEvents() {
         return new Entry[] { dinner };
@@ -102,21 +106,5 @@ public class TypicalEntries {
         loadEntryBookWithSampleData(entryBook);
         return entryBook;
     }
-
-    //TODO remove once kevin figures out why are there nullpointer exceptions
-    public EntryBook getFloatingOnlyEntryBook() {
-        EntryBook entryBook = new EntryBook();
-        loadEntryBookWithFloatingTaskData(entryBook);
-        return entryBook;
-    }
-    public static void loadEntryBookWithFloatingTaskData(EntryBook entryBook) {
-        try {
-            for (Entry entry: new TypicalEntries().getTypicalFloatingTasks()) {
-                entryBook.addEntry(new FloatingTask(entry));
-            }
-        } catch (Exception e) {
-            assert false : "Sample entries cannot have errors";
-        }
-    }
-
+    //@@author
 }
