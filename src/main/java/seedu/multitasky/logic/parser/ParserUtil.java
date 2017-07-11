@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -78,8 +79,16 @@ public class ParserUtil {
         return Stream.of(prefixes).anyMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 
-    public static Prefix getDatePrefix(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
-        return Stream.of(prefixes).filter(prefix -> argumentMultimap.getValue(prefix).isPresent())
-                     .collect(Collectors.toList()).get(0);
+    /**
+     * Filters out Prefix's not mapped to anything in {@argMultimap}, and returns prefix that has arguments mapped
+     * to it.
+     *
+     * Precondition: 1 and only 1 Prefix of the given argument prefixes have arguments mapped to it.
+     */
+    public static Prefix getDatePrefix(ArgumentMultimap argMultimap, Prefix... prefixes) {
+        List<Prefix> temp = Stream.of(prefixes).filter(prefix -> argMultimap.getValue(prefix).isPresent())
+                                  .collect(Collectors.toList());
+        assert (temp.size() <= 1) : "invalid flag combination not catched beforehand or no Prefixes found!";
+        return temp.get(0);
     }
 }

@@ -25,12 +25,22 @@ public class FindCommand extends Command {
 
     @Override
     public CommandResult execute() {
+
+        // update all 3 lists with new keywords.
+        model.updateFilteredDeadlineList(keywords);
+        model.updateFilteredEventList(keywords);
         model.updateFilteredFloatingTaskList(keywords);
-        return new CommandResult(getMessageForEntryListShownSummary(model.getFilteredFloatingTaskList()
-                                                                         .size()));
+
+        // get size of each lists for printing.
+        int deadlineSize = model.getFilteredDeadlineList().size();
+        int eventSize = model.getFilteredEventList().size();
+        int floatingSize = model.getFilteredFloatingTaskList().size();
+        return new CommandResult(getMessageForEntryListShownSummary(deadlineSize + eventSize + floatingSize,
+                                                                    eventSize, deadlineSize, floatingSize));
     }
 
     public Set<String> getKeywords() {
         return keywords;
     }
+
 }
