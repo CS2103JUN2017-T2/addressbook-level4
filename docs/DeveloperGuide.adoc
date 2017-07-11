@@ -194,7 +194,7 @@ The `Model`,
 * stores the Entry Book data.
 * entries are categorised into `Event`, `Deadline` and `FloatingTask`.
 * entries have three states, i.e. active, archived and deleted.
-* exposes several `UnmodifiableObservableList<ReadOnlyEntry>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the lists change.
+* exposes several `UnmodifiableObservableList<ReadOnlyEntry>` that can be 'observed' e.g. the UI can be bound to these lists so that the UI automatically updates when the data in the lists change.
 * does not depend on any of the other three components.
 
 === Storage component
