@@ -141,8 +141,9 @@ public class StorageManager extends ComponentManager implements Storage {
     public void handleEntryBookToUndoEvent(EntryBookToUndoEvent event) throws DataConversionException {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "Load previous snapshot"));
         try {
-            saveEntryBook(loadUndoData());
-            event.setData(loadUndoData());
+            EntryBook entry = loadUndoData();
+            saveEntryBook(entry);
+            event.setData(entry);
         } catch (IOException e) {
             raise(new DataSavingExceptionEvent(e));
         }
