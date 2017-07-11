@@ -101,7 +101,7 @@ public class EntryUtil {
     public static String getDateDetailsAsInputString(Calendar calendar) {
         StringBuilder builder = new StringBuilder();
         builder.append(calendar.get(Calendar.DAY_OF_MONTH) + "/")
-               .append(calendar.get(Calendar.MONTH) + "/")
+               .append((calendar.get(Calendar.MONTH) + 1) + "/")
                .append(calendar.get(Calendar.YEAR) + " ")
                .append(calendar.get(Calendar.HOUR_OF_DAY) + ":")
                .append(calendar.get(Calendar.MINUTE));
