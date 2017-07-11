@@ -58,11 +58,11 @@ public class UserPrefs {
      * Methods to update the indices when files are created during mutation/deleted during exit
      */
     public static void incrementIndexByOne() {
-        UserPrefs.setIndex(UserPrefs.getIndex() + 1);
+        index++;
     }
 
     public static void decrementIndexByOne() {
-        UserPrefs.setIndex(UserPrefs.getIndex() - 1);
+        index--;
     }
 
     // @@author
