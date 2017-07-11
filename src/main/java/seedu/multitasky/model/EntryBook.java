@@ -73,7 +73,9 @@ public class EntryBook implements ReadOnlyEntryBook {
     //// list overwrite operations
 
     // @@author A0126623L
+    // TODO: Revert this to the original form after model architecture is revamped for V0.4.
     private void setActiveList(ReadOnlyEntryBook entries) throws DuplicateEntryException {
+        this._activeList.setEntries(new MiscEntryList());
         for (ReadOnlyEntry entry : entries.getEventList()) {
             this._activeList.add(entry);
         }
@@ -114,7 +116,7 @@ public class EntryBook implements ReadOnlyEntryBook {
         requireNonNull(newData);
 
         try {
-            setActiveList(newData);
+            setActiveList(newData); // TODO: Update this in V0.4.
             setArchive(newData.getArchive());
             setBin(newData.getBin());
             setEventList(newData.getEventList());
