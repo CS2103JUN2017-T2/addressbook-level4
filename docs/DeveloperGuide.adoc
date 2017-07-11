@@ -176,7 +176,7 @@ link:{repoURL}/src/main/java/seedu/multitasky/logic/Logic.java[`Logic.java`]
 
 Given below is the Sequence Diagram for interactions within the `Logic` component for the `execute("delete 1")` API call.
 
-image::DeletePersonSdForLogic.png[width="800"]
+image::DeleteEntrySdForLogic.png[width="800"]
 _Figure 2.3.1 : Interactions Inside the Logic Component for the `delete 1` Command_
 
 === Model component
@@ -194,7 +194,7 @@ The `Model`,
 * stores the Entry Book data.
 * exposes a `UnmodifiableObservableList<ReadOnlyEntry>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
 * does not depend on any of the other three components.
-
+//<!-- @@author A0132788U -->
 === Storage component
 
 Author: Akankshita Dash
@@ -207,8 +207,9 @@ _Figure 2.5.1 : Structure of the Storage Component_
 The `Storage` component,
 
 * can save `UserPref` objects in json format and read it back.
-* can save the Entry Book data in xml format and read it back.
-
+* saves snapshots after every data mutation.
+* can save the Entry Book data in xml format and read it back using EntryBuilder from Model.
+//<!-- @@author -->
 === Common classes
 
 Classes used by multiple components are in the `seedu.multitasky.commons` package.
