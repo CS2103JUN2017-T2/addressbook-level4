@@ -25,7 +25,11 @@ import seedu.multitasky.model.tag.Tag;
  * Parses input arguments and creates a new AddCommand object
  */
 public class AddCommandParser {
-    ArgumentMultimap argMultimap;
+    private ArgumentMultimap argMultimap;
+
+    public ArgumentMultimap getArgMultimap() {
+        return argMultimap;
+    }
 
     /**
      * Parses the given {@code String} of arguments in the context of the

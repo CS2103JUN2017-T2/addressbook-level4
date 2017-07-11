@@ -13,6 +13,7 @@ import org.junit.Test;
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.logic.CommandHistory;
+import seedu.multitasky.logic.parser.Prefix;
 import seedu.multitasky.model.Model;
 import seedu.multitasky.model.ModelManager;
 import seedu.multitasky.model.UserPrefs;
@@ -85,7 +86,7 @@ public class DeleteCommandTest {
      * Returns a {@code DeleteCommand} with the parameter {@code index}.
      */
     private DeleteCommand prepareCommand(Index index) {
-        DeleteCommand deleteCommand = new DeleteByIndexCommand(index);
+        DeleteCommand deleteCommand = new DeleteByIndexCommand(index, new Prefix("/float"));
         deleteCommand.setData(model, new CommandHistory());
         return deleteCommand;
     }
