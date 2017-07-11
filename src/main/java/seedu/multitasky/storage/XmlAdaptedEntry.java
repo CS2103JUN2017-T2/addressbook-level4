@@ -72,14 +72,17 @@ public class XmlAdaptedEntry {
 
     /**
      * This converts a String to a Calendar object to be passed back to Model.
+     * 
+     * @throws Exception
      */
-    public Calendar convertStringToDate(String given) throws NullPointerException {
+    public Calendar convertStringToDate(String given) throws Exception {
         Calendar setDate = null;
         Date toConvert = new Date();
         try {
             toConvert = df.parse(given);
             setDate = setTheTime(toConvert);
         } catch (ParseException e) {
+            throw new Exception("Unable to set the time!");
         }
         setDate.setTime(toConvert);
         return setDate;
@@ -114,6 +117,7 @@ public class XmlAdaptedEntry {
             try {
                 startDateAndTimeToUse = convertStringToDate(startDateAndTime);
             } catch (Exception e) {
+                throw new Exception("Start time is invalid!");
             }
         }
 
@@ -121,6 +125,7 @@ public class XmlAdaptedEntry {
             try {
                 endDateAndTimeToUse = convertStringToDate(endDateAndTime);
             } catch (Exception e) {
+                throw new Exception("End time is invalid!");
             }
         }
 
