@@ -44,7 +44,7 @@ public class EntryBook implements ReadOnlyEntryBook {
      * The 'unusual' code block below is an non-static initialization block, sometimes used to avoid
      * duplication
      * between constructors. See https://docs.oracle.com/javase/tutorial/java/javaOO/initial.html
-     * TODO: Improve this section.
+     * TODO by ChuaPingChan: Improve this section.
      * Note that non-static init blocks are not recommended to use. There are other ways to avoid duplication
      * among constructors.
      */
@@ -58,7 +58,6 @@ public class EntryBook implements ReadOnlyEntryBook {
         _tags = new UniqueTagList();
     }
 
-    // TODO: This may later be removed.
     public EntryBook() {
     }
 
@@ -72,17 +71,8 @@ public class EntryBook implements ReadOnlyEntryBook {
 
     //// list overwrite operations
 
-    // @@author A0126623L
-    private void setActiveList(ReadOnlyEntryBook entries) throws DuplicateEntryException {
-        for (ReadOnlyEntry entry : entries.getEventList()) {
-            this._activeList.add(entry);
-        }
-        for (ReadOnlyEntry entry : entries.getDeadlineList()) {
-            this._activeList.add(entry);
-        }
-        for (ReadOnlyEntry entry : entries.getFloatingTaskList()) {
-            this._activeList.add(entry);
-        }
+    public void setActiveList(List<? extends ReadOnlyEntry> entries) throws DuplicateEntryException {
+        this._activeList.setEntries(entries);
     }
 
     public void setArchive(List<? extends ReadOnlyEntry> entries) throws DuplicateEntryException {
@@ -109,12 +99,11 @@ public class EntryBook implements ReadOnlyEntryBook {
         this._tags.setTags(tags);
     }
 
-    // @@author A0126623L
     public void resetData(ReadOnlyEntryBook newData) {
         requireNonNull(newData);
 
         try {
-            setActiveList(newData);
+            setActiveList(newData.getActiveList());
             setArchive(newData.getArchive());
             setBin(newData.getBin());
             setEventList(newData.getEventList());
@@ -131,11 +120,9 @@ public class EntryBook implements ReadOnlyEntryBook {
         }
         syncMasterTagListWith(_activeList);
     }
-    // @@author
 
     //// entry-level operations
 
-    // @@author A0126623L
     /**
      * Adds an entry to the entry book.
      * Creates the appropriate sub-type of the new entry and adds its reference to the active entry list, as
@@ -150,9 +137,7 @@ public class EntryBook implements ReadOnlyEntryBook {
         syncMasterTagListWith(newEntry);
         _activeList.add(newEntry); // Adds reference of newEntry to activeList, not creating a copy.
     }
-    // @@author
 
-    // @@author A0126623L
     /**
      * Add a given ReadOnlyEntry to one of either active, deadline or floating task list.
      */
@@ -166,9 +151,7 @@ public class EntryBook implements ReadOnlyEntryBook {
             _floatingTaskList.add(newEntry);
         }
     }
-    // @@author
 
-    // @@author A0126623L
     /**
      * Replaces the given entry {@code target} in the list with {@code editedReadOnlyEntry}.
      * {@code EntryBook}'s tag list will be updated with the tags of {@code editedReadOnlyEntry}.
@@ -188,16 +171,14 @@ public class EntryBook implements ReadOnlyEntryBook {
         // This can cause the tags master list to have additional tags that are not tagged to any entry
         // in the entry list.
     }
-    // @@author
 
-    // @@author A0126623L
     /**
      * Converts a given ReadOnlyEntryObject to an appropriate Event object (i.e. event, deadline or floating
      * task).
      *
      * @return Entry
      */
-    public static Entry convertToEntrySubType(ReadOnlyEntry editedReadOnlyEntry) {
+    public Entry convertToEntrySubType(ReadOnlyEntry editedReadOnlyEntry) {
         Entry newEntry;
         if (editedReadOnlyEntry instanceof Event) {
             newEntry = (Event) editedReadOnlyEntry;
@@ -209,7 +190,6 @@ public class EntryBook implements ReadOnlyEntryBook {
         }
         return newEntry;
     }
-    // @@author
 
     /**
      * Ensures that every tag in this entry:
@@ -248,10 +228,12 @@ public class EntryBook implements ReadOnlyEntryBook {
      *
      * @param entryToRemove
      * @return boolean
-     * @throws EntryNotFoundException
+     * @throws DuplicateEntryException, EntryNotFoundException
      */
-    public boolean removeEntry(ReadOnlyEntry entryToRemove) throws EntryNotFoundException {
+    public boolean removeEntry(ReadOnlyEntry entryToRemove)
+            throws DuplicateEntryException, EntryNotFoundException {
         if (_activeList.remove(entryToRemove) && removeFromEntrySubTypeList(entryToRemove)) {
+            _bin.add(entryToRemove);
             return true;
         } else {
             throw new EntryNotFoundException();
