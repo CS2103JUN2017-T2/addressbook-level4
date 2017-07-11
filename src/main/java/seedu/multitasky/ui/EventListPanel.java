@@ -43,7 +43,6 @@ public class EventListPanel extends UiPart<Region> {
 
         @Override
         protected void updateItem(ReadOnlyEntry entry, boolean empty) {
-            //assert entry instanceof Event : "Entry to display on EventListPanel must be Event";
             super.updateItem(entry, empty);
 
             if (empty || entry == null) {
