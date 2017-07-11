@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 import static seedu.multitasky.testutil.EditCommandTestUtil.DESC_AMY;
 import static seedu.multitasky.testutil.EditCommandTestUtil.DESC_BOB;
 import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_NAME_BOB;
-import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.multitasky.testutil.TypicalEntries.INDEX_FIRST_ENTRY;
 import static seedu.multitasky.testutil.TypicalEntries.INDEX_SECOND_ENTRY;
 
@@ -18,13 +17,10 @@ import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.logic.CommandHistory;
 import seedu.multitasky.logic.commands.EditCommand.EditEntryDescriptor;
-import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.Model;
 import seedu.multitasky.model.ModelManager;
 import seedu.multitasky.model.UserPrefs;
-import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
-import seedu.multitasky.model.util.EntryBuilder;
 import seedu.multitasky.testutil.EditEntryDescriptorBuilder;
 import seedu.multitasky.testutil.TypicalEntries;
 
@@ -35,6 +31,7 @@ public class EditCommandTest {
 
     private Model model = new ModelManager(new TypicalEntries().getTypicalEntryBook(), new UserPrefs());
 
+    /*
     @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() throws Exception {
         Entry editedEntry = new EntryBuilder().build();
@@ -97,6 +94,7 @@ public class EditCommandTest {
 
         CommandTestUtil.assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
     }
+    */
 
     @Test
     public void execute_invalidEntryIndexUnfilteredList_failure() throws Exception {
