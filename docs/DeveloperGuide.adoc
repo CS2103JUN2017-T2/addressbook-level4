@@ -179,6 +179,7 @@ Given below is the Sequence Diagram for interactions within the `Logic` componen
 image::DeleteEntrySdForLogic.png[width="800"]
 _Figure 2.3.1 : Interactions Inside the Logic Component for the `delete 1` Command_
 
+//<!-- @@author A0126623L -->
 === Model component
 
 Author: Chua Ping Chan
@@ -196,6 +197,7 @@ The `Model`,
 * entries have three states, i.e. active, archived and deleted.
 * exposes several `UnmodifiableObservableList<ReadOnlyEntry>` that can be 'observed' e.g. the UI can be bound to these lists so that the UI automatically updates when the data in the lists change.
 * does not depend on any of the other three components.
+
 //<!-- @@author A0132788U -->
 === Storage component
 
