@@ -138,7 +138,6 @@ public class AddCommandTest extends EntryBookGuiTest {
         assertResultMessage(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
     }
 
-
     @Test
     public void add_invalidEntryName_errorMessage() {
         commandBox.runCommand("add $");
