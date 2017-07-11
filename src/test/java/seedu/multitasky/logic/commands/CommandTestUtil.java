@@ -23,7 +23,8 @@ public class CommandTestUtil {
      * - the {@code actualModel} matches {@code expectedModel}
      */
     public static void assertCommandSuccess(Command command, Model actualModel, String expectedMessage,
-            Model expectedModel) throws CommandException, DuplicateEntryException {
+                                            Model expectedModel)
+            throws CommandException, DuplicateEntryException {
         CommandResult result = command.execute();
         assertEquals(expectedMessage, result.feedbackToUser);
         assertEquals(expectedModel, actualModel);

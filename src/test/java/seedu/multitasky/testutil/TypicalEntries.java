@@ -6,7 +6,7 @@ import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.util.EntryBuilder;
 
-//@@author A0125586X
+// @@author A0125586X
 /**
  * Provides typical entries for use in testing.
  */
@@ -21,14 +21,16 @@ public class TypicalEntries {
     // @@author A0125586X
     public TypicalEntries() {
         try {
-            //CHECKSTYLE.OFF: LineLength
+            // CHECKSTYLE.OFF: LineLength
             cook = new EntryBuilder().withName("Learn to cook").withTags("goals").build();
-            programming = new EntryBuilder().withName("Learn programming").withTags("lessons", "computer").build();
+            programming = new EntryBuilder().withName("Learn programming").withTags("lessons", "computer")
+                                            .build();
             hire = new EntryBuilder().withName("Hire an assistant").withTags("help").build();
-            spectacles = new EntryBuilder().withName("Make new spectacles").withTags("health", "eyesight").build();
+            spectacles = new EntryBuilder().withName("Make new spectacles").withTags("health", "eyesight")
+                                           .build();
             clean = new EntryBuilder().withName("Clean up room").withTags("never").build();
             sell = new EntryBuilder().withName("Sell old things").withTags("sale", "clutter").build();
-            //CHECKSTYLE.ON: LineLength
+            // CHECKSTYLE.ON: LineLength
 
         } catch (Exception e) {
             throw new AssertionError("Sample data cannot be invalid", e);
@@ -39,7 +41,7 @@ public class TypicalEntries {
     public static void loadEntryBookWithSampleData(EntryBook entryBook) {
         try {
             // TODO add events and deadlines
-            for (Entry entry: new TypicalEntries().getTypicalFloatingTasks()) {
+            for (Entry entry : new TypicalEntries().getTypicalFloatingTasks()) {
                 entryBook.addEntry(new FloatingTask(entry));
             }
         } catch (Exception e) {
@@ -52,7 +54,7 @@ public class TypicalEntries {
         return new Entry[] { cook, programming, hire };
     }
 
-    //@@author A0125586X
+    // @@author A0125586X
     public Entry[] getTypicalFloatingTasks() {
         return new Entry[] { cook, programming, hire };
     }

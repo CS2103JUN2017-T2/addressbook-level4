@@ -58,8 +58,6 @@ public class AddCommandTest {
      */
     private class ModelStub implements Model {
 
-
-
         @Override
         public void resetData(ReadOnlyEntryBook newData) {
             fail("This method should not be called.");
@@ -82,7 +80,8 @@ public class AddCommandTest {
         }
 
         @Override
-        public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws EntryNotFoundException {
+        public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
+                throws EntryNotFoundException {
             fail("This method should not be called.");
         }
 
