@@ -83,19 +83,17 @@ public class EntryBuilder {
 
     public Entry build() throws Exception {
         if (startDateAndTime == null) {
-            // Floating task
             if (endDateAndTime == null) {
                 entry = new FloatingTask(new Name(name), tags);
-                // Deadline
             } else {
                 entry = new Deadline(new Name(name), endDateAndTime, tags);
             }
-            // Event
         } else if (endDateAndTime != null) {
             entry = new Event(new Name(name), startDateAndTime, endDateAndTime, tags);
-            // Unknown combination of present start date but no end date
-        } else {
 
+        } else {
+            assert false : "Error in EntryBuilder.";
+            return null;
         }
         return entry;
     }

@@ -4,6 +4,9 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import java.util.Collections;
+import java.util.List;
+
 import guitests.guihandles.EntryCardHandle;
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.logic.commands.AddCommand;
@@ -16,6 +19,14 @@ import seedu.multitasky.testutil.TestUtil;
 
 //@@author A0125586X
 public class AddCommandTest extends EntryBookGuiTest {
+
+    @Test
+    public void add_eventToEmptyList_success() {
+        assertCleared();
+        Entry[] currentList = new Entry[0];
+        Entry entryToAdd = typicalEntries.dinner;
+        currentList = addEvent(entryToAdd, currentList);
+    }
 
     @Test
     public void add_floatingTaskToEmptyList_success() {
@@ -102,7 +113,7 @@ public class AddCommandTest extends EntryBookGuiTest {
         commandBox.runCommand("addd task");
         assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
     }
-    
+
     @Test
     public void add_tabAutocomplete_success() {
         for (int i = 1; i < AddCommand.COMMAND_WORD.length(); ++i) {
@@ -122,7 +133,7 @@ public class AddCommandTest extends EntryBookGuiTest {
         assertResultMessage(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
     }
 
-    
+
     @Test
     public void add_invalidEntryName_errorMessage() {
         commandBox.runCommand("add $");
@@ -157,7 +168,17 @@ public class AddCommandTest extends EntryBookGuiTest {
         Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
         Entry entryToAdd = typicalEntries.spectacles;
         commandBox.runCommand(commandWord + " " + EntryUtil.getFloatingTaskDetailsForAdd(entryToAdd));
-        assertEntryAdded(entryToAdd, currentList);
+        assertFloatingTaskAdded(entryToAdd, currentList);
+    }
+
+    /**
+     * Adds an event to the entry book as well as to the supplied array
+     *
+     * @return the
+     */
+    private Entry[] addEvent(Entry entryToAdd, Entry... currentList) {
+        assertAddEventSuccess(entryToAdd, currentList);
+        return TestUtil.addEntriesToSortedList(currentList, entryToAdd);
     }
 
     /**
@@ -180,19 +201,40 @@ public class AddCommandTest extends EntryBookGuiTest {
     }
 
     /**
+     * Attempts to add an entry as an event and confirms that it has been added.
+     */
+    private void assertAddEventSuccess(Entry entryToAdd, Entry... currentList) {
+        commandBox.runCommand(EntryUtil.getEventAddCommand(entryToAdd));
+        assertEventAdded(entryToAdd, currentList);
+    }
+
+    /**
      * Attempts to add an entry as a floating task and confirms that it has been added.
      */
     private void assertAddFloatingTaskSuccess(Entry entryToAdd, Entry... currentList) {
         commandBox.runCommand(EntryUtil.getFloatingTaskAddCommand(entryToAdd));
-        assertEntryAdded(entryToAdd, currentList);
+        assertFloatingTaskAdded(entryToAdd, currentList);
     }
 
-    private void assertEntryAdded(Entry entryAdded, Entry... currentList) {
-        // Confirm that added entry is in the list
+    /**
+     * Confirms that the added entry is in the expected list, and that the
+     * expected list matches the displayed list.
+     */
+    private void assertEventAdded(Entry entryAdded, Entry... currentList) {
+        EntryCardHandle addedCard = eventListPanel.navigateToEntry(entryAdded.getName().toString());
+        assertMatching(entryAdded, addedCard);
+        Entry[] expectedList = TestUtil.addEntriesToSortedList(currentList, entryAdded);
+        assertTrue(eventListPanel.isListMatching(expectedList));
+    }
+
+    /**
+     * Confirms that the added entry is in the expected list, and that the
+     * expected list matches the displayed list.
+     */
+    private void assertFloatingTaskAdded(Entry entryAdded, Entry... currentList) {
         EntryCardHandle addedCard = floatingTaskListPanel.navigateToEntry(entryAdded.getName().toString());
         assertMatching(entryAdded, addedCard);
 
-        // Confirm the list now contains all previous entries plus the new entry
         Entry[] expectedList = TestUtil.addEntriesToList(currentList, entryAdded);
         assertTrue(floatingTaskListPanel.isListMatching(expectedList));
     }
