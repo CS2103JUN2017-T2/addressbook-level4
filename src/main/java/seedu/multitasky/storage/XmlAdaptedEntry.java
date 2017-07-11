@@ -8,7 +8,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.xml.bind.annotation.XmlElement;
 
@@ -103,9 +102,9 @@ public class XmlAdaptedEntry {
 
     public Entry toModelType() throws Exception {
         Name newName = new Name(this.name);
-        final List<Tag> personTags = new ArrayList<>();
+        final List<Tag> entryTags = new ArrayList<>();
         for (XmlAdaptedTag tag : tagged) {
-            personTags.add(tag.toModelType());
+            entryTags.add(tag.toModelType());
         }
         Calendar startDateAndTimeToUse = null;
         Calendar endDateAndTimeToUse = null;
@@ -124,10 +123,10 @@ public class XmlAdaptedEntry {
             }
         }
 
-        final Set<Tag> tags = new HashSet<>(personTags);
+        final HashSet<Tag> tags = new HashSet<>(entryTags);
         EntryBuilder buildObject = new EntryBuilder();
         Entry entry = buildObject.build(newName, startDateAndTimeToUse, endDateAndTimeToUse,
-                tags.toArray(new String[0]));
+                tags);
         return entry;
     }
 }
