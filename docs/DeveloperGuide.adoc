@@ -111,7 +111,7 @@ Each of the four components
 * Defines its _API_ in an `interface` with the same name as the Component.
 * Exposes its functionality using a `{Component Name}Manager` class.
 
-For example, the `Logic` component (see the class diagram given below) defines it's API in the `Logic.java` interface and exposes its functionality using the `LogicManager.java` class.
+For example, the `Logic` component (see the class diagram given below) defines its API in the `Logic.java` interface and exposes its functionality using the `LogicManager.java` class.
 
 image::LogicClassDiagram.png[width="800"]
 _Figure 2.1.2 : Class Diagram of the Logic Component_
@@ -196,7 +196,9 @@ The `Model`,
 * entries have three states, i.e. active, archived and deleted.
 * exposes several `UnmodifiableObservableList<ReadOnlyEntry>` that can be 'observed' e.g. the UI can be bound to these lists so that the UI automatically updates when the data in the lists change.
 * does not depend on any of the other three components.
+
 //<!-- @@author A0132788U -->
+
 === Storage component
 
 Author: Akankshita Dash
@@ -212,6 +214,7 @@ The `Storage` component,
 * saves snapshots after every data mutation.
 * can save the Entry Book data in xml format and read it back using EntryBuilder from Model.
 //<!-- @@author -->
+
 === Common classes
 
 Classes used by multiple components are in the `seedu.multitasky.commons` package.

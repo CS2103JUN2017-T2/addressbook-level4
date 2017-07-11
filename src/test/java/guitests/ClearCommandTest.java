@@ -1,5 +1,6 @@
 package guitests;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -11,6 +12,9 @@ import seedu.multitasky.testutil.EntryUtil;
 //@@author A0125586X
 public class ClearCommandTest extends EntryBookGuiTest {
 
+    /*********************
+     * Clearing the list *
+     ********************/
     @Test
     public void clear_emptyList_success() {
         assertClearCommandSuccess();
@@ -19,19 +23,52 @@ public class ClearCommandTest extends EntryBookGuiTest {
 
     @Test
     public void clear_nonEmptyList_success() {
-        //TODO add support to check other types of tasks in the future
-        assertTrue(eventListPanel.isEmpty());
-        assertTrue(deadlineListPanel.isEmpty());
+        assertFalse(eventListPanel.isEmpty());
+        assertFalse(deadlineListPanel.isEmpty());
+        assertFalse(floatingTaskListPanel.isEmpty());
         assertClearCommandSuccess();
     }
 
+    /**********************************
+     * Adding after clearing the list *
+     *********************************/
     @Test
-    public void clear_addAfterClear_success() {
+    public void clear_addEventAfterClear_success() {
+        assertClearCommandSuccess();
+        commandBox.runCommand(EntryUtil.getEventAddCommand(typicalEntries.cat));
+        assertTrue(eventListPanel.isListMatching(typicalEntries.cat));
+    }
+
+    @Test
+    public void clear_addDeadlineAfterClear_success() {
+        assertClearCommandSuccess();
+        commandBox.runCommand(EntryUtil.getDeadlineAddCommand(typicalEntries.submission));
+        assertTrue(deadlineListPanel.isListMatching(typicalEntries.submission));
+    }
+
+    @Test
+    public void clear_addFloatingTaskAfterClear_success() {
         assertClearCommandSuccess();
         commandBox.runCommand(EntryUtil.getFloatingTaskAddCommand(typicalEntries.clean));
         assertTrue(floatingTaskListPanel.isListMatching(typicalEntries.clean));
     }
 
+    /**************************************
+     * Different types of invalid wording *
+     **************************************/
+    @Test
+    public void clear_unknownCommandName_errorMessage() {
+        commandBox.runCommand("clea");
+        assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
+
+        commandBox.runCommand("clearr");
+        assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
+    }
+
+
+    /*******************************
+     * Mixed-case and autocomplete *
+     ******************************/
     @Test
     public void clear_firstCharUppercase_success() {
         char[] commandWord = ClearCommand.COMMAND_WORD.toCharArray();
@@ -64,29 +101,17 @@ public class ClearCommandTest extends EntryBookGuiTest {
     }
 
     @Test
-    public void clear_unknownCommandName_errorMessage() {
-        commandBox.runCommand("c");
-        assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
-
-        commandBox.runCommand("cle");
-        assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
-
-        commandBox.runCommand("clearr");
-        assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
+    public void clear_tabAutocomplete_success() {
+        for (int i = 1; i < ClearCommand.COMMAND_WORD.length(); ++i) {
+            assertClearTabAutocomplete(ClearCommand.COMMAND_WORD.substring(0, i));
+        }
     }
 
-    @Test
-    public void clear_tabAutocompleteFromOneChar_success() {
-        String commandWord = ClearCommand.COMMAND_WORD.substring(0, 1);
-        commandBox.enterCommand(commandWord);
-        commandBox.pressTabKey();
-        assertCommandBox(ClearCommand.COMMAND_WORD + " ");
-    }
-
-    @Test
-    public void add_tabAutocompleteFromTwoChars_success() {
-        String commandWord = ClearCommand.COMMAND_WORD.substring(0, 2);
-        commandBox.enterCommand(commandWord);
+    /**
+     * Confirms that the given input string will autocomplete to the correct command word.
+     */
+    private void assertClearTabAutocomplete(String input) {
+        commandBox.enterCommand(input);
         commandBox.pressTabKey();
         assertCommandBox(ClearCommand.COMMAND_WORD + " ");
     }
