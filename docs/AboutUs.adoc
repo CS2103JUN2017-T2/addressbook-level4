@@ -25,14 +25,14 @@ Responsibilities: Model(component), Testing, Code Quality, Meeting Minutes
 image::kevinlamkb.png[width="150", align="left"]
 
 Role: Developer +
-Responsibilities: Documentation, Eclipse expert, .logic component
+Responsibilities: Documentation, Eclipse expert, Logic(component)
 
 '''
 == http://github.com/akd13[Akankshita Dash]
 image::akd13.png[width="150", align="left"]
 
 Role: Developer +
-Responsibilities: Terminology and Style, SourceTree expert, Storage component
+Responsibilities: Terminology and Style, SourceTree expert, Storage(component)
 
 '''
 
