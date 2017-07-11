@@ -1,6 +1,5 @@
 package seedu.multitasky;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
@@ -187,28 +186,13 @@ public class MainApp extends Application {
         System.exit(0);
     }
 
-    // @@author A0132788U
-    /**
-     * Deletes all the snapshot files when the program exits as they are no longer needed.
-     */
-    public void deleteAllSnapshotFiles() {
-        String filePath;
-        File toDelete;
-        while (StorageManager.getNumSnapshots() != 0) {
-            filePath = storage.getFilePathForDeletion();
-            toDelete = new File(filePath);
-            toDelete.delete();
-            StorageManager.decrementNumSnapshots();
-        }
-    }
-
     /**
      * Logs the info, deletes snapshot files, and then exits the app.
      */
     @Subscribe
     public void handleExitAppRequestEvent(ExitAppRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        deleteAllSnapshotFiles();
+        event.deleteAllSnapshotFiles(storage);
         this.stop();
     }
 
