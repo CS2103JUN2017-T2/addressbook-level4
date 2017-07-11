@@ -27,7 +27,7 @@ public class DeadlineList extends EntryList {
         sortInternalList();
     }
 
-    //@@author A0125586X
+    // @@author A0125586X
     /**
      * Overrides updateEntry in DeadlineList to sort after updating in case start date was changed.
      *

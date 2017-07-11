@@ -58,8 +58,10 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
     public XmlSerializableEntryBook(ReadOnlyEntryBook src) {
         this();
         events.addAll(src.getEventList().stream().map(XmlAdaptedEntry::new).collect(Collectors.toList()));
-        deadlines.addAll(src.getDeadlineList().stream().map(XmlAdaptedEntry::new).collect(Collectors.toList()));
-        floatingTasks.addAll(src.getFloatingTaskList().stream().map(XmlAdaptedEntry::new).collect(Collectors.toList()));
+        deadlines.addAll(src.getDeadlineList().stream().map(XmlAdaptedEntry::new)
+                            .collect(Collectors.toList()));
+        floatingTasks.addAll(src.getFloatingTaskList().stream().map(XmlAdaptedEntry::new)
+                                .collect(Collectors.toList()));
         tags.addAll(src.getTagList().stream().map(XmlAdaptedTag::new).collect(Collectors.toList()));
     }
 
