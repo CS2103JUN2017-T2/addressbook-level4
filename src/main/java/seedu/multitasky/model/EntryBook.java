@@ -131,6 +131,11 @@ public class EntryBook implements ReadOnlyEntryBook {
      * and updates the Tag objects in the entry to point to those in {@link #tags}.
      */
     public void addEntry(ReadOnlyEntry e) throws DuplicateEntryException {
+        // TODO: Duplicate entries are temporarily not allowed even in bin and archive in V0.3.
+        if (_bin.contains(e) || _archive.contains(e)) {
+            throw new DuplicateEntryException();
+        }
+
         addToEntrySubTypeList(e);
 
         Entry newEntry = convertToEntrySubType(e);
