@@ -1,6 +1,5 @@
 package seedu.multitasky.ui;
 
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -121,10 +120,10 @@ public class MainWindow extends UiPart<Region> {
 
     void fillInnerParts() {
         //TODO add respective logic.getFiltered****List when API calls are ready
-        eventListPanel = new EventListPanel(FXCollections.observableArrayList());
+        eventListPanel = new EventListPanel(logic.getFilteredEventList());
         eventListPanelPlaceholder.getChildren().add(eventListPanel.getRoot());
 
-        deadlineListPanel = new DeadlineListPanel(FXCollections.observableArrayList());
+        deadlineListPanel = new DeadlineListPanel(logic.getFilteredDeadlineList());
         deadlineListPanelPlaceholder.getChildren().add(deadlineListPanel.getRoot());
 
         floatingTaskListPanel = new FloatingTaskListPanel(logic.getFilteredFloatingTaskList());
