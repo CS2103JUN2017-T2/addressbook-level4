@@ -171,8 +171,10 @@ _Figure 2.3.1 : Structure of the Logic Component_
 link:{repoURL}/src/main/java/seedu/multitasky/logic/Logic.java[`Logic.java`]
 
 .  `Logic` uses the `Parser` class to parse the user command.
-.  This results in a `Command` object which is executed by the `LogicManager`.
-.  The command execution can affect the `Model` (e.g. adding a Entry) and/or raise events.
+..  Some `Command's`, such as `DeleteCommand` require further parsing, which will be done by their subsidiary parsers such as the `DeleteCommandParser` object.
+.  After some processing, the parser classes will create the appropriate `Command` object with their inner mechanisms.
+.  This results in a `Command` object which is then executed by the `LogicManager`.
+.  The command execution can affect the `Model` (e.g. adding an Entry) and/or raise events.
 .  The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `Ui`.
 
 Given below is the Sequence Diagram for interactions within the `Logic` component for the `execute("delete /float 1")` API call.
