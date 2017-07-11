@@ -67,6 +67,11 @@ public class StorageManager extends ComponentManager implements Storage {
         return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
     }
 
+    @Override
+    public String getFilePathForDeletion() {
+        return UserPrefs.getEntryBookSnapshotPath() + numSnapshots + ".xml";
+    }
+
     /**
      * Gets the proper filepath of the previous snapshot for undo with index
      */
@@ -127,7 +132,7 @@ public class StorageManager extends ComponentManager implements Storage {
     }
 
     public static void decrementNumSnapshots() {
-        StorageManager.setNumSnapshots(numSnapshots--);
+        numSnapshots--;
     }
 
     /**

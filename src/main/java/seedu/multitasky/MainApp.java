@@ -146,8 +146,8 @@ public class MainApp extends Application {
             Optional<UserPrefs> prefsOptional = storage.readUserPrefs();
             initializedPrefs = prefsOptional.orElse(new UserPrefs());
         } catch (DataConversionException e) {
-            logger.warning(
-                "UserPrefs file at " + prefsFilePath + " is not in the correct format. " + "Using default user prefs");
+            logger.warning("UserPrefs file at " + prefsFilePath + " is not in the correct format. "
+                           + "Using default user prefs");
             initializedPrefs = new UserPrefs();
         } catch (IOException e) {
             logger.warning("Problem while reading from the file. Will be starting with an empty EntryBook");
@@ -194,11 +194,11 @@ public class MainApp extends Application {
     public void deleteAllSnapshotFiles() {
         String filePath;
         File toDelete;
-        while (UserPrefs.getIndex() != 0) {
-            filePath = storage.getEntryBookSnapshotPath();
+        while (StorageManager.getNumSnapshots() != 0) {
+            filePath = storage.getFilePathForDeletion();
             toDelete = new File(filePath);
             toDelete.delete();
-            UserPrefs.decrementIndexByOne();
+            StorageManager.decrementNumSnapshots();
         }
     }
 
