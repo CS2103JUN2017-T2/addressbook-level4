@@ -13,7 +13,6 @@ import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.tag.Tag;
 
-//@@author A0125586X
 /**
  * A utility class to help with building Entry objects.
  */
@@ -43,11 +42,21 @@ public class EntryBuilder {
         Objects.requireNonNull(entryToCopy);
         if (entryToCopy instanceof Event) {
             this.entry = new Event(entryToCopy);
+            name = entryToCopy.getName().toString();
+            startDateAndTime = entryToCopy.getStartDateAndTime();
+            endDateAndTime = entryToCopy.getEndDateAndTime();
+            tags = entryToCopy.getTags();
+
         } else if (entryToCopy instanceof Deadline) {
             this.entry = new Deadline(entryToCopy);
+            name = entryToCopy.getName().toString();
+            endDateAndTime = entryToCopy.getEndDateAndTime();
+            tags = entryToCopy.getTags();
         } else {
             assert (entryToCopy instanceof FloatingTask);
             this.entry = new FloatingTask(entryToCopy);
+            name = entryToCopy.getName().toString();
+            tags = entryToCopy.getTags();
         }
     }
 
@@ -80,6 +89,13 @@ public class EntryBuilder {
     }
 
     public Entry build() throws Exception {
+        if (endDateAndTime == null) {
+            entry = new FloatingTask(new Name(name), tags);
+        } else if (startDateAndTime == null) {
+            entry = new Deadline(new Name(name), endDateAndTime, tags);
+        } else {
+            entry = new Event(new Name(name), startDateAndTime, endDateAndTime, tags);
+        }
         return entry;
     }
 
