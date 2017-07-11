@@ -10,6 +10,7 @@ import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.logic.parser.Prefix;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 
 // @@author A0140633R
@@ -27,7 +28,7 @@ public class DeleteByIndexCommand extends DeleteCommand {
     }
 
     @Override
-    public CommandResult execute() throws CommandException {
+    public CommandResult execute() throws CommandException , DuplicateEntryException {
         UnmodifiableObservableList<ReadOnlyEntry> listToDeleteFrom;
         assert listIndicatorPrefix != null;
         if (listIndicatorPrefix.equals(PREFIX_FLOATINGTASK)) {
