@@ -8,7 +8,6 @@ import guitests.guihandles.EntryCardHandle;
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.logic.commands.AddCommand;
 import seedu.multitasky.logic.commands.ClearCommand;
-import seedu.multitasky.logic.parser.CliSyntax;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.tag.Tag;
@@ -178,6 +177,9 @@ public class AddCommandTest extends EntryBookGuiTest {
         assertResultMessage(Tag.MESSAGE_TAG_CONSTRAINTS);
     }
 
+    /*******************************
+     * Mixed-case and autocomplete *
+     ******************************/
     /**
      * For all mixed-case tests only floating task entries are tested,
      * which should be suitable to test for all types since the type of task
@@ -218,7 +220,7 @@ public class AddCommandTest extends EntryBookGuiTest {
     }
 
     /**
-     * Confirms that the given input string will autocomplete to the correct add command word.
+     * Confirms that the given input string will autocomplete to the correct command word.
      */
     private void assertAddTabAutocomplete(String input) {
         commandBox.enterCommand(input);

@@ -18,12 +18,6 @@ import seedu.multitasky.model.tag.Tag;
  */
 public class EntryBuilder {
 
-    public class IncorrectEntryArgumentsException extends Exception {
-        public IncorrectEntryArgumentsException(String message) {
-            super(message);
-        }
-    }
-
     public static final String DEFAULT_NAME = "defaultName";
     public static final String DEFAULT_TAGS = "defaultTag";
 
