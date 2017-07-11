@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import guitests.guihandles.EntryCardHandle;
@@ -161,7 +162,14 @@ public class TestUtil {
         return listOfEntries.toArray(new Entry[listOfEntries.size()]);
     }
 
-    private static <T> List<T> asList(T[] objs) {
+    public static Entry[] addEntriesToSortedList(final Entry[] entries, Entry... entriesToAdd) {
+        List<Entry> listOfEntries = asList(entries);
+        listOfEntries.addAll(asList(entriesToAdd));
+        Collections.sort(listOfEntries);
+        return listOfEntries.toArray(new Entry[listOfEntries.size()]);
+    }
+
+    public static <T> List<T> asList(T[] objs) {
         List<T> list = new ArrayList<>();
         for (T obj : objs) {
             list.add(obj);

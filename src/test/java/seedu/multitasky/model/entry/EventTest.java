@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import seedu.multitasky.model.util.TagSetBuilder;
 
 import org.junit.Test;
 
@@ -49,12 +50,18 @@ public class EventTest {
 
         try {
             return new Event[] {
-                new Event(new Name("SampleName1"), calendar1, calendar2, getTagSet("tag1")),
-                new Event(new Name("SampleName1"), calendar1, calendar2, getTagSet("tag1")),
-                new Event(new Name("SampleName2"), calendar1, calendar2, getTagSet("tag1")),
-                new Event(new Name("SampleName1"), calendar2, calendar3, getTagSet("tag1")),
-                new Event(new Name("SampleName1"), calendar1, calendar3, getTagSet("tag1")),
-                new Event(new Name("SampleName1"), calendar1, calendar2, getTagSet("tag2"))
+                    new Event(new Name("SampleName1"), calendar1, calendar2,
+                              TagSetBuilder.generateTagSet("tag1")),
+                    new Event(new Name("SampleName1"), calendar1, calendar2,
+                              TagSetBuilder.generateTagSet("tag1")),
+                    new Event(new Name("SampleName2"), calendar1, calendar2,
+                              TagSetBuilder.generateTagSet("tag1")),
+                    new Event(new Name("SampleName1"), calendar2, calendar3,
+                              TagSetBuilder.generateTagSet("tag1")),
+                    new Event(new Name("SampleName1"), calendar1, calendar3,
+                              TagSetBuilder.generateTagSet("tag1")),
+                    new Event(new Name("SampleName1"), calendar1, calendar2,
+                              TagSetBuilder.generateTagSet("tag2"))
             };
         } catch (Exception e) {
             fail("Event array initialisation failed.");
@@ -62,17 +69,6 @@ public class EventTest {
         }
     }
     // @@author
-
-    /**
-     * Returns a tag set containing the list of strings given.
-     */
-    public static Set<Tag> getTagSet(String... strings) throws IllegalValueException {
-        HashSet<Tag> tags = new HashSet<>();
-        for (String s : strings) {
-            tags.add(new Tag(s));
-        }
-        return tags;
-    }
 
     // @@author A0126623L
     /**
