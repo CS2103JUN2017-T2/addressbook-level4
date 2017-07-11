@@ -25,6 +25,7 @@ import seedu.multitasky.model.tag.Tag;
  * Parses input arguments and creates a new AddCommand object
  */
 public class AddCommandParser {
+    ArgumentMultimap argMultimap;
 
     /**
      * Parses the given {@code String} of arguments in the context of the
@@ -32,7 +33,7 @@ public class AddCommandParser {
      * throws ParseException if the user input does not conform the expected format.
      */
     public AddCommand parse(String args) throws ParseException {
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_BY, PREFIX_AT, PREFIX_FROM,
+        argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_BY, PREFIX_AT, PREFIX_FROM,
                                                                   PREFIX_TO, PREFIX_TAG);
         Calendar startDate = null;
         Calendar endDate = null;
@@ -51,7 +52,7 @@ public class AddCommandParser {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
 
-        if (isFloatingTask(argMultimap)) {
+        if (isFloatingTask()) {
             try {
                 Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
                 Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
@@ -62,7 +63,7 @@ public class AddCommandParser {
                 throw new ParseException(ive.getMessage(), ive);
             }
 
-        } else if (isDeadline(argMultimap)) {
+        } else if (isDeadline()) {
             try {
                 Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
 
@@ -79,10 +80,9 @@ public class AddCommandParser {
                 throw new ParseException(ive.getMessage(), ive);
             }
 
-        } else if (isEvent(argMultimap)) {
+        } else if (isEvent()) {
             try {
                 Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
-                //TODO RENAME MMETHOD LATER
                 Prefix startDatePrefix = ParserUtil.getDatePrefix(argMultimap, PREFIX_FROM, PREFIX_AT);
                 Prefix endDatePrefix = ParserUtil.getDatePrefix(argMultimap, PREFIX_TO, PREFIX_BY);
 
@@ -98,42 +98,44 @@ public class AddCommandParser {
                 throw new ParseException(ive.getMessage(), ive);
             }
 
-        } else {
+        } else { // not event, not deadline, not floating task
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                                                    AddCommand.MESSAGE_USAGE));
         }
     }
 
-    /*
-     * A method that returns true if flags are given in an illogical manner.
+    /**
+     * A method that returns true if flags are given in an illogical manner for add commands.
      */
     private boolean hasInvalidFlagCombination(ArgumentMultimap argMultimap) {
         return ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FROM, PREFIX_AT)
                || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_TO, PREFIX_BY);
     }
 
-    //TODO to improve by giving ArgumentMultimap the method instead, use contains()?
-    /*
+    /**
      * Returns true if flags present in argMultimap indicate to add a floating task entry.
      */
-    private boolean isFloatingTask(ArgumentMultimap argMultimap) {
+    private boolean isFloatingTask() {
+        assert argMultimap != null;
         return !ParserUtil.arePrefixesPresent(argMultimap, PREFIX_BY, PREFIX_AT, PREFIX_FROM, PREFIX_TO);
     }
 
-    /*
+    /**
      * Returns true if flags present in argMultimap indicate to add an event entry.
      * MUST have ONE of /from or /at AND ONE of /by or /to, but should not have both tgt.
      */
-    private boolean isEvent(ArgumentMultimap argMultimap) {
+    private boolean isEvent() {
+        assert argMultimap != null;
         return ParserUtil.arePrefixesPresent(argMultimap, PREFIX_FROM, PREFIX_AT)
                && ParserUtil.arePrefixesPresent(argMultimap, PREFIX_BY, PREFIX_TO);
     }
 
-    /*
+    /**
      * Returns true if flags present in argMultimap indicate to add a deadline entry.
      * MUST have /by ONLY
      */
-    private boolean isDeadline(ArgumentMultimap argMultimap) {
+    private boolean isDeadline() {
+        assert argMultimap!= null;
         return ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_BY)
                && (!ParserUtil.arePrefixesPresent(argMultimap, PREFIX_AT, PREFIX_FROM, PREFIX_TO));
     }
