@@ -9,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
-import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 
 //@@author A0125586X
@@ -43,7 +42,6 @@ public class DeadlineListPanel extends UiPart<Region> {
 
         @Override
         protected void updateItem(ReadOnlyEntry entry, boolean empty) {
-            assert entry instanceof Deadline : "Entry to display on DeadlineListPanel must be Deadline";
             super.updateItem(entry, empty);
 
             if (empty || entry == null) {

@@ -18,42 +18,28 @@ public class DeleteCommandTest extends EntryBookGuiTest {
 
     @Test
     public void delete_firstFloatingTaskByIndex_success() {
-        Entry[] currentList = typicalEntries.getTypicalEntries();
+        Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
         Index targetIndex = TypicalEntries.INDEX_FIRST_ENTRY;
         assertDeleteFloatingTaskSuccess(targetIndex, currentList);
     }
 
     @Test
-    public void delete_secondFloatingTaskByIndex_success() {
-        Entry[] currentList = typicalEntries.getTypicalEntries();
-        Index targetIndex = TypicalEntries.INDEX_SECOND_ENTRY;
-        assertDeleteFloatingTaskSuccess(targetIndex, currentList);
-    }
-
-    @Test
-    public void delete_thirdFloatingTaskByIndex_success() {
-        Entry[] currentList = typicalEntries.getTypicalEntries();
-        Index targetIndex = TypicalEntries.INDEX_THIRD_ENTRY;
-        assertDeleteFloatingTaskSuccess(targetIndex, currentList);
-    }
-
-    @Test
     public void delete_lastFloatingTaskByIndex_success() {
-        Entry[] currentList = typicalEntries.getTypicalEntries();
+        Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
         Index targetIndex = Index.fromOneBased(currentList.length);
         assertDeleteFloatingTaskSuccess(targetIndex, currentList);
     }
 
     @Test
     public void delete_middleFloatingTaskByIndex_success() {
-        Entry[] currentList = typicalEntries.getTypicalEntries();
+        Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
         Index targetIndex = Index.fromOneBased(currentList.length / 2);
         assertDeleteFloatingTaskSuccess(targetIndex, currentList);
     }
 
     @Test
     public void delete_invalidFloatingTaskIndex_errorMessage() {
-        Entry[] currentList = typicalEntries.getTypicalEntries();
+        Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
         Index targetIndex = Index.fromOneBased(currentList.length + 1);
         commandBox.runCommand(EntryUtil.getFloatingTaskDeleteByIndexCommand(targetIndex));
         assertResultMessage(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
