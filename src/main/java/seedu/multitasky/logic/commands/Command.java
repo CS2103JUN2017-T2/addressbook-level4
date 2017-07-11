@@ -19,10 +19,8 @@ public abstract class Command {
      * @param displaySize used to generate summary
      * @return summary message for entries displayed
      */
-    public static String getMessageForEntryListShownSummary(int displaySize, int eventSize,
-                                                            int deadlineSize, int floatingSize) {
-        return String.format(Messages.MESSAGE_ENTRIES_LISTED_OVERVIEW, displaySize, eventSize,
-                             deadlineSize, floatingSize);
+    public static String getMessageForEntryListShownSummary(int displaySize) {
+        return String.format(Messages.MESSAGE_ENTRIES_LISTED_OVERVIEW, displaySize);
     }
 
     /**
@@ -42,4 +40,5 @@ public abstract class Command {
     public void setData(Model model, CommandHistory history) {
         this.model = model;
     }
+
 }

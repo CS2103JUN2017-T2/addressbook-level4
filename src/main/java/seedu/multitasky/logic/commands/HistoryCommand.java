@@ -26,10 +26,9 @@ public class HistoryCommand extends Command {
             return new CommandResult(MESSAGE_NO_HISTORY);
         }
 
-        List<String> temp = new ArrayList<>();
-        temp.addAll(previousCommands);
-        Collections.reverse(temp);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, String.join("\n", temp)));
+        List<String> reversedHistory = new ArrayList<>(previousCommands);
+        Collections.reverse(reversedHistory);
+        return new CommandResult(String.format(MESSAGE_SUCCESS, String.join("\n", reversedHistory)));
     }
 
     @Override
@@ -37,4 +36,5 @@ public class HistoryCommand extends Command {
         requireNonNull(history);
         this.history = history;
     }
+
 }
