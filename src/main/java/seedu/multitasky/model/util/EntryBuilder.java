@@ -1,7 +1,6 @@
 package seedu.multitasky.model.util;
 
 import java.util.Calendar;
-import java.util.HashSet;
 import java.util.Set;
 
 import seedu.multitasky.commons.exceptions.IllegalValueException;
@@ -105,26 +104,21 @@ public class EntryBuilder {
      * @return
      * @throws IllegalValueException
      */
-    public static ReadOnlyEntry build(Name name, Calendar startDateAndTime, Calendar endDateAndTime,
-                                      String... tags)
-            throws IllegalValueException {
 
-        HashSet<Tag> tagSet = new HashSet<>();
-        for (String s : tags) {
-            tagSet.add(new Tag(s));
-        }
+    public Entry build(Name name, Calendar startDateAndTime, Calendar endDateAndTime, Set<Tag> tags)
+            throws IllegalValueException {
 
         if (startDateAndTime == null) {
             // Floating task
             if (endDateAndTime == null) {
-                return new FloatingTask(name, tagSet);
+                return new FloatingTask(name, tags);
                 // Deadline
             } else {
-                return new Deadline(name, endDateAndTime, tagSet);
+                return new Deadline(name, endDateAndTime, tags);
             }
             // Event
         } else if (endDateAndTime != null) {
-            return new Event(name, startDateAndTime, endDateAndTime, tagSet);
+            return new Event(name, startDateAndTime, endDateAndTime, tags);
             // Unknown combination of present start date but no end date
         } else {
             assert false : "Error in EntryBuilder.";

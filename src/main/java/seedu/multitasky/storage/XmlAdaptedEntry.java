@@ -13,10 +13,12 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlElement;
 
 import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.tag.Tag;
 import seedu.multitasky.model.util.EntryBuilder;
 
+//@@author A0132788U
 /**
  * JAXB-friendly version of the Entry.
  */
@@ -60,21 +62,39 @@ public class XmlAdaptedEntry {
         }
     }
 
+    /**
+     * This converts the Calendar object into a string type to be stored in XML file in a human editable format.
+     */
     public String convertDateToString(Calendar given) {
         String dateToString = df.format(given.getTime());
         return dateToString;
     }
 
-    public Calendar convertStringToDate(String given) throws NullPointerException {
+    /**
+     * This converts a String to a Calendar object to be passed back to Model.
+     * 
+     * @throws Exception
+     */
+    public Calendar convertStringToDate(String given) throws Exception {
         Calendar setDate = null;
         Date toConvert = new Date();
         try {
             toConvert = df.parse(given);
+            setDate = setTheTime(toConvert);
         } catch (ParseException e) {
-            System.out.println("Invalid date!");
+            throw new Exception("Unable to set the time!");
         }
         setDate.setTime(toConvert);
         return setDate;
+    }
+
+    /**
+     * Sub-method to convert Date to String.
+     */
+    public Calendar setTheTime(Date given) {
+        Calendar toBeSet = Calendar.getInstance();
+        toBeSet.setTime(given);
+        return toBeSet;
     }
 
     /**
@@ -85,18 +105,19 @@ public class XmlAdaptedEntry {
      */
 
     public Entry toModelType() throws Exception {
-        final List<Tag> personTags = new ArrayList<>();
+        Name newName = new Name(this.name);
+        final List<Tag> entryTags = new ArrayList<>();
         for (XmlAdaptedTag tag : tagged) {
-            personTags.add(tag.toModelType());
+            entryTags.add(tag.toModelType());
         }
-        Calendar startDateAndTimeToUse = Calendar.getInstance();
-        Calendar endDateAndTimeToUse = Calendar.getInstance();
+        Calendar startDateAndTimeToUse = null;
+        Calendar endDateAndTimeToUse = null;
 
         if (startDateAndTime != null) {
             try {
                 startDateAndTimeToUse = convertStringToDate(startDateAndTime);
             } catch (Exception e) {
-                startDateAndTimeToUse = Calendar.getInstance();
+                throw new Exception("Start time is invalid!");
             }
         }
 
@@ -104,13 +125,14 @@ public class XmlAdaptedEntry {
             try {
                 endDateAndTimeToUse = convertStringToDate(endDateAndTime);
             } catch (Exception e) {
-                endDateAndTimeToUse = Calendar.getInstance();
+                throw new Exception("End time is invalid!");
             }
         }
 
-        final Set<Tag> tags = new HashSet<>(personTags);
-        Entry entry = new EntryBuilder().withName(this.name).withStartDateAndTime(startDateAndTimeToUse)
-                .withEndDateAndTime(endDateAndTimeToUse).withTags(tags).build();
+        final Set<Tag> tags = new HashSet<>(entryTags);
+        EntryBuilder buildObject = new EntryBuilder();
+        Entry entry = buildObject.build(newName, startDateAndTimeToUse, endDateAndTimeToUse,
+                tags);
         return entry;
     }
 }

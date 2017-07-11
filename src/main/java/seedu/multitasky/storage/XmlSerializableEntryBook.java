@@ -16,6 +16,7 @@ import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.tag.Tag;
 
+// @@author A0132788U
 /**
  * An Immutable EntryBook that is serializable to XML format
  */
