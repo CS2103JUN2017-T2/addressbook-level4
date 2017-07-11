@@ -35,8 +35,7 @@ public class FindCommand extends Command {
         int deadlineSize = model.getFilteredDeadlineList().size();
         int eventSize = model.getFilteredEventList().size();
         int floatingSize = model.getFilteredFloatingTaskList().size();
-        return new CommandResult(getMessageForEntryListShownSummary(deadlineSize + eventSize + floatingSize,
-                                                                    eventSize, deadlineSize, floatingSize));
+        return new CommandResult(getMessageForEntryListShownSummary(deadlineSize + eventSize + floatingSize));
     }
 
     public Set<String> getKeywords() {

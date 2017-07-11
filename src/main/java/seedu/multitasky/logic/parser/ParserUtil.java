@@ -91,4 +91,5 @@ public class ParserUtil {
         assert (temp.size() <= 1) : "invalid flag combination not catched beforehand or no Prefixes found!";
         return temp.get(0);
     }
+
 }
