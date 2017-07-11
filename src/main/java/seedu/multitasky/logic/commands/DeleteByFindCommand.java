@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 
 // @@author A0140633R

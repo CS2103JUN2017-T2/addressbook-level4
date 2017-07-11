@@ -5,11 +5,13 @@ import java.util.GregorianCalendar;
 
 import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.model.EntryBook;
+import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.Event;
-import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.util.EntryBuilder;
+
+// @@author A0125586X
 
 /**
  * Provides typical entries for use in testing.
@@ -30,7 +32,6 @@ public class TypicalEntries {
     // @@author A0125586X
     public TypicalEntries() {
         try {
-            //CHECKSTYLE.OFF: LineLength
             // Events
             dinner = new EntryBuilder().withName("Dinner with family").withTags("cook")
                     .withStartDateAndTime(new GregorianCalendar(2017, Calendar.DECEMBER, 25, 19, 00))
@@ -52,12 +53,13 @@ public class TypicalEntries {
 
             // Floating tasks
             cook = new EntryBuilder().withName("Learn to cook").withTags("goals").build();
-            programming = new EntryBuilder().withName("Learn programming").withTags("lessons", "computer").build();
+            programming = new EntryBuilder().withName("Learn programming").withTags("lessons", "computer")
+                                            .build();
             hire = new EntryBuilder().withName("Hire an assistant").withTags("help").build();
-            spectacles = new EntryBuilder().withName("Make new spectacles").withTags("health", "eyesight").build();
+            spectacles = new EntryBuilder().withName("Make new spectacles").withTags("health", "eyesight")
+                                           .build();
             clean = new EntryBuilder().withName("Clean up room").withTags("never").build();
             sell = new EntryBuilder().withName("Sell old things").withTags("sale", "clutter").build();
-            //CHECKSTYLE.ON: LineLength
 
         } catch (Exception e) {
             throw new AssertionError("Sample data cannot be invalid", e);
@@ -83,7 +85,6 @@ public class TypicalEntries {
 
     }
 
-    //@@author A0125586X
     public Entry[] getTypicalEvents() {
         return new Entry[] { dinner };
     }
@@ -101,4 +102,21 @@ public class TypicalEntries {
         loadEntryBookWithSampleData(entryBook);
         return entryBook;
     }
+
+    //TODO remove once kevin figures out why are there nullpointer exceptions
+    public EntryBook getFloatingOnlyEntryBook() {
+        EntryBook entryBook = new EntryBook();
+        loadEntryBookWithFloatingTaskData(entryBook);
+        return entryBook;
+    }
+    public static void loadEntryBookWithFloatingTaskData(EntryBook entryBook) {
+        try {
+            for (Entry entry: new TypicalEntries().getTypicalFloatingTasks()) {
+                entryBook.addEntry(new FloatingTask(entry));
+            }
+        } catch (Exception e) {
+            assert false : "Sample entries cannot have errors";
+        }
+    }
+
 }

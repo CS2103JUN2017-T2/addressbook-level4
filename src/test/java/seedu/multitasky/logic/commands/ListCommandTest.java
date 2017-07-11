@@ -29,7 +29,8 @@ public class ListCommandTest {
 
     @Before
     public void setUp() {
-        model = new ModelManager(new TypicalEntries().getTypicalEntryBook(), new UserPrefs());
+        // TODO fix typical entries
+        model = new ModelManager(new TypicalEntries().getFloatingOnlyEntryBook(), new UserPrefs());
         expectedModel = new ModelManager(model.getEntryBook(), new UserPrefs());
 
         listCommand = new ListCommand();
