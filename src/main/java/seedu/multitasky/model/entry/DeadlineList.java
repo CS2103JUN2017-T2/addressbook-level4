@@ -40,7 +40,6 @@ public class DeadlineList extends EntryList {
         super.updateEntry(target, editedEntry);
         sortInternalList();
     }
-    //@@author
 
     // @@author A0126623L
     /**
@@ -55,5 +54,6 @@ public class DeadlineList extends EntryList {
         }
         super.setEntries(replacement);
     }
+    // @@author
 
 }

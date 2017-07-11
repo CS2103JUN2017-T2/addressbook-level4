@@ -11,6 +11,7 @@ import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
  */
 public class EventList extends EntryList {
 
+    // @@author A0126623L
     /**
      * Adds an event to the list.
      *
@@ -25,6 +26,7 @@ public class EventList extends EntryList {
         internalList.add(new Event(toAdd));
         sortInternalList();
     }
+    // @@author
 
     //@@author A0125586X
     /**
@@ -56,5 +58,6 @@ public class EventList extends EntryList {
         }
         super.setEntries(replacement);
     }
+    // @@author
 
 }

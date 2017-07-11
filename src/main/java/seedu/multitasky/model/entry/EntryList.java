@@ -24,6 +24,7 @@ public abstract class EntryList implements Iterable<Entry> {
 
     protected final ObservableList<Entry> internalList = FXCollections.observableArrayList();
 
+    // @@author A0126623L
     /**
      * Adds an entry to the list.
      *
@@ -35,6 +36,7 @@ public abstract class EntryList implements Iterable<Entry> {
             throw new DuplicateEntryException();
         }
     };
+    // @@author
 
     /**
      * Returns an unmodifiable copy of the ObservableList.

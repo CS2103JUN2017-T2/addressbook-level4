@@ -8,11 +8,16 @@ import seedu.multitasky.model.tag.Tag;
 
 public class FloatingTask extends Entry {
 
+    private Calendar _startDateAndTime;
+    private Calendar _endDateAndTime;
+
     /**
      * Every field must be present and not null.
      */
     public FloatingTask(Name name, Set<Tag> tags) {
         super(name, tags);
+        _startDateAndTime = null;
+        _endDateAndTime = null;
     }
 
     /**
@@ -29,8 +34,7 @@ public class FloatingTask extends Entry {
 
     @Override
     public Calendar getStartDateAndTime() {
-        Calendar startDateAndTime = null; // Floating tasks have no start time.
-        return startDateAndTime;
+        return _startDateAndTime;
     }
 
     public Calendar getEndDateAndTimeString() {
@@ -39,8 +43,7 @@ public class FloatingTask extends Entry {
 
     @Override
     public Calendar getEndDateAndTime() {
-        Calendar endDateAndTime = null; // Floating tasks have no end time.
-        return endDateAndTime;
+        return _endDateAndTime;
     }
 
     @Override
@@ -58,8 +61,8 @@ public class FloatingTask extends Entry {
         assert other instanceof FloatingTask : "FloatingTask::compareTo must receive FloatingTask object as argument";
         return 0;
     }
-    //@@author
 
+    // @@author A0126623L
     /**
      * Compares the state with another Floating Task.
      */
@@ -68,6 +71,7 @@ public class FloatingTask extends Entry {
         return (other instanceof FloatingTask // instanceof handles nulls
                 && this.getName().equals(other.getName()) && this.getTags().equals(other.getTags()));
     }
+    // @@author
 
     @Override
     public int hashCode() {
@@ -75,6 +79,7 @@ public class FloatingTask extends Entry {
         return Objects.hash(getName(), getTags());
     }
 
+    // @@author A0126623L
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
@@ -82,4 +87,5 @@ public class FloatingTask extends Entry {
         getTags().forEach(builder::append);
         return builder.toString();
     }
+    // @@author
 }
