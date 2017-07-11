@@ -35,7 +35,8 @@ public class CommandTestUtil {
      * - the CommandException message matches {@code expectedMessage} <br>
      * - the entry book and the filtered entry list in the {@code actualModel} remain unchanged
      */
-    public static void assertCommandFailure(Command command, Model actualModel, String expectedMessage) throws DuplicateEntryException {
+    public static void assertCommandFailure(Command command, Model actualModel, String expectedMessage)
+            throws DuplicateEntryException {
         // we are unable to defensively copy the model for comparison later, so we can
         // only do so by copying its components.
         EntryBook expectedEntryBook = new EntryBook(actualModel.getEntryBook());

@@ -22,6 +22,7 @@ public class XmlEntryBookStorage implements EntryBookStorage {
 
     private String filePath;
     private String snapshotPath;
+    private String previousSnapshotPath;
 
     public XmlEntryBookStorage(String filePath) {
         this.filePath = filePath;
@@ -37,6 +38,10 @@ public class XmlEntryBookStorage implements EntryBookStorage {
         return snapshotPath;
     }
 
+    public String getPreviousEntryBookSnapshotPath() {
+        return previousSnapshotPath;
+    }
+
     @Override
     public Optional<ReadOnlyEntryBook> readEntryBook() throws DataConversionException, IOException {
         return readEntryBook(filePath);
@@ -50,7 +55,7 @@ public class XmlEntryBookStorage implements EntryBookStorage {
      */
     @Override
     public Optional<ReadOnlyEntryBook> readEntryBook(String filePath) throws DataConversionException,
-                                                                      FileNotFoundException {
+            FileNotFoundException {
         requireNonNull(filePath);
 
         File entryBookFile = new File(filePath);

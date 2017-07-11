@@ -82,10 +82,20 @@ public class Event extends Entry {
                || this.isSameStateAs((ReadOnlyEntry) other);
     }
 
+    //@@author A0125586X
+    /**
+     * Compares this to another event for sorting by starting date.
+     * @return <0 if this event is sooner, 0 if they're the same, and >0 if this event is later
+     */
+    public int compareTo(ReadOnlyEntry other) throws NullPointerException, ClassCastException {
+        assert other instanceof Event : "Event::compareTo must receive Event object as argument";
+        return this.getStartDateAndTime().compareTo(other.getStartDateAndTime());
+    }
+    //@@author
+
     @Override
     public boolean isSameStateAs(ReadOnlyEntry other) {
-        return (other instanceof Event && this.getName().equals(other.getName()) // instanceof
-                                                                                 // handles nulls
+        return (other instanceof Event && this.getName().equals(other.getName()) // instanceof handles nulls
                 && this.getStartDateAndTime().equals(other.getStartDateAndTime())
                 && this.getEndDateAndTime().equals(other.getEndDateAndTime())
                 && this.getTags().equals(other.getTags()));

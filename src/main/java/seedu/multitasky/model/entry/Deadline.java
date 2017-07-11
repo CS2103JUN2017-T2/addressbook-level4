@@ -10,6 +10,7 @@ import seedu.multitasky.model.tag.Tag;
 
 public class Deadline extends Entry {
 
+    private Calendar _startDateAndTime;
     private Calendar _endDateAndTime;
 
     /**
@@ -18,6 +19,7 @@ public class Deadline extends Entry {
     public Deadline(Name name, Calendar endDateAndTime, Set<Tag> tags) {
         super(name, tags);
         requireAllNonNull(endDateAndTime);
+        _startDateAndTime = null;
         _endDateAndTime = endDateAndTime;
     }
 
@@ -53,8 +55,7 @@ public class Deadline extends Entry {
 
     @Override
     public Calendar getStartDateAndTime() {
-        Calendar startDateAndTime = null; // Deadlines has no start time.
-        return startDateAndTime;
+        return _startDateAndTime; // Deadlines has no start time.
     }
 
     public void setEndDateAndTime(Calendar endDateAndTime) {
@@ -76,6 +77,17 @@ public class Deadline extends Entry {
                || this.isSameStateAs((ReadOnlyEntry) other);
     }
 
+    //@@author A0125586X
+    /**
+     * Compares this to another deadline for sorting by due(end) date.
+     * @return <0 if this deadline is sooner, 0 if they're the same, and >0 if this deadline is later
+     */
+    public int compareTo(ReadOnlyEntry other) throws NullPointerException, ClassCastException {
+        assert other instanceof Deadline : "Deadline::compareTo must receive Deadline object as argument";
+        return this.getEndDateAndTime().compareTo(other.getEndDateAndTime());
+    }
+
+    // @@author A0126623L
     @Override
     public boolean isSameStateAs(ReadOnlyEntry other) {
         return (other instanceof Deadline
@@ -83,6 +95,7 @@ public class Deadline extends Entry {
                 && this.getEndDateAndTime().equals(other.getEndDateAndTime())
                 && this.getTags().equals(other.getTags()));
     }
+    // @@author
 
     @Override
     public int hashCode() {
@@ -90,6 +103,7 @@ public class Deadline extends Entry {
         return Objects.hash(getName(), getEndDateAndTime(), getTags());
     }
 
+    // @@author A0126623L
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
@@ -100,5 +114,6 @@ public class Deadline extends Entry {
         getTags().forEach(builder::append);
         return builder.toString();
     }
+    // @@author
 
 }

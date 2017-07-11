@@ -54,8 +54,8 @@ public class EditCommandTest {
         Index indexLastEntry = Index.fromOneBased(model.getFilteredFloatingTaskList().size());
         ReadOnlyEntry lastEntry = model.getFilteredFloatingTaskList().get(indexLastEntry.getZeroBased());
 
-        EntryBuilder personInList = new EntryBuilder(lastEntry);
-        Entry editedEntry = personInList.withName(VALID_NAME_BOB).withTags(VALID_TAG_HUSBAND).build();
+        EntryBuilder entryInList = new EntryBuilder(lastEntry);
+        Entry editedEntry = entryInList.withName(VALID_NAME_BOB).withTags(VALID_TAG_HUSBAND).build();
 
         EditEntryDescriptor descriptor = new EditEntryDescriptorBuilder().withName(VALID_NAME_BOB)
                 .withTags(VALID_TAG_HUSBAND).build();
@@ -85,8 +85,8 @@ public class EditCommandTest {
     public void execute_filteredList_success() throws Exception {
         showFirstEntryOnly();
 
-        ReadOnlyEntry personInFilteredList = model.getFilteredFloatingTaskList().get(INDEX_FIRST_ENTRY.getZeroBased());
-        Entry editedEntry = new EntryBuilder(personInFilteredList).withName(VALID_NAME_BOB).build();
+        ReadOnlyEntry entryInFilteredList = model.getFilteredFloatingTaskList().get(INDEX_FIRST_ENTRY.getZeroBased());
+        Entry editedEntry = new EntryBuilder(entryInFilteredList).withName(VALID_NAME_BOB).build();
         EditCommand editCommand = prepareCommand(INDEX_FIRST_ENTRY,
                 new EditEntryDescriptorBuilder().withName(VALID_NAME_BOB).build());
 
@@ -159,11 +159,11 @@ public class EditCommandTest {
     }
 
     /**
-     * Updates the filtered list to show only the first person in the {@code model}'s entry book.
+     * Updates the filtered list to show only the first entry in the {@code model}'s entry book.
      */
     private void showFirstEntryOnly() {
-        ReadOnlyEntry person = model.getEntryBook().getFloatingTaskList().get(0);
-        final String[] splitName = person.getName().fullName.split("\\s+");
+        ReadOnlyEntry entry = model.getEntryBook().getFloatingTaskList().get(0);
+        final String[] splitName = entry.getName().fullName.split("\\s+");
         model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList(splitName)));
 
         assertTrue(model.getFilteredFloatingTaskList().size() == 1);
