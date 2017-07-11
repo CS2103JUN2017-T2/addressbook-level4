@@ -146,10 +146,10 @@ public class EntryBook implements ReadOnlyEntryBook {
      * and updates the Tag objects in the entry to point to those in {@link #tags}.
      */
     public void addEntry(ReadOnlyEntry e) throws DuplicateEntryException {
-        // TODO: Duplicate entries are temporarily not allowed even in bin and archive in V0.3.
-        if (_bin.contains(e) || _archive.contains(e)) {
-            throw new DuplicateEntryException();
-        }
+        /**
+         * TODO: Duplicate entries are temporarily allowed in bin and archive in V0.3. This should be
+         * changed for V0.4.
+         */
 
         addToEntrySubTypeList(e);
 
@@ -255,10 +255,17 @@ public class EntryBook implements ReadOnlyEntryBook {
      * @return boolean
      * @throws DuplicateEntryException, EntryNotFoundException
      */
-    public boolean removeEntry(ReadOnlyEntry entryToRemove)
-            throws DuplicateEntryException, EntryNotFoundException {
+    public boolean removeEntry(ReadOnlyEntry entryToRemove) throws EntryNotFoundException {
         if (_activeList.remove(entryToRemove) && removeFromEntrySubTypeList(entryToRemove)) {
-            _bin.add(entryToRemove);
+            try {
+                _bin.add(entryToRemove);
+            } catch (DuplicateEntryException e) {
+                /**
+                 * TODO: Bin temporarily allows duplicates in V0.3 because users don't know the existence of a
+                 * bin behind the scenes. The handling of bin duplicates should be changed in V0.4.
+                 */
+                // Ignore duplicates.
+            }
             return true;
         } else {
             throw new EntryNotFoundException();
