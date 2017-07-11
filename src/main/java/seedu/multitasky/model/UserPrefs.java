@@ -10,7 +10,7 @@ import seedu.multitasky.commons.core.GuiSettings;
 // @@author A0132788U
 public class UserPrefs {
     /** Index to maintain snapshot file number */
-    private static int index = 1;
+    private static int index = 0;
     /** Snapshot file path without index and xml */
     private static String entryBookSnapshotPath = "data/snapshots/entrybook";
     // @@author

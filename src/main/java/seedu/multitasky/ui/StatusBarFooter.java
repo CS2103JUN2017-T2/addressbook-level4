@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.Region;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
+import seedu.multitasky.commons.events.model.EntryBookToUndoEvent;
 
 /**
  * A ui for the status bar that is displayed at the footer of the application.
@@ -31,7 +32,6 @@ public class StatusBarFooter extends UiPart<Region> {
     private StatusBar syncStatus;
     @FXML
     private StatusBar saveLocationStatus;
-
 
     public StatusBarFooter(String saveLocation) {
         super(FXML);
@@ -70,6 +70,14 @@ public class StatusBarFooter extends UiPart<Region> {
 
     @Subscribe
     public void handleEntryBookChangedEvent(EntryBookChangedEvent event) {
+        long now = clock.millis();
+        String lastUpdated = new Date(now).toString();
+        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Setting last updated status to " + lastUpdated));
+        setSyncStatus(String.format(SYNC_STATUS_UPDATED, lastUpdated));
+    }
+
+    @Subscribe
+    public void handleEntryBookToUndoEvent(EntryBookToUndoEvent event) {
         long now = clock.millis();
         String lastUpdated = new Date(now).toString();
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "Setting last updated status to " + lastUpdated));

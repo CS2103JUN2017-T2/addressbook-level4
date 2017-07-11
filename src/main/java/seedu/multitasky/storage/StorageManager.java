@@ -1,5 +1,7 @@
 package seedu.multitasky.storage;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -99,13 +101,18 @@ public class StorageManager extends ComponentManager implements Storage {
         return entryBookStorage.readEntryBook(getPreviousEntryBookSnapshotPath());
     }
 
+    public ReadOnlyEntryBook loadUndoData() throws FileNotFoundException, DataConversionException {
+        ReadOnlyEntryBook undoData = XmlFileStorage.loadDataFromSaveFile(new File(getPreviousEntryBookSnapshotPath()));
+        return undoData;
+    }
+
     // @@author A0132788U
     /**
      * Gets the filepath of the most current snapshot xml file and increments index by one.
      */
     public String setEntryBookSnapshotPathAndUpdateIndex() {
-        String snapshotPath = getEntryBookSnapshotPath();
         UserPrefs.incrementIndexByOne();
+        String snapshotPath = getEntryBookSnapshotPath();
         return snapshotPath;
     }
 
@@ -128,11 +135,12 @@ public class StorageManager extends ComponentManager implements Storage {
         }
     }
 
+    @Override
     @Subscribe
     public void handleEntryBookToUndoEvent(EntryBookToUndoEvent event) throws DataConversionException {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "Load previous snapshot"));
         try {
-            loadPreviousEntryBook(event.data);
+            saveEntryBook(loadUndoData());
         } catch (IOException e) {
             raise(new DataSavingExceptionEvent(e));
         }
