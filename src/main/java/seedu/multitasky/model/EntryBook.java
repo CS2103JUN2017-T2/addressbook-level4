@@ -144,6 +144,11 @@ public class EntryBook implements ReadOnlyEntryBook {
      * and updates the Tag objects in the entry to point to those in {@link #tags}.
      */
     public void addEntry(ReadOnlyEntry e) throws DuplicateEntryException {
+        // TODO: Duplicate entries are temporarily not allowed even in bin and archive in V0.3.
+        if (_bin.contains(e) || _archive.contains(e)) {
+            throw new DuplicateEntryException();
+        }
+
         addToEntrySubTypeList(e);
 
         Entry newEntry = convertToEntrySubType(e);
@@ -192,12 +197,10 @@ public class EntryBook implements ReadOnlyEntryBook {
 
     // @@author A0126623L
     /**
-     * Converts a given ReadOnlyEntryObject to an appropriate Event object (i.e. event, deadline or floating
+     * Converts a given ReadOnlyEntry object to an editable Entry object (i.e. event, deadline or floating
      * task).
-     *
-     * @return Entry
      */
-    public static Entry convertToEntrySubType(ReadOnlyEntry editedReadOnlyEntry) {
+    private Entry convertToEntrySubType(ReadOnlyEntry editedReadOnlyEntry) {
         Entry newEntry;
         if (editedReadOnlyEntry instanceof Event) {
             newEntry = (Event) editedReadOnlyEntry;
@@ -248,10 +251,12 @@ public class EntryBook implements ReadOnlyEntryBook {
      *
      * @param entryToRemove
      * @return boolean
-     * @throws EntryNotFoundException
+     * @throws DuplicateEntryException, EntryNotFoundException
      */
-    public boolean removeEntry(ReadOnlyEntry entryToRemove) throws EntryNotFoundException {
+    public boolean removeEntry(ReadOnlyEntry entryToRemove)
+            throws DuplicateEntryException, EntryNotFoundException {
         if (_activeList.remove(entryToRemove) && removeFromEntrySubTypeList(entryToRemove)) {
+            _bin.add(entryToRemove);
             return true;
         } else {
             throw new EntryNotFoundException();
