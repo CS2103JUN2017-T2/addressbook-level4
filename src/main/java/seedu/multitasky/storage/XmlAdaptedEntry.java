@@ -1,7 +1,11 @@
 package seedu.multitasky.storage;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,11 +26,13 @@ public class XmlAdaptedEntry {
     private String name;
 
     @XmlElement
-    private Calendar startDateAndTime;
+    private String startDateAndTime;
     @XmlElement
-    private Calendar endDateAndTime;
+    private String endDateAndTime;
     @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
+
+    DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm");
 
     /**
      * Constructs an XmlAdaptedEntry. This is the no-arg constructor that is
@@ -41,16 +47,34 @@ public class XmlAdaptedEntry {
      */
     public XmlAdaptedEntry(ReadOnlyEntry source) {
         name = source.getName().fullName;
+
         if (source.getStartDateAndTime() != null) {
-            startDateAndTime = source.getStartDateAndTime();
+            startDateAndTime = convertDateToString(source.getStartDateAndTime());
         }
         if (source.getEndDateAndTime() != null) {
-            endDateAndTime = source.getEndDateAndTime();
+            endDateAndTime = convertDateToString(source.getEndDateAndTime());
         }
         tagged = new ArrayList<>();
         for (Tag tag : source.getTags()) {
             tagged.add(new XmlAdaptedTag(tag));
         }
+    }
+
+    public String convertDateToString(Calendar given) {
+        String dateToString = df.format(given.getTime());
+        return dateToString;
+    }
+
+    public Calendar convertStringToDate(String given) throws NullPointerException {
+        Calendar setDate = null;
+        Date toConvert = new Date();
+        try {
+            toConvert = df.parse(given);
+        } catch (ParseException e) {
+            System.out.println("Invalid date!");
+        }
+        setDate.setTime(toConvert);
+        return setDate;
     }
 
     /**
@@ -67,8 +91,22 @@ public class XmlAdaptedEntry {
         }
         Calendar startDateAndTimeToUse = Calendar.getInstance();
         Calendar endDateAndTimeToUse = Calendar.getInstance();
-        startDateAndTimeToUse.set(17, 07, 7);
-        endDateAndTimeToUse.set(17, 07, 7);
+
+        if (startDateAndTime != null) {
+            try {
+                startDateAndTimeToUse = convertStringToDate(startDateAndTime);
+            } catch (Exception e) {
+                startDateAndTimeToUse = Calendar.getInstance();
+            }
+        }
+
+        if (endDateAndTime != null) {
+            try {
+                endDateAndTimeToUse = convertStringToDate(endDateAndTime);
+            } catch (Exception e) {
+                endDateAndTimeToUse = Calendar.getInstance();
+            }
+        }
 
         final Set<Tag> tags = new HashSet<>(personTags);
         Entry entry = new EntryBuilder().withName(this.name).withStartDateAndTime(startDateAndTimeToUse)
