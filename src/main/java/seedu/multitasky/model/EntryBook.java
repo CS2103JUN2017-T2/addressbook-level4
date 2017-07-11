@@ -200,7 +200,7 @@ public class EntryBook implements ReadOnlyEntryBook {
      * Converts a given ReadOnlyEntry object to an editable Entry object (i.e. event, deadline or floating
      * task).
      */
-    private static Entry convertToEntrySubType(ReadOnlyEntry editedReadOnlyEntry) {
+    private Entry convertToEntrySubType(ReadOnlyEntry editedReadOnlyEntry) {
         Entry newEntry;
         if (editedReadOnlyEntry instanceof Event) {
             newEntry = (Event) editedReadOnlyEntry;
