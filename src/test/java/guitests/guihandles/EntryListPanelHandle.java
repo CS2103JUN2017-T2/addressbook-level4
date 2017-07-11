@@ -19,7 +19,7 @@ import seedu.multitasky.testutil.TestUtil;
 /**
  * Provides a handle for the panel containing the event entry list.
  */
-public class EntryListPanelHandle extends GuiHandle {
+public abstract class EntryListPanelHandle extends GuiHandle {
 
     public static final int NOT_FOUND = -1;
     public static final String CARD_PANE_ID = "#cardPane";
@@ -64,7 +64,7 @@ public class EntryListPanelHandle extends GuiHandle {
             final int scrollTo = i + startPosition;
             guiRobot.interact(() -> getListView().scrollTo(scrollTo));
             guiRobot.sleep(200);
-            if (!TestUtil.compareCardAndEntry(getEntryCardHandle(startPosition + i), entries[i])) {
+            if (!TestUtil.compareCardAndEntry(getEntryCardHandle(scrollTo), entries[i])) {
                 return false;
             }
         }
@@ -155,6 +155,7 @@ public class EntryListPanelHandle extends GuiHandle {
      * Gets an entry handle for an entry in the list by index
      */
     public EntryCardHandle getEntryCardHandle(int index) {
+        assert false : "EntryListPanelHandle::getEntryCardHandle should not be called";
         return null;
     }
 

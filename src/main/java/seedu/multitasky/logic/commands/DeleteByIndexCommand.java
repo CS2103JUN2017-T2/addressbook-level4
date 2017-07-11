@@ -29,7 +29,7 @@ public class DeleteByIndexCommand extends DeleteCommand {
         entryToDelete = lastShownList.get(targetIndex.getZeroBased());
         try {
             model.deleteEntry(entryToDelete);
-        } catch (EntryNotFoundException pnfe) {
+        } catch (EntryNotFoundException enfe) {
             assert false : "The target entry cannot be missing";
         }
         return new CommandResult(String.format(MESSAGE_SUCCESS, entryToDelete));

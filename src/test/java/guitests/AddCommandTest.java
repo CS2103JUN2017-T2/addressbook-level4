@@ -102,15 +102,12 @@ public class AddCommandTest extends EntryBookGuiTest {
         commandBox.runCommand("addd task");
         assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
     }
-
+    
     @Test
-    public void add_tabAutocompleteFromOneChar_success() {
-        assertAddTabAutocomplete(AddCommand.COMMAND_WORD.substring(0, 1));
-    }
-
-    @Test
-    public void add_tabAutocompleteFromTwoChars_success() {
-        assertAddTabAutocomplete(AddCommand.COMMAND_WORD.substring(0, 2));
+    public void add_tabAutocomplete_success() {
+        for (int i = 1; i < AddCommand.COMMAND_WORD.length(); ++i) {
+            assertAddTabAutocomplete(AddCommand.COMMAND_WORD.substring(0, i));
+        }
     }
 
     @Test
@@ -125,6 +122,7 @@ public class AddCommandTest extends EntryBookGuiTest {
         assertResultMessage(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
     }
 
+    
     @Test
     public void add_invalidEntryName_errorMessage() {
         commandBox.runCommand("add $");

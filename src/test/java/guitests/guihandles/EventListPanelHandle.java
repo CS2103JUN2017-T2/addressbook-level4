@@ -15,10 +15,10 @@ public class EventListPanelHandle extends EntryListPanelHandle {
         listViewId = "#eventListView";
     }
 
-    @Override
     /**
      * Gets an entry handle for a event entry in the list by index
      */
+    @Override
     public EntryCardHandle getEntryCardHandle(int index) {
         return getEntryCardHandle(new Event(getListView().getItems().get(index)));
     }
