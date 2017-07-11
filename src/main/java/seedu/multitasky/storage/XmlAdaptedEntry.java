@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlElement;
 
@@ -123,7 +124,7 @@ public class XmlAdaptedEntry {
             }
         }
 
-        final HashSet<Tag> tags = new HashSet<>(entryTags);
+        final Set<Tag> tags = new HashSet<>(entryTags);
         EntryBuilder buildObject = new EntryBuilder();
         Entry entry = buildObject.build(newName, startDateAndTimeToUse, endDateAndTimeToUse,
                 tags);

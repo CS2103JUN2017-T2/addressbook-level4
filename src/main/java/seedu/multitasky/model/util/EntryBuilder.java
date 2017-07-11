@@ -1,7 +1,6 @@
 package seedu.multitasky.model.util;
 
 import java.util.Calendar;
-import java.util.HashSet;
 import java.util.Set;
 
 import seedu.multitasky.commons.exceptions.IllegalValueException;
@@ -108,7 +107,7 @@ public class EntryBuilder {
      * @throws IllegalValueException
      */
 
-    public Entry build(Name name, Calendar startDateAndTime, Calendar endDateAndTime, HashSet<Tag> tags)
+    public Entry build(Name name, Calendar startDateAndTime, Calendar endDateAndTime, Set<Tag> tags)
             throws IllegalValueException {
 
         if (startDateAndTime == null) {
