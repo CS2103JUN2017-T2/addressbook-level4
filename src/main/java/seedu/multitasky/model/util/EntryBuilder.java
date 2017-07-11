@@ -1,7 +1,7 @@
 package seedu.multitasky.model.util;
 
+import java.util.Objects;
 import java.util.Calendar;
-import java.util.HashSet;
 import java.util.Set;
 
 import seedu.multitasky.commons.exceptions.IllegalValueException;
@@ -13,17 +13,10 @@ import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.tag.Tag;
 
-//@@author A0125586X
 /**
  * A utility class to help with building Entry objects.
  */
 public class EntryBuilder {
-
-    public class IncorrectEntryArgumentsException extends Exception {
-        public IncorrectEntryArgumentsException(String message) {
-            super(message);
-        }
-    }
 
     public static final String DEFAULT_NAME = "defaultName";
     public static final String DEFAULT_TAGS = "defaultTag";
@@ -43,15 +36,27 @@ public class EntryBuilder {
 
     /**
      * Initializes the EntryBuilder with the data of {@code entryToCopy}.
+     * {code entryToCopy} cannot be null.
      */
     public EntryBuilder(ReadOnlyEntry entryToCopy) {
+        Objects.requireNonNull(entryToCopy);
         if (entryToCopy instanceof Event) {
             this.entry = new Event(entryToCopy);
+            name = entryToCopy.getName().toString();
+            startDateAndTime = entryToCopy.getStartDateAndTime();
+            endDateAndTime = entryToCopy.getEndDateAndTime();
+            tags = entryToCopy.getTags();
+
         } else if (entryToCopy instanceof Deadline) {
             this.entry = new Deadline(entryToCopy);
+            name = entryToCopy.getName().toString();
+            endDateAndTime = entryToCopy.getEndDateAndTime();
+            tags = entryToCopy.getTags();
         } else {
             assert (entryToCopy instanceof FloatingTask);
             this.entry = new FloatingTask(entryToCopy);
+            name = entryToCopy.getName().toString();
+            tags = entryToCopy.getTags();
         }
     }
 
@@ -62,7 +67,14 @@ public class EntryBuilder {
     }
 
     public EntryBuilder withTags(String... tags) throws IllegalValueException {
+        this.tags = SampleDataUtil.getTagSet(tags);
         this.entry.setTags(SampleDataUtil.getTagSet(tags));
+        return this;
+    }
+
+    public EntryBuilder withTags(Set<Tag> tags) throws IllegalValueException {
+        this.tags = tags;
+        this.entry.setTags(tags);
         return this;
     }
 
@@ -77,20 +89,12 @@ public class EntryBuilder {
     }
 
     public Entry build() throws Exception {
-        if (startDateAndTime == null) {
-            // Floating task
-            if (endDateAndTime == null) {
-                entry = new FloatingTask(new Name(name), tags);
-                // Deadline
-            } else {
-                entry = new Deadline(new Name(name), endDateAndTime, tags);
-            }
-            // Event
-        } else if (endDateAndTime != null) {
-            entry = new Event(new Name(name), startDateAndTime, endDateAndTime, tags);
-            // Unknown combination of present start date but no end date
+        if (endDateAndTime == null) {
+            entry = new FloatingTask(new Name(name), tags);
+        } else if (startDateAndTime == null) {
+            entry = new Deadline(new Name(name), endDateAndTime, tags);
         } else {
-
+            entry = new Event(new Name(name), startDateAndTime, endDateAndTime, tags);
         }
         return entry;
     }
@@ -102,31 +106,27 @@ public class EntryBuilder {
      * @return
      * @throws IllegalValueException
      */
-    public static ReadOnlyEntry build(Name name, Calendar startDateAndTime,
-                                      Calendar endDateAndTime, String... tags)
-            throws IllegalValueException {
 
-        HashSet<Tag> tagSet = new HashSet<>();
-        for (String s : tags) {
-            tagSet.add(new Tag(s));
-        }
+    public Entry build(Name name, Calendar startDateAndTime, Calendar endDateAndTime, Set<Tag> tags)
+            throws IllegalValueException {
 
         if (startDateAndTime == null) {
             // Floating task
             if (endDateAndTime == null) {
-                return new FloatingTask(name, tagSet);
+                return new FloatingTask(name, tags);
                 // Deadline
             } else {
-                return new Deadline(name, endDateAndTime, tagSet);
+                return new Deadline(name, endDateAndTime, tags);
             }
             // Event
         } else if (endDateAndTime != null) {
-            return new Event(name, startDateAndTime, endDateAndTime, tagSet);
+            return new Event(name, startDateAndTime, endDateAndTime, tags);
             // Unknown combination of present start date but no end date
         } else {
             assert false : "Error in EntryBuilder.";
             return null;
         }
     }
+    // @@author
 
 }

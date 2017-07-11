@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import javafx.collections.ObservableList;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 
 //@@author A0126623L
 /**
@@ -110,7 +111,7 @@ public class EventListTest {
 
     // @@author A0126623L
     @Test
-    public void updateEntryTest() throws EntryNotFoundException {
+    public void updateEntryTest() throws EntryNotFoundException, DuplicateEntryException {
         EventList eventListToTest = createEventList1();
         try {
             eventListToTest.updateEntry(sampleEvents[0], sampleEvents[3]);
@@ -135,7 +136,7 @@ public class EventListTest {
     // @@author A0126623L
     @Ignore
     @Test
-    public void setEntriesTest() {
+    public void setEntriesTest() throws DuplicateEntryException {
         EventList eventListToTest = createEventList1();
 
         ArrayList<Event> eventArrayList = new ArrayList<>();

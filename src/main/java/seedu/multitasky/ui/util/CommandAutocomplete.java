@@ -18,6 +18,7 @@ import seedu.multitasky.logic.commands.FindCommand;
 import seedu.multitasky.logic.commands.HelpCommand;
 import seedu.multitasky.logic.commands.HistoryCommand;
 import seedu.multitasky.logic.commands.ListCommand;
+import seedu.multitasky.logic.commands.UndoCommand;
 
 
 //@@author A0125586X
@@ -38,6 +39,7 @@ public class CommandAutocomplete {
         HelpCommand.COMMAND_WORD,
         HistoryCommand.COMMAND_WORD,
         ListCommand.COMMAND_WORD,
+        UndoCommand.COMMAND_WORD,
     }));
 
     @FXML
@@ -67,14 +69,31 @@ public class CommandAutocomplete {
     private void autocomplete() {
         final String[] input = commandTextField.getText().trim().split(" ");
         if (input.length == 1) {
-            final ArrayList<String> commandMatches = getCommandMatches(input[0]);
+            ArrayList<String> commandMatches = getCommandSubstringMatches(input[0]);
             if (commandMatches.size() == 1) {
                 setText(commandMatches.get(0) + " ");
+            } else {
+                commandMatches = getCommandStartingMatches(input[0]);
+                if (commandMatches.size() == 1) {
+                    setText(commandMatches.get(0) + " ");
+                }
             }
         }
     }
 
-    private ArrayList<String> getCommandMatches(String input) {
+    private ArrayList<String> getCommandSubstringMatches(String input) {
+        final ArrayList<String> commandMatches = new ArrayList<>();
+        // Allow for case-insensitive match
+        input = input.trim().toLowerCase();
+        for (String commandWord : allCommandWords) {
+            if (commandWord.indexOf(input) != -1) {
+                commandMatches.add(commandWord);
+            }
+        }
+        return commandMatches;
+    }
+
+    private ArrayList<String> getCommandStartingMatches(String input) {
         final ArrayList<String> commandMatches = new ArrayList<>();
         // Allow for case-insensitive match
         input = input.trim().toLowerCase();

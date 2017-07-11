@@ -13,6 +13,7 @@ import java.util.Set;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.tag.Tag;
 
 //@@author A0126623L
@@ -68,7 +69,7 @@ public class MiscEntryListTest {
     }
 
     // @@author A0126623L
-    public MiscEntryList createMiscEntryList() {
+    public MiscEntryList createMiscEntryList() throws DuplicateEntryException {
         MiscEntryList miscEntryListToTest = new MiscEntryList();
         try {
             miscEntryListToTest.add(event1);
@@ -83,7 +84,7 @@ public class MiscEntryListTest {
 
     // @@author A0126623L
     @Test
-    public void addTest_shouldAddReferenceAndNotCreateCopy() {
+    public void addTest_shouldAddReferenceAndNotCreateCopy() throws DuplicateEntryException {
         MiscEntryList miscEntryListUnderTest = createMiscEntryList();
 
         assertSame("ActiveList add method doesn't actually add Entry reference",
@@ -120,7 +121,7 @@ public class MiscEntryListTest {
 
     // @@author A0126623L
     @Test
-    public void equalsTest() {
+    public void equalsTest() throws DuplicateEntryException {
         MiscEntryList miscEntryList1 = createMiscEntryList();
         MiscEntryList miscEntryList2 = createMiscEntryList();
         // miscEntryList1 and 2 are different objects but they are meaningfully equivalent

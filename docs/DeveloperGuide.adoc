@@ -48,7 +48,7 @@ This app will not work with earlier versions of Java 8.
 
 .  Click `Project` -> `Properties` -> `Checkstyle` -> `Local Check Configurations` -> `New...`
 .  Choose `External Configuration File` under `Type`
-.  Enter an arbitrary configuration name e.g. addressbook
+.  Enter an arbitrary configuration name e.g. multitasky
 .  Import checkstyle configuration file found at `config/checkstyle/checkstyle.xml`
 .  Click OK once, go to the `Main` tab, use the newly imported check configuration.
 .  Tick and select `files from packages`, click `Change...`, and select the `resources` package
@@ -89,7 +89,7 @@ The *_Architecture Diagram_* given above explains the high-level design of the A
 [TIP]
 The `.pptx` files used to create diagrams in this document can be found in the link:{repoURL}/docs/diagrams/[diagrams] folder. To update a diagram, modify the diagram in the pptx file, select the objects of the diagram, and choose `Save as picture`.
 
-`Main` has only one class called link:{repoURL}/src/main/java/seedu/address/MainApp.java[`MainApp`]. It is responsible for,
+`Main` has only one class called link:{repoURL}/src/main/java/seedu/multitasky/MainApp.java[`MainApp`]. It is responsible for,
 
 * At app launch: Initializes the components in the correct sequence, and connects them up with each other.
 * At shut down: Shuts down the components and invokes cleanup method where necessary.
@@ -111,26 +111,26 @@ Each of the four components
 * Defines its _API_ in an `interface` with the same name as the Component.
 * Exposes its functionality using a `{Component Name}Manager` class.
 
-For example, the `Logic` component (see the class diagram given below) defines it's API in the `Logic.java` interface and exposes its functionality using the `LogicManager.java` class.
+For example, the `Logic` component (see the class diagram given below) defines its API in the `Logic.java` interface and exposes its functionality using the `LogicManager.java` class.
 
-image::LogicClassDiagram.png[width="800"]
+image::LogicClassDiagram1.png[width="800"]
 _Figure 2.1.2 : Class Diagram of the Logic Component_
 
 [discrete]
 ==== Events-Driven nature of the design
 
-The _Sequence Diagram_ below shows how the components interact for the scenario where the user issues the command `delete 1`.
+The _Sequence Diagram_ below shows how the components interact for the scenario where the user issues the command `delete /float 1`.
 
-image::SDforDeletePerson.png[width="800"]
-_Figure 2.1.3a : Component interactions for `delete 1` command (part 1)_
+image::SDforDeleteEntry.png[width="800"]
+_Figure 2.1.3a : Component interactions for `delete /float 1` command (part 1)_
 
 [NOTE]
-Note how the `Model` simply raises a `AddressBookChangedEvent` when the Address Book data are changed, instead of asking the `Storage` to save the updates to the hard disk.
+Note how the `Model` simply raises a `EntryBookChangedEvent` when an Entry has been changed, instead of asking the `Storage` directly to save the updates to the hard disk.
 
 The diagram below shows how the `EventsCenter` reacts to that event, which eventually results in the updates being saved to the hard disk and the status bar of the UI being updated to reflect the 'Last Updated' time.
 
-image::SDforDeletePersonEventHandling.png[width="800"]
-_Figure 2.1.3b : Component interactions for `delete 1` command (part 2)_
+image::SDforDeleteEntryEventHandling.png[width="800"]
+_Figure 2.1.3b : Component interactions for `delete /float 1` command (part 2)_
 
 [NOTE]
 Note how the event is propagated through the `EventsCenter` to the `Storage` and `UI` without `Model` having to be coupled to either of them. This is an example of how this Event Driven approach helps us reduce direct coupling between components.
@@ -159,55 +159,66 @@ The `UI` component
 * Responds to events raised from various parts of the App and updates the UI accordingly.
 //<!-- @@author -->
 
+//<!-- @@author A0140633R -->
 === Logic component
 
-Author: Bernard Choo
+Author: Kevin Lam
 
-image::LogicClassDiagram.png[width="800"]
+image::LogicClassDiagram1.png[width="800"]
 _Figure 2.3.1 : Structure of the Logic Component_
 
 *API* :
-link:{repoURL}/src/main/java/seedu/address/logic/Logic.java[`Logic.java`]
+link:{repoURL}/src/main/java/seedu/multitasky/logic/Logic.java[`Logic.java`]
 
 .  `Logic` uses the `Parser` class to parse the user command.
-.  This results in a `Command` object which is executed by the `LogicManager`.
-.  The command execution can affect the `Model` (e.g. adding a person) and/or raise events.
+..  Some `Commands`, such as `DeleteCommand` require further parsing, which will be done by their subsidiary parsers such as the `DeleteCommandParser` object.
+.  After some processing, the parser classes will create the appropriate `Command` object which contain their inner mechanisms.
+.  This results in a `Command` object which is then executed by the `LogicManager`.
+.  The command execution can affect the `Model` (e.g. adding an Entry) and/or raise events.
 .  The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `Ui`.
 
-Given below is the Sequence Diagram for interactions within the `Logic` component for the `execute("delete 1")` API call.
+Given below is the Sequence Diagram for interactions within the `Logic` component for the `execute("delete /float 1")` API call.
 
-image::DeletePersonSdForLogic.png[width="800"]
-_Figure 2.3.1 : Interactions Inside the Logic Component for the `delete 1` Command_
+image::DeleteEntrySdForLogic1.png[width="800"]
 
+_Figure 2.3.1 : Interactions Inside the Logic Component for the `delete /float 1` Command_
+
+//<!-- @@author A0126623L -->
 === Model component
 
-Author: Cynthia Dharman
+Author: Chua Ping Chan
 
 image::ModelClassDiagram.png[width="800"]
 _Figure 2.4.1 : Structure of the Model Component_
 
-*API* : link:{repoURL}/src/main/java/seedu/address/model/Model.java[`Model.java`]
+*API* : link:{repoURL}/src/main/java/seedu/multitasky/model/Model.java[`Model.java`]
 
 The `Model`,
 
 * stores a `UserPref` object that represents the user's preferences.
-* stores the Address Book data.
-* exposes a `UnmodifiableObservableList<ReadOnlyPerson>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
+* holds MultiTasky's entry data in-memory.
+* entries are categorised into `Event`, `Deadline` and `FloatingTask`.
+* entries have three states, i.e. active, archived and deleted.
+* exposes several `UnmodifiableObservableList<ReadOnlyEntry>` that can be 'observed' e.g. the UI can be bound to these lists so that the UI automatically updates when the data in the lists change.
 * does not depend on any of the other three components.
+
+//<!-- @@author A0132788U -->
 
 === Storage component
 
-Author: Darius Foong
+Author: Akankshita Dash
 
 image::StorageClassDiagram.png[width="800"]
 _Figure 2.5.1 : Structure of the Storage Component_
 
-*API* : link:{repoURL}/src/main/java/seedu/address/storage/Storage.java[`Storage.java`]
+*API* : link:{repoURL}/src/main/java/seedu/multitasky/storage/Storage.java[`Storage.java`]
 
 The `Storage` component,
 
 * can save `UserPref` objects in json format and read it back.
-* can save the Address Book data in xml format and read it back.
+* saves snapshots after every data mutation.
+* can save the Entry Book data in xml format and read it back using EntryBuilder from Model.
+//<!-- @@author -->
 
 === Common classes
 
@@ -298,7 +309,7 @@ We use https://www.google.com/chrome/browser/desktop/[Google Chrome] for convert
 Here are the steps to convert the project documentation files to PDF format.
 
 .  Make sure you have set up GitHub Pages as described in <<UsingGithubPages#setting-up, UsingGithubPages.adoc>>.
-.  Using Chrome, go to the <<UsingGithubPages#viewing-the-project-site, GitHub Pages version>> of the documentation file. e.g. For <<UserGuide#, UserGuide.adoc>>, the URL will be `\https://<your-username-or-organization-name>.github.io/addressbook-level4/docs/UserGuide.html`.
+.  Using Chrome, go to the <<UsingGithubPages#viewing-the-project-site, GitHub Pages version>> of the documentation file. e.g. For <<UserGuide#, UserGuide.adoc>>, the URL will be `\https://<your-username-or-organization-name>.github.io/main/docs/UserGuide.html`.
 .  Click on the `Print` option in Chrome's menu.
 .  Set the destination to `Save as PDF`, then click `Save` to save a copy of the file in PDF format. For best results, use the settings indicated in the screenshot below.
 
@@ -307,7 +318,7 @@ _Figure 5.4.1 : Saving documentation as PDF files in Chrome_
 
 === Managing Dependencies
 
-A project often depends on third-party libraries. For example, Address Book depends on the http://wiki.fasterxml.com/JacksonHome[Jackson library] for XML parsing. Managing these _dependencies_ can be automated using Gradle. For example, Gradle can download the dependencies automatically, which is better than these alternatives. +
+A project often depends on third-party libraries. For example, MultiTasky depends on the http://wiki.fasterxml.com/JacksonHome[Jackson library] for XML parsing. Managing these _dependencies_ can be automated using Gradle. For example, Gradle can download the dependencies automatically, which is better than these alternatives. +
 a. Include those libraries in the repo (this bloats the repo size) +
 b. Require developers to download those libraries manually (this creates extra work for developers)
 

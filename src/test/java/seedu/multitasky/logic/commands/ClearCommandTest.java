@@ -27,7 +27,7 @@ public class ClearCommandTest {
     /**
      * Executes {@code ClearCommand} on the given {@code model}, confirms that <br>
      * - the result message matches {@code ClearCommand.MESSAGE_SUCCESS} <br>
-     * - the address book and filtered person list in {@code model} is empty <br>
+     * - the address book and filtered entry list in {@code model} is empty <br>
      */
     private void assertCommandSuccess(Model model) {
         ClearCommand command = new ClearCommand();

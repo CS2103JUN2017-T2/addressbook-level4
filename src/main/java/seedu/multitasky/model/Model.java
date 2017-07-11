@@ -4,8 +4,8 @@ import java.util.Set;
 
 import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
-import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
+import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 
 /**
  * The API of the Model component.
@@ -18,18 +18,21 @@ public interface Model {
     ReadOnlyEntryBook getEntryBook();
 
     /** Deletes the given entry. */
-    void deleteEntry(ReadOnlyEntry target) throws EntryNotFoundException;
+    void deleteEntry(ReadOnlyEntry target) throws DuplicateEntryException, EntryNotFoundException;
 
     /** Adds the given entry */
     void addEntry(ReadOnlyEntry entry) throws DuplicateEntryException;
+
+    /** Undo the previous data-changing action */
+    void undoPreviousAction();
 
     /**
      * Replaces the given entry {@code target} with {@code editedEntry}.
      *
      * @throws EntryNotFoundException if {@code target} could not be found in the list.
      */
-    void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
-            throws DuplicateEntryException, EntryNotFoundException;
+    void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws DuplicateEntryException,
+            EntryNotFoundException;
 
     /** Returns the filtered event list as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
     UnmodifiableObservableList<ReadOnlyEntry> getFilteredEventList();

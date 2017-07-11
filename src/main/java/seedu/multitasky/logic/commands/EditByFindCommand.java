@@ -8,6 +8,7 @@ import java.util.Set;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 
 // @@author A0140633R
@@ -34,7 +35,7 @@ public class EditByFindCommand extends EditCommand {
     }
 
     @Override
-    public CommandResult execute() throws CommandException {
+    public CommandResult execute() throws CommandException, DuplicateEntryException {
         List<ReadOnlyEntry> lastShownList = model.getFilteredFloatingTaskList();
 
         model.updateFilteredFloatingTaskList(keywords);
@@ -55,4 +56,5 @@ public class EditByFindCommand extends EditCommand {
             return new CommandResult(MESSAGE_NO_ENTRIES);
         }
     }
+
 }

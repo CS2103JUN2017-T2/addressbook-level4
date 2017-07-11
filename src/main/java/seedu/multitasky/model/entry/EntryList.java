@@ -3,6 +3,7 @@ package seedu.multitasky.model.entry;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 
 import javafx.collections.FXCollections;
@@ -26,6 +27,8 @@ public abstract class EntryList implements Iterable<Entry> {
     // @@author A0126623L
     /**
      * Adds an entry to the list.
+     *
+     * @throws DuplicateEntryException if {@code toAdd} already exists in the list.
      */
     public void add(ReadOnlyEntry toAdd) throws DuplicateEntryException {
         requireNonNull(toAdd);
@@ -95,9 +98,10 @@ public abstract class EntryList implements Iterable<Entry> {
      * Resets the data of the entry {@code target} in the list with that of the {@code editedEntry}.
      *
      * @throws EntryNotFoundException if {@code target} could not be found in the list.
+     * @throws DuplicateEntryException if {@code editedEntry} already exists in the list.
      */
-    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
-            throws DuplicateEntryException, EntryNotFoundException {
+    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws DuplicateEntryException,
+                                                                             EntryNotFoundException {
         requireNonNull(editedEntry);
 
         int index = internalList.indexOf(target);
@@ -118,4 +122,14 @@ public abstract class EntryList implements Iterable<Entry> {
         // Then, EntryCard should then bind its text labels to those observable properties.
         internalList.set(index, entryToUpdate);
     }
+
+    //@@author A0125586X
+    /**
+     * Sorts the internal list by the Comparable interface already implemented for the various
+     * Entry subclasses
+     */
+    protected void sortInternalList() {
+        Collections.sort(internalList);
+    }
+    //@@author
 }

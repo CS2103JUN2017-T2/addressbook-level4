@@ -12,67 +12,58 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
+import seedu.multitasky.commons.exceptions.IllegalValueException;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.tag.Tag;
+import seedu.multitasky.model.util.EntryBuilder;
+import seedu.multitasky.model.util.TagSetBuilder;
 
 //@@author A0126623L
 public class DeadlineTest {
 
-    static Calendar calendar1;
-    static Calendar calendar2;
-    static Calendar calendar3;
+    public static final Deadline[] SAMPLE_DEADLINES_ARRAY_DATA = getSampleDeadlineArrayData();
 
-    static Set<Tag> tagSet1;
-    static Set<Tag> tagSet2;
+    // @@author A0126623L
+    /**
+     * Gets an array of 5 sample deadlines.
+     * The first two deadlines are meaningfully equivalent, the remaining are unique.
+     *
+     * @return Deadline[] of 5 sample deadlines.
+     */
+    public static Deadline[] getSampleDeadlineArrayData() {
 
-    static Name deadlineName1;
-    static Name deadlineName2;
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.set(2017, 6, 7, 18, 30); // 7th July 2017, 6:30pm
+        Calendar calendar2 = Calendar.getInstance();
+        calendar2.set(2017, 6, 8, 18, 30); // 8th July 2017, 6:30pm
+        Calendar calendar3 = Calendar.getInstance();
+        calendar3.set(2017, 6, 9, 18, 30); // 9th July 2017, 6:30pm
 
-    static Deadline deadline1;
-    static Deadline deadline2;
-    static Deadline deadline3;
-    static Deadline deadline4;
-    static Deadline deadline5;
-    static Deadline deadline6;
+        try {
+            return new Deadline[] {
+                    new Deadline(new Name("SampleName1"), calendar1, TagSetBuilder.generateTagSet("tag1")),
+                    new Deadline(new Name("SampleName1"), calendar1, TagSetBuilder.generateTagSet("tag1")),
+                    new Deadline(new Name("SampleName2"), calendar1, TagSetBuilder.generateTagSet("tag1")),
+                    new Deadline(new Name("SampleName1"), calendar2, TagSetBuilder.generateTagSet("tag1")),
+                    new Deadline(new Name("SampleName1"), calendar1, TagSetBuilder.generateTagSet("tag2"))
+            };
+        } catch (Exception e) {
+            fail("Deadline array initialisation failed.");
+            return null;
+        }
+    }
+    // @@author
+
+    Deadline deadline1, deadline2, deadline3, deadline4, deadline5;
 
     // @@author A0126623L
     @Before
     public void setUp() {
-        calendar1 = Calendar.getInstance();
-        calendar1.set(2017, 6, 7, 18, 30); // 7th July 2017, 6:30pm
-
-        calendar2 = Calendar.getInstance();
-        calendar2.set(2017, 6, 8, 18, 30); // 8th July 2017, 6:30pm
-
-        calendar3 = Calendar.getInstance();
-        calendar3.set(2017, 6, 9, 18, 30); // 9th July 2017, 6:30pm
-
-        try {
-            tagSet1 = new HashSet<>();
-            tagSet1.add(new Tag("tag1set1"));
-
-            tagSet2 = new HashSet<>();
-            tagSet2.add(new Tag("tag1set2"));
-        } catch (Exception e) {
-            fail("Tags initialisation failed.");
-        }
-
-        try {
-            deadlineName1 = new Name("SampleName1");
-            deadlineName2 = new Name("SampleName2");
-        } catch (Exception e) {
-            fail("Deadline name initialisation failed.");
-        }
-
-        // First tester, used for reference
-        deadline1 = new Deadline(deadlineName1, calendar1, tagSet1);
-        // Same fields as tester1
-        deadline2 = new Deadline(deadlineName1, calendar1, tagSet1);
-        // Only name is different from tester1
-        deadline3 = new Deadline(deadlineName2, calendar1, tagSet1);
-        // Only end time is different from tester1
-        deadline4 = new Deadline(deadlineName1, calendar2, tagSet1);
-        // Only tags are different from tester1
-        deadline5 = new Deadline(deadlineName1, calendar1, tagSet2);
+        deadline1 = SAMPLE_DEADLINES_ARRAY_DATA[0];
+        deadline2 = SAMPLE_DEADLINES_ARRAY_DATA[1];
+        deadline3 = SAMPLE_DEADLINES_ARRAY_DATA[2];
+        deadline4 = SAMPLE_DEADLINES_ARRAY_DATA[3];
+        deadline5 = SAMPLE_DEADLINES_ARRAY_DATA[4];
     }
 
     // @@author A0126623L
@@ -94,18 +85,25 @@ public class DeadlineTest {
     // @@author A0126623L
     @Test
     public void resetDataTest() {
-        Deadline tester999 = new Deadline(deadlineName1, calendar1, tagSet1);
-        assertFalse(tester999.equals(deadline3));
+        try {
+            Entry tempDeadline = new EntryBuilder(deadline1).build();
+            assert (tempDeadline instanceof Deadline) : "Error in DeadlineTest.resetDataTest().";
 
-        tester999.resetData(deadline3);
-        assertTrue(tester999.equals(deadline3));
+            Deadline tester999 = (Deadline) tempDeadline;
+            assertFalse(tester999.equals(deadline3));
+            tester999.resetData(deadline3);
+            assertTrue(tester999.equals(deadline3));
+
+        } catch (Exception e) {
+            fail("DeadlineTest.resetDataTest() failed.");
+        }
     }
 
     // @@author A0126623L
     @Test
     public void toStringTest() {
         assertEquals("Deadline formatting is wrong",
-                     "SampleName1 Deadline: Jul 7, 2017 6:30 PM Tags: [tag1set1]",
+                     "SampleName1 Deadline: Jul 7, 2017 6:30 PM Tags: [tag1]",
                      deadline1.toString());
     }
 
@@ -116,8 +114,6 @@ public class DeadlineTest {
         assertTrue(deadline1.equals(deadline2));
 
         // Not equal
-        assertFalse(deadlineName1.equals(deadlineName2));
-        assertFalse(calendar1.equals(calendar2));
         assertFalse(deadline1.equals(deadline3));
         assertFalse(deadline1.equals(deadline4));
         assertFalse(deadline1.equals(deadline5));

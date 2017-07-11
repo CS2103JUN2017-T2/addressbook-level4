@@ -5,9 +5,8 @@ import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_TAG;
 
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
-import seedu.multitasky.model.entry.Entry;
-import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 
 /**
  * Adds an entry to the entry book.
@@ -26,17 +25,17 @@ public class AddCommand extends Command {
     public static final String MESSAGE_SUCCESS = "New entry added:" + "\n"
                                                  + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s";
 
-    private final Entry toAdd;
+    private final ReadOnlyEntry toAdd;
 
     /**
      * Creates an AddCommand to add the specified {@code ReadOnlyEntry}
      */
     public AddCommand(ReadOnlyEntry entry) {
-        toAdd = new FloatingTask(entry);
+        toAdd = entry;
     }
 
     @Override
-    public CommandResult execute() throws CommandException {
+    public CommandResult execute() throws CommandException, DuplicateEntryException {
         requireNonNull(model);
 
         model.addEntry(toAdd);

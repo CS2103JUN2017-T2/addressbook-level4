@@ -29,4 +29,5 @@ public class CommandHistory {
     public List<String> getHistory() {
         return new ArrayList<>(userInputHistory);
     }
+
 }

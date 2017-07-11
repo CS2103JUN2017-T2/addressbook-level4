@@ -10,6 +10,7 @@ import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.Model;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 
 /**
  * Contains helper methods for testing commands.
@@ -22,7 +23,7 @@ public class CommandTestUtil {
      * - the {@code actualModel} matches {@code expectedModel}
      */
     public static void assertCommandSuccess(Command command, Model actualModel, String expectedMessage,
-            Model expectedModel) throws CommandException {
+            Model expectedModel) throws CommandException, DuplicateEntryException {
         CommandResult result = command.execute();
         assertEquals(expectedMessage, result.feedbackToUser);
         assertEquals(expectedModel, actualModel);
@@ -34,7 +35,8 @@ public class CommandTestUtil {
      * - the CommandException message matches {@code expectedMessage} <br>
      * - the entry book and the filtered entry list in the {@code actualModel} remain unchanged
      */
-    public static void assertCommandFailure(Command command, Model actualModel, String expectedMessage) {
+    public static void assertCommandFailure(Command command, Model actualModel, String expectedMessage)
+            throws DuplicateEntryException {
         // we are unable to defensively copy the model for comparison later, so we can
         // only do so by copying its components.
         EntryBook expectedEntryBook = new EntryBook(actualModel.getEntryBook());

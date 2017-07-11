@@ -1,5 +1,8 @@
 package seedu.multitasky.ui;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -45,10 +48,16 @@ public class EventListPanel extends UiPart<Region> {
                 setGraphic(null);
                 setText(null);
             } else {
-                //TODO set as EventOverdueCard instead if event is over
                 int index = getIndex() + 1;
                 assert index > 0 : "getIndex returned invalid index";
-                setGraphic(new EventCard(entry, index).getRoot());
+
+                Calendar current = new GregorianCalendar();
+                // Event has already started
+                if (current.compareTo(entry.getStartDateAndTime()) > 0) {
+                    setGraphic(new EventOverdueCard(entry, index).getRoot());
+                } else {
+                    setGraphic(new EventCard(entry, index).getRoot());
+                }
             }
         }
     }

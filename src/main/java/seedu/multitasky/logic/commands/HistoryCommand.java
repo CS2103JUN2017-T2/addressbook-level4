@@ -10,12 +10,12 @@ import seedu.multitasky.logic.CommandHistory;
 import seedu.multitasky.model.Model;
 
 /**
- * Lists all the commands entered by user from the start of app launch.
+ * Lists all the commands entered by user from the start of app launch, shown from latest to earliest.
  */
 public class HistoryCommand extends Command {
 
     public static final String COMMAND_WORD = "history";
-    public static final String MESSAGE_SUCCESS = "Entered commands (from earliest to most recent):\n%1$s";
+    public static final String MESSAGE_SUCCESS = "Entered commands (from most recent to earliest):\n%1$s";
     public static final String MESSAGE_NO_HISTORY = "You have not yet entered any commands.";
 
     @Override
@@ -26,10 +26,9 @@ public class HistoryCommand extends Command {
             return new CommandResult(MESSAGE_NO_HISTORY);
         }
 
-        List<String> temp = new ArrayList<>();
-        temp.addAll(previousCommands);
-        Collections.reverse(temp);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, String.join("\n", temp)));
+        List<String> reversedHistory = new ArrayList<>(previousCommands);
+        Collections.reverse(reversedHistory);
+        return new CommandResult(String.format(MESSAGE_SUCCESS, String.join("\n", reversedHistory)));
     }
 
     @Override
@@ -37,4 +36,5 @@ public class HistoryCommand extends Command {
         requireNonNull(history);
         this.history = history;
     }
+
 }

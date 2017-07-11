@@ -9,6 +9,7 @@ import com.google.common.eventbus.Subscribe;
 import seedu.multitasky.commons.core.ComponentManager;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
+import seedu.multitasky.commons.events.model.EntryBookToUndoEvent;
 import seedu.multitasky.commons.events.storage.DataSavingExceptionEvent;
 import seedu.multitasky.commons.exceptions.DataConversionException;
 import seedu.multitasky.model.ReadOnlyEntryBook;
@@ -62,6 +63,14 @@ public class StorageManager extends ComponentManager implements Storage {
         return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
     }
 
+    /**
+     * Gets the proper filepath of the previous snapshot for undo with index
+     */
+    public static String getPreviousEntryBookSnapshotPath() {
+        UserPrefs.decrementIndexByOne();
+        return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
+    }
+
     // @@author
     @Override
     public Optional<ReadOnlyEntryBook> readEntryBook() throws DataConversionException, IOException {
@@ -85,6 +94,11 @@ public class StorageManager extends ComponentManager implements Storage {
         entryBookStorage.saveEntryBook(entryBook, filePath);
     }
 
+    public Optional<ReadOnlyEntryBook> loadPreviousEntryBook(ReadOnlyEntryBook entryBook)
+            throws IOException, DataConversionException {
+        return entryBookStorage.readEntryBook(getPreviousEntryBookSnapshotPath());
+    }
+
     // @@author A0132788U
     /**
      * Gets the filepath of the most current snapshot xml file and increments index by one.
@@ -99,7 +113,6 @@ public class StorageManager extends ComponentManager implements Storage {
         saveEntryBook(entryBook, setEntryBookSnapshotPathAndUpdateIndex());
     }
 
-    // @@author A0132788U
     /**
      * Saves the data to the entrybook at the filepath specified and also creates a snapshot in data/snapshots.
      */
@@ -110,6 +123,16 @@ public class StorageManager extends ComponentManager implements Storage {
         try {
             saveEntryBook(event.data);
             saveEntryBookSnapshot(event.data);
+        } catch (IOException e) {
+            raise(new DataSavingExceptionEvent(e));
+        }
+    }
+
+    @Subscribe
+    public void handleEntryBookToUndoEvent(EntryBookToUndoEvent event) throws DataConversionException {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Load previous snapshot"));
+        try {
+            loadPreviousEntryBook(event.data);
         } catch (IOException e) {
             raise(new DataSavingExceptionEvent(e));
         }

@@ -58,6 +58,7 @@ public class EntryBook implements ReadOnlyEntryBook {
         _tags = new UniqueTagList();
     }
 
+    // TODO: This may later be removed.
     public EntryBook() {
     }
 
@@ -71,8 +72,19 @@ public class EntryBook implements ReadOnlyEntryBook {
 
     //// list overwrite operations
 
-    public void setActiveList(List<? extends ReadOnlyEntry> entries) throws DuplicateEntryException {
-        this._activeList.setEntries(entries);
+    // @@author A0126623L
+    // TODO: Revert this to the original form after model architecture is revamped for V0.4.
+    private void setActiveList(ReadOnlyEntryBook entries) throws DuplicateEntryException {
+        this._activeList.setEntries(new MiscEntryList());
+        for (ReadOnlyEntry entry : entries.getEventList()) {
+            this._activeList.add(entry);
+        }
+        for (ReadOnlyEntry entry : entries.getDeadlineList()) {
+            this._activeList.add(entry);
+        }
+        for (ReadOnlyEntry entry : entries.getFloatingTaskList()) {
+            this._activeList.add(entry);
+        }
     }
 
     public void setArchive(List<? extends ReadOnlyEntry> entries) throws DuplicateEntryException {
@@ -104,7 +116,7 @@ public class EntryBook implements ReadOnlyEntryBook {
         requireNonNull(newData);
 
         try {
-            setActiveList(newData.getActiveList());
+            setActiveList(newData); // TODO: Update this in V0.4.
             setArchive(newData.getArchive());
             setBin(newData.getBin());
             setEventList(newData.getEventList());
@@ -134,6 +146,11 @@ public class EntryBook implements ReadOnlyEntryBook {
      * and updates the Tag objects in the entry to point to those in {@link #tags}.
      */
     public void addEntry(ReadOnlyEntry e) throws DuplicateEntryException {
+        /**
+         * TODO: Duplicate entries are temporarily allowed in bin and archive in V0.3. This should be
+         * changed for V0.4.
+         */
+
         addToEntrySubTypeList(e);
 
         Entry newEntry = convertToEntrySubType(e);
@@ -182,12 +199,10 @@ public class EntryBook implements ReadOnlyEntryBook {
 
     // @@author A0126623L
     /**
-     * Converts a given ReadOnlyEntryObject to an appropriate Event object (i.e. event, deadline or floating
+     * Converts a given ReadOnlyEntry object to an editable Entry object (i.e. event, deadline or floating
      * task).
-     *
-     * @return Entry
      */
-    public static Entry convertToEntrySubType(ReadOnlyEntry editedReadOnlyEntry) {
+    private Entry convertToEntrySubType(ReadOnlyEntry editedReadOnlyEntry) {
         Entry newEntry;
         if (editedReadOnlyEntry instanceof Event) {
             newEntry = (Event) editedReadOnlyEntry;
@@ -238,10 +253,19 @@ public class EntryBook implements ReadOnlyEntryBook {
      *
      * @param entryToRemove
      * @return boolean
-     * @throws EntryNotFoundException
+     * @throws DuplicateEntryException, EntryNotFoundException
      */
     public boolean removeEntry(ReadOnlyEntry entryToRemove) throws EntryNotFoundException {
         if (_activeList.remove(entryToRemove) && removeFromEntrySubTypeList(entryToRemove)) {
+            try {
+                _bin.add(entryToRemove);
+            } catch (DuplicateEntryException e) {
+                /**
+                 * TODO: Bin temporarily allows duplicates in V0.3 because users don't know the existence of a
+                 * bin behind the scenes. The handling of bin duplicates should be changed in V0.4.
+                 */
+                // Ignore duplicates.
+            }
             return true;
         } else {
             throw new EntryNotFoundException();

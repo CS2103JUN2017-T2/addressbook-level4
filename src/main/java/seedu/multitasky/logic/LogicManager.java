@@ -12,6 +12,7 @@ import seedu.multitasky.logic.parser.Parser;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
 import seedu.multitasky.model.Model;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 
 /**
  * The main LogicManager of the app.
@@ -30,7 +31,7 @@ public class LogicManager extends ComponentManager implements Logic {
     }
 
     @Override
-    public CommandResult execute(String commandText) throws CommandException, ParseException {
+    public CommandResult execute(String commandText) throws CommandException, ParseException, DuplicateEntryException {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
         try {
             Command command = parser.parseCommand(commandText);
@@ -44,5 +45,15 @@ public class LogicManager extends ComponentManager implements Logic {
     @Override
     public ObservableList<ReadOnlyEntry> getFilteredFloatingTaskList() {
         return model.getFilteredFloatingTaskList();
+    }
+
+    @Override
+    public ObservableList<ReadOnlyEntry> getFilteredDeadlineList() {
+        return model.getFilteredDeadlineList();
+    }
+
+    @Override
+    public ObservableList<ReadOnlyEntry> getFilteredEventList() {
+        return model.getFilteredEventList();
     }
 }

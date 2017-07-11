@@ -10,11 +10,11 @@ import seedu.multitasky.commons.core.ComponentManager;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
+import seedu.multitasky.commons.events.model.EntryBookToUndoEvent;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 import seedu.multitasky.model.tag.Tag;
-import seedu.multitasky.model.entry.exceptions.*;
 
 //@@author A0126623L
 /**
@@ -66,9 +66,16 @@ public class ModelManager extends ComponentManager implements Model {
         raise(new EntryBookChangedEvent(_entryBook));
     }
 
+    /** Raises an event when undo is entered */
+    private void indicateUndoAction() {
+        raise(new EntryBookToUndoEvent(_entryBook));
+    }
+
     @Override
-    public synchronized void deleteEntry(ReadOnlyEntry target) throws EntryNotFoundException {
+    public synchronized void deleteEntry(ReadOnlyEntry target)
+            throws DuplicateEntryException, EntryNotFoundException {
         _entryBook.removeEntry(target);
+
         indicateEntryBookChanged();
     }
 
@@ -81,12 +88,17 @@ public class ModelManager extends ComponentManager implements Model {
     // @@author
 
     @Override
-    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
-            throws DuplicateEntryException, EntryNotFoundException {
+    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws DuplicateEntryException,
+            EntryNotFoundException {
         requireAllNonNull(target, editedEntry);
 
         _entryBook.updateEntry(target, editedEntry);
         indicateEntryBookChanged();
+    }
+
+    @Override
+    public void undoPreviousAction() {
+        indicateUndoAction();
     }
 
     // =========== Filtered Entry List Accessors ===========
@@ -213,8 +225,7 @@ public class ModelManager extends ComponentManager implements Model {
 
         // state check
         ModelManager other = (ModelManager) obj;
-        return _entryBook.equals(other._entryBook)
-               && _filteredEventList.equals(other._filteredEventList)
+        return _entryBook.equals(other._entryBook) && _filteredEventList.equals(other._filteredEventList)
                && _filteredDeadlineList.equals(other._filteredDeadlineList)
                && _filteredFloatingTaskList.equals(other._filteredFloatingTaskList);
     }
