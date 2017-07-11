@@ -23,6 +23,7 @@ import seedu.multitasky.model.UserPrefs;
  */
 public class StorageManager extends ComponentManager implements Storage {
 
+    private static int numSnapshots = 0;
     private static final Logger logger = LogsCenter.getLogger(StorageManager.class);
     private EntryBookStorage entryBookStorage;
     private UserPrefsStorage userPrefsStorage;
@@ -97,11 +98,6 @@ public class StorageManager extends ComponentManager implements Storage {
         entryBookStorage.saveEntryBook(entryBook, filePath);
     }
 
-    public Optional<ReadOnlyEntryBook> loadPreviousEntryBook(ReadOnlyEntryBook entryBook)
-            throws IOException, DataConversionException {
-        return entryBookStorage.readEntryBook(getPreviousEntryBookSnapshotPath());
-    }
-
     public EntryBook loadUndoData() throws FileNotFoundException, DataConversionException {
         ReadOnlyEntryBook undoData = XmlFileStorage.loadDataFromSaveFile(new File(getPreviousEntryBookSnapshotPath()));
         return new EntryBook(undoData);
@@ -113,12 +109,25 @@ public class StorageManager extends ComponentManager implements Storage {
      */
     public String setEntryBookSnapshotPathAndUpdateIndex() {
         UserPrefs.incrementIndexByOne();
+        numSnapshots++;
         String snapshotPath = getEntryBookSnapshotPath();
         return snapshotPath;
     }
 
     public void saveEntryBookSnapshot(ReadOnlyEntryBook entryBook) throws IOException {
         saveEntryBook(entryBook, setEntryBookSnapshotPathAndUpdateIndex());
+    }
+
+    public static int getNumSnapshots() {
+        return numSnapshots;
+    }
+
+    public static void setNumSnapshots(int numSnapshots) {
+        StorageManager.numSnapshots = numSnapshots;
+    }
+
+    public static void decrementNumSnapshots() {
+        StorageManager.setNumSnapshots(numSnapshots--);
     }
 
     /**
