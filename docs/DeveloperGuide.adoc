@@ -181,7 +181,7 @@ _Figure 2.3.1 : Interactions Inside the Logic Component for the `delete 1` Comma
 
 === Model component
 
-Author: Cynthia Dharman
+Author: Chua Ping Chan
 
 image::ModelClassDiagram.png[width="800"]
 _Figure 2.4.1 : Structure of the Model Component_
@@ -192,7 +192,9 @@ The `Model`,
 
 * stores a `UserPref` object that represents the user's preferences.
 * stores the Entry Book data.
-* exposes a `UnmodifiableObservableList<ReadOnlyEntry>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
+* entries are categorised into `Event`, `Deadline` and `FloatingTask`.
+* entries have three states, i.e. active, archived and deleted.
+* exposes several `UnmodifiableObservableList<ReadOnlyEntry>` that can be 'observed' e.g. the UI can be bound to these lists so that the UI automatically updates when the data in the lists change.
 * does not depend on any of the other three components.
 
 === Storage component
