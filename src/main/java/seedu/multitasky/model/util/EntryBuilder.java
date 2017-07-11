@@ -1,5 +1,6 @@
 package seedu.multitasky.model.util;
 
+import java.util.Objects;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
@@ -43,8 +44,10 @@ public class EntryBuilder {
 
     /**
      * Initializes the EntryBuilder with the data of {@code entryToCopy}.
+     * {code entryToCopy} cannot be null.
      */
     public EntryBuilder(ReadOnlyEntry entryToCopy) {
+        Objects.requireNonNull(entryToCopy);
         if (entryToCopy instanceof Event) {
             this.entry = new Event(entryToCopy);
         } else if (entryToCopy instanceof Deadline) {
@@ -82,19 +85,6 @@ public class EntryBuilder {
     }
 
     public Entry build() throws Exception {
-        if (startDateAndTime == null) {
-            if (endDateAndTime == null) {
-                entry = new FloatingTask(new Name(name), tags);
-            } else {
-                entry = new Deadline(new Name(name), endDateAndTime, tags);
-            }
-        } else if (endDateAndTime != null) {
-            entry = new Event(new Name(name), startDateAndTime, endDateAndTime, tags);
-
-        } else {
-            assert false : "Error in EntryBuilder.";
-            return null;
-        }
         return entry;
     }
 
