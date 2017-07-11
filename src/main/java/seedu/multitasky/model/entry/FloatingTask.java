@@ -52,6 +52,16 @@ public class FloatingTask extends Entry {
                || this.isSameStateAs((ReadOnlyEntry) other);
     }
 
+    //@@author A0125586X
+    /**
+     * Compares this to another floating task.
+     * @return 0 as there is no ordering to floating tasks at the moment.
+     */
+    public int compareTo(ReadOnlyEntry other) throws NullPointerException, ClassCastException {
+        assert other instanceof FloatingTask : "FloatingTask::compareTo must receive FloatingTask object as argument";
+        return 0;
+    }
+
     // @@author A0126623L
     /**
      * Compares the state with another Floating Task.

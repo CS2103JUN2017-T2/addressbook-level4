@@ -4,12 +4,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import seedu.multitasky.commons.exceptions.IllegalValueException;
-import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.ReadOnlyEntryBook;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.Name;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.tag.Tag;
 
 public class SampleDataUtil {
@@ -39,9 +39,9 @@ public class SampleDataUtil {
         //TODO write catch block for DuplicateEntryException
         EntryBook sampleEntryBook = new EntryBook();
         try {
-        for (Entry sampleEntry : getSampleEntries()) {
-            sampleEntryBook.addEntry(sampleEntry);
-        }
+            for (Entry sampleEntry : getSampleEntries()) {
+                sampleEntryBook.addEntry(sampleEntry);
+            }
         } catch (DuplicateEntryException e) {
             assert false : "Sample Entry Book generation failed. EntryBooks should not have duplicate entries.";
         }

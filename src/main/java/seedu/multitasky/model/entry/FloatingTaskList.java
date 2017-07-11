@@ -10,6 +10,8 @@ public class FloatingTaskList extends EntryList {
     /**
      * Adds a floating task to the list.
      * Pre-conditions: toAdd is not null and is of type FloatingTask.
+     *
+     * @throws DuplicateEntryException if {@code toAdd} already exists in the list.
      */
     @Override
     public void add(ReadOnlyEntry toAdd) throws DuplicateEntryException {

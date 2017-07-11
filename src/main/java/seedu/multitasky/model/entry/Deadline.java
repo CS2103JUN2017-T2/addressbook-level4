@@ -77,6 +77,16 @@ public class Deadline extends Entry {
                || this.isSameStateAs((ReadOnlyEntry) other);
     }
 
+    //@@author A0125586X
+    /**
+     * Compares this to another deadline for sorting by due(end) date.
+     * @return <0 if this deadline is sooner, 0 if they're the same, and >0 if this deadline is later
+     */
+    public int compareTo(ReadOnlyEntry other) throws NullPointerException, ClassCastException {
+        assert other instanceof Deadline : "Deadline::compareTo must receive Deadline object as argument";
+        return this.getEndDateAndTime().compareTo(other.getEndDateAndTime());
+    }
+
     // @@author A0126623L
     @Override
     public boolean isSameStateAs(ReadOnlyEntry other) {

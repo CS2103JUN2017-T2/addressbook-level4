@@ -15,10 +15,10 @@ public class DeadlineListPanelHandle extends EntryListPanelHandle {
         listViewId = "#deadlineListView";
     }
 
-    @Override
     /**
      * Gets an entry handle for a deadline entry in the list by index
      */
+    @Override
     public EntryCardHandle getEntryCardHandle(int index) {
         return getEntryCardHandle(new Deadline(getListView().getItems().get(index)));
     }
