@@ -80,6 +80,13 @@ public class EntryBuilder {
     }
 
     public Entry build() throws Exception {
+        if (endDateAndTime == null) {
+            entry = new FloatingTask(new Name(name), tags);
+        } else if (startDateAndTime == null) {
+            entry = new Deadline(new Name(name), endDateAndTime, tags);
+        } else {
+            entry = new Event(new Name(name), startDateAndTime, endDateAndTime, tags);
+        }
         return entry;
     }
 
