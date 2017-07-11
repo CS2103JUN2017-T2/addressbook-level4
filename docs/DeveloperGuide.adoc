@@ -177,7 +177,7 @@ link:{repoURL}/src/main/java/seedu/multitasky/logic/Logic.java[`Logic.java`]
 
 Given below is the Sequence Diagram for interactions within the `Logic` component for the `execute("delete /float 1")` API call.
 
-image::DeletePersonSdForLogic.png[width="800"]
+image::DeleteEntrySdForLogic.png[width="800"]
 _Figure 2.3.1 : Interactions Inside the Logic Component for the `delete /float 1` Command_
 
 //<-- @@author -->
