@@ -119,10 +119,10 @@ _Figure 2.1.2 : Class Diagram of the Logic Component_
 [discrete]
 ==== Events-Driven nature of the design
 
-The _Sequence Diagram_ below shows how the components interact for the scenario where the user issues the command `delete 1`.
+The _Sequence Diagram_ below shows how the components interact for the scenario where the user issues the command `delete /float 1`.
 
 image::SDforDeleteEntry.png[width="800"]
-_Figure 2.1.3a : Component interactions for `delete 1` command (part 1)_
+_Figure 2.1.3a : Component interactions for `delete /float 1` command (part 1)_
 
 [NOTE]
 Note how the `Model` simply raises a `EntryBookChangedEvent` when an Entry has been changed, instead of asking the `Storage` directly to save the updates to the hard disk.
@@ -130,7 +130,7 @@ Note how the `Model` simply raises a `EntryBookChangedEvent` when an Entry has b
 The diagram below shows how the `EventsCenter` reacts to that event, which eventually results in the updates being saved to the hard disk and the status bar of the UI being updated to reflect the 'Last Updated' time.
 
 image::SDforDeleteEntryEventHandling.png[width="800"]
-_Figure 2.1.3b : Component interactions for `delete 1` command (part 2)_
+_Figure 2.1.3b : Component interactions for `delete /float 1` command (part 2)_
 
 [NOTE]
 Note how the event is propagated through the `EventsCenter` to the `Storage` and `UI` without `Model` having to be coupled to either of them. This is an example of how this Event Driven approach helps us reduce direct coupling between components.
@@ -181,7 +181,6 @@ Given below is the Sequence Diagram for interactions within the `Logic` componen
 
 image::DeleteEntrySdForLogic1.png[width="800"]
 
-=======
 _Figure 2.3.1 : Interactions Inside the Logic Component for the `delete /float 1` Command_
 
 //<!-- @@author A0126623L -->
