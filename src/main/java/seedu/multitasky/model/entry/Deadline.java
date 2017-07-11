@@ -32,6 +32,7 @@ public class Deadline extends Entry {
         super(source.getName(), source.getTags());
 
         // Checks if source has an end time.
+        assert (source instanceof Deadline) : "Deadline construction failed.";
         requireAllNonNull(source.getEndDateAndTime());
         setEndDateAndTime(source.getEndDateAndTime());
     }
@@ -82,6 +83,7 @@ public class Deadline extends Entry {
      * Compares this to another deadline for sorting by due(end) date.
      * @return <0 if this deadline is sooner, 0 if they're the same, and >0 if this deadline is later
      */
+    @Override
     public int compareTo(ReadOnlyEntry other) throws NullPointerException, ClassCastException {
         assert other instanceof Deadline : "Deadline::compareTo must receive Deadline object as argument";
         return this.getEndDateAndTime().compareTo(other.getEndDateAndTime());
