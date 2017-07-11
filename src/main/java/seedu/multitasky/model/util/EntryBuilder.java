@@ -38,6 +38,7 @@ public class EntryBuilder {
     public EntryBuilder() throws IllegalValueException {
         Name defaultName = new Name(DEFAULT_NAME);
         tags = SampleDataUtil.getTagSet(DEFAULT_TAGS);
+        name = defaultName.toString();
         this.entry = new FloatingTask(defaultName, tags);
     }
 

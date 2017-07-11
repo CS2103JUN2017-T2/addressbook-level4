@@ -30,7 +30,7 @@ public class AddCommandTest {
     @Test
     public void constructor_nullEntry_throwsNullPointerException() throws Exception {
         thrown.expect(NullPointerException.class);
-        new AddCommand(null);
+        Command command = new AddCommand(null);
     }
 
     @Test
