@@ -50,4 +50,5 @@ public class DeleteByIndexCommand extends DeleteCommand {
         }
         return new CommandResult(String.format(MESSAGE_SUCCESS, entryToDelete));
     }
+
 }

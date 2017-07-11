@@ -45,7 +45,6 @@ public class DeleteCommandParser {
                                                        DeleteCommand.MESSAGE_USAGE));
             }
 
-
             try {
                 Prefix listIndicatorPrefix = ParserUtil.getDatePrefix(argMultimap, PREFIX_FLOATINGTASK,
                                                                       PREFIX_DEADLINE, PREFIX_EVENT);
@@ -84,7 +83,7 @@ public class DeleteCommandParser {
     private boolean hasIndexFlag(ArgumentMultimap argMultimap) {
         assert argMultimap != null;
         return ParserUtil.arePrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_DEADLINE,
-                                                PREFIX_EVENT);
+                                             PREFIX_EVENT);
     }
 
 }

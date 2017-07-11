@@ -34,7 +34,7 @@ public class AddCommandParser {
      */
     public AddCommand parse(String args) throws ParseException {
         argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_BY, PREFIX_AT, PREFIX_FROM,
-                                                                  PREFIX_TO, PREFIX_TAG);
+                                                 PREFIX_TO, PREFIX_TAG);
         Calendar startDate = null;
         Calendar endDate = null;
 
@@ -90,7 +90,7 @@ public class AddCommandParser {
                                                     null);
                 startDate = DateUtil.stringToCalendar(argMultimap.getValue(startDatePrefix).get(), endDate);
                 Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
-                ReadOnlyEntry entry = new Event(name, startDate, endDate , tagList);
+                ReadOnlyEntry entry = new Event(name, startDate, endDate, tagList);
 
                 return new AddCommand(entry);
 
@@ -135,7 +135,7 @@ public class AddCommandParser {
      * MUST have /by ONLY
      */
     private boolean isDeadline() {
-        assert argMultimap!= null;
+        assert argMultimap != null;
         return ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_BY)
                && (!ParserUtil.arePrefixesPresent(argMultimap, PREFIX_AT, PREFIX_FROM, PREFIX_TO));
     }
