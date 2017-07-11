@@ -41,6 +41,7 @@ public interface Storage extends EntryBookStorage, UserPrefsStorage {
      * Raises {@link DataSavingExceptionEvent} if there was an error during saving.
      *
      * @throws DataConversionException
+     * @throws Exception
      */
-    void handleEntryBookToUndoEvent(EntryBookToUndoEvent defg) throws DataConversionException;
+    void handleEntryBookToUndoEvent(EntryBookToUndoEvent defg) throws DataConversionException, Exception;
 }

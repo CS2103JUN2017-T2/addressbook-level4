@@ -14,6 +14,7 @@ import seedu.multitasky.commons.core.Config;
 import seedu.multitasky.commons.core.EventsCenter;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.core.Version;
+import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
 import seedu.multitasky.commons.events.ui.ExitAppRequestEvent;
 import seedu.multitasky.commons.exceptions.DataConversionException;
 import seedu.multitasky.commons.util.ConfigUtil;
@@ -89,6 +90,7 @@ public class MainApp extends Application {
                 initialData = SampleDataUtil.getSampleEntryBook();
             } else {
                 initialData = entryBookOptional.get();
+                storage.handleEntryBookChangedEvent(new EntryBookChangedEvent(initialData));
             }
         } catch (DataConversionException e) {
             logger.warning("Data file not in the correct format. Will be starting with an empty EntryBook");
