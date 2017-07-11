@@ -4,7 +4,6 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 
 import java.util.Calendar;
 import java.util.HashSet;

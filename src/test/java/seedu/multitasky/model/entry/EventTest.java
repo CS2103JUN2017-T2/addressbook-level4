@@ -7,15 +7,11 @@ import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import seedu.multitasky.model.util.TagSetBuilder;
 
 import org.junit.Test;
 
-import seedu.multitasky.commons.exceptions.IllegalValueException;
-import seedu.multitasky.model.tag.Tag;
+import seedu.multitasky.model.util.TagSetBuilder;
 
 //@@author A0126623L
 /**
@@ -50,18 +46,18 @@ public class EventTest {
 
         try {
             return new Event[] {
-                    new Event(new Name("SampleName1"), calendar1, calendar2,
-                              TagSetBuilder.generateTagSet("tag1")),
-                    new Event(new Name("SampleName1"), calendar1, calendar2,
-                              TagSetBuilder.generateTagSet("tag1")),
-                    new Event(new Name("SampleName2"), calendar1, calendar2,
-                              TagSetBuilder.generateTagSet("tag1")),
-                    new Event(new Name("SampleName1"), calendar2, calendar3,
-                              TagSetBuilder.generateTagSet("tag1")),
-                    new Event(new Name("SampleName1"), calendar1, calendar3,
-                              TagSetBuilder.generateTagSet("tag1")),
-                    new Event(new Name("SampleName1"), calendar1, calendar2,
-                              TagSetBuilder.generateTagSet("tag2"))
+                new Event(new Name("SampleName1"), calendar1, calendar2,
+                          TagSetBuilder.generateTagSet("tag1")),
+                new Event(new Name("SampleName1"), calendar1, calendar2,
+                          TagSetBuilder.generateTagSet("tag1")),
+                new Event(new Name("SampleName2"), calendar1, calendar2,
+                          TagSetBuilder.generateTagSet("tag1")),
+                new Event(new Name("SampleName1"), calendar2, calendar3,
+                          TagSetBuilder.generateTagSet("tag1")),
+                new Event(new Name("SampleName1"), calendar1, calendar3,
+                          TagSetBuilder.generateTagSet("tag1")),
+                new Event(new Name("SampleName1"), calendar1, calendar2,
+                          TagSetBuilder.generateTagSet("tag2"))
             };
         } catch (Exception e) {
             fail("Event array initialisation failed.");

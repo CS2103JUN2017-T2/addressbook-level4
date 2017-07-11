@@ -3,7 +3,6 @@ package seedu.multitasky.model.entry;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 
 import java.util.ArrayList;
 
@@ -11,8 +10,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import javafx.collections.ObservableList;
-import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
+import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 
 //@@author A0126623L
 /**
