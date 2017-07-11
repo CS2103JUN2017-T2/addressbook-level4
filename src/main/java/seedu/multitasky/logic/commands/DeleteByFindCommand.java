@@ -1,5 +1,7 @@
 package seedu.multitasky.logic.commands;
 
+import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_DEADLINE;
+import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_EVENT;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
 
 import java.util.ArrayList;
@@ -19,8 +21,15 @@ public class DeleteByFindCommand extends DeleteCommand {
                                                     + "with different keywords.";
 
     public static final String MESSAGE_MULTIPLE_ENTRIES = "More than one entry found! \n"
-                                                          + "Use " + COMMAND_WORD + " " + PREFIX_FLOATINGTASK
+                                                          + "Use " + COMMAND_WORD + " [ "
+                                                          + String.join(" , ", PREFIX_EVENT.toString(),
+                                                                        PREFIX_DEADLINE.toString(),
+                                                                        PREFIX_FLOATINGTASK.toString())
+                                                          + " ]"
                                                           + " INDEX to specify which entry to delete.";
+
+    // TODO find out how to bring this message into the ui window
+    public static final String MESSAGE_AFTER_KEYWORD_DELETE = "\nOne entry found and deleted! Listing all entries now.";
 
     private Set<String> keywords;
 
@@ -49,13 +58,14 @@ public class DeleteByFindCommand extends DeleteCommand {
             } catch (EntryNotFoundException e) {
                 assert false : "The target entry cannot be missing";
             }
+            model.updateAllFilteredListToShowAll();
             return new CommandResult(String.format(MESSAGE_SUCCESS, entryToDelete));
         } else {
             if (tempAllList.size() >= 2) {
-                return new CommandResult(String.format(MESSAGE_MULTIPLE_ENTRIES));
+                return new CommandResult(MESSAGE_MULTIPLE_ENTRIES);
             } else {
                 assert (tempAllList.size() == 0);
-                return new CommandResult(String.format(MESSAGE_NO_ENTRIES));
+                return new CommandResult(MESSAGE_NO_ENTRIES);
             }
         }
     }
