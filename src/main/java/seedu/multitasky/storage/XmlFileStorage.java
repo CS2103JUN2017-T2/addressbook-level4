@@ -28,7 +28,7 @@ public class XmlFileStorage {
      * Returns entry book in the file or an empty entry book
      */
     public static XmlSerializableEntryBook loadDataFromSaveFile(File file) throws DataConversionException,
-                                                                            FileNotFoundException {
+            FileNotFoundException {
         try {
             return XmlUtil.getDataFromFile(file, XmlSerializableEntryBook.class);
         } catch (JAXBException e) {

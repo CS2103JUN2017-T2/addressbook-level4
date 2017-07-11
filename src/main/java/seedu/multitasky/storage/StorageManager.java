@@ -169,7 +169,7 @@ public class StorageManager extends ComponentManager implements Storage {
     /**
      * Saves data from the previous snapshot to the current entrybook and passes back
      * the event data to ModelManager to reset and update the display.
-     * 
+     *
      * @throws Exception
      */
     @Override
@@ -184,5 +184,4 @@ public class StorageManager extends ComponentManager implements Storage {
             raise(new DataSavingExceptionEvent(e));
         }
     }
-
 }
