@@ -34,7 +34,7 @@ public class XmlAdaptedEntry {
     @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
 
-    public DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm");
+    private DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm");
 
     /**
      * Constructs an XmlAdaptedEntry. This is the no-arg constructor that is
