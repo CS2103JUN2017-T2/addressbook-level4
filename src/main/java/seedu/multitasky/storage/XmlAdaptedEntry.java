@@ -33,7 +33,7 @@ public class XmlAdaptedEntry {
     private String endDateAndTime;
     @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
-
+    /** Formatter to parse date into a human-editable string to store in the XML file */
     DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm");
 
     /**
@@ -72,7 +72,7 @@ public class XmlAdaptedEntry {
 
     /**
      * This converts a String to a Calendar object to be passed back to Model.
-     * 
+     *
      * @throws Exception
      */
     public Calendar convertStringToDate(String given) throws Exception {
