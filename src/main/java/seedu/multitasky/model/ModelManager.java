@@ -68,7 +68,9 @@ public class ModelManager extends ComponentManager implements Model {
 
     /** Raises an event when undo is entered */
     private void indicateUndoAction() {
-        raise(new EntryBookToUndoEvent(_entryBook));
+        EntryBookToUndoEvent undoEvent = new EntryBookToUndoEvent(_entryBook);
+        raise(undoEvent);
+        _entryBook.resetData(undoEvent.getData());
     }
 
     @Override

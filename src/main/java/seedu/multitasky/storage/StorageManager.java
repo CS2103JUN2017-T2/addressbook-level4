@@ -14,6 +14,7 @@ import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
 import seedu.multitasky.commons.events.model.EntryBookToUndoEvent;
 import seedu.multitasky.commons.events.storage.DataSavingExceptionEvent;
 import seedu.multitasky.commons.exceptions.DataConversionException;
+import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.ReadOnlyEntryBook;
 import seedu.multitasky.model.UserPrefs;
 
@@ -101,9 +102,9 @@ public class StorageManager extends ComponentManager implements Storage {
         return entryBookStorage.readEntryBook(getPreviousEntryBookSnapshotPath());
     }
 
-    public ReadOnlyEntryBook loadUndoData() throws FileNotFoundException, DataConversionException {
+    public EntryBook loadUndoData() throws FileNotFoundException, DataConversionException {
         ReadOnlyEntryBook undoData = XmlFileStorage.loadDataFromSaveFile(new File(getPreviousEntryBookSnapshotPath()));
-        return undoData;
+        return new EntryBook(undoData);
     }
 
     // @@author A0132788U
@@ -141,6 +142,7 @@ public class StorageManager extends ComponentManager implements Storage {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "Load previous snapshot"));
         try {
             saveEntryBook(loadUndoData());
+            event.setData(loadUndoData());
         } catch (IOException e) {
             raise(new DataSavingExceptionEvent(e));
         }

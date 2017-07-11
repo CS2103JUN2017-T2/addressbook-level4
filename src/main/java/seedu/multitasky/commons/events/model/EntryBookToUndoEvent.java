@@ -2,12 +2,19 @@ package seedu.multitasky.commons.events.model;
 
 import seedu.multitasky.commons.events.BaseEvent;
 import seedu.multitasky.model.EntryBook;
-import seedu.multitasky.model.ReadOnlyEntryBook;
 
 /** Indicates the EntryBook in the model has changed */
 public class EntryBookToUndoEvent extends BaseEvent {
 
-    public ReadOnlyEntryBook data;
+    public EntryBook data;
+
+    public EntryBook getData() {
+        return data;
+    }
+
+    public void setData(EntryBook data) {
+        this.data = data;
+    }
 
     public EntryBookToUndoEvent(EntryBook data) {
         this.data = data;
