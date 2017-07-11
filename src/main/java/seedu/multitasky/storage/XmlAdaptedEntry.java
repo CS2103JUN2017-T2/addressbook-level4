@@ -1,8 +1,11 @@
 package seedu.multitasky.storage;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,7 +32,7 @@ public class XmlAdaptedEntry {
     @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
 
-    private SimpleDateFormat formatter = new SimpleDateFormat("d/M/y H:mm");
+    DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm");
 
     /**
      * Constructs an XmlAdaptedEntry. This is the no-arg constructor that is
@@ -43,18 +46,35 @@ public class XmlAdaptedEntry {
      * this will not affect the created XmlAdaptedEntry
      */
     public XmlAdaptedEntry(ReadOnlyEntry source) {
-        formatter.setLenient(false);
         name = source.getName().fullName;
+
         if (source.getStartDateAndTime() != null) {
-            startDateAndTime = formatter.format(source.getStartDateAndTime().getTime());
+            startDateAndTime = convertDateToString(source.getStartDateAndTime());
         }
-        if (source.getStartDateAndTime() != null) {
-            endDateAndTime = formatter.format(source.getEndDateAndTime().getTime());
+        if (source.getEndDateAndTime() != null) {
+            endDateAndTime = convertDateToString(source.getEndDateAndTime());
         }
         tagged = new ArrayList<>();
         for (Tag tag : source.getTags()) {
             tagged.add(new XmlAdaptedTag(tag));
         }
+    }
+
+    public String convertDateToString(Calendar given) {
+        String dateToString = df.format(given.getTime());
+        return dateToString;
+    }
+
+    public Calendar convertStringToDate(String given) throws NullPointerException {
+        Calendar setDate = null;
+        Date toConvert = new Date();
+        try {
+            toConvert = df.parse(given);
+        } catch (ParseException e) {
+            System.out.println("Invalid date!");
+        }
+        setDate.setTime(toConvert);
+        return setDate;
     }
 
     /**
@@ -69,17 +89,28 @@ public class XmlAdaptedEntry {
         for (XmlAdaptedTag tag : tagged) {
             personTags.add(tag.toModelType());
         }
-        Calendar startDateAndTimeToUse = null;
-        Calendar endDateAndTimeToUse = null;
-        if (this.startDateAndTime != null) {
-            startDateAndTimeToUse.setTime(formatter.parse(this.startDateAndTime));
+        Calendar startDateAndTimeToUse = Calendar.getInstance();
+        Calendar endDateAndTimeToUse = Calendar.getInstance();
+
+        if (startDateAndTime != null) {
+            try {
+                startDateAndTimeToUse = convertStringToDate(startDateAndTime);
+            } catch (Exception e) {
+                startDateAndTimeToUse = Calendar.getInstance();
+            }
         }
-        if (this.endDateAndTime != null) {
-            endDateAndTimeToUse.setTime(formatter.parse(this.endDateAndTime));
+
+        if (endDateAndTime != null) {
+            try {
+                endDateAndTimeToUse = convertStringToDate(endDateAndTime);
+            } catch (Exception e) {
+                endDateAndTimeToUse = Calendar.getInstance();
+            }
         }
+
         final Set<Tag> tags = new HashSet<>(personTags);
-        Entry entry = new EntryBuilder().withName(this.name).withTags(tags).build();
-        System.out.println("This is the entry" + entry.toString());
+        Entry entry = new EntryBuilder().withName(this.name).withStartDateAndTime(startDateAndTimeToUse)
+                .withEndDateAndTime(endDateAndTimeToUse).withTags(tags).build();
         return entry;
     }
 }

@@ -87,7 +87,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws DuplicateEntryException,
-                                                                             EntryNotFoundException {
+            EntryNotFoundException {
         requireAllNonNull(target, editedEntry);
 
         _entryBook.updateEntry(target, editedEntry);
@@ -96,7 +96,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void undoPreviousAction() {
-        indicateEntryBookChanged();
+        indicateUndoAction();
     }
 
     // =========== Filtered Entry List Accessors ===========
