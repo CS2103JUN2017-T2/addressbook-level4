@@ -13,6 +13,7 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlElement;
 
 import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.tag.Tag;
 import seedu.multitasky.model.util.EntryBuilder;
@@ -60,21 +61,36 @@ public class XmlAdaptedEntry {
         }
     }
 
+    /**
+     * This converts the Calendar object into a string type to be stored in XML file in a human editable format.
+     */
     public String convertDateToString(Calendar given) {
         String dateToString = df.format(given.getTime());
         return dateToString;
     }
 
+    /**
+     * This converts a String to a Calendar object to be passed back to Model.
+     */
     public Calendar convertStringToDate(String given) throws NullPointerException {
         Calendar setDate = null;
         Date toConvert = new Date();
         try {
             toConvert = df.parse(given);
+            setDate = setTheTime(toConvert);
         } catch (ParseException e) {
-            System.out.println("Invalid date!");
         }
         setDate.setTime(toConvert);
         return setDate;
+    }
+
+    /**
+     * Sub-method to convert Date to String.
+     */
+    public Calendar setTheTime(Date given) {
+        Calendar toBeSet = Calendar.getInstance();
+        toBeSet.setTime(given);
+        return toBeSet;
     }
 
     /**
@@ -85,18 +101,18 @@ public class XmlAdaptedEntry {
      */
 
     public Entry toModelType() throws Exception {
+        Name newName = new Name(this.name);
         final List<Tag> personTags = new ArrayList<>();
         for (XmlAdaptedTag tag : tagged) {
             personTags.add(tag.toModelType());
         }
-        Calendar startDateAndTimeToUse = Calendar.getInstance();
-        Calendar endDateAndTimeToUse = Calendar.getInstance();
+        Calendar startDateAndTimeToUse = null;
+        Calendar endDateAndTimeToUse = null;
 
         if (startDateAndTime != null) {
             try {
                 startDateAndTimeToUse = convertStringToDate(startDateAndTime);
             } catch (Exception e) {
-                startDateAndTimeToUse = Calendar.getInstance();
             }
         }
 
@@ -104,13 +120,13 @@ public class XmlAdaptedEntry {
             try {
                 endDateAndTimeToUse = convertStringToDate(endDateAndTime);
             } catch (Exception e) {
-                endDateAndTimeToUse = Calendar.getInstance();
             }
         }
 
         final Set<Tag> tags = new HashSet<>(personTags);
-        Entry entry = new EntryBuilder().withName(this.name).withStartDateAndTime(startDateAndTimeToUse)
-                .withEndDateAndTime(endDateAndTimeToUse).withTags(tags).build();
+        EntryBuilder buildObject = new EntryBuilder();
+        Entry entry = buildObject.build(newName, startDateAndTimeToUse, endDateAndTimeToUse,
+                tags.toArray(new String[0]));
         return entry;
     }
 }
