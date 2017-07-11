@@ -102,4 +102,21 @@ public class TypicalEntries {
         loadEntryBookWithSampleData(entryBook);
         return entryBook;
     }
+
+    //TODO remove once kevin figures out why are there nullpointer exceptions
+    public EntryBook getFloatingOnlyEntryBook() {
+        EntryBook entryBook = new EntryBook();
+        loadEntryBookWithFloatingTaskData(entryBook);
+        return entryBook;
+    }
+    public static void loadEntryBookWithFloatingTaskData(EntryBook entryBook) {
+        try {
+            for (Entry entry: new TypicalEntries().getTypicalFloatingTasks()) {
+                entryBook.addEntry(new FloatingTask(entry));
+            }
+        } catch (Exception e) {
+            assert false : "Sample entries cannot have errors";
+        }
+    }
+
 }

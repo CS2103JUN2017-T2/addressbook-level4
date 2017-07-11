@@ -26,6 +26,7 @@ public class CommandTestUtil {
                                             Model expectedModel)
             throws CommandException, DuplicateEntryException {
         CommandResult result = command.execute();
+
         assertEquals(expectedMessage, result.feedbackToUser);
         assertEquals(expectedModel, actualModel);
     }

@@ -1,7 +1,7 @@
 package seedu.multitasky.model.util;
 
-import java.util.Objects;
 import java.util.Calendar;
+import java.util.Objects;
 import java.util.Set;
 
 import seedu.multitasky.commons.exceptions.IllegalValueException;
@@ -32,7 +32,7 @@ public class EntryBuilder {
     public EntryBuilder() throws IllegalValueException {
         Name defaultName = new Name(DEFAULT_NAME);
         tags = SampleDataUtil.getTagSet(DEFAULT_TAGS);
-        name = defaultName.toString();
+        name = defaultName.fullName;
         this.entry = new FloatingTask(defaultName, tags);
     }
 
@@ -81,6 +81,13 @@ public class EntryBuilder {
     }
 
     public Entry build() throws Exception {
+        if (endDateAndTime == null) {
+            entry = new FloatingTask(new Name(name), tags);
+        } else if (startDateAndTime == null) {
+            entry = new Deadline(new Name(name), endDateAndTime, tags);
+        } else {
+            entry = new Event(new Name(name), startDateAndTime, endDateAndTime, tags);
+        }
         return entry;
     }
 

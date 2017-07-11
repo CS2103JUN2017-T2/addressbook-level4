@@ -23,7 +23,8 @@ public class AddCommandIntegrationTest {
 
     @Before
     public void setUp() {
-        model = new ModelManager(new TypicalEntries().getTypicalEntryBook(), new UserPrefs());
+        //TODO fix typical entries
+        model = new ModelManager(new TypicalEntries().getFloatingOnlyEntryBook(), new UserPrefs());
     }
 
     @Test
