@@ -161,7 +161,7 @@ The `UI` component
 
 === Logic component
 
-Author: Bernard Choo
+Author: Kevin Lam
 
 image::LogicClassDiagram.png[width="800"]
 _Figure 2.3.1 : Structure of the Logic Component_
@@ -181,7 +181,7 @@ _Figure 2.3.1 : Interactions Inside the Logic Component for the `delete 1` Comma
 
 === Model component
 
-Author: Cynthia Dharman
+Author: Chua Ping Chan
 
 image::ModelClassDiagram.png[width="800"]
 _Figure 2.4.1 : Structure of the Model Component_
@@ -197,7 +197,7 @@ The `Model`,
 
 === Storage component
 
-Author: Darius Foong
+Author: Akankshita Dash
 
 image::StorageClassDiagram.png[width="800"]
 _Figure 2.5.1 : Structure of the Storage Component_
