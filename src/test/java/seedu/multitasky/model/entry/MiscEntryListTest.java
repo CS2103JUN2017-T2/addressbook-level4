@@ -22,19 +22,19 @@ import seedu.multitasky.model.tag.Tag;
  */
 public class MiscEntryListTest {
 
-    static Calendar calendar1;
-    static Calendar calendar2;
-    static Calendar calendar3;
+    private static Calendar calendar1;
+    private static Calendar calendar2;
+    private static Calendar calendar3;
 
-    static Set<Tag> tagSet1;
-    static Set<Tag> tagSet2;
+    private static Set<Tag> tagSet1;
+    private static Set<Tag> tagSet2;
 
-    static Name name1;
-    static Name name2;
+    private static Name name1;
+    private static Name name2;
 
-    static Event event1;
-    static Deadline deadline1;
-    static FloatingTask floatingTask1;
+    private static Event event1;
+    private static Deadline deadline1;
+    private static FloatingTask floatingTask1;
 
     // @@author A0126623L
     @BeforeClass

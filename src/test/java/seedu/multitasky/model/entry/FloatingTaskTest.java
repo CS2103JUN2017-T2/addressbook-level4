@@ -15,16 +15,16 @@ import seedu.multitasky.model.tag.Tag;
 
 public class FloatingTaskTest {
 
-    static Set<Tag> tagSet1;
-    static Set<Tag> tagSet2;
+    private static Set<Tag> tagSet1;
+    private static Set<Tag> tagSet2;
 
-    static Name name1;
-    static Name name2;
+    private static Name name1;
+    private static Name name2;
 
-    static FloatingTask floatingTask1;
-    static FloatingTask floatingTask2;
-    static FloatingTask floatingTask3;
-    static FloatingTask floatingTask4;
+    private static FloatingTask floatingTask1;
+    private static FloatingTask floatingTask2;
+    private static FloatingTask floatingTask3;
+    private static FloatingTask floatingTask4;
 
     // @@author A0126623L
     @BeforeClass
