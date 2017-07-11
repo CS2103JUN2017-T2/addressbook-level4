@@ -6,15 +6,10 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import seedu.multitasky.commons.exceptions.IllegalValueException;
-import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
-import seedu.multitasky.model.tag.Tag;
 import seedu.multitasky.model.util.EntryBuilder;
 import seedu.multitasky.model.util.TagSetBuilder;
 
@@ -22,6 +17,7 @@ import seedu.multitasky.model.util.TagSetBuilder;
 public class DeadlineTest {
 
     public static final Deadline[] SAMPLE_DEADLINES_ARRAY_DATA = getSampleDeadlineArrayData();
+    public Deadline deadline1, deadline2, deadline3, deadline4, deadline5;
 
     // @@author A0126623L
     /**
@@ -41,11 +37,11 @@ public class DeadlineTest {
 
         try {
             return new Deadline[] {
-                    new Deadline(new Name("SampleName1"), calendar1, TagSetBuilder.generateTagSet("tag1")),
-                    new Deadline(new Name("SampleName1"), calendar1, TagSetBuilder.generateTagSet("tag1")),
-                    new Deadline(new Name("SampleName2"), calendar1, TagSetBuilder.generateTagSet("tag1")),
-                    new Deadline(new Name("SampleName1"), calendar2, TagSetBuilder.generateTagSet("tag1")),
-                    new Deadline(new Name("SampleName1"), calendar1, TagSetBuilder.generateTagSet("tag2"))
+                new Deadline(new Name("SampleName1"), calendar1, TagSetBuilder.generateTagSet("tag1")),
+                new Deadline(new Name("SampleName1"), calendar1, TagSetBuilder.generateTagSet("tag1")),
+                new Deadline(new Name("SampleName2"), calendar1, TagSetBuilder.generateTagSet("tag1")),
+                new Deadline(new Name("SampleName1"), calendar2, TagSetBuilder.generateTagSet("tag1")),
+                new Deadline(new Name("SampleName1"), calendar1, TagSetBuilder.generateTagSet("tag2"))
             };
         } catch (Exception e) {
             fail("Deadline array initialisation failed.");
@@ -53,8 +49,6 @@ public class DeadlineTest {
         }
     }
     // @@author
-
-    Deadline deadline1, deadline2, deadline3, deadline4, deadline5;
 
     // @@author A0126623L
     @Before
