@@ -157,6 +157,7 @@ public class EntryBook implements ReadOnlyEntryBook {
     }
     // @@author
 
+    // @@author A0126623L
     /**
      * Add a given ReadOnlyEntry to one of either active, deadline or floating task list.
      */
@@ -170,6 +171,7 @@ public class EntryBook implements ReadOnlyEntryBook {
             _floatingTaskList.add(newEntry);
         }
     }
+    // @@author
 
     // @@author A0126623L
     /**
