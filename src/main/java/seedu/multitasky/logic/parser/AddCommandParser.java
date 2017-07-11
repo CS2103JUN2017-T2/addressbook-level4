@@ -33,8 +33,13 @@ public class AddCommandParser {
      * throws ParseException if the user input does not conform the expected format.
      */
     public AddCommand parse(String args) throws ParseException {
+<<<<<<< Updated upstream
         argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_BY, PREFIX_AT, PREFIX_FROM,
                                                  PREFIX_TO, PREFIX_TAG);
+=======
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_BY, PREFIX_AT, PREFIX_FROM,
+                                                                  PREFIX_TO, PREFIX_TAG);
+>>>>>>> Stashed changes
         Calendar startDate = null;
         Calendar endDate = null;
 
@@ -63,7 +68,15 @@ public class AddCommandParser {
                 throw new ParseException(ive.getMessage(), ive);
             }
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
         } else if (isDeadline()) {
+=======
+        } else if (isDeadline(argMultimap)) {
+>>>>>>> Stashed changes
+=======
+        } else if (isDeadline(argMultimap)) {
+>>>>>>> Stashed changes
             try {
                 Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
 
@@ -71,6 +84,7 @@ public class AddCommandParser {
                 Prefix datePrefix = PREFIX_BY;
                 endDate = DateUtil.stringToCalendar(argMultimap.getValue(datePrefix).get(),
                                                     null);
+<<<<<<< Updated upstream
                 Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
                 ReadOnlyEntry entry = new Deadline(name, endDate, tagList);
 
@@ -80,9 +94,17 @@ public class AddCommandParser {
                 throw new ParseException(ive.getMessage(), ive);
             }
 
+<<<<<<< Updated upstream
         } else if (isEvent()) {
             try {
                 Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
+                Prefix startDatePrefix = ParserUtil.getDatePrefix(argMultimap, PREFIX_FROM, PREFIX_AT);
+                Prefix endDatePrefix = ParserUtil.getDatePrefix(argMultimap, PREFIX_TO, PREFIX_BY);
+=======
+        } else if (isEvent(argMultimap)) {
+            try {
+                Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
+                //TODO RENAME MMETHOD LATER
                 Prefix startDatePrefix = ParserUtil.getDatePrefix(argMultimap, PREFIX_FROM, PREFIX_AT);
                 Prefix endDatePrefix = ParserUtil.getDatePrefix(argMultimap, PREFIX_TO, PREFIX_BY);
 
@@ -90,7 +112,44 @@ public class AddCommandParser {
                                                     null);
                 startDate = DateUtil.stringToCalendar(argMultimap.getValue(startDatePrefix).get(), endDate);
                 Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+                ReadOnlyEntry entry = new Event(name, startDate, endDate , tagList);
+=======
+                Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+                ReadOnlyEntry entry = new Deadline(name, endDate, tagList);
+>>>>>>> Stashed changes
+
+                return new AddCommand(entry);
+
+            } catch (IllegalValueException ive) {
+                throw new ParseException(ive.getMessage(), ive);
+            }
+>>>>>>> Stashed changes
+
+<<<<<<< Updated upstream
+=======
+        } else if (isEvent(argMultimap)) {
+            try {
+                Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
+                //TODO RENAME MMETHOD LATER
+                Prefix startDatePrefix = ParserUtil.getDatePrefix(argMultimap, PREFIX_FROM, PREFIX_AT);
+                Prefix endDatePrefix = ParserUtil.getDatePrefix(argMultimap, PREFIX_TO, PREFIX_BY);
+
+>>>>>>> Stashed changes
+                endDate = DateUtil.stringToCalendar(argMultimap.getValue(endDatePrefix).get(),
+                                                    null);
+                startDate = DateUtil.stringToCalendar(argMultimap.getValue(startDatePrefix).get(), endDate);
+                Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+<<<<<<< Updated upstream
                 ReadOnlyEntry entry = new Event(name, startDate, endDate, tagList);
+=======
+                ReadOnlyEntry entry = new Event(name, startDate, endDate , tagList);
+
+                return new AddCommand(entry);
+
+            } catch (IllegalValueException ive) {
+                throw new ParseException(ive.getMessage(), ive);
+            }
+>>>>>>> Stashed changes
 
                 return new AddCommand(entry);
 
@@ -112,7 +171,15 @@ public class AddCommandParser {
                || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_TO, PREFIX_BY);
     }
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
     /**
+=======
+=======
+>>>>>>> Stashed changes
+    //TODO to improve by giving ArgumentMultimap the method instead, use contains()?
+    /*
+>>>>>>> Stashed changes
      * Returns true if flags present in argMultimap indicate to add a floating task entry.
      */
     private boolean isFloatingTask() {
@@ -124,8 +191,15 @@ public class AddCommandParser {
      * Returns true if flags present in argMultimap indicate to add an event entry.
      * MUST have ONE of /from or /at AND ONE of /by or /to, but should not have both tgt.
      */
+<<<<<<< Updated upstream
     private boolean isEvent() {
         assert argMultimap != null;
+=======
+    private boolean isEvent(ArgumentMultimap argMultimap) {
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
         return ParserUtil.arePrefixesPresent(argMultimap, PREFIX_FROM, PREFIX_AT)
                && ParserUtil.arePrefixesPresent(argMultimap, PREFIX_BY, PREFIX_TO);
     }
