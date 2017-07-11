@@ -214,6 +214,7 @@ The `Storage` component,
 * saves snapshots after every data mutation.
 * can save the Entry Book data in xml format and read it back using EntryBuilder from Model.
 //<!-- @@author -->
+
 === Common classes
 
 Classes used by multiple components are in the `seedu.multitasky.commons` package.
