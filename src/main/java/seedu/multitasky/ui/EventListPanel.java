@@ -9,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
-import seedu.multitasky.model.entry.Event;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 
 //@@author A0125586X
@@ -43,7 +42,6 @@ public class EventListPanel extends UiPart<Region> {
 
         @Override
         protected void updateItem(ReadOnlyEntry entry, boolean empty) {
-            assert entry instanceof Event : "Entry to display on EvenListPanel must be Event";
             super.updateItem(entry, empty);
 
             if (empty || entry == null) {

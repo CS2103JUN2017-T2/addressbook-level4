@@ -19,12 +19,6 @@ import seedu.multitasky.model.tag.Tag;
  */
 public class EntryBuilder {
 
-    public class IncorrectEntryArgumentsException extends Exception {
-        public IncorrectEntryArgumentsException(String message) {
-            super(message);
-        }
-    }
-
     public static final String DEFAULT_NAME = "defaultName";
     public static final String DEFAULT_TAGS = "defaultTag";
 
@@ -64,11 +58,13 @@ public class EntryBuilder {
     }
 
     public EntryBuilder withTags(String... tags) throws IllegalValueException {
+        this.tags = SampleDataUtil.getTagSet(tags);
         this.entry.setTags(SampleDataUtil.getTagSet(tags));
         return this;
     }
 
     public EntryBuilder withTags(Set<Tag> tags) throws IllegalValueException {
+        this.tags = tags;
         this.entry.setTags(tags);
         return this;
     }
