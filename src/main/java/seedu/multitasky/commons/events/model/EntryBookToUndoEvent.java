@@ -7,17 +7,17 @@ import seedu.multitasky.model.EntryBook;
 /** Indicates the EntryBook in the model has changed */
 public class EntryBookToUndoEvent extends BaseEvent {
 
-    public EntryBook data;
+    private EntryBook data;
+
+    public EntryBookToUndoEvent(EntryBook data) {
+        this.data = data;
+    }
 
     public EntryBook getData() {
         return data;
     }
 
     public void setData(EntryBook data) {
-        this.data = data;
-    }
-
-    public EntryBookToUndoEvent(EntryBook data) {
         this.data = data;
     }
 

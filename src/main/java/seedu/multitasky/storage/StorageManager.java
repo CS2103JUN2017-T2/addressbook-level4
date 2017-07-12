@@ -79,7 +79,6 @@ public class StorageManager extends ComponentManager implements Storage {
      */
     public static String getPreviousEntryBookSnapshotPath() {
         UserPrefs.decrementIndexByOne();
-        System.out.print(UserPrefs.getIndex());
         return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
     }
 
