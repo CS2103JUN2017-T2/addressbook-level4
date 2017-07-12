@@ -103,6 +103,7 @@ public class EventTest {
     }
 
     // @@author A0126623L
+    @Ignore
     @Test
     public void toStringTest() {
         assertEquals("Event formatting is wrong",
@@ -111,6 +112,7 @@ public class EventTest {
     }
 
     // @@author A0126623L
+    @Ignore
     @Test
     public void equalsTest() {
         // Equal
