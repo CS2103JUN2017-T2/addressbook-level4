@@ -56,11 +56,11 @@ public class TypicalEntries {
 
             // Floating tasks
             cook = new EntryBuilder().withName("Learn to cook").withTags("goals").build();
-            programming = new EntryBuilder().withName("Learn programming").withTags("lessons", "computer")
-                                            .build();
+            programming = new EntryBuilder().withName("Learn programming")
+                          .withTags("lessons", "computer").build();
             hire = new EntryBuilder().withName("Hire an assistant").withTags("help").build();
-            spectacles = new EntryBuilder().withName("Make new spectacles").withTags("health", "eyesight")
-                                           .build();
+            spectacles = new EntryBuilder().withName("Make new spectacles")
+                         .withTags("health", "eyesight").build();
             clean = new EntryBuilder().withName("Clean up room").withTags("never").build();
             sell = new EntryBuilder().withName("Sell old things").withTags("sale", "clutter").build();
 
