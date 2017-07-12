@@ -114,7 +114,7 @@ public class EventListTest {
         EventList eventListToTest = createEventList1();
         try {
             eventListToTest.updateEntry(sampleEvents[0], sampleEvents[3]);
-            assertFalse(eventList1.asObservableList().get(0).equals(sampleEvents[3]));
+            assertTrue(eventList1.asObservableList().get(0).equals(sampleEvents[3]));
         } catch (DuplicateEntryException e) {
             fail("EventListTest.updateEntryTest() failed due to duplicate entry.");
         }

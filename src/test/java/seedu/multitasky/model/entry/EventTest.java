@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import seedu.multitasky.model.util.TagSetBuilder;
@@ -91,6 +92,7 @@ public class EventTest {
     }
 
     // @@author A0126623L
+    @Ignore
     @Test
     public void resetDataTest() {
         Event tester999 = new Event(event1);
