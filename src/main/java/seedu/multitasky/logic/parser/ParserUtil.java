@@ -2,6 +2,7 @@ package seedu.multitasky.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -44,6 +45,14 @@ public class ParserUtil {
     public static Optional<Name> parseName(Optional<String> name) throws IllegalValueException {
         requireNonNull(name);
         return name.isPresent() ? Optional.of(new Name(name.get())) : Optional.empty();
+    }
+
+    /**
+     * Parses a {@code Optional<String> name} into an {@code Optional<Calendar>} if {@code name} is present.
+     */
+    public static Optional<Calendar> parseDate(Optional<String> inputArgs) throws IllegalValueException {
+        requireNonNull(inputArgs);
+        return inputArgs.isPresent() ? Optional.of(DateUtil.stringToCalendar(inputArgs.get(), null)) : Optional.empty();
     }
 
     /**

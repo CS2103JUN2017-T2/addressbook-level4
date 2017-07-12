@@ -2,9 +2,15 @@ package seedu.multitasky.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.multitasky.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_AT;
+import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_BY;
+import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_DEADLINE;
+import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_EVENT;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
+import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FROM;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_TO;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -15,6 +21,7 @@ import java.util.Set;
 
 import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.commons.exceptions.IllegalValueException;
+import seedu.multitasky.logic.commands.DeleteCommand;
 import seedu.multitasky.logic.commands.EditByFindCommand;
 import seedu.multitasky.logic.commands.EditByIndexCommand;
 import seedu.multitasky.logic.commands.EditCommand;
@@ -27,6 +34,7 @@ import seedu.multitasky.model.tag.Tag;
  * Parses input arguments and creates a new EditCommand object
  */
 public class EditCommandParser {
+    private ArgumentMultimap argMultimap;
 
     /**
      * Parses the given {@code String} of arguments in the context of the EditCommand and returns an
@@ -36,8 +44,9 @@ public class EditCommandParser {
      */
     public EditCommand parse(String args) throws ParseException {
         requireNonNull(args);
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_FLOATINGTASK, PREFIX_NAME,
-                                                                  PREFIX_TAG);
+        argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_FLOATINGTASK, PREFIX_DEADLINE, PREFIX_EVENT,
+                                                 PREFIX_NAME, PREFIX_FROM, PREFIX_BY, PREFIX_AT, PREFIX_TO,
+                                                 PREFIX_TAG);
         String trimmedArgs = argMultimap.getPreamble().get();
         EditEntryDescriptor editEntryDescriptor = new EditEntryDescriptor();
 
@@ -47,19 +56,26 @@ public class EditCommandParser {
                                                    EditCommand.MESSAGE_USAGE));
         }
 
-        if (ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK)) {
+        if (hasIndexFlag(argMultimap)) {
+            if (hasInvalidFlagCombination(argMultimap)) {
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                                                       DeleteCommand.MESSAGE_USAGE));
+            }
+
             Index index;
             initEntryEditor(argMultimap, editEntryDescriptor);
 
             try {
-                index = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_FLOATINGTASK).get());
+                Prefix listIndicatorPrefix = ParserUtil.getDatePrefix(argMultimap, PREFIX_FLOATINGTASK,
+                                                                      PREFIX_DEADLINE, PREFIX_EVENT);
+                index = ParserUtil.parseIndex(argMultimap.getValue(listIndicatorPrefix).get());
             } catch (IllegalValueException ive) {
                 throw new ParseException(
                                          String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                                                        EditCommand.MESSAGE_USAGE));
             }
             return new EditByIndexCommand(index, editEntryDescriptor);
-        } else {
+        } else { // search by find
 
             initEntryEditor(argMultimap, editEntryDescriptor);
             final String[] keywords = trimmedArgs.split("\\s+");
@@ -74,10 +90,19 @@ public class EditCommandParser {
      * data are of wrong format or no fields are edited.
      */
     private void initEntryEditor(ArgumentMultimap argMultimap,
-                                 EditEntryDescriptor editEntryDescriptor) throws ParseException {
+                                 EditEntryDescriptor editEntryDescriptor)
+            throws ParseException {
         try {
             ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME))
                       .ifPresent(editEntryDescriptor::setName);
+            ParserUtil.parseDate(argMultimap.getValue(PREFIX_FROM))
+                      .ifPresent(editEntryDescriptor::setStartDate);
+            ParserUtil.parseDate(argMultimap.getValue(PREFIX_AT))
+                      .ifPresent(editEntryDescriptor::setStartDate);
+            ParserUtil.parseDate(argMultimap.getValue(PREFIX_TO))
+                      .ifPresent(editEntryDescriptor::setEndDate);
+            ParserUtil.parseDate(argMultimap.getValue(PREFIX_BY))
+                      .ifPresent(editEntryDescriptor::setEndDate);
             parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG))
                                                                   .ifPresent(editEntryDescriptor::setTags);
         } catch (IllegalValueException ive) {
@@ -102,6 +127,28 @@ public class EditCommandParser {
         }
         Collection<String> tagSet = tags.size() == 1 && tags.contains("") ? Collections.emptySet() : tags;
         return Optional.of(ParserUtil.parseTags(tagSet));
+    }
+
+    /**
+     * A method that returns true if flags are given in an illogical manner for editing commands.
+     * illogical := any 2 of /float, /deadline, /event used together.
+     */
+    private boolean hasInvalidFlagCombination(ArgumentMultimap argMultimap) {
+        assert argMultimap != null;
+        return ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_DEADLINE)
+               || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_DEADLINE, PREFIX_EVENT)
+               || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_EVENT);
+    }
+
+    /**
+     * A method that returns true if flags in given ArgumentMultimap has at least one index-indicating
+     * Prefix mapped to some arguments.
+     * Index-indicating := /float or /deadline or /event
+     */
+    private boolean hasIndexFlag(ArgumentMultimap argMultimap) {
+        assert argMultimap != null;
+        return ParserUtil.arePrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_DEADLINE,
+                                             PREFIX_EVENT);
     }
 
 }
