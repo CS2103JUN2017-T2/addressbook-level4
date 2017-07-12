@@ -74,15 +74,15 @@ public class EntryBook implements ReadOnlyEntryBook {
 
     // @@author A0126623L
     // TODO: Revert this to the original form after model architecture is revamped for V0.4.
-    private void setActiveList(ReadOnlyEntryBook entries) throws DuplicateEntryException {
+    private void setActiveList() throws DuplicateEntryException {
         this._activeList.setEntries(new MiscEntryList());
-        for (ReadOnlyEntry entry : entries.getEventList()) {
+        for (ReadOnlyEntry entry : _eventList) {
             this._activeList.add(entry);
         }
-        for (ReadOnlyEntry entry : entries.getDeadlineList()) {
+        for (ReadOnlyEntry entry : _deadlineList) {
             this._activeList.add(entry);
         }
-        for (ReadOnlyEntry entry : entries.getFloatingTaskList()) {
+        for (ReadOnlyEntry entry : _floatingTaskList) {
             this._activeList.add(entry);
         }
     }
@@ -116,12 +116,12 @@ public class EntryBook implements ReadOnlyEntryBook {
         requireNonNull(newData);
 
         try {
-            setActiveList(newData); // TODO: Update this in V0.4.
             setArchive(newData.getArchive());
             setBin(newData.getBin());
             setEventList(newData.getEventList());
             setDeadlineList(newData.getDeadlineList());
             setFloatingTaskList(newData.getFloatingTaskList());
+            setActiveList(); // TODO: Update this in V0.4.
         } catch (DuplicateEntryException e) {
             assert false : "EntryBooks should not have duplicate entries";
         }

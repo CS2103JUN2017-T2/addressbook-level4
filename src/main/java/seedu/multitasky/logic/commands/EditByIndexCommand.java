@@ -49,6 +49,7 @@ public class EditByIndexCommand extends EditCommand {
         }
 
         model.updateAllFilteredListToShowAll();
+        model.updateAllFilteredListToShowAll();
         return new CommandResult(String.format(MESSAGE_SUCCESS, entryToEdit));
     }
 
