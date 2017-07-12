@@ -184,6 +184,7 @@ public class StorageManager extends ComponentManager implements Storage {
             raise(new DataSavingExceptionEvent(e));
         } catch (Exception e) {
             event.setMessage(e.getMessage());
+            UserPrefs.incrementIndexByOne();
         }
     }
 }
