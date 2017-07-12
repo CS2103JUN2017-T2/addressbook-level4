@@ -78,6 +78,10 @@ public class StorageManager extends ComponentManager implements Storage {
      * Gets the proper filepath of the previous snapshot needed for undo
      */
     public static String getPreviousEntryBookSnapshotPath() {
+        return checkIfUndoValidThenReturnSnapshot();
+    }
+
+    public static String checkIfUndoValidThenReturnSnapshot() {
         if (UserPrefs.getIndex() == 1) {
             return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
         } else {
