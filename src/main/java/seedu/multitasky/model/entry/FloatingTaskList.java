@@ -18,7 +18,7 @@ public class FloatingTaskList extends EntryList {
         super.add(toAdd);
         assert (toAdd instanceof FloatingTask);
 
-        internalList.add(new FloatingTask(toAdd));
+        internalList.add((FloatingTask) toAdd);
     }
     // @@author
 

@@ -110,7 +110,7 @@ public abstract class EntryList implements Iterable<Entry> {
 
         Entry entryToUpdate = internalList.get(index);
 
-        if (!entryToUpdate.equals(editedEntry) && internalList.contains(editedEntry)) {
+        if (internalList.contains(editedEntry)) {
             throw new DuplicateEntryException();
         }
 
