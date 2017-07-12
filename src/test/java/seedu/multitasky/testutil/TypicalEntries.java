@@ -48,7 +48,7 @@ public class TypicalEntries {
 
             // Deadlines
             tax = new EntryBuilder().withName("Submit taxes").withTags("money")
-                      .withEndDateAndTime(new GregorianCalendar(2017, Calendar.JULY, 1, 00, 00)).build(),
+                      .withEndDateAndTime(new GregorianCalendar(2017, Calendar.JULY, 1, 00, 00)).build();
             paper = new EntryBuilder().withName("CS2103 finals").withTags("school", "study")
                     .withEndDateAndTime(new GregorianCalendar(2017, Calendar.JULY, 28, 10, 0)).build();
             submission = new EntryBuilder().withName("Submit assignment").withTags("school")
