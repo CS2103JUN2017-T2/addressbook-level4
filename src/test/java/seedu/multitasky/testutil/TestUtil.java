@@ -1,7 +1,7 @@
 package seedu.multitasky.testutil;
 
 import static org.junit.Assert.fail;
-import static seedu.multitasky.model.util.SampleDataUtil.getTagSet;
+import static seedu.multitasky.model.util.TagSetBuilder.getTagSet;
 
 import java.io.File;
 import java.io.IOException;

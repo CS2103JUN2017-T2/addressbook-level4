@@ -26,7 +26,6 @@ import seedu.multitasky.model.Model;
 import seedu.multitasky.model.ModelManager;
 import seedu.multitasky.model.ReadOnlyEntryBook;
 import seedu.multitasky.model.UserPrefs;
-import seedu.multitasky.model.util.SampleDataUtil;
 import seedu.multitasky.storage.EntryBookStorage;
 import seedu.multitasky.storage.JsonUserPrefsStorage;
 import seedu.multitasky.storage.Storage;
@@ -86,8 +85,8 @@ public class MainApp extends Application {
         try {
             entryBookOptional = storage.readEntryBook();
             if (!entryBookOptional.isPresent()) {
-                logger.info("Data file not found. Will be using sample data");
-                initialData = SampleDataUtil.getSampleEntryBook();
+                logger.info("Data file not found. Will be starting with an empty EntryBook");
+                initialData = new EntryBook();
             } else {
                 initialData = entryBookOptional.get();
                 storage.handleEntryBookChangedEvent(new EntryBookChangedEvent(initialData));

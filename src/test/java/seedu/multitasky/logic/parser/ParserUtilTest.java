@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.multitasky.logic.parser.ParserUtil.MESSAGE_INVALID_INDEX;
-import static seedu.multitasky.testutil.TypicalEntries.INDEX_FIRST_ENTRY;
+import static seedu.multitasky.testutil.SampleEntries.INDEX_FIRST_ENTRY;
 
 import java.util.Arrays;
 import java.util.Collections;

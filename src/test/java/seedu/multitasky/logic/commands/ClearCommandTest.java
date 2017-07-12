@@ -8,7 +8,7 @@ import seedu.multitasky.logic.CommandHistory;
 import seedu.multitasky.model.Model;
 import seedu.multitasky.model.ModelManager;
 import seedu.multitasky.model.UserPrefs;
-import seedu.multitasky.testutil.TypicalEntries;
+import seedu.multitasky.testutil.SampleEntries;
 
 public class ClearCommandTest {
 
@@ -20,7 +20,7 @@ public class ClearCommandTest {
 
     @Test
     public void execute_nonEmptyEntryBook_success() {
-        Model model = new ModelManager(new TypicalEntries().getTypicalEntryBook(), new UserPrefs());
+        Model model = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
         assertCommandSuccess(model);
     }
 
