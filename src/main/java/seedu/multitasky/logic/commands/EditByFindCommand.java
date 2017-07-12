@@ -2,6 +2,7 @@ package seedu.multitasky.logic.commands;
 
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -36,11 +37,19 @@ public class EditByFindCommand extends EditCommand {
 
     @Override
     public CommandResult execute() throws CommandException, DuplicateEntryException {
-        List<ReadOnlyEntry> lastShownList = model.getFilteredFloatingTaskList();
-
+        // update all 3 lists with new keywords.
+        model.updateFilteredDeadlineList(keywords);
+        model.updateFilteredEventList(keywords);
         model.updateFilteredFloatingTaskList(keywords);
-        if (model.getFilteredFloatingTaskList().size() == 1) {
-            ReadOnlyEntry entryToEdit = lastShownList.get(0);
+
+        // find out whether only 1 entry is found.
+        List<ReadOnlyEntry> tempAllList = new ArrayList<>();
+        tempAllList.addAll(model.getFilteredDeadlineList());
+        tempAllList.addAll(model.getFilteredEventList());
+        tempAllList.addAll(model.getFilteredFloatingTaskList());
+
+        if (tempAllList.size() == 1) {
+            ReadOnlyEntry entryToEdit = tempAllList.get(0);
             Entry editedEntry = createEditedEntry(entryToEdit, editEntryDescriptor);
             try {
                 model.updateEntry(entryToEdit, editedEntry);
@@ -50,7 +59,7 @@ public class EditByFindCommand extends EditCommand {
             model.updateAllFilteredListToShowAll();
             return new CommandResult(String.format(MESSAGE_SUCCESS, entryToEdit));
         }
-        if (model.getFilteredFloatingTaskList().size() >= 2) {
+        if (tempAllList.size() >= 2) {
             return new CommandResult(MESSAGE_MULTIPLE_ENTRIES);
         } else {
             return new CommandResult(MESSAGE_NO_ENTRIES);
