@@ -6,6 +6,7 @@ import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.storage.exception.NothingToRedoException;
 import seedu.multitasky.storage.exception.NothingToUndoException;
 
 /**
@@ -26,6 +27,9 @@ public interface Model {
 
     /** Undo the previous data-changing action */
     void undoPreviousAction() throws NothingToUndoException;
+
+    /** Redo the previous undo action */
+    void redoPreviousAction() throws NothingToRedoException;
 
     /**
      * Replaces the given entry {@code target} with {@code editedEntry}.

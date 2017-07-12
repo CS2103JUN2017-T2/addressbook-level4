@@ -21,6 +21,7 @@ import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 import seedu.multitasky.model.util.EntryBuilder;
+import seedu.multitasky.storage.exception.NothingToRedoException;
 
 public class AddCommandTest {
 
@@ -158,6 +159,11 @@ public class AddCommandTest {
 
         @Override
         public void undoPreviousAction() {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void redoPreviousAction() throws NothingToRedoException {
             fail("This method should not be called.");
         }
 
