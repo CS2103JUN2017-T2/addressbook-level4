@@ -29,7 +29,7 @@ Having any Java 8 version is not enough. +
 This app will not work with earlier versions of Java 8.
 +
 .  Download the latest `MultiTasky.jar` from the link:../../../releases[releases] tab.
-.  Copy the file to the folder you want to use as the home folder for your Task Manager.
+.  Copy the file to the folder you want to use as the home folder for MultiTasky.
 .  Double-click the file to start the app. The GUI should appear in a few seconds.
 +
 image::Ui.png[width="790"]
@@ -39,7 +39,7 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 .  Some example commands you can try:
 
 * *`list`* : lists all active tasks
-* *`add`* `sales proposal /by 05/07/17 14:00` : adds an entry named `sales proposal` with deadline `5th July, 2pm` to the Task Manager
+* *`add`* `sales proposal /by 05/07/17 14:00` : adds an entry named `sales proposal` with deadline `5th July, 2pm` to MultiTasky
 * *`delete`* `/deadline 3` : deletes the 3rd deadline entry shown in the current list
 * *`exit`* : exits the app
 
@@ -89,7 +89,7 @@ Format: `add ENTRY_NAME [/on | /at | /from DATE_TIME_A] [/to | /by DATE_TIME_B] 
 *Defaults from `config.json`*: +
 
 * The default value for events can be found as `addDurationHours`.
-* If neither `NUM_TIMES` nor `END_DATE_TIME` for a recurring entry is specified, `recurringNumTimes` is used for the number of recurring events to add to the Task Manager.
+* If neither `NUM_TIMES` nor `END_DATE_TIME` for a recurring entry is specified, `recurringNumTimes` is used for the number of recurring events to add to MultiTasky.
 
 Examples:
 
@@ -157,7 +157,7 @@ You can remove all of the entry's tags by typing `/tag` without specifying any t
 
 *Defaults from `config.json`*: +
 
-* If neither `NUM_TIMES` nor `STOP_DATE` for a recurring entry is specified, `recurringNumTimes` is used for the number of recurring events to add to the Task Manager.
+* If neither `NUM_TIMES` nor `STOP_DATE` for a recurring entry is specified, `recurringNumTimes` is used for the number of recurring events to add to MultiTasky.
 
 Examples:
 
@@ -245,7 +245,7 @@ Format: `redo`
 //<!-- @@author A0140633R -->
 === Clearing entries : `clear`
 
-Clears all entries from sections of the Task Manager. +
+Clears all entries from sections of MultiTasky. +
 Format: `clear [/archive | /bin | /all]`
 
 ****
@@ -260,13 +260,13 @@ Format: `exit`
 //<!-- @@author -->
 === Saving the data
 
-Task Manager data are saved in the hard disk automatically after any command that changes the data. +
+MultiTasky data is saved in the hard disk automatically after any command that changes the data. +
 There is no need to save manually.
 
 == FAQ
 
 *Q*: How do I transfer my data to another Computer? +
-*A*: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous Task Manager folder.
+*A*: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous MultiTasky folder.
 
 == Glossary
 
@@ -291,19 +291,19 @@ ____
 [[event]]
 Event
 ____
-An entry in the Task Manager with specified start *and* end date and/or time
+An entry in MultiTasky with specified start *and* end date and/or time
 ____
 
 [[deadline]]
 Deadline
 ____
-An entry in the Task Manager with a specified date and/or time as a deadline
+An entry in MultiTasky with a specified date and/or time as a deadline
 ____
 
 [[floatingtask]]
 Floating Task
 ____
-An entry in the Task Manager with no specified date or time associated
+An entry in MultiTasky with no specified date or time associated
 ____
 
 [[tag]]
