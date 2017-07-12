@@ -5,7 +5,7 @@ import seedu.multitasky.storage.exception.NothingToUndoException;
 
 //@@author A0132788U
 /**
- * Lists all entries in the entry book to the user.
+ * Undo a previous data-mutating action in the entrybook.
  */
 public class UndoCommand extends Command {
 

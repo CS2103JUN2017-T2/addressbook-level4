@@ -34,6 +34,17 @@ public class StorageManager extends ComponentManager implements Storage {
         this.userPrefsStorage = userPrefsStorage;
     }
 
+    public static int getNumSnapshots() {
+        return numSnapshots;
+    }
+
+    public static void setNumSnapshots(int numSnapshots) {
+        StorageManager.numSnapshots = numSnapshots;
+    }
+
+    public static void decrementNumSnapshots() {
+        numSnapshots--;
+    }
     // ================ UserPrefs methods ==============================
 
     @Override
@@ -83,6 +94,9 @@ public class StorageManager extends ComponentManager implements Storage {
         return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
     }
 
+    /**
+     * Gets the proper filepath of the next snapshot needed for redo
+     */
     public static String getNextEntryBookSnapshotPath() {
         UserPrefs.incrementIndexByOne();
         return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
@@ -113,7 +127,7 @@ public class StorageManager extends ComponentManager implements Storage {
 
     // @@author A0132788U
     /**
-     * Loads data from previousSnapshotPath for undoAction.
+     * Loads data from the previous SnapshotPath for undo.
      *
      * @throws Exception
      */
@@ -127,6 +141,11 @@ public class StorageManager extends ComponentManager implements Storage {
         }
     }
 
+    /**
+     * Loads data from the next SnapshotPath for redo.
+     *
+     * @throws Exception
+     */
     public EntryBook loadRedoData() throws Exception {
         try {
             ReadOnlyEntryBook redoData = XmlFileStorage
@@ -152,18 +171,6 @@ public class StorageManager extends ComponentManager implements Storage {
      */
     public void saveEntryBookSnapshot(ReadOnlyEntryBook entryBook) throws IOException {
         saveEntryBook(entryBook, setEntryBookSnapshotPathAndUpdateIndex());
-    }
-
-    public static int getNumSnapshots() {
-        return numSnapshots;
-    }
-
-    public static void setNumSnapshots(int numSnapshots) {
-        StorageManager.numSnapshots = numSnapshots;
-    }
-
-    public static void decrementNumSnapshots() {
-        numSnapshots--;
     }
 
     /**
@@ -204,6 +211,12 @@ public class StorageManager extends ComponentManager implements Storage {
         }
     }
 
+    /**
+     * Saves data from the next snapshot to the current entrybook and passes back
+     * the event data to ModelManager to reset and update the display.
+     *
+     * @throws Exception
+     */
     @Override
     @Subscribe
     public void handleEntryBookToRedoEvent(EntryBookToRedoEvent event) throws Exception {

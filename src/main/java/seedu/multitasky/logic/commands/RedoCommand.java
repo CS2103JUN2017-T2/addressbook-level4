@@ -5,7 +5,7 @@ import seedu.multitasky.storage.exception.NothingToRedoException;
 
 //@@author A0132788U
 /**
- * Lists all entries in the entry book to the user.
+ * Redo a previous undo action.
  */
 public class RedoCommand extends Command {
 

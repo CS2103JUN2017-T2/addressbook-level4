@@ -35,7 +35,7 @@ public interface Storage extends EntryBookStorage, UserPrefsStorage {
      * Saves the current version of the Entry Book to the hard disk.
      * Creates the data file if it is missing.
      */
-    void handleEntryBookChangedEvent(EntryBookChangedEvent abce);
+    void handleEntryBookChangedEvent(EntryBookChangedEvent e);
 
     /**
      * Changes the current version of the Entry Book to the previous one on the hard disk.
@@ -44,7 +44,7 @@ public interface Storage extends EntryBookStorage, UserPrefsStorage {
      * @throws DataConversionException
      * @throws Exception
      */
-    void handleEntryBookToUndoEvent(EntryBookToUndoEvent defg) throws DataConversionException, Exception;
+    void handleEntryBookToUndoEvent(EntryBookToUndoEvent e) throws DataConversionException, Exception;
 
-    void handleEntryBookToRedoEvent(EntryBookToRedoEvent hijk) throws Exception;
+    void handleEntryBookToRedoEvent(EntryBookToRedoEvent e) throws Exception;
 }

@@ -33,6 +33,6 @@ public class EntryBookToRedoEvent extends BaseEvent {
 
     @Override
     public String toString() {
-        return "undo";
+        return "redo";
     }
 }
