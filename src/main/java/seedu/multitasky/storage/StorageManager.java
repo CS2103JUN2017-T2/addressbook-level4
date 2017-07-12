@@ -78,16 +78,8 @@ public class StorageManager extends ComponentManager implements Storage {
      * Gets the proper filepath of the previous snapshot needed for undo
      */
     public static String getPreviousEntryBookSnapshotPath() {
-        return checkIfUndoValidThenReturnSnapshot();
-    }
-
-    public static String checkIfUndoValidThenReturnSnapshot() {
-        if (UserPrefs.getIndex() == 1) {
-            return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
-        } else {
-            UserPrefs.decrementIndexByOne();
-            return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
-        }
+        UserPrefs.decrementIndexByOne();
+        return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
     }
 
     // @@author
@@ -187,8 +179,11 @@ public class StorageManager extends ComponentManager implements Storage {
             EntryBook entry = loadUndoData();
             saveEntryBook(entry);
             event.setData(entry);
+            event.setMessage("undo successful");
         } catch (IOException e) {
             raise(new DataSavingExceptionEvent(e));
+        } catch (Exception e) {
+            event.setMessage(e.getMessage());
         }
     }
 }

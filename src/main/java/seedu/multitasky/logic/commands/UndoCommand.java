@@ -1,6 +1,7 @@
 package seedu.multitasky.logic.commands;
 
 import seedu.multitasky.logic.commands.exceptions.CommandException;
+import seedu.multitasky.storage.exception.NothingToUndoException;
 
 //@@author A0132788U
 /**
@@ -18,6 +19,8 @@ public class UndoCommand extends Command {
         try {
             model.undoPreviousAction();
             return new CommandResult(MESSAGE_SUCCESS);
+        } catch (NothingToUndoException e) {
+            return new CommandResult(MESSAGE_FAILURE);
         } catch (Exception e) {
             throw new CommandException(MESSAGE_FAILURE);
         }

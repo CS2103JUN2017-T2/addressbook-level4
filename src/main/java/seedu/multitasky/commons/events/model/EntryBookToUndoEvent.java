@@ -8,9 +8,11 @@ import seedu.multitasky.model.EntryBook;
 public class EntryBookToUndoEvent extends BaseEvent {
 
     private EntryBook data;
+    private String message;
 
-    public EntryBookToUndoEvent(EntryBook data) {
+    public EntryBookToUndoEvent(EntryBook data, String message) {
         this.data = data;
+        this.message = message;
     }
 
     public EntryBook getData() {
@@ -19,6 +21,14 @@ public class EntryBookToUndoEvent extends BaseEvent {
 
     public void setData(EntryBook data) {
         this.data = data;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     @Override
