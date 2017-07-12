@@ -16,9 +16,6 @@ import seedu.multitasky.model.tag.UniqueTagList;
  */
 public abstract class Entry implements ReadOnlyEntry {
 
-    private Name _name;
-    private UniqueTagList _tags;
-
     // @@author A0126623L
     /**
      * Date formatter for subclasses that need to format Date objects.
@@ -26,6 +23,9 @@ public abstract class Entry implements ReadOnlyEntry {
     protected static DateFormat dateFormatter = DateFormat.getDateTimeInstance(DateFormat.MEDIUM,
                                                                                DateFormat.SHORT);
     // @@author
+
+    private Name _name;
+    private UniqueTagList _tags;
 
     /**
      * Every field must be present and not null.

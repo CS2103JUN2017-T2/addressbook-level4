@@ -41,7 +41,8 @@ public class EditCommandTest {
         String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, editedEntry);
 
         Model expectedModel = new ModelManager(new EntryBook(model.getEntryBook()), new UserPrefs());
-        expectedModel.updateEntry(model.getFilteredFloatingTaskList().get(INDEX_FIRST_ENTRY.getZeroBased()), editedEntry);
+        expectedModel.updateEntry(model.getFilteredFloatingTaskList().get(INDEX_FIRST_ENTRY.getZeroBased()),
+        editedEntry);
 
         CommandTestUtil.assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
     }
@@ -90,7 +91,8 @@ public class EditCommandTest {
         String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, editedEntry);
 
         Model expectedModel = new ModelManager(new EntryBook(model.getEntryBook()), new UserPrefs());
-        expectedModel.updateEntry(model.getFilteredFloatingTaskList().get(INDEX_FIRST_ENTRY.getZeroBased()), editedEntry);
+        expectedModel.updateEntry(model.getFilteredFloatingTaskList().get(INDEX_FIRST_ENTRY.getZeroBased()),
+        editedEntry);
 
         CommandTestUtil.assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
     }

@@ -28,7 +28,7 @@ public class EventList extends EntryList {
     }
     // @@author
 
-    //@@author A0125586X
+    // @@author A0125586X
     /**
      * Overrides updateEntry in EntryList to sort after updating in case start date was changed.
      *
@@ -41,9 +41,7 @@ public class EventList extends EntryList {
         super.updateEntry(target, editedEntry);
         sortInternalList();
     }
-    //@@author
-
-
+    // @@author
 
     // @@author A0126623L
     /**

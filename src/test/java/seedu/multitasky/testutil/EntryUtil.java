@@ -6,9 +6,9 @@ import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.logic.commands.AddCommand;
 import seedu.multitasky.logic.commands.DeleteCommand;
 import seedu.multitasky.logic.parser.CliSyntax;
+import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.Event;
-import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.FloatingTask;
 
 //@@author A0125586X
@@ -72,9 +72,7 @@ public class EntryUtil {
                .append(CliSyntax.PREFIX_TO + " ")
                .append(getDateDetailsAsInputString(entry.getEndDateAndTime()) + " ");
         builder.append(CliSyntax.PREFIX_TAG + " ");
-        entry.getTags().stream().forEach(
-            s -> builder.append(s.tagName + " ")
-        );
+        entry.getTags().stream().forEach(s -> builder.append(s.tagName + " "));
         return builder.toString();
     }
 
@@ -89,9 +87,7 @@ public class EntryUtil {
                .append(CliSyntax.PREFIX_BY + " ")
                .append(getDateDetailsAsInputString(entry.getEndDateAndTime()) + " ");
         builder.append(CliSyntax.PREFIX_TAG + " ");
-        entry.getTags().stream().forEach(
-            s -> builder.append(s.tagName + " ")
-        );
+        entry.getTags().stream().forEach(s -> builder.append(s.tagName + " "));
         return builder.toString();
     }
 
@@ -104,9 +100,7 @@ public class EntryUtil {
         StringBuilder builder = new StringBuilder();
         builder.append(entry.getName().toString() + " ");
         builder.append(CliSyntax.PREFIX_TAG + " ");
-        entry.getTags().stream().forEach(
-            s -> builder.append(s.tagName + " ")
-        );
+        entry.getTags().stream().forEach(s -> builder.append(s.tagName + " "));
         return builder.toString();
     }
 
