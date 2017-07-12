@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.entry.Entry;
-import seedu.multitasky.testutil.SampleEntries;
 import seedu.multitasky.testutil.TestUtil;
 
 public class SampleDataTest extends EntryBookGuiTest {
@@ -23,13 +22,10 @@ public class SampleDataTest extends EntryBookGuiTest {
     }
 
     @Test
-    public void entryBook_dataFileDoesNotExist_loadSampleData() throws Exception {
-        //TODO modify code to accommodate other types of entries in the future
-        Entry[] expectedList = SampleEntries.getSampleEvents();
+    public void entryBook_dataFileDoesNotExist_emptyEntryBook() throws Exception {
+        Entry[] expectedList = new Entry[0];
         assertTrue(eventListPanel.isListMatching(expectedList));
-        expectedList = SampleEntries.getSampleDeadlines();
         assertTrue(deadlineListPanel.isListMatching(expectedList));
-        expectedList = SampleEntries.getSampleFloatingTasks();
         assertTrue(floatingTaskListPanel.isListMatching(expectedList));
     }
 }
