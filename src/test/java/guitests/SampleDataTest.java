@@ -25,7 +25,11 @@ public class SampleDataTest extends EntryBookGuiTest {
     @Test
     public void entryBook_dataFileDoesNotExist_loadSampleData() throws Exception {
         //TODO modify code to accommodate other types of entries in the future
-        Entry[] expectedList = SampleDataUtil.getSampleEntries();
+        Entry[] expectedList = SampleDataUtil.getSampleEvents();
+        assertTrue(eventListPanel.isListMatching(expectedList));
+        expectedList = SampleDataUtil.getSampleDeadlines();
+        assertTrue(deadlineListPanel.isListMatching(expectedList));
+        expectedList = SampleDataUtil.getSampleFloatingTasks();
         assertTrue(floatingTaskListPanel.isListMatching(expectedList));
     }
 }
