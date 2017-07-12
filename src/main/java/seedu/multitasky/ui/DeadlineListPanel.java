@@ -1,5 +1,8 @@
 package seedu.multitasky.ui;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -45,10 +48,16 @@ public class DeadlineListPanel extends UiPart<Region> {
                 setGraphic(null);
                 setText(null);
             } else {
-                //TODO set as DeadlineOverdueCard instead of deadline is over
                 int index = getIndex() + 1;
                 assert index > 0 : "getIndex returned invalid index";
-                setGraphic(new DeadlineCard(entry, index).getRoot());
+
+                Calendar current = new GregorianCalendar();
+                // Deadline is over
+                if (current.compareTo(entry.getEndDateAndTime()) > 0) {
+                    setGraphic(new DeadlineOverdueCard(entry, index).getRoot());
+                } else {
+                    setGraphic(new DeadlineCard(entry, index).getRoot());
+                }
             }
         }
     }

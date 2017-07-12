@@ -24,7 +24,7 @@ import guitests.guihandles.StatusBarFooterHandle;
 
 import javafx.application.Platform;
 import javafx.stage.Stage;
-import seedu.address.TestApp;
+import seedu.multitasky.TestApp;
 import seedu.multitasky.commons.core.EventsCenter;
 import seedu.multitasky.commons.events.BaseEvent;
 import seedu.multitasky.model.EntryBook;
@@ -103,7 +103,7 @@ public abstract class EntryBookGuiTest {
      * Override this in child classes to set the data file location.
      */
     protected String getDataFileLocation() {
-        return TestApp.SAVE_LOCATION_FOR_TESTING;
+        return TestApp.TESTING_SAVE_LOCATION;
     }
 
     @After
@@ -137,7 +137,7 @@ public abstract class EntryBookGuiTest {
     /**
      * Asserts the size of the floating task list is equal to the given number.
      */
-    protected void floatingTaskListSize(int size) {
+    protected void assertFloatingTaskListSize(int size) {
         int numberOfEntries = floatingTaskListPanel.getNumberOfEntries();
         assertEquals(size, numberOfEntries);
     }
@@ -147,6 +147,13 @@ public abstract class EntryBookGuiTest {
      */
     protected void assertResultMessage(String expected) {
         assertEquals(expected, resultDisplay.getText());
+    }
+
+    /**
+     * Asserts the message shown in the Command Box area is same as the given string.
+     */
+    protected void assertCommandBox(String expected) {
+        assertEquals(expected, commandBox.getCommandInput());
     }
 
     public void raise(BaseEvent e) {

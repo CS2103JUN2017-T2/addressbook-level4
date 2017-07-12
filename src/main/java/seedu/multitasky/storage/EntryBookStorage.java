@@ -17,8 +17,19 @@ public interface EntryBookStorage {
     String getEntryBookFilePath();
 
     /**
+     * Returns the file path of the snapshot folder.
+     */
+    String getEntryBookSnapshotPath();
+
+    /**
+     * Returns the file path of the most current snapshot to be deleted after exit.
+     */
+    String getFilePathForDeletion();
+
+    /**
      * Returns EntryBook data as a {@link ReadOnlyEntryBook}.
      * Returns {@code Optional.empty()} if storage file is not found.
+     *
      * @throws DataConversionException if the data in storage is not in the expected format.
      * @throws IOException if there was any problem when reading from the storage.
      */
@@ -31,6 +42,7 @@ public interface EntryBookStorage {
 
     /**
      * Saves the given {@link ReadOnlyEntryBook} to the storage.
+     *
      * @param entryBook cannot be null.
      * @throws IOException if there was any problem writing to the file.
      */

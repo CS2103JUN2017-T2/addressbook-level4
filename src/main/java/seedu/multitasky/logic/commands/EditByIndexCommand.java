@@ -7,15 +7,17 @@ import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 
-//@@author A0140633R
+// @@author A0140633R
 /**
  * Edits an entry identified using the type of entry followed by displayed index.
  */
 public class EditByIndexCommand extends EditCommand {
 
     private final Index index;
+
     /**
      * @param index of the entry in the filtered entry list to edit
      * @param editEntryDescriptor details to edit the entry with
@@ -25,8 +27,12 @@ public class EditByIndexCommand extends EditCommand {
         this.index = index;
     }
 
+    public Index getIndex() {
+        return index;
+    }
+
     @Override
-    public CommandResult execute() throws CommandException {
+    public CommandResult execute() throws CommandException, DuplicateEntryException {
         List<ReadOnlyEntry> lastShownList = model.getFilteredFloatingTaskList();
 
         if (index.getZeroBased() >= lastShownList.size()) {
@@ -42,6 +48,32 @@ public class EditByIndexCommand extends EditCommand {
             throw new AssertionError("The target entry cannot be missing");
         }
 
+        model.updateAllFilteredListToShowAll();
         return new CommandResult(String.format(MESSAGE_SUCCESS, entryToEdit));
     }
+
+    @Override
+    public boolean equals(Object other) {
+        // short circuit if same object
+        if (other == this) {
+            return true;
+        }
+
+        // instanceof handles nulls and other subclasses of EditCommands
+        if (!(other instanceof EditByIndexCommand)) {
+            return false;
+        }
+
+        // state check
+        EditByIndexCommand e = (EditByIndexCommand) other;
+
+        // check for index to edit
+        if (!this.getIndex().equals(e.getIndex())) {
+            return false;
+        }
+
+        // check equality in editEntryDescriptor.
+        return editEntryDescriptor.equals(e.editEntryDescriptor);
+    }
+
 }

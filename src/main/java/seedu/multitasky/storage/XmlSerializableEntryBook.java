@@ -16,6 +16,7 @@ import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.tag.Tag;
 
+// @@author A0132788U
 /**
  * An Immutable EntryBook that is serializable to XML format
  */
@@ -23,7 +24,17 @@ import seedu.multitasky.model.tag.Tag;
 public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
 
     @XmlElement
-    private List<XmlAdaptedEntry> entries;
+    private List<XmlAdaptedEntry> events;
+    @XmlElement
+    private List<XmlAdaptedEntry> floatingTasks;
+    @XmlElement
+    private List<XmlAdaptedEntry> deadlines;
+    @XmlElement
+    private List<XmlAdaptedEntry> archived;
+    @XmlElement
+    private List<XmlAdaptedEntry> bin;
+    @XmlElement
+    private List<XmlAdaptedEntry> active;
     @XmlElement
     private List<XmlAdaptedTag> tags;
 
@@ -32,7 +43,12 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
      * required for marshalling.
      */
     public XmlSerializableEntryBook() {
-        entries = new ArrayList<>();
+        events = new ArrayList<>();
+        floatingTasks = new ArrayList<>();
+        deadlines = new ArrayList<>();
+        archived = new ArrayList<>();
+        bin = new ArrayList<>();
+        active = new ArrayList<>();
         tags = new ArrayList<>();
     }
 
@@ -41,22 +57,96 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
      */
     public XmlSerializableEntryBook(ReadOnlyEntryBook src) {
         this();
-        entries.addAll(src.getEntryList().stream().map(XmlAdaptedEntry::new).collect(Collectors.toList()));
+        events.addAll(src.getEventList().stream().map(XmlAdaptedEntry::new).collect(Collectors.toList()));
+        deadlines.addAll(src.getDeadlineList().stream().map(XmlAdaptedEntry::new)
+                            .collect(Collectors.toList()));
+        floatingTasks.addAll(src.getFloatingTaskList().stream().map(XmlAdaptedEntry::new)
+                                .collect(Collectors.toList()));
         tags.addAll(src.getTagList().stream().map(XmlAdaptedTag::new).collect(Collectors.toList()));
     }
 
     @Override
-    public ObservableList<ReadOnlyEntry> getEntryList() {
-        final ObservableList<Entry> entries = this.entries.stream().map(p -> {
+    public ObservableList<ReadOnlyEntry> getEventList() {
+        final ObservableList<Entry> events = this.events.stream().map(p -> {
             try {
                 return p.toModelType();
-            } catch (IllegalValueException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 // TODO: better error handling
                 return null;
             }
         }).collect(Collectors.toCollection(FXCollections::observableArrayList));
-        return new UnmodifiableObservableList<>(entries);
+        return new UnmodifiableObservableList<>(events);
+    }
+
+    @Override
+    public ObservableList<ReadOnlyEntry> getDeadlineList() {
+        final ObservableList<Entry> deadlines = this.deadlines.stream().map(p -> {
+            try {
+                return p.toModelType();
+            } catch (Exception e) {
+                e.printStackTrace();
+                // TODO: better error handling
+                return null;
+            }
+        }).collect(Collectors.toCollection(FXCollections::observableArrayList));
+        return new UnmodifiableObservableList<>(deadlines);
+    }
+
+    @Override
+    public ObservableList<ReadOnlyEntry> getFloatingTaskList() {
+        final ObservableList<Entry> floatingTasks = this.floatingTasks.stream().map(p -> {
+            try {
+                return p.toModelType();
+            } catch (Exception e) {
+                e.printStackTrace();
+                // TODO: better error handling
+                return null;
+            }
+        }).collect(Collectors.toCollection(FXCollections::observableArrayList));
+        return new UnmodifiableObservableList<>(floatingTasks);
+    }
+
+    @Override
+    public ObservableList<ReadOnlyEntry> getActiveList() {
+        final ObservableList<Entry> actives = this.active.stream().map(p -> {
+            try {
+                return p.toModelType();
+            } catch (Exception e) {
+                e.printStackTrace();
+                // TODO: better error handling
+                return null;
+            }
+        }).collect(Collectors.toCollection(FXCollections::observableArrayList));
+        return new UnmodifiableObservableList<>(actives);
+    }
+
+    @Override
+    public ObservableList<ReadOnlyEntry> getArchive() {
+        final ObservableList<Entry> archives = this.archived.stream().map(p -> {
+            try {
+                return p.toModelType();
+            } catch (Exception e) {
+                e.printStackTrace();
+                // TODO: better error handling
+                return null;
+            }
+        }).collect(Collectors.toCollection(FXCollections::observableArrayList));
+        return new UnmodifiableObservableList<>(archives);
+    }
+
+    @Override
+    public ObservableList<ReadOnlyEntry> getBin() {
+        final ObservableList<Entry> bins = this.bin.stream().map(p -> {
+            try {
+                return p.toModelType();
+            } catch (Exception e) {
+                e.printStackTrace();
+                // TODO: better error handling
+                return null;
+            }
+        }).collect(Collectors.toCollection(FXCollections::observableArrayList));
+        return new UnmodifiableObservableList<>(bins);
     }
 
     @Override

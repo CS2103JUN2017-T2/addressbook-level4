@@ -1,5 +1,6 @@
 package seedu.multitasky.ui;
 
+import seedu.multitasky.model.entry.Event;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 
 //@author A0125586X
@@ -14,6 +15,10 @@ public class EventOverdueCard extends EntryCard {
 
     public EventOverdueCard(ReadOnlyEntry entry, int displayedIndex) {
         super(FXML, entry, displayedIndex);
-        //TODO fill date time and information fields
+        assert entry instanceof Event : "Entry to display on EventListCard must be Event";
+
+        startDateTime.setText(formatDate(entry.getStartDateAndTime().getTime()));
+        endDateTime.setText(formatDate(entry.getEndDateAndTime().getTime()));
+        additionalInfo.setText(prettyTimeFormatDate(entry.getStartDateAndTime().getTime()));
     }
 }

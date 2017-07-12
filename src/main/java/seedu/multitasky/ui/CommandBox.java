@@ -1,14 +1,11 @@
 package seedu.multitasky.ui;
 
-import java.util.Stack;
 import java.util.logging.Logger;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.events.ui.NewResultAvailableEvent;
@@ -16,6 +13,9 @@ import seedu.multitasky.logic.Logic;
 import seedu.multitasky.logic.commands.CommandResult;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
+import seedu.multitasky.ui.util.CommandAutocomplete;
+import seedu.multitasky.ui.util.CommandHistory;
 
 //@@author A0125586X
 /**
@@ -31,8 +31,8 @@ public class CommandBox extends UiPart<Region> {
     private final Logger logger = LogsCenter.getLogger(CommandBox.class);
     private final Logic logic;
 
-    private Stack<String> commandTextPastStack;
-    private Stack<String> commandTextFutureStack;
+    private CommandAutocomplete commandAutocomplete;
+    private CommandHistory commandHistory;
 
     @FXML
     private TextField commandTextField;
@@ -40,36 +40,28 @@ public class CommandBox extends UiPart<Region> {
     public CommandBox(Logic logic) {
         super(FXML);
         this.logic = logic;
-        setupHistory();
+        commandHistory = new CommandHistory(getRoot(), commandTextField);
+        commandAutocomplete = new CommandAutocomplete(getRoot(), commandTextField);
+        setCommandTextFieldFocus();
     }
 
     /**
-     * Sets up the components required to implement the command history function
-     * by using the up arrow key.
+     * Requests focus on the command text field once the main UI window is open,
+     * so that the user can immediately begin typing.
      */
-    @FXML
-    private void setupHistory() {
-        commandTextPastStack = new Stack<>();
-        commandTextFutureStack = new Stack<>();
-        getRoot().addEventHandler(KeyEvent.ANY, new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.UP) {
-                    loadPreviousCommandIntoTextField();
-                } else if (event.getCode() == KeyCode.DOWN) {
-                    loadNextCommandIntoTextField();
-                }
+    private void setCommandTextFieldFocus() {
+        Platform.runLater(new Runnable() {
+            public void run() {
+                commandTextField.requestFocus();
             }
         });
     }
 
     @FXML
-    private void handleCommandInputChanged() {
-        String commandText = commandTextField.getText().trim();
-        commandTextField.setText("");
-        saveCommandtoHistory(commandText);
+    private void handleCommandInputChanged() throws DuplicateEntryException {
+        commandHistory.saveCommand();
         try {
-            CommandResult commandResult = logic.execute(commandText);
+            CommandResult commandResult = logic.execute(commandTextField.getText().trim());
             // process result of the command
             setStyleToIndicateCommandSuccess();
             logger.info("Result: " + commandResult.feedbackToUser);
@@ -78,58 +70,14 @@ public class CommandBox extends UiPart<Region> {
         } catch (CommandException | ParseException e) {
             // handle command failure
             setStyleToIndicateCommandFailure();
-            logger.info("Invalid command: " + commandText);
+            logger.info("Invalid command: " + commandTextField.getText().trim());
+            raise(new NewResultAvailableEvent(e.getMessage()));
+        } catch (DuplicateEntryException e) {
+            setStyleToIndicateCommandFailure();
+            logger.info("Unable to add duplicate entry with command: " + commandTextField.getText().trim());
             raise(new NewResultAvailableEvent(e.getMessage()));
         }
-    }
-
-    private void saveCommandtoHistory(String command) {
-        // First push all commands to the past
-        while (!commandTextFutureStack.empty()) {
-            commandTextPastStack.push(commandTextFutureStack.pop());
-        }
-        // Save this command if it's the first one or if it's different from the last one
-        if ((command.length() > 0)
-            && (commandTextPastStack.empty() || !commandTextPastStack.peek().equals(command))) {
-            commandTextPastStack.push(command);
-        }
-    }
-
-    private void loadPreviousCommandIntoTextField() {
-        // There's history to show to the user
-        if (!commandTextPastStack.empty()) {
-            // Store whatever the user was typing if it's different from the last one
-            String command = commandTextField.getText().trim();
-            if (commandTextFutureStack.empty()
-                && !command.equals(commandTextPastStack.peek())) {
-                commandTextFutureStack.push(command);
-            }
-            // Load the previous command from the past
-            commandTextFutureStack.push(commandTextPastStack.pop());
-            commandTextField.setText(commandTextFutureStack.peek());
-        }
-        setCursorToCommandTextFieldEnd();
-    }
-
-    private void loadNextCommandIntoTextField() {
-        // There're newer commands to show to the user
-        if (!commandTextFutureStack.empty()) {
-            String temp = commandTextFutureStack.pop();
-            // There's still at least one more command
-            if (!commandTextFutureStack.empty()) {
-                commandTextPastStack.push(temp);
-            // This is the newest command
-            } else {
-                commandTextFutureStack.push(temp);
-            }
-            commandTextField.setText(commandTextFutureStack.peek());
-        }
-        setCursorToCommandTextFieldEnd();
-    }
-
-    private void setCursorToCommandTextFieldEnd() {
-        // Position cursor at the end for easy editing
-        commandTextField.positionCaret(commandTextField.getText().length());
+        commandTextField.setText("");
     }
 
     /**
@@ -153,4 +101,3 @@ public class CommandBox extends UiPart<Region> {
     }
 
 }
-//@@author

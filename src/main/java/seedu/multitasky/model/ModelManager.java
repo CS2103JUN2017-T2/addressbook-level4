@@ -10,10 +10,14 @@ import seedu.multitasky.commons.core.ComponentManager;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
+import seedu.multitasky.commons.events.model.EntryBookToUndoEvent;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 import seedu.multitasky.model.tag.Tag;
+import seedu.multitasky.storage.exception.NothingToUndoException;
 
+//@@author A0126623L
 /**
  * Represents the in-memory model of the address book data. All changes to any
  * model should be synchronized.
@@ -21,9 +25,12 @@ import seedu.multitasky.model.tag.Tag;
 public class ModelManager extends ComponentManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
-    private final EntryBook entryBook;
-    private final FilteredList<ReadOnlyEntry> filteredEntries;
+    private final EntryBook _entryBook;
+    private final FilteredList<ReadOnlyEntry> _filteredEventList;
+    private final FilteredList<ReadOnlyEntry> _filteredDeadlineList;
+    private final FilteredList<ReadOnlyEntry> _filteredFloatingTaskList;
 
+    // @@author A0126623L
     /**
      * Initializes a ModelManager with the given entryBook and userPrefs.
      */
@@ -33,9 +40,12 @@ public class ModelManager extends ComponentManager implements Model {
 
         logger.fine("Initializing with entry book: " + entryBook + " and user prefs " + userPrefs);
 
-        this.entryBook = new EntryBook(entryBook);
-        filteredEntries = new FilteredList<>(this.entryBook.getEntryList());
+        this._entryBook = new EntryBook(entryBook);
+        _filteredEventList = new FilteredList<>(this._entryBook.getEventList());
+        _filteredDeadlineList = new FilteredList<>(this._entryBook.getDeadlineList());
+        _filteredFloatingTaskList = new FilteredList<>(this._entryBook.getFloatingTaskList());
     }
+    // @@author
 
     public ModelManager() {
         this(new EntryBook(), new UserPrefs());
@@ -43,67 +53,174 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void resetData(ReadOnlyEntryBook newData) {
-        entryBook.resetData(newData);
+        _entryBook.resetData(newData);
         indicateEntryBookChanged();
     }
 
     @Override
     public ReadOnlyEntryBook getEntryBook() {
-        return entryBook;
+        return _entryBook;
     }
 
     /** Raises an event to indicate the model has changed */
     private void indicateEntryBookChanged() {
-        raise(new EntryBookChangedEvent(entryBook));
+        raise(new EntryBookChangedEvent(_entryBook));
+    }
+
+    // @@author A0132788U
+    /** Raises an event when undo is entered */
+    private void indicateUndoAction() throws NothingToUndoException {
+        EntryBookToUndoEvent undoEvent;
+        raise(undoEvent = new EntryBookToUndoEvent(_entryBook, ""));
+        if (undoEvent.getMessage().equals("undo successful")) {
+            _entryBook.resetData(undoEvent.getData());
+        } else {
+            throw new NothingToUndoException("");
+        }
     }
 
     @Override
-    public synchronized void deleteEntry(ReadOnlyEntry target) throws EntryNotFoundException {
-        entryBook.removeEntry(target);
+    public void undoPreviousAction() throws NothingToUndoException {
+        indicateUndoAction();
+    }
+
+    // @@author
+
+    @Override
+    public synchronized void deleteEntry(ReadOnlyEntry target)
+            throws DuplicateEntryException, EntryNotFoundException {
+        _entryBook.removeEntry(target);
+
         indicateEntryBookChanged();
     }
 
+    // @@author A0126623L
     @Override
-    public synchronized void addEntry(ReadOnlyEntry entry) {
-        entryBook.addEntry(entry);
-        updateFilteredListToShowAll();
+    public synchronized void addEntry(ReadOnlyEntry entry) throws DuplicateEntryException {
+        _entryBook.addEntry(entry);
         indicateEntryBookChanged();
     }
+    // @@author
 
     @Override
-    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws EntryNotFoundException {
+    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws DuplicateEntryException,
+            EntryNotFoundException {
         requireAllNonNull(target, editedEntry);
 
-        entryBook.updateEntry(target, editedEntry);
+        _entryBook.updateEntry(target, editedEntry);
         indicateEntryBookChanged();
     }
 
     // =========== Filtered Entry List Accessors ===========
 
+    // @@author A0126623L
     /**
-     * Return a list of {@code ReadOnlyEntry} backed by the internal list of
+     * Return a list of {@code ReadOnlyEntry} backed by the internal event list of
+     * {@code entryBook}
+     */
+    @Override
+    public UnmodifiableObservableList<ReadOnlyEntry> getFilteredEventList() {
+        return new UnmodifiableObservableList<>(_filteredEventList);
+    }
+
+    // @@author A0126623L
+    /**
+     * Return a list of {@code ReadOnlyEntry} backed by the internal deadline list of
+     * {@code entryBook}
+     */
+    @Override
+    public UnmodifiableObservableList<ReadOnlyEntry> getFilteredDeadlineList() {
+        return new UnmodifiableObservableList<>(_filteredDeadlineList);
+    }
+
+    // @@author A0126623L
+    /**
+     * Return a list of {@code ReadOnlyEntry} backed by the internal floating task list of
      * {@code entryBook}
      */
     @Override
     public UnmodifiableObservableList<ReadOnlyEntry> getFilteredFloatingTaskList() {
-        return new UnmodifiableObservableList<>(filteredEntries);
+        return new UnmodifiableObservableList<>(_filteredFloatingTaskList);
     }
 
+    // @@author A0126623L
     @Override
-    public void updateFilteredListToShowAll() {
-        filteredEntries.setPredicate(null);
+    public UnmodifiableObservableList<ReadOnlyEntry> getActiveList() {
+        return new UnmodifiableObservableList<>(_entryBook.getActiveList());
+    }
+
+    // @@author A0126623L
+    @Override
+    public UnmodifiableObservableList<ReadOnlyEntry> getArchive() {
+        return new UnmodifiableObservableList<>(_entryBook.getArchive());
+    }
+
+    // @@author A0126623L
+    @Override
+    public UnmodifiableObservableList<ReadOnlyEntry> getBin() {
+        return new UnmodifiableObservableList<>(_entryBook.getBin());
+    }
+
+    // @@author A0126623L
+    @Override
+    public void updateFilteredEventListToShowAll() {
+        _filteredEventList.setPredicate(null);
+    }
+
+    // @@author A0126623L
+    @Override
+    public void updateFilteredDeadlineListToShowAll() {
+        _filteredDeadlineList.setPredicate(null);
+    }
+
+    // @@author A0126623L
+    @Override
+    public void updateFilteredFloatingTaskListToShowAll() {
+        _filteredFloatingTaskList.setPredicate(null);
+    }
+
+    /**
+     * Updates all filtered list to show all entries.
+     */
+    @Override
+    public void updateAllFilteredListToShowAll() {
+        updateFilteredEventListToShowAll();
+        updateFilteredDeadlineListToShowAll();
+        updateFilteredFloatingTaskListToShowAll();
+    }
+    // @@author
+
+    // @@author A0126623L
+    @Override
+    public void updateFilteredEventList(Set<String> keywords) {
+        updateFilteredEventList(new PredicateExpression(new NameQualifier(keywords)));
+    }
+
+    private void updateFilteredEventList(Expression expression) {
+        _filteredEventList.setPredicate(expression::satisfies);
+    }
+
+    // @@author A0126623L
+    @Override
+    public void updateFilteredDeadlineList(Set<String> keywords) {
+        updateFilteredDeadlineList(new PredicateExpression(new NameQualifier(keywords)));
+    }
+
+    private void updateFilteredDeadlineList(Expression expression) {
+        _filteredDeadlineList.setPredicate(expression::satisfies);
     }
 
     // @@author A0126623L
     @Override
     public void updateFilteredFloatingTaskList(Set<String> keywords) {
-        updateFilteredEntryList(new PredicateExpression(new NameQualifier(keywords)));
+        updateFilteredFloatingTaskList(new PredicateExpression(new NameQualifier(keywords)));
     }
 
-    private void updateFilteredEntryList(Expression expression) {
-        filteredEntries.setPredicate(expression::satisfies);
+    private void updateFilteredFloatingTaskList(Expression expression) {
+        _filteredFloatingTaskList.setPredicate(expression::satisfies);
     }
 
+    // @@author A0126623L
     @Override
     public boolean equals(Object obj) {
         // short circuit if same object
@@ -118,17 +235,17 @@ public class ModelManager extends ComponentManager implements Model {
 
         // state check
         ModelManager other = (ModelManager) obj;
-        return entryBook.equals(other.entryBook) && filteredEntries.equals(other.filteredEntries);
+        return _entryBook.equals(other._entryBook) && _filteredEventList.equals(other._filteredEventList)
+               && _filteredDeadlineList.equals(other._filteredDeadlineList)
+               && _filteredFloatingTaskList.equals(other._filteredFloatingTaskList);
     }
+    // @@author
 
     // ========== Inner classes/interfaces used for filtering ==========
 
     interface Expression {
         /**
          * Evaluates whether a ReadOnlyEntry satisfies a certain condition.
-         *
-         * @param entry
-         * @return boolean
          */
         boolean satisfies(ReadOnlyEntry entry);
 
@@ -169,12 +286,12 @@ public class ModelManager extends ComponentManager implements Model {
      */
     private class NameQualifier implements Qualifier {
 
-        // TODO for ChuaPingChan:
+        // TODO:
         // change variable name to 'nameAndTagKeyWords'.
-        private Set<String> nameKeyWords;
+        private Set<String> nameAndTagKeywords;
 
-        NameQualifier(Set<String> nameKeyWords) {
-            this.nameKeyWords = nameKeyWords;
+        NameQualifier(Set<String> nameKeywords) {
+            this.nameAndTagKeywords = nameKeywords;
         }
 
         // @@author A0126623L
@@ -189,7 +306,7 @@ public class ModelManager extends ComponentManager implements Model {
         public boolean run(ReadOnlyEntry entry) {
             String wordsInNameAndTags = parseWordsInNameAndTags(entry);
 
-            for (String keyword : nameKeyWords) {
+            for (String keyword : nameAndTagKeywords) {
                 if (!wordsInNameAndTags.toLowerCase().contains(keyword.toLowerCase())) {
                     return false;
                 }
@@ -216,8 +333,8 @@ public class ModelManager extends ComponentManager implements Model {
 
         @Override
         public String toString() {
-            return "name=" + String.join(", ", nameKeyWords);
+            return "name=" + String.join(", ", nameAndTagKeywords);
         }
     }
-
+    // @@author
 }

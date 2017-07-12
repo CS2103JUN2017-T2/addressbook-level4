@@ -48,7 +48,7 @@ This app will not work with earlier versions of Java 8.
 
 .  Click `Project` -> `Properties` -> `Checkstyle` -> `Local Check Configurations` -> `New...`
 .  Choose `External Configuration File` under `Type`
-.  Enter an arbitrary configuration name e.g. addressbook
+.  Enter an arbitrary configuration name e.g. multitasky
 .  Import checkstyle configuration file found at `config/checkstyle/checkstyle.xml`
 .  Click OK once, go to the `Main` tab, use the newly imported check configuration.
 .  Tick and select `files from packages`, click `Change...`, and select the `resources` package
@@ -89,7 +89,7 @@ The *_Architecture Diagram_* given above explains the high-level design of the A
 [TIP]
 The `.pptx` files used to create diagrams in this document can be found in the link:{repoURL}/docs/diagrams/[diagrams] folder. To update a diagram, modify the diagram in the pptx file, select the objects of the diagram, and choose `Save as picture`.
 
-`Main` has only one class called link:{repoURL}/src/main/java/seedu/address/MainApp.java[`MainApp`]. It is responsible for,
+`Main` has only one class called link:{repoURL}/src/main/java/seedu/multitasky/MainApp.java[`MainApp`]. It is responsible for,
 
 * At app launch: Initializes the components in the correct sequence, and connects them up with each other.
 * At shut down: Shuts down the components and invokes cleanup method where necessary.
@@ -113,102 +113,116 @@ Each of the four components
 
 For example, the `Logic` component (see the class diagram given below) defines its API in the `Logic.java` interface and exposes its functionality using the `LogicManager.java` class.
 
-image::LogicClassDiagram.png[width="800"]
+image::LogicClassDiagram1.png[width="800"]
 _Figure 2.1.2 : Class Diagram of the Logic Component_
 
 [discrete]
 ==== Events-Driven nature of the design
 
-The _Sequence Diagram_ below shows how the components interact for the scenario where the user issues the command `delete 1`.
+The _Sequence Diagram_ below shows how the components interact for the scenario where the user issues the command `delete /float 1`.
 
-image::SDforDeletePerson.png[width="800"]
-_Figure 2.1.3a : Component interactions for `delete 1` command (part 1)_
+image::SDforDeleteEntry.png[width="800"]
+_Figure 2.1.3a : Component interactions for `delete /float 1` command (part 1)_
 
 [NOTE]
-Note how the `Model` simply raises a `AddressBookChangedEvent` when the Address Book data are changed, instead of asking the `Storage` to save the updates to the hard disk.
+Note how the `Model` simply raises a `EntryBookChangedEvent` when an Entry has been changed, instead of asking the `Storage` directly to save the updates to the hard disk.
 
 The diagram below shows how the `EventsCenter` reacts to that event, which eventually results in the updates being saved to the hard disk and the status bar of the UI being updated to reflect the 'Last Updated' time.
 
-image::SDforDeletePersonEventHandling.png[width="800"]
-_Figure 2.1.3b : Component interactions for `delete 1` command (part 2)_
+image::SDforDeleteEntryEventHandling.png[width="800"]
+_Figure 2.1.3b : Component interactions for `delete /float 1` command (part 2)_
 
 [NOTE]
 Note how the event is propagated through the `EventsCenter` to the `Storage` and `UI` without `Model` having to be coupled to either of them. This is an example of how this Event Driven approach helps us reduce direct coupling between components.
 
 The sections below give more details of each component.
 
+//<!-- @@author A0125586X -->
 === UI component
 
-Author: Alice Bee
+Author: Mattheus Lee
 
 image::UiClassDiagram.png[width="800"]
 _Figure 2.2.1 : Structure of the UI Component_
 
-*API* : link:{repoURL}/src/main/java/seedu/address/ui/Ui.java[`Ui.java`]
+*API* : link:{repoURL}/src/main/java/seedu/multitasky/ui/Ui.java[`Ui.java`]
 
-The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter`, `BrowserPanel` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class.
+The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `EventListPanel`, `DeadlineListPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class.
 
-The `UI` component uses JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the link:{repoURL}/src/main/java/seedu/address/ui/MainWindow.java[`MainWindow`] is specified in link:{repoURL}/src/main/resources/view/MainWindow.fxml[`MainWindow.fxml`]
+The `UI` component uses JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the link:{repoURL}/src/main/java/seedu/multitasky/ui/MainWindow.java[`MainWindow`] is specified in link:{repoURL}/src/main/resources/view/MainWindow.fxml[`MainWindow.fxml`]
 
-The `UI` component,
+The `UI` component
 
+* Handles user input through the `CommandBox`.
 * Executes user commands using the `Logic` component.
-* Binds itself to some data in the `Model` so that the UI can auto-update when data in the `Model` change.
+* Binds itself to some data in the `Model` so that the UI can auto-update when data in the `Model` changes.
 * Responds to events raised from various parts of the App and updates the UI accordingly.
+//<!-- @@author -->
 
+//<!-- @@author A0140633R -->
 === Logic component
 
-Author: Bernard Choo
+Author: Kevin Lam
 
-image::LogicClassDiagram.png[width="800"]
+image::LogicClassDiagram1.png[width="800"]
 _Figure 2.3.1 : Structure of the Logic Component_
 
 *API* :
-link:{repoURL}/src/main/java/seedu/address/logic/Logic.java[`Logic.java`]
+link:{repoURL}/src/main/java/seedu/multitasky/logic/Logic.java[`Logic.java`]
 
 .  `Logic` uses the `Parser` class to parse the user command.
-.  This results in a `Command` object which is executed by the `LogicManager`.
-.  The command execution can affect the `Model` (e.g. adding a person) and/or raise events.
+..  Some `Commands`, such as `DeleteCommand` require further parsing, which will be done by their subsidiary parsers such as the `DeleteCommandParser` object.
+.  After some processing, the parser classes will create the appropriate `Command` object which contain their inner mechanisms.
+.  This results in a `Command` object which is then executed by the `LogicManager`.
+.  The command execution can affect the `Model` (e.g. adding an Entry) and/or raise events.
 .  The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `Ui`.
 
-Given below is the Sequence Diagram for interactions within the `Logic` component for the `execute("delete 1")` API call.
+Given below is the Sequence Diagram for interactions within the `Logic` component for the `execute("delete /float 1")` API call.
 
-image::DeletePersonSdForLogic.png[width="800"]
-_Figure 2.3.1 : Interactions Inside the Logic Component for the `delete 1` Command_
+image::DeleteEntrySdForLogic1.png[width="800"]
 
+_Figure 2.3.1 : Interactions Inside the Logic Component for the `delete /float 1` Command_
+
+//<!-- @@author A0126623L -->
 === Model component
 
-Author: Cynthia Dharman
+Author: Chua Ping Chan
 
 image::ModelClassDiagram.png[width="800"]
 _Figure 2.4.1 : Structure of the Model Component_
 
-*API* : link:{repoURL}/src/main/java/seedu/address/model/Model.java[`Model.java`]
+*API* : link:{repoURL}/src/main/java/seedu/multitasky/model/Model.java[`Model.java`]
 
 The `Model`,
 
 * stores a `UserPref` object that represents the user's preferences.
-* stores the Address Book data.
-* exposes a `UnmodifiableObservableList<ReadOnlyPerson>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
+* holds MultiTasky's entry data in-memory.
+* entries are categorised into `Event`, `Deadline` and `FloatingTask`.
+* entries have three states, i.e. active, archived and deleted.
+* exposes several `UnmodifiableObservableList<ReadOnlyEntry>` that can be 'observed' e.g. the UI can be bound to these lists so that the UI automatically updates when the data in the lists change.
 * does not depend on any of the other three components.
+
+//<!-- @@author A0132788U -->
 
 === Storage component
 
-Author: Darius Foong
+Author: Akankshita Dash
 
 image::StorageClassDiagram.png[width="800"]
 _Figure 2.5.1 : Structure of the Storage Component_
 
-*API* : link:{repoURL}/src/main/java/seedu/address/storage/Storage.java[`Storage.java`]
+*API* : link:{repoURL}/src/main/java/seedu/multitasky/storage/Storage.java[`Storage.java`]
 
 The `Storage` component,
 
 * can save `UserPref` objects in json format and read it back.
-* can save the Address Book data in xml format and read it back.
+* saves snapshots after every data mutation.
+* can save the Entry Book data in xml format and read it back using EntryBuilder from Model.
+//<!-- @@author -->
 
 === Common classes
 
-Classes used by multiple components are in the `seedu.addressbook.commons` package.
+Classes used by multiple components are in the `seedu.multitasky.commons` package.
 
 == Implementation
 
@@ -249,9 +263,9 @@ We have two types of tests:
 .  *GUI Tests* - These are _System Tests_ that test the entire App by simulating user actions on the GUI. These are in the `guitests` package.
 .  *Non-GUI Tests* - These are tests not involving the GUI. They include,
 ..  _Unit tests_ targeting the lowest level methods/classes. +
-e.g. `seedu.address.commons.StringUtilTest`
+e.g. `seedu.multitasky.commons.StringUtilTest`
 ..  _Integration tests_ that are checking the integration of multiple code units (those code units are assumed to be working). +
-e.g. `seedu.address.storage.StorageManagerTest`
+e.g. `seedu.multitasky.storage.StorageManagerTest`
 ..  Hybrids of unit and integration tests. These test are checking multiple code units as well as how the are connected together. +
 e.g. `seedu.multitasky.logic.LogicManagerTest`
 
@@ -295,7 +309,7 @@ We use https://www.google.com/chrome/browser/desktop/[Google Chrome] for convert
 Here are the steps to convert the project documentation files to PDF format.
 
 .  Make sure you have set up GitHub Pages as described in <<UsingGithubPages#setting-up, UsingGithubPages.adoc>>.
-.  Using Chrome, go to the <<UsingGithubPages#viewing-the-project-site, GitHub Pages version>> of the documentation file. e.g. For <<UserGuide#, UserGuide.adoc>>, the URL will be `\https://<your-username-or-organization-name>.github.io/addressbook-level4/docs/UserGuide.html`.
+.  Using Chrome, go to the <<UsingGithubPages#viewing-the-project-site, GitHub Pages version>> of the documentation file. e.g. For <<UserGuide#, UserGuide.adoc>>, the URL will be `\https://<your-username-or-organization-name>.github.io/main/docs/UserGuide.html`.
 .  Click on the `Print` option in Chrome's menu.
 .  Set the destination to `Save as PDF`, then click `Save` to save a copy of the file in PDF format. For best results, use the settings indicated in the screenshot below.
 
@@ -304,7 +318,7 @@ _Figure 5.4.1 : Saving documentation as PDF files in Chrome_
 
 === Managing Dependencies
 
-A project often depends on third-party libraries. For example, Address Book depends on the http://wiki.fasterxml.com/JacksonHome[Jackson library] for XML parsing. Managing these _dependencies_ can be automated using Gradle. For example, Gradle can download the dependencies automatically, which is better than these alternatives. +
+A project often depends on third-party libraries. For example, MultiTasky depends on the http://wiki.fasterxml.com/JacksonHome[Jackson library] for XML parsing. Managing these _dependencies_ can be automated using Gradle. For example, Gradle can download the dependencies automatically, which is better than these alternatives. +
 a. Include those libraries in the repo (this bloats the repo size) +
 b. Require developers to download those libraries manually (this creates extra work for developers)
 
@@ -345,6 +359,8 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |user |list the next `n` number of entries |see upcoming events to attend/tasks to finish
 
+|`* *` |advanced user |use the `tab` key to automatically complete the command name that I've started typing |save time entering commands
+
 |`* *` |user |use the up and down arrow keys to bring up previously entered commands |avoid typing out commands I've previously used
 
 |`* *` |developer |have an automated test program |check program functionality after every update
@@ -357,7 +373,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |user |have multiple ways to input (e.g this friday instead of dd/mm/yy) |type in my tasks more easily
 
-|`* *` |user |have my datafile saved regularly |close my Task Manager without needing to save
+|`* *` |user |have my datafile saved regularly |close my task manager without needing to save
 
 |`* *` |user |have a daily view of tasks and events |view my workload for the day
 
@@ -588,26 +604,25 @@ An entry *can* have:
 * Specified start and end date and/or time *and/or*
 * Zero or more tags
 ____
-//<!-- @@author -->
 
+//<!-- @@author A0140633R -->
 [[event]]
 Event
 ____
-An entry in the Task Manager with
-* Specified start *and* end date and/or time
+An entry in MultiTasky with specified start *and* end date and/or time
 ____
 
 [[deadline]]
 Deadline
 ____
-An entry in the Task Manager with
-* Single specified date and/or time as a deadline
+An entry in MultiTasky with a specified date and/or time as a deadline
 ____
 
 [[floatingtask]]
 Floating Task
-An entry in the Task Manager with
-* No specified date or time associated
+____
+An entry in MultiTasky with no specified date or time associated
+____
 
 [[tag]]
 Tag
@@ -625,7 +640,7 @@ ____
 [[archive]]
 Archive
 _____
-A container that stores entries marked as done.
+A container that stores entries marked as 'done'.
 _____
 
 [[bin]]
@@ -639,6 +654,13 @@ _____
 Mainstream OS
 ____
 Windows, Linux, Unix, OS-X
+____
+
+//<!-- @@author A0140633R -->
+[[ddmmyy-hhmm]]
+dd/mm/yy hh:mm format
+____
+Refers to Date,Month,Year and Hour, Minute in 24H clock format.
 ____
 
 [appendix]

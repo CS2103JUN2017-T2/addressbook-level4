@@ -14,6 +14,7 @@ import seedu.multitasky.commons.core.Config;
 import seedu.multitasky.commons.core.EventsCenter;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.core.Version;
+import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
 import seedu.multitasky.commons.events.ui.ExitAppRequestEvent;
 import seedu.multitasky.commons.exceptions.DataConversionException;
 import seedu.multitasky.commons.util.ConfigUtil;
@@ -50,7 +51,6 @@ public class MainApp extends Application {
     protected Model model;
     protected Config config;
     protected UserPrefs userPrefs;
-
 
     @Override
     public void init() throws Exception {
@@ -90,6 +90,7 @@ public class MainApp extends Application {
                 initialData = SampleDataUtil.getSampleEntryBook();
             } else {
                 initialData = entryBookOptional.get();
+                storage.handleEntryBookChangedEvent(new EntryBookChangedEvent(initialData));
             }
         } catch (DataConversionException e) {
             logger.warning("Data file not in the correct format. Will be starting with an empty EntryBook");
@@ -124,11 +125,11 @@ public class MainApp extends Application {
             initializedConfig = configOptional.orElse(new Config());
         } catch (DataConversionException e) {
             logger.warning("Config file at " + configFilePathUsed + " is not in the correct format. "
-                    + "Using default config properties");
+                           + "Using default config properties");
             initializedConfig = new Config();
         }
 
-        //Update config file in case it was missing to begin with or there are new/unused fields
+        // Update config file in case it was missing to begin with or there are new/unused fields
         try {
             ConfigUtil.saveConfig(initializedConfig, configFilePathUsed);
         } catch (IOException e) {
@@ -147,14 +148,14 @@ public class MainApp extends Application {
             initializedPrefs = prefsOptional.orElse(new UserPrefs());
         } catch (DataConversionException e) {
             logger.warning("UserPrefs file at " + prefsFilePath + " is not in the correct format. "
-                    + "Using default user prefs");
+                           + "Using default user prefs");
             initializedPrefs = new UserPrefs();
         } catch (IOException e) {
             logger.warning("Problem while reading from the file. Will be starting with an empty EntryBook");
             initializedPrefs = new UserPrefs();
         }
 
-        //Update prefs file in case it was missing to begin with or there are new/unused fields
+        // Update prefs file in case it was missing to begin with or there are new/unused fields
         try {
             storage.saveUserPrefs(initializedPrefs);
         } catch (IOException e) {
@@ -187,11 +188,17 @@ public class MainApp extends Application {
         System.exit(0);
     }
 
+    // @@author A0132788U
+    /**
+     * Logs the info, deletes snapshot files, and then exits the app.
+     */
     @Subscribe
     public void handleExitAppRequestEvent(ExitAppRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        event.deleteAllSnapshotFiles(storage);
         this.stop();
     }
+    // @@author
 
     public static void main(String[] args) {
         launch(args);

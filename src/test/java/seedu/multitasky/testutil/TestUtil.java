@@ -1,11 +1,13 @@
 package seedu.multitasky.testutil;
 
+import static org.junit.Assert.fail;
 import static seedu.multitasky.model.util.SampleDataUtil.getTagSet;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import guitests.guihandles.EntryCardHandle;
@@ -18,6 +20,7 @@ import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.commons.util.FileUtil;
 import seedu.multitasky.commons.util.XmlUtil;
 import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 
@@ -31,7 +34,7 @@ public class TestUtil {
      */
     public static final String SANDBOX_FOLDER = FileUtil.getPath("./src/test/data/sandbox/");
 
-    public static final Entry[] SAMPLE_ENTRY_DATA = getSampleEntryData();
+    public static final FloatingTask[] SAMPLE_FLOATING_TASK_ARRAY_DATA = getSampleFloatingTaskArrayData();
 
     public static void assertThrows(Class<? extends Throwable> expected, Runnable executable) {
         try {
@@ -41,42 +44,51 @@ public class TestUtil {
                 return;
             }
             String message = String.format("Expected thrown: %s, actual: %s", expected.getName(),
-                    actualException.getClass().getName());
+                                           actualException.getClass().getName());
             throw new AssertionFailedError(message);
         }
         throw new AssertionFailedError(
-                String.format("Expected %s to be thrown, but nothing was thrown.", expected.getName()));
+                                       String.format("Expected %s to be thrown, but nothing was thrown.",
+                                                     expected.getName()));
     }
 
-    //@@author A0125586X
-    private static Entry[] getSampleEntryData() {
+    // @@author A0126623L
+    /**
+     * @return FloatingTask[] of 10 sample elements.
+     */
+    private static FloatingTask[] getSampleFloatingTaskArrayData() {
         try {
-            return new Entry[] {
-                new Entry(new Name("Take lunch to work"), getTagSet()),
-                new Entry(new Name("Take dog for walk"), getTagSet()),
-                new Entry(new Name("Fill up cat food bowl"), getTagSet()),
-                new Entry(new Name("Write novel"), getTagSet()),
-                new Entry(new Name("Buy groceries"), getTagSet()),
-                new Entry(new Name("Refactor code"), getTagSet()),
-                new Entry(new Name("Write two more tasks"), getTagSet()),
-                new Entry(new Name("Import test cases"), getTagSet()),
-                new Entry(new Name("Scold Travis"), getTagSet())
+            return new FloatingTask[] {
+                new FloatingTask(new Name("Take lunch to work"), getTagSet()),
+                new FloatingTask(new Name("Take dog for walk"), getTagSet()),
+                new FloatingTask(new Name("Fill up cat food bowl"), getTagSet()),
+                new FloatingTask(new Name("Write novel"), getTagSet()),
+                new FloatingTask(new Name("Buy groceries"), getTagSet()),
+                new FloatingTask(new Name("Refactor code"), getTagSet()),
+                new FloatingTask(new Name("Write two more tasks"), getTagSet()),
+                new FloatingTask(new Name("Import test cases"), getTagSet()),
+                new FloatingTask(new Name("Scold Travis"), getTagSet()),
+                new FloatingTask(new Name("Get dinner"), getTagSet())
             };
         } catch (IllegalValueException e) {
-            assert false;
-            // not possible to make array
+            fail("TestUtil floating task array generation failed.");
             return null;
         }
     }
-    //@@author
+    // @@author
 
-    public static List<Entry> generateSampleEntryData() {
-        return Arrays.asList(SAMPLE_ENTRY_DATA);
+    // @@author A0126623L
+    /**
+     * @return List&lt;FloatingTask&gt; of 10 sample elements.
+     */
+    public static List<FloatingTask> getSampleFloatingTaskListData() {
+        return Arrays.asList(SAMPLE_FLOATING_TASK_ARRAY_DATA);
     }
 
     /**
      * Appends the file name to the sandbox folder path.
      * Creates the sandbox folder if it doesn't exist.
+     *
      * @param fileName
      * @return
      */
@@ -101,6 +113,7 @@ public class TestUtil {
 
     /**
      * Gets mid point of a node relative to the screen.
+     *
      * @param node
      * @return
      */
@@ -116,6 +129,7 @@ public class TestUtil {
 
     /**
      * Removes a subset from the list of entries.
+     *
      * @param entries The list of entries
      * @param entriesToRemove The subset of entries.
      * @return The modified entries after removal of the subset from entries.
@@ -126,9 +140,9 @@ public class TestUtil {
         return listOfEntries.toArray(new Entry[listOfEntries.size()]);
     }
 
-
     /**
      * Returns a copy of the list with the entry at specified index removed.
+     *
      * @param list original list to copy from
      */
     public static Entry[] removeEntryFromList(final Entry[] list, Index index) {
@@ -137,6 +151,7 @@ public class TestUtil {
 
     /**
      * Appends entries to the array of entries.
+     *
      * @param entries A array of entries.
      * @param entriesToAdd The entries that are to be appended behind the original array.
      * @return The modified array of entries.
@@ -147,7 +162,14 @@ public class TestUtil {
         return listOfEntries.toArray(new Entry[listOfEntries.size()]);
     }
 
-    private static <T> List<T> asList(T[] objs) {
+    public static Entry[] addEntriesToSortedList(final Entry[] entries, Entry... entriesToAdd) {
+        List<Entry> listOfEntries = asList(entries);
+        listOfEntries.addAll(asList(entriesToAdd));
+        Collections.sort(listOfEntries);
+        return listOfEntries.toArray(new Entry[listOfEntries.size()]);
+    }
+
+    public static <T> List<T> asList(T[] objs) {
         List<T> list = new ArrayList<>();
         for (T obj : objs) {
             list.add(obj);

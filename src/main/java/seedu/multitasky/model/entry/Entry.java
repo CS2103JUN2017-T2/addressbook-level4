@@ -3,8 +3,8 @@ package seedu.multitasky.model.entry;
 import static java.util.Objects.requireNonNull;
 import static seedu.multitasky.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.text.DateFormat;
 import java.util.Collections;
-import java.util.Objects;
 import java.util.Set;
 
 import seedu.multitasky.model.tag.Tag;
@@ -14,19 +14,26 @@ import seedu.multitasky.model.tag.UniqueTagList;
  * Represents a Entry in the entry book.
  * Guarantees: details are present and not null, field values are validated.
  */
-public class Entry implements ReadOnlyEntry {
+public abstract class Entry implements ReadOnlyEntry {
 
-    private Name name;
+    // @@author A0126623L
+    /**
+     * Date formatter for subclasses that need to format Date objects.
+     */
+    protected static DateFormat dateFormatter = DateFormat.getDateTimeInstance(DateFormat.MEDIUM,
+                                                                               DateFormat.SHORT);
+    // @@author
 
-    private UniqueTagList tags;
+    private Name _name;
+    private UniqueTagList _tags;
 
     /**
      * Every field must be present and not null.
      */
     public Entry(Name name, Set<Tag> tags) {
         requireAllNonNull(name, tags);
-        this.name = name;
-        this.tags = new UniqueTagList(tags); // protect internal tags from changes in the arg list
+        this._name = name;
+        this._tags = new UniqueTagList(tags); // protect internal tags from changes in the arg list
     }
 
     /**
@@ -37,12 +44,12 @@ public class Entry implements ReadOnlyEntry {
     }
 
     public void setName(Name name) {
-        this.name = requireNonNull(name);
+        this._name = requireNonNull(name);
     }
 
     @Override
     public Name getName() {
-        return name;
+        return _name;
     }
 
     /**
@@ -51,14 +58,14 @@ public class Entry implements ReadOnlyEntry {
      */
     @Override
     public Set<Tag> getTags() {
-        return Collections.unmodifiableSet(tags.toSet());
+        return Collections.unmodifiableSet(_tags.toSet());
     }
 
     /**
      * Replaces this entry's tags with the tags in the argument tag set.
      */
     public void setTags(Set<Tag> replacement) {
-        tags.setTags(new UniqueTagList(replacement));
+        _tags.setTags(new UniqueTagList(replacement));
     }
 
     /**
@@ -69,24 +76,6 @@ public class Entry implements ReadOnlyEntry {
 
         this.setName(replacement.getName());
         this.setTags(replacement.getTags());
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        return other == this // short circuit if same object
-                || (other instanceof ReadOnlyEntry // instanceof handles nulls
-                && this.isSameStateAs((ReadOnlyEntry) other));
-    }
-
-    @Override
-    public int hashCode() {
-        // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, tags);
-    }
-
-    @Override
-    public String toString() {
-        return getAsText();
     }
 
 }
