@@ -25,7 +25,7 @@ public class TypicalEntries {
     // Events
     public final Entry dinner, cat, movie, opening;
     // Deadlines
-    public final Entry paper, submission, upgrade;
+    public final Entry tax, paper, submission, upgrade;
     // Floating tasks
     public final Entry cook, programming, hire, spectacles, clean, sell;
 
@@ -47,6 +47,8 @@ public class TypicalEntries {
                       .withEndDateAndTime(new GregorianCalendar(2017, Calendar.OCTOBER, 7, 21, 00)).build();
 
             // Deadlines
+            tax = new EntryBuilder().withName("Submit taxes").withTags("money")
+                      .withEndDateAndTime(new GregorianCalendar(2017, Calendar.JULY, 1, 00, 00)).build(),
             paper = new EntryBuilder().withName("CS2103 finals").withTags("school", "study")
                     .withEndDateAndTime(new GregorianCalendar(2017, Calendar.JULY, 28, 10, 0)).build();
             submission = new EntryBuilder().withName("Submit assignment").withTags("school")
@@ -93,7 +95,7 @@ public class TypicalEntries {
         return new Entry[] { dinner };
     }
     public Entry[] getTypicalDeadlines() {
-        return new Entry[] { paper };
+        return new Entry[] { tax, paper };
     }
     public Entry[] getTypicalFloatingTasks() {
         return new Entry[] { cook, programming };
