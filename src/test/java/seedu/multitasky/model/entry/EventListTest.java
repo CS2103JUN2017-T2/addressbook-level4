@@ -3,7 +3,6 @@ package seedu.multitasky.model.entry;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 
 import java.util.ArrayList;
 
@@ -11,10 +10,10 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import javafx.collections.ObservableList;
-import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
+import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 
-//@@author A0126623L
+// @@author A0126623L
 /**
  * TODO: Make SetUp less dependent on actual classes, e.g. create utility classes to generate
  * Events, Deadlines and Floating Tasks.
@@ -23,7 +22,11 @@ public class EventListTest {
 
     public static final EventList[] SAMPLE_EVENT_LISTS_ARRAY_DATA = getSampleEventListArrayData();
 
-    static Event[] sampleEvents = EventTest.SAMPLE_EVENTS_ARRAY_DATA;
+    private static Event[] sampleEvents = EventTest.SAMPLE_EVENTS_ARRAY_DATA;
+
+    private EventList eventList1 = SAMPLE_EVENT_LISTS_ARRAY_DATA[0];
+    private EventList eventList2 = SAMPLE_EVENT_LISTS_ARRAY_DATA[1];
+    private EventList eventList3 = SAMPLE_EVENT_LISTS_ARRAY_DATA[2];
 
     // @@author A0126623L
     /**
@@ -53,10 +56,6 @@ public class EventListTest {
             return null;
         }
     }
-
-    EventList eventList1 = SAMPLE_EVENT_LISTS_ARRAY_DATA[0];
-    EventList eventList2 = SAMPLE_EVENT_LISTS_ARRAY_DATA[1];
-    EventList eventList3 = SAMPLE_EVENT_LISTS_ARRAY_DATA[2];
 
     // @@author A0126623L
     /**
@@ -115,7 +114,7 @@ public class EventListTest {
         EventList eventListToTest = createEventList1();
         try {
             eventListToTest.updateEntry(sampleEvents[0], sampleEvents[3]);
-            assertFalse(eventList1.asObservableList().get(0).equals(sampleEvents[3]));
+            assertTrue(eventList1.asObservableList().get(0).equals(sampleEvents[3]));
         } catch (DuplicateEntryException e) {
             fail("EventListTest.updateEntryTest() failed due to duplicate entry.");
         }

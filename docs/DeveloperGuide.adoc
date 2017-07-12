@@ -373,7 +373,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |user |have multiple ways to input (e.g this friday instead of dd/mm/yy) |type in my tasks more easily
 
-|`* *` |user |have my datafile saved regularly |close my Task Manager without needing to save
+|`* *` |user |have my datafile saved regularly |close my task manager without needing to save
 
 |`* *` |user |have a daily view of tasks and events |view my workload for the day
 
@@ -604,26 +604,25 @@ An entry *can* have:
 * Specified start and end date and/or time *and/or*
 * Zero or more tags
 ____
-//<!-- @@author -->
 
+//<!-- @@author A0140633R -->
 [[event]]
 Event
 ____
-An entry in the Task Manager with
-* Specified start *and* end date and/or time
+An entry in MultiTasky with specified start *and* end date and/or time
 ____
 
 [[deadline]]
 Deadline
 ____
-An entry in the Task Manager with
-* Single specified date and/or time as a deadline
+An entry in MultiTasky with a specified date and/or time as a deadline
 ____
 
 [[floatingtask]]
 Floating Task
-An entry in the Task Manager with
-* No specified date or time associated
+____
+An entry in MultiTasky with no specified date or time associated
+____
 
 [[tag]]
 Tag
@@ -641,7 +640,7 @@ ____
 [[archive]]
 Archive
 _____
-A container that stores entries marked as done.
+A container that stores entries marked as 'done'.
 _____
 
 [[bin]]
@@ -655,6 +654,13 @@ _____
 Mainstream OS
 ____
 Windows, Linux, Unix, OS-X
+____
+
+//<!-- @@author A0140633R -->
+[[ddmmyy-hhmm]]
+dd/mm/yy hh:mm format
+____
+Refers to Date,Month,Year and Hour, Minute in 24H clock format.
 ____
 
 [appendix]

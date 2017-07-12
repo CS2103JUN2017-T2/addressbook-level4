@@ -34,7 +34,8 @@ public class XmlAdaptedEntry {
     @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
 
-    DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm");
+    /** Formatter to parse date into a human-editable string to store in the XML file */
+    private DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm");
 
     /**
      * Constructs an XmlAdaptedEntry. This is the no-arg constructor that is
@@ -63,7 +64,8 @@ public class XmlAdaptedEntry {
     }
 
     /**
-     * This converts the Calendar object into a string type to be stored in XML file in a human editable format.
+     * This converts the Calendar object into a string type to be stored in XML file in a human editable
+     * format.
      */
     public String convertDateToString(Calendar given) {
         String dateToString = df.format(given.getTime());
@@ -72,7 +74,7 @@ public class XmlAdaptedEntry {
 
     /**
      * This converts a String to a Calendar object to be passed back to Model.
-     * 
+     *
      * @throws Exception
      */
     public Calendar convertStringToDate(String given) throws Exception {
@@ -132,7 +134,7 @@ public class XmlAdaptedEntry {
         final Set<Tag> tags = new HashSet<>(entryTags);
         EntryBuilder buildObject = new EntryBuilder();
         Entry entry = buildObject.build(newName, startDateAndTimeToUse, endDateAndTimeToUse,
-                tags);
+                                        tags);
         return entry;
     }
 }

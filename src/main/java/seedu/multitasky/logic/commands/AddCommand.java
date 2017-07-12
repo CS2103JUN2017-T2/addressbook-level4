@@ -31,6 +31,7 @@ public class AddCommand extends Command {
      * Creates an AddCommand to add the specified {@code ReadOnlyEntry}
      */
     public AddCommand(ReadOnlyEntry entry) {
+        requireNonNull(entry);
         toAdd = entry;
     }
 

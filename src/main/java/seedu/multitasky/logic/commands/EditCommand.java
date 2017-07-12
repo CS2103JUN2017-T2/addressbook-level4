@@ -5,12 +5,15 @@ import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_TAG;
 
+import java.util.Calendar;
 import java.util.Optional;
 import java.util.Set;
 
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.commons.util.CollectionUtil;
+import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.model.entry.Event;
 import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
@@ -68,7 +71,17 @@ public abstract class EditCommand extends Command {
         Name updatedName = editEntryDescriptor.getName().orElse(entryToEdit.getName());
         Set<Tag> updatedTags = editEntryDescriptor.getTags().orElse(entryToEdit.getTags());
 
-        return new FloatingTask(updatedName, updatedTags);
+        // TODO (entryToEdit.getEndDateAndTime()) != null
+        if (!editEntryDescriptor.getEndDate().isPresent() && entryToEdit.getEndDateAndTime() == null) {
+            return new FloatingTask(updatedName, updatedTags);
+        } else if (!editEntryDescriptor.getStartDate().isPresent() && entryToEdit.getStartDateAndTime() == null) {
+            Calendar updatedEndDate = editEntryDescriptor.getEndDate().orElse(entryToEdit.getEndDateAndTime());
+            return new Deadline(updatedName, updatedEndDate, updatedTags);
+        } else {
+            Calendar updatedStartDate = editEntryDescriptor.getStartDate().orElse(entryToEdit.getStartDateAndTime());
+            Calendar updatedEndDate = editEntryDescriptor.getEndDate().orElse(entryToEdit.getEndDateAndTime());
+            return new Event(updatedName, updatedStartDate, updatedEndDate, updatedTags);
+        }
     }
 
     @Override
@@ -93,16 +106,27 @@ public abstract class EditCommand extends Command {
      * will replace the corresponding field value of the entry.
      */
     public static class EditEntryDescriptor {
-        private Name name;
-
-        private Set<Tag> tags;
+        private Name name = null;
+        private Set<Tag> tags = null;
+        private Calendar startDate = null;
+        private Calendar endDate = null;
 
         public EditEntryDescriptor() {
         }
 
         public EditEntryDescriptor(EditEntryDescriptor toCopy) {
-            this.name = toCopy.name;
-            this.tags = toCopy.tags;
+            if (toCopy.getName().isPresent()) {
+                this.name = toCopy.getName().get();
+            }
+            if (toCopy.getTags().isPresent()) {
+                this.tags = toCopy.getTags().get();
+            }
+            if (toCopy.getStartDate().isPresent()) {
+                this.startDate = toCopy.getStartDate().get();
+            }
+            if (toCopy.getEndDate().isPresent()) {
+                this.endDate = toCopy.getEndDate().get();
+            }
         }
 
         /**
@@ -112,20 +136,36 @@ public abstract class EditCommand extends Command {
             return CollectionUtil.isAnyNonNull(this.name, this.tags);
         }
 
-        public void setName(Name name) {
-            this.name = name;
+        public Optional<Calendar> getStartDate() {
+            return Optional.ofNullable(startDate);
+        }
+
+        public Optional<Calendar> getEndDate() {
+            return Optional.ofNullable(endDate);
         }
 
         public Optional<Name> getName() {
             return Optional.ofNullable(name);
         }
 
+        public Optional<Set<Tag>> getTags() {
+            return Optional.ofNullable(tags);
+        }
+
         public void setTags(Set<Tag> tags) {
             this.tags = tags;
         }
 
-        public Optional<Set<Tag>> getTags() {
-            return Optional.ofNullable(tags);
+        public void setName(Name name) {
+            this.name = name;
+        }
+
+        public void setStartDate(Calendar startDate) {
+            this.startDate = startDate;
+        }
+
+        public void setEndDate(Calendar endDate) {
+            this.endDate = endDate;
         }
 
         @Override
@@ -143,9 +183,9 @@ public abstract class EditCommand extends Command {
             // state check
             EditEntryDescriptor e = (EditEntryDescriptor) other;
 
-            return getName().equals(e.getName()) && getTags().equals(e.getTags());
+            return getName().equals(e.getName()) && getTags().equals(e.getTags())
+                   && getStartDate().equals(e.getStartDate()) && getEndDate().equals(e.getEndDate());
         }
     }
 
 }
-

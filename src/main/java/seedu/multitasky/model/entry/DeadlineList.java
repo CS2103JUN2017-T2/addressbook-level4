@@ -23,11 +23,11 @@ public class DeadlineList extends EntryList {
         super.add(toAdd);
         assert (toAdd instanceof Deadline);
 
-        internalList.add(new Deadline(toAdd));
+        internalList.add((Deadline) toAdd);
         sortInternalList();
     }
 
-    //@@author A0125586X
+    // @@author A0125586X
     /**
      * Overrides updateEntry in DeadlineList to sort after updating in case start date was changed.
      *

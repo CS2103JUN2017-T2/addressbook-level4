@@ -15,6 +15,7 @@ import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 import seedu.multitasky.model.tag.Tag;
+import seedu.multitasky.storage.exception.NothingToUndoException;
 
 //@@author A0126623L
 /**
@@ -66,10 +67,24 @@ public class ModelManager extends ComponentManager implements Model {
         raise(new EntryBookChangedEvent(_entryBook));
     }
 
+    // @@author A0132788U
     /** Raises an event when undo is entered */
-    private void indicateUndoAction() {
-        raise(new EntryBookToUndoEvent(_entryBook));
+    private void indicateUndoAction() throws NothingToUndoException {
+        EntryBookToUndoEvent undoEvent;
+        raise(undoEvent = new EntryBookToUndoEvent(_entryBook, ""));
+        if (undoEvent.getMessage().equals("undo successful")) {
+            _entryBook.resetData(undoEvent.getData());
+        } else {
+            throw new NothingToUndoException("");
+        }
     }
+
+    @Override
+    public void undoPreviousAction() throws NothingToUndoException {
+        indicateUndoAction();
+    }
+
+    // @@author
 
     @Override
     public synchronized void deleteEntry(ReadOnlyEntry target)
@@ -94,11 +109,6 @@ public class ModelManager extends ComponentManager implements Model {
 
         _entryBook.updateEntry(target, editedEntry);
         indicateEntryBookChanged();
-    }
-
-    @Override
-    public void undoPreviousAction() {
-        indicateUndoAction();
     }
 
     // =========== Filtered Entry List Accessors ===========

@@ -6,6 +6,7 @@ import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.storage.exception.NothingToUndoException;
 
 /**
  * The API of the Model component.
@@ -24,7 +25,7 @@ public interface Model {
     void addEntry(ReadOnlyEntry entry) throws DuplicateEntryException;
 
     /** Undo the previous data-changing action */
-    void undoPreviousAction();
+    void undoPreviousAction() throws NothingToUndoException;
 
     /**
      * Replaces the given entry {@code target} with {@code editedEntry}.

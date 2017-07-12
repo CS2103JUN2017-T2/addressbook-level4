@@ -2,7 +2,6 @@ package seedu.multitasky.model.entry;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
@@ -101,7 +100,7 @@ public abstract class EntryList implements Iterable<Entry> {
      * @throws DuplicateEntryException if {@code editedEntry} already exists in the list.
      */
     public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws DuplicateEntryException,
-                                                                             EntryNotFoundException {
+            EntryNotFoundException {
         requireNonNull(editedEntry);
 
         int index = internalList.indexOf(target);
@@ -111,7 +110,7 @@ public abstract class EntryList implements Iterable<Entry> {
 
         Entry entryToUpdate = internalList.get(index);
 
-        if (!entryToUpdate.equals(editedEntry) && internalList.contains(editedEntry)) {
+        if (internalList.contains(editedEntry)) {
             throw new DuplicateEntryException();
         }
 
@@ -123,7 +122,7 @@ public abstract class EntryList implements Iterable<Entry> {
         internalList.set(index, entryToUpdate);
     }
 
-    //@@author A0125586X
+    // @@author A0125586X
     /**
      * Sorts the internal list by the Comparable interface already implemented for the various
      * Entry subclasses
@@ -131,5 +130,5 @@ public abstract class EntryList implements Iterable<Entry> {
     protected void sortInternalList() {
         Collections.sort(internalList);
     }
-    //@@author
+    // @@author
 }

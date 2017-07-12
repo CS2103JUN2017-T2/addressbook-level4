@@ -22,6 +22,11 @@ public interface EntryBookStorage {
     String getEntryBookSnapshotPath();
 
     /**
+     * Returns the file path of the most current snapshot to be deleted after exit.
+     */
+    String getFilePathForDeletion();
+
+    /**
      * Returns EntryBook data as a {@link ReadOnlyEntryBook}.
      * Returns {@code Optional.empty()} if storage file is not found.
      *

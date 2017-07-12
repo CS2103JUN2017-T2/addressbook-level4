@@ -6,9 +6,9 @@ import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.logic.commands.AddCommand;
 import seedu.multitasky.logic.commands.DeleteCommand;
 import seedu.multitasky.logic.parser.CliSyntax;
+import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.Event;
-import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.FloatingTask;
 
 //@@author A0125586X
@@ -39,6 +39,20 @@ public class EntryUtil {
     }
 
     /**
+     * Returns a delete command string for deleting an event by index.
+     */
+    public static String getEventDeleteByIndexCommand(Index index) {
+        return DeleteCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_EVENT + " " + index.getOneBased();
+    }
+
+    /**
+     * Returns a delete command string for deleting a deadline by index.
+     */
+    public static String getDeadlineDeleteByIndexCommand(Index index) {
+        return DeleteCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_DEADLINE + " " + index.getOneBased();
+    }
+
+    /**
      * Returns a delete command string for deleting a floating task by index.
      */
     public static String getFloatingTaskDeleteByIndexCommand(Index index) {
@@ -58,9 +72,7 @@ public class EntryUtil {
                .append(CliSyntax.PREFIX_TO + " ")
                .append(getDateDetailsAsInputString(entry.getEndDateAndTime()) + " ");
         builder.append(CliSyntax.PREFIX_TAG + " ");
-        entry.getTags().stream().forEach(
-            s -> builder.append(s.tagName + " ")
-        );
+        entry.getTags().stream().forEach(s -> builder.append(s.tagName + " "));
         return builder.toString();
     }
 
@@ -75,9 +87,7 @@ public class EntryUtil {
                .append(CliSyntax.PREFIX_BY + " ")
                .append(getDateDetailsAsInputString(entry.getEndDateAndTime()) + " ");
         builder.append(CliSyntax.PREFIX_TAG + " ");
-        entry.getTags().stream().forEach(
-            s -> builder.append(s.tagName + " ")
-        );
+        entry.getTags().stream().forEach(s -> builder.append(s.tagName + " "));
         return builder.toString();
     }
 
@@ -90,9 +100,7 @@ public class EntryUtil {
         StringBuilder builder = new StringBuilder();
         builder.append(entry.getName().toString() + " ");
         builder.append(CliSyntax.PREFIX_TAG + " ");
-        entry.getTags().stream().forEach(
-            s -> builder.append(s.tagName + " ")
-        );
+        entry.getTags().stream().forEach(s -> builder.append(s.tagName + " "));
         return builder.toString();
     }
 

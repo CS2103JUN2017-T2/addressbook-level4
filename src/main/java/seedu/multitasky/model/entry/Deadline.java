@@ -78,9 +78,10 @@ public class Deadline extends Entry {
                || this.isSameStateAs((ReadOnlyEntry) other);
     }
 
-    //@@author A0125586X
+    // @@author A0125586X
     /**
      * Compares this to another deadline for sorting by due(end) date.
+     *
      * @return <0 if this deadline is sooner, 0 if they're the same, and >0 if this deadline is later
      */
     @Override
