@@ -10,6 +10,7 @@ import com.google.common.eventbus.Subscribe;
 import seedu.multitasky.commons.core.ComponentManager;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
+import seedu.multitasky.commons.events.model.EntryBookToRedoEvent;
 import seedu.multitasky.commons.events.model.EntryBookToUndoEvent;
 import seedu.multitasky.commons.events.storage.DataSavingExceptionEvent;
 import seedu.multitasky.commons.exceptions.DataConversionException;
@@ -82,6 +83,11 @@ public class StorageManager extends ComponentManager implements Storage {
         return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
     }
 
+    public static String getNextEntryBookSnapshotPath() {
+        UserPrefs.incrementIndexByOne();
+        return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
+    }
+
     // @@author
     @Override
     public Optional<ReadOnlyEntryBook> readEntryBook() throws DataConversionException, IOException {
@@ -116,6 +122,16 @@ public class StorageManager extends ComponentManager implements Storage {
             ReadOnlyEntryBook undoData = XmlFileStorage
                     .loadDataFromSaveFile(new File(getPreviousEntryBookSnapshotPath()));
             return new EntryBook(undoData);
+        } catch (Exception e) {
+            throw new Exception("Nothing to Undo!");
+        }
+    }
+
+    public EntryBook loadRedoData() throws Exception {
+        try {
+            ReadOnlyEntryBook redoData = XmlFileStorage
+                    .loadDataFromSaveFile(new File(getNextEntryBookSnapshotPath()));
+            return new EntryBook(redoData);
         } catch (Exception e) {
             throw new Exception("Nothing to Undo!");
         }
@@ -185,6 +201,23 @@ public class StorageManager extends ComponentManager implements Storage {
         } catch (Exception e) {
             event.setMessage(e.getMessage());
             UserPrefs.incrementIndexByOne();
+        }
+    }
+
+    @Override
+    @Subscribe
+    public void handleEntryBookToRedoEvent(EntryBookToRedoEvent event) throws Exception {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Load next snapshot"));
+        try {
+            EntryBook entry = loadRedoData();
+            saveEntryBook(entry);
+            event.setData(entry);
+            event.setMessage("redo successful");
+        } catch (IOException e) {
+            raise(new DataSavingExceptionEvent(e));
+        } catch (Exception e) {
+            event.setMessage(e.getMessage());
+            UserPrefs.decrementIndexByOne();
         }
     }
 }

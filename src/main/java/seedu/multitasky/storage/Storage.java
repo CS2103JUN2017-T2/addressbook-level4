@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
+import seedu.multitasky.commons.events.model.EntryBookToRedoEvent;
 import seedu.multitasky.commons.events.model.EntryBookToUndoEvent;
 import seedu.multitasky.commons.events.storage.DataSavingExceptionEvent;
 import seedu.multitasky.commons.exceptions.DataConversionException;
@@ -44,4 +45,6 @@ public interface Storage extends EntryBookStorage, UserPrefsStorage {
      * @throws Exception
      */
     void handleEntryBookToUndoEvent(EntryBookToUndoEvent defg) throws DataConversionException, Exception;
+
+    void handleEntryBookToRedoEvent(EntryBookToRedoEvent hijk) throws Exception;
 }
