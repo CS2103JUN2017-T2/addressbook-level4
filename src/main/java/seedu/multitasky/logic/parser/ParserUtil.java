@@ -1,6 +1,9 @@
 package seedu.multitasky.logic.parser;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_DEADLINE;
+import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_EVENT;
+import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
 
 import java.util.Calendar;
 import java.util.Collection;
@@ -11,10 +14,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.commons.util.StringUtil;
+import seedu.multitasky.model.Model;
 import seedu.multitasky.model.entry.Name;
+import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.tag.Tag;
 
 /**
@@ -52,7 +58,8 @@ public class ParserUtil {
      */
     public static Optional<Calendar> parseDate(Optional<String> inputArgs) throws IllegalValueException {
         requireNonNull(inputArgs);
-        return inputArgs.isPresent() ? Optional.of(DateUtil.stringToCalendar(inputArgs.get(), null)) : Optional.empty();
+        return inputArgs.isPresent() ? Optional.of(DateUtil.stringToCalendar(inputArgs.get(), null))
+                                     : Optional.empty();
     }
 
     /**
@@ -89,16 +96,37 @@ public class ParserUtil {
     }
 
     /**
-     * Filters out Prefix's not mapped to anything in {@argMultimap}, and returns prefix that has arguments mapped
-     * to it.
-     *
+     * Filters out Prefix's not mapped to anything in ArgumentMultimap parameter, and returns prefix that has
+     * arguments
+     * mapped to it.
      * Precondition: 1 and only 1 Prefix of the given argument prefixes have arguments mapped to it.
      */
-    public static Prefix getDatePrefix(ArgumentMultimap argMultimap, Prefix... prefixes) {
+    public static Prefix getMainPrefix(ArgumentMultimap argMultimap, Prefix... prefixes) {
         List<Prefix> temp = Stream.of(prefixes).filter(prefix -> argMultimap.getValue(prefix).isPresent())
                                   .collect(Collectors.toList());
-        assert (temp.size() <= 1) : "invalid flag combination not catched beforehand or no Prefixes found!";
+        assert (temp.size() == 1) : "More than one or zero Prefixes found in getMainPrefix!";
         return temp.get(0);
+    }
+
+    /**
+     * Method to obtain the correct UnmodifiableObservableList from Model according to input Prefix parameter
+     * and return it.
+     */
+    public static UnmodifiableObservableList<ReadOnlyEntry> getListIndicatedByPrefix(
+                Model model, Prefix listIndicatorPrefix) {
+        UnmodifiableObservableList<ReadOnlyEntry> indicatedList;
+        assert listIndicatorPrefix != null;
+        if (listIndicatorPrefix.equals(PREFIX_FLOATINGTASK)) {
+            indicatedList = model.getFilteredFloatingTaskList();
+        } else if (listIndicatorPrefix.equals(PREFIX_DEADLINE)) {
+            indicatedList = model.getFilteredDeadlineList();
+        } else if (listIndicatorPrefix.equals(PREFIX_EVENT)) {
+            indicatedList = model.getFilteredEventList();
+        } else {
+            indicatedList = null;
+            assert false : "DeleteByIndexCommand must be initialized with a proper listIndicatorPrefix!";
+        }
+        return indicatedList;
     }
 
 }

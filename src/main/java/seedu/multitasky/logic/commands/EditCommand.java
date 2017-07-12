@@ -106,12 +106,16 @@ public abstract class EditCommand extends Command {
      * will replace the corresponding field value of the entry.
      */
     public static class EditEntryDescriptor {
-        private Name name = null;
-        private Set<Tag> tags = null;
-        private Calendar startDate = null;
-        private Calendar endDate = null;
+        private Name name;
+        private Set<Tag> tags;
+        private Calendar startDate;
+        private Calendar endDate;
 
         public EditEntryDescriptor() {
+            name = null;
+            tags = null;
+            startDate = null;
+            endDate = null;
         }
 
         public EditEntryDescriptor(EditEntryDescriptor toCopy) {
@@ -133,7 +137,7 @@ public abstract class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(this.name, this.tags);
+            return CollectionUtil.isAnyNonNull(this.name, this.tags, this.startDate, this.endDate);
         }
 
         public Optional<Calendar> getStartDate() {

@@ -87,8 +87,8 @@ public class AddCommandParser {
         } else if (isEvent()) {
             try {
                 Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
-                Prefix startDatePrefix = ParserUtil.getDatePrefix(argMultimap, PREFIX_FROM, PREFIX_AT);
-                Prefix endDatePrefix = ParserUtil.getDatePrefix(argMultimap, PREFIX_TO, PREFIX_BY);
+                Prefix startDatePrefix = ParserUtil.getMainPrefix(argMultimap, PREFIX_FROM, PREFIX_AT);
+                Prefix endDatePrefix = ParserUtil.getMainPrefix(argMultimap, PREFIX_TO, PREFIX_BY);
 
                 endDate = DateUtil.stringToCalendar(argMultimap.getValue(endDatePrefix).get(),
                                                     null);

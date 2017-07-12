@@ -83,7 +83,7 @@ public class EditCommandParserTest {
                                                                          .withTags(VALID_TAG_HUSBAND,
                                                                                    VALID_TAG_FRIEND)
                                                                          .build();
-        EditCommand expectedCommand = new EditByIndexCommand(targetIndex, descriptor);
+        EditCommand expectedCommand = new EditByIndexCommand(targetIndex, PREFIX_FLOATINGTASK, descriptor);
 
         assertParseSuccess(userInput, expectedCommand);
     }
@@ -95,7 +95,7 @@ public class EditCommandParserTest {
 
         EditEntryDescriptor descriptor = new EditEntryDescriptorBuilder().withName(VALID_NAME_BOB)
                                                                          .withTags(VALID_TAG_HUSBAND).build();
-        EditCommand expectedCommand = new EditByIndexCommand(targetIndex, descriptor);
+        EditCommand expectedCommand = new EditByIndexCommand(targetIndex, PREFIX_FLOATINGTASK, descriptor);
 
         assertParseSuccess(userInput, expectedCommand);
     }
@@ -106,13 +106,13 @@ public class EditCommandParserTest {
         Index targetIndex = INDEX_THIRD_ENTRY;
         String userInput = PREFIX_FLOAT + targetIndex.getOneBased() + NAME_DESC_AMY;
         EditEntryDescriptor descriptor = new EditEntryDescriptorBuilder().withName(VALID_NAME_AMY).build();
-        EditCommand expectedCommand = new EditByIndexCommand(targetIndex, descriptor);
+        EditCommand expectedCommand = new EditByIndexCommand(targetIndex, PREFIX_FLOATINGTASK, descriptor);
         assertParseSuccess(userInput, expectedCommand);
 
         // tags
         userInput = PREFIX_FLOAT + targetIndex.getOneBased() + TAG_DESC_FRIEND;
         descriptor = new EditEntryDescriptorBuilder().withTags(VALID_TAG_FRIEND).build();
-        expectedCommand = new EditByIndexCommand(targetIndex, descriptor);
+        expectedCommand = new EditByIndexCommand(targetIndex, PREFIX_FLOATINGTASK, descriptor);
         assertParseSuccess(userInput, expectedCommand);
     }
 
@@ -125,7 +125,7 @@ public class EditCommandParserTest {
         EditEntryDescriptor descriptor = new EditEntryDescriptorBuilder().withTags(VALID_TAG_FRIEND,
                                                                                    VALID_TAG_HUSBAND)
                                                                          .build();
-        EditCommand expectedCommand = new EditByIndexCommand(targetIndex, descriptor);
+        EditCommand expectedCommand = new EditByIndexCommand(targetIndex, PREFIX_FLOATINGTASK, descriptor);
 
         assertParseSuccess(userInput, expectedCommand);
     }
@@ -136,7 +136,7 @@ public class EditCommandParserTest {
         Index targetIndex = INDEX_FIRST_ENTRY;
         String userInput = PREFIX_FLOAT + targetIndex.getOneBased() + INVALID_NAME_DESC + NAME_DESC_BOB;
         EditEntryDescriptor descriptor = new EditEntryDescriptorBuilder().withName(VALID_NAME_BOB).build();
-        EditCommand expectedCommand = new EditByIndexCommand(targetIndex, descriptor);
+        EditCommand expectedCommand = new EditByIndexCommand(targetIndex, PREFIX_FLOATINGTASK, descriptor);
         assertParseSuccess(userInput, expectedCommand);
 
         // other valid values specified
@@ -144,7 +144,7 @@ public class EditCommandParserTest {
                     + TAG_DESC_HUSBAND + NAME_DESC_BOB;
         descriptor = new EditEntryDescriptorBuilder().withName(VALID_NAME_BOB)
                                                      .withTags(VALID_TAG_HUSBAND).build();
-        expectedCommand = new EditByIndexCommand(targetIndex, descriptor);
+        expectedCommand = new EditByIndexCommand(targetIndex, PREFIX_FLOATINGTASK, descriptor);
         assertParseSuccess(userInput, expectedCommand);
     }
 
@@ -154,7 +154,7 @@ public class EditCommandParserTest {
         String userInput = PREFIX_FLOAT + targetIndex.getOneBased() + TAG_EMPTY;
 
         EditEntryDescriptor descriptor = new EditEntryDescriptorBuilder().withTags().build();
-        EditCommand expectedCommand = new EditByIndexCommand(targetIndex, descriptor);
+        EditCommand expectedCommand = new EditByIndexCommand(targetIndex, PREFIX_FLOATINGTASK, descriptor);
 
         assertParseSuccess(userInput, expectedCommand);
     }
