@@ -23,7 +23,7 @@ public class DeadlineList extends EntryList {
         super.add(toAdd);
         assert (toAdd instanceof Deadline);
 
-        internalList.add(new Deadline(toAdd));
+        internalList.add((Deadline) toAdd);
         sortInternalList();
     }
 

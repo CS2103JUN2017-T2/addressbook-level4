@@ -23,7 +23,7 @@ public class EventList extends EntryList {
         super.add(toAdd);
         assert (toAdd instanceof Event);
 
-        internalList.add(new Event(toAdd));
+        internalList.add((Event) toAdd);
         sortInternalList();
     }
     // @@author
