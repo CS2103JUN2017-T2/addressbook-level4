@@ -17,7 +17,7 @@ import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.ReadOnlyEntryBook;
 import seedu.multitasky.model.UserPrefs;
 import seedu.multitasky.testutil.EventsCollector;
-import seedu.multitasky.testutil.TypicalEntries;
+import seedu.multitasky.testutil.SampleEntries;
 
 public class StorageManagerTest {
 
@@ -58,7 +58,7 @@ public class StorageManagerTest {
          * {@link XmlEntryBookStorage} class.
          * More extensive testing of UserPref saving/reading is done in {@link XmlEntryBookStorageTest} class.
          */
-        EntryBook original = new TypicalEntries().getTypicalEntryBook();
+        EntryBook original = SampleEntries.getSampleEntryBook();
         storageManager.saveEntryBook(original);
         ReadOnlyEntryBook retrieved = storageManager.readEntryBook().get();
         assertEquals(original, new EntryBook(retrieved));

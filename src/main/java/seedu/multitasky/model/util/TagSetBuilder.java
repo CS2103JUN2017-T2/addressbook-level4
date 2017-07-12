@@ -15,7 +15,7 @@ public class TagSetBuilder {
     /**
      * Returns a tag set containing the list of strings given.
      */
-    public static Set<Tag> generateTagSet(String... strings) throws IllegalValueException {
+    public static Set<Tag> getTagSet(String... strings) throws IllegalValueException {
         HashSet<Tag> tags = new HashSet<>();
         for (String s : strings) {
             tags.add(new Tag(s));

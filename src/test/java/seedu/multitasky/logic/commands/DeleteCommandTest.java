@@ -1,8 +1,8 @@
 package seedu.multitasky.logic.commands;
 
 import static org.junit.Assert.assertTrue;
-import static seedu.multitasky.testutil.TypicalEntries.INDEX_FIRST_ENTRY;
-import static seedu.multitasky.testutil.TypicalEntries.INDEX_SECOND_ENTRY;
+import static seedu.multitasky.testutil.SampleEntries.INDEX_FIRST_ENTRY;
+import static seedu.multitasky.testutil.SampleEntries.INDEX_SECOND_ENTRY;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -18,7 +18,7 @@ import seedu.multitasky.model.Model;
 import seedu.multitasky.model.ModelManager;
 import seedu.multitasky.model.UserPrefs;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
-import seedu.multitasky.testutil.TypicalEntries;
+import seedu.multitasky.testutil.SampleEntries;
 
 //TODO implement delete by find tests and separate out delete by index / abstract class delete tests from here.
 /**
@@ -26,7 +26,7 @@ import seedu.multitasky.testutil.TypicalEntries;
  */
 public class DeleteCommandTest {
 
-    private Model model = new ModelManager(new TypicalEntries().getTypicalEntryBook(), new UserPrefs());
+    private Model model = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
 
     @Test
     public void execute_validIndexUnfilteredList_success() throws Exception {

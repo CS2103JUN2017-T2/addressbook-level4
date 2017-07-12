@@ -8,6 +8,7 @@ import org.junit.Test;
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.logic.commands.ClearCommand;
 import seedu.multitasky.testutil.EntryUtil;
+import seedu.multitasky.testutil.SampleEntries;
 
 //@@author A0125586X
 public class ClearCommandTest extends EntryBookGuiTest {
@@ -35,22 +36,22 @@ public class ClearCommandTest extends EntryBookGuiTest {
     @Test
     public void clear_addEventAfterClear_success() {
         assertClearCommandSuccess();
-        commandBox.runCommand(EntryUtil.getEventAddCommand(typicalEntries.cat));
-        assertTrue(eventListPanel.isListMatching(typicalEntries.cat));
+        commandBox.runCommand(EntryUtil.getEventAddCommand(SampleEntries.CAT));
+        assertTrue(eventListPanel.isListMatching(SampleEntries.CAT));
     }
 
     @Test
     public void clear_addDeadlineAfterClear_success() {
         assertClearCommandSuccess();
-        commandBox.runCommand(EntryUtil.getDeadlineAddCommand(typicalEntries.submission));
-        assertTrue(deadlineListPanel.isListMatching(typicalEntries.submission));
+        commandBox.runCommand(EntryUtil.getDeadlineAddCommand(SampleEntries.SUBMISSION));
+        assertTrue(deadlineListPanel.isListMatching(SampleEntries.SUBMISSION));
     }
 
     @Test
     public void clear_addFloatingTaskAfterClear_success() {
         assertClearCommandSuccess();
-        commandBox.runCommand(EntryUtil.getFloatingTaskAddCommand(typicalEntries.clean));
-        assertTrue(floatingTaskListPanel.isListMatching(typicalEntries.clean));
+        commandBox.runCommand(EntryUtil.getFloatingTaskAddCommand(SampleEntries.CLEAN));
+        assertTrue(floatingTaskListPanel.isListMatching(SampleEntries.CLEAN));
     }
 
     /**************************************

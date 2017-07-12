@@ -10,8 +10,8 @@ import seedu.multitasky.logic.commands.DeleteCommand;
 import seedu.multitasky.logic.parser.CliSyntax;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.testutil.EntryUtil;
+import seedu.multitasky.testutil.SampleEntries;
 import seedu.multitasky.testutil.TestUtil;
-import seedu.multitasky.testutil.TypicalEntries;
 
 //@@author A0125586X
 public class DeleteCommandTest extends EntryBookGuiTest {
@@ -21,49 +21,49 @@ public class DeleteCommandTest extends EntryBookGuiTest {
      ********************/
     @Test
     public void delete_firstEventByIndex_success() {
-        Entry[] currentList = typicalEntries.getTypicalEvents();
-        Index targetIndex = TypicalEntries.INDEX_FIRST_ENTRY;
+        Entry[] currentList = SampleEntries.getSampleEvents();
+        Index targetIndex = SampleEntries.INDEX_FIRST_ENTRY;
         assertDeleteEventSuccess(targetIndex, currentList);
     }
 
     @Test
     public void delete_lastEventByIndex_success() {
-        Entry[] currentList = typicalEntries.getTypicalEvents();
+        Entry[] currentList = SampleEntries.getSampleEvents();
         Index targetIndex = Index.fromOneBased(currentList.length);
         assertDeleteEventSuccess(targetIndex, currentList);
     }
 
     @Test
     public void delete_firstDeadlineByIndex_success() {
-        Entry[] currentList = typicalEntries.getTypicalDeadlines();
-        Index targetIndex = TypicalEntries.INDEX_FIRST_ENTRY;
+        Entry[] currentList = SampleEntries.getSampleDeadlines();
+        Index targetIndex = SampleEntries.INDEX_FIRST_ENTRY;
         assertDeleteDeadlineSuccess(targetIndex, currentList);
     }
 
     @Test
     public void delete_lastDeadlineByIndex_success() {
-        Entry[] currentList = typicalEntries.getTypicalDeadlines();
+        Entry[] currentList = SampleEntries.getSampleDeadlines();
         Index targetIndex = Index.fromOneBased(currentList.length);
         assertDeleteDeadlineSuccess(targetIndex, currentList);
     }
 
     @Test
     public void delete_firstFloatingTaskByIndex_success() {
-        Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
-        Index targetIndex = TypicalEntries.INDEX_FIRST_ENTRY;
+        Entry[] currentList = SampleEntries.getSampleFloatingTasks();
+        Index targetIndex = SampleEntries.INDEX_FIRST_ENTRY;
         assertDeleteFloatingTaskSuccess(targetIndex, currentList);
     }
 
     @Test
     public void delete_lastFloatingTaskByIndex_success() {
-        Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
+        Entry[] currentList = SampleEntries.getSampleFloatingTasks();
         Index targetIndex = Index.fromOneBased(currentList.length);
         assertDeleteFloatingTaskSuccess(targetIndex, currentList);
     }
 
     @Test
     public void delete_invalidFloatingTaskIndex_errorMessage() {
-        Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
+        Entry[] currentList = SampleEntries.getSampleFloatingTasks();
         Index targetIndex = Index.fromOneBased(currentList.length + 1);
         commandBox.runCommand(EntryUtil.getFloatingTaskDeleteByIndexCommand(targetIndex));
         assertResultMessage(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
@@ -148,8 +148,8 @@ public class DeleteCommandTest extends EntryBookGuiTest {
     }
 
     private void assertDeleteWithCommandWord(String commandWord) {
-        Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
-        Index targetIndex = TypicalEntries.INDEX_FIRST_ENTRY;
+        Entry[] currentList = SampleEntries.getSampleFloatingTasks();
+        Index targetIndex = SampleEntries.INDEX_FIRST_ENTRY;
         Entry entryToDelete = currentList[targetIndex.getZeroBased()];
         commandBox.runCommand(commandWord + " " + CliSyntax.PREFIX_FLOATINGTASK
                 + " " + targetIndex.getOneBased());

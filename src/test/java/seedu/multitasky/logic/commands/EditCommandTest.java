@@ -5,8 +5,8 @@ import static org.junit.Assert.assertTrue;
 import static seedu.multitasky.testutil.EditCommandTestUtil.DESC_AMY;
 import static seedu.multitasky.testutil.EditCommandTestUtil.DESC_BOB;
 import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_NAME_BOB;
-import static seedu.multitasky.testutil.TypicalEntries.INDEX_FIRST_ENTRY;
-import static seedu.multitasky.testutil.TypicalEntries.INDEX_SECOND_ENTRY;
+import static seedu.multitasky.testutil.SampleEntries.INDEX_FIRST_ENTRY;
+import static seedu.multitasky.testutil.SampleEntries.INDEX_SECOND_ENTRY;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -22,14 +22,14 @@ import seedu.multitasky.model.ModelManager;
 import seedu.multitasky.model.UserPrefs;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.testutil.EditEntryDescriptorBuilder;
-import seedu.multitasky.testutil.TypicalEntries;
+import seedu.multitasky.testutil.SampleEntries;
 
 /**
  * Contains integration tests (interaction with the Model) and unit tests for EditCommand.
  */
 public class EditCommandTest {
 
-    private Model model = new ModelManager(new TypicalEntries().getTypicalEntryBook(), new UserPrefs());
+    private Model model = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
 
     /*
     @Test

@@ -37,7 +37,7 @@ public class AddCommandTest {
     @Test
     public void execute_entryAcceptedByModel_addSuccessful() throws Exception {
         ModelStubAcceptingEntryAdded modelStub = new ModelStubAcceptingEntryAdded();
-        Entry validEntry = new EntryBuilder().build();
+        Entry validEntry = EntryBuilder.build();
 
         CommandResult commandResult = getAddCommandForEntry(validEntry, modelStub).execute();
 
