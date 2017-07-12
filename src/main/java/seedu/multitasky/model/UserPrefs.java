@@ -10,7 +10,7 @@ import seedu.multitasky.commons.core.GuiSettings;
 // @@author A0132788U
 public class UserPrefs {
     /** Index to maintain snapshot file number */
-    private static int index = 1;
+    private static int index = 0;
     /** Snapshot file path without index and xml */
     private static String entryBookSnapshotPath = "data/snapshots/entrybook";
     // @@author
@@ -58,11 +58,11 @@ public class UserPrefs {
      * Methods to update the indices when files are created during mutation/deleted during exit
      */
     public static void incrementIndexByOne() {
-        UserPrefs.setIndex(UserPrefs.getIndex() + 1);
+        index++;
     }
 
     public static void decrementIndexByOne() {
-        UserPrefs.setIndex(UserPrefs.getIndex() - 1);
+        index--;
     }
 
     // @@author

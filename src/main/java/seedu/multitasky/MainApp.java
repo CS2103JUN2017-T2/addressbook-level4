@@ -1,6 +1,5 @@
 package seedu.multitasky;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
@@ -15,6 +14,7 @@ import seedu.multitasky.commons.core.Config;
 import seedu.multitasky.commons.core.EventsCenter;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.core.Version;
+import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
 import seedu.multitasky.commons.events.ui.ExitAppRequestEvent;
 import seedu.multitasky.commons.exceptions.DataConversionException;
 import seedu.multitasky.commons.util.ConfigUtil;
@@ -90,6 +90,7 @@ public class MainApp extends Application {
                 initialData = SampleDataUtil.getSampleEntryBook();
             } else {
                 initialData = entryBookOptional.get();
+                storage.handleEntryBookChangedEvent(new EntryBookChangedEvent(initialData));
             }
         } catch (DataConversionException e) {
             logger.warning("Data file not in the correct format. Will be starting with an empty EntryBook");
@@ -146,8 +147,8 @@ public class MainApp extends Application {
             Optional<UserPrefs> prefsOptional = storage.readUserPrefs();
             initializedPrefs = prefsOptional.orElse(new UserPrefs());
         } catch (DataConversionException e) {
-            logger.warning(
-                "UserPrefs file at " + prefsFilePath + " is not in the correct format. " + "Using default user prefs");
+            logger.warning("UserPrefs file at " + prefsFilePath + " is not in the correct format. "
+                           + "Using default user prefs");
             initializedPrefs = new UserPrefs();
         } catch (IOException e) {
             logger.warning("Problem while reading from the file. Will be starting with an empty EntryBook");
@@ -189,28 +190,15 @@ public class MainApp extends Application {
 
     // @@author A0132788U
     /**
-     * Deletes all the snapshot files when the program exits as they are no longer needed.
-     */
-    public void deleteAllSnapshotFiles() {
-        String filePath;
-        File toDelete;
-        while (UserPrefs.getIndex() != 0) {
-            filePath = storage.getEntryBookSnapshotPath();
-            toDelete = new File(filePath);
-            toDelete.delete();
-            UserPrefs.decrementIndexByOne();
-        }
-    }
-
-    /**
      * Logs the info, deletes snapshot files, and then exits the app.
      */
     @Subscribe
     public void handleExitAppRequestEvent(ExitAppRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        deleteAllSnapshotFiles();
+        event.deleteAllSnapshotFiles(storage);
         this.stop();
     }
+    // @@author
 
     public static void main(String[] args) {
         launch(args);

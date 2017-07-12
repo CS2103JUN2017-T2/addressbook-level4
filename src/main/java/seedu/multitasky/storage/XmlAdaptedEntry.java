@@ -34,6 +34,7 @@ public class XmlAdaptedEntry {
     @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
 
+    /** Formatter to parse date into a human-editable string to store in the XML file */
     private DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm");
 
     /**
