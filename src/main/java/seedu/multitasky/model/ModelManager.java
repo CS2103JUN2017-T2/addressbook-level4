@@ -10,11 +10,13 @@ import seedu.multitasky.commons.core.ComponentManager;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
+import seedu.multitasky.commons.events.model.EntryBookToRedoEvent;
 import seedu.multitasky.commons.events.model.EntryBookToUndoEvent;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 import seedu.multitasky.model.tag.Tag;
+import seedu.multitasky.storage.exception.NothingToRedoException;
 import seedu.multitasky.storage.exception.NothingToUndoException;
 
 //@@author A0126623L
@@ -79,9 +81,24 @@ public class ModelManager extends ComponentManager implements Model {
         }
     }
 
+    private void indicateRedoAction() throws NothingToRedoException {
+        EntryBookToRedoEvent redoEvent;
+        raise(redoEvent = new EntryBookToRedoEvent(_entryBook, ""));
+        if (redoEvent.getMessage().equals("redo successful")) {
+            _entryBook.resetData(redoEvent.getData());
+        } else {
+            throw new NothingToRedoException("");
+        }
+    }
+
     @Override
     public void undoPreviousAction() throws NothingToUndoException {
         indicateUndoAction();
+    }
+
+    @Override
+    public void redoPreviousAction() throws NothingToRedoException {
+        indicateRedoAction();
     }
 
     // @@author

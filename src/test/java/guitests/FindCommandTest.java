@@ -10,6 +10,7 @@ import seedu.multitasky.logic.commands.DeleteCommand;
 import seedu.multitasky.logic.commands.FindCommand;
 import seedu.multitasky.logic.parser.CliSyntax;
 import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.testutil.SampleEntries;
 
 //@@author A0125586X
 public class FindCommandTest extends EntryBookGuiTest {
@@ -21,19 +22,19 @@ public class FindCommandTest extends EntryBookGuiTest {
 
     @Test
     public void find_matchingKeyword_singleResult() {
-        assertFindFloatingTaskResult("programming", 1, typicalEntries.programming);
+        assertFindFloatingTaskResult("PROGRAMMING", 1, SampleEntries.PROGRAMMING);
     }
 
     @Test
     public void find_matchingKeyword_multipleResults() {
-        assertFindFloatingTaskResult("learn", 2, typicalEntries.cook, typicalEntries.programming);
+        assertFindFloatingTaskResult("learn", 2, SampleEntries.COOK, SampleEntries.PROGRAMMING);
     }
 
     @Test
     public void find_matchingKeywordAfterDeleting_singleResult() {
-        assertFindFloatingTaskResult("learn", 2, typicalEntries.cook, typicalEntries.programming);
+        assertFindFloatingTaskResult("learn", 2, SampleEntries.COOK, SampleEntries.PROGRAMMING);
         commandBox.runCommand(DeleteCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_FLOATINGTASK + " 1");
-        assertFindFloatingTaskResult("learn", 1, typicalEntries.programming);
+        assertFindFloatingTaskResult("learn", 1, SampleEntries.PROGRAMMING);
     }
 
     @Test
@@ -117,8 +118,8 @@ public class FindCommandTest extends EntryBookGuiTest {
     }
 
     private void assertFindWithCommandWord(String commandWord) {
-        commandBox.runCommand(commandWord + " programming");
-        assertFindFloatingTaskListMessage(1, typicalEntries.programming);
+        commandBox.runCommand(commandWord + " PROGRAMMING");
+        assertFindFloatingTaskListMessage(1, SampleEntries.PROGRAMMING);
     }
 
     private void assertFindFloatingTaskResult(String keywords, int numExpectedTotalResults,

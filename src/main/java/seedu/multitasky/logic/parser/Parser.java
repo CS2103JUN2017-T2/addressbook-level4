@@ -16,6 +16,7 @@ import seedu.multitasky.logic.commands.FindCommand;
 import seedu.multitasky.logic.commands.HelpCommand;
 import seedu.multitasky.logic.commands.HistoryCommand;
 import seedu.multitasky.logic.commands.ListCommand;
+import seedu.multitasky.logic.commands.RedoCommand;
 import seedu.multitasky.logic.commands.UndoCommand;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
 
@@ -66,6 +67,9 @@ public class Parser {
 
         case UndoCommand.COMMAND_WORD:
             return new UndoCommand();
+
+        case RedoCommand.COMMAND_WORD:
+            return new RedoCommand();
 
         case HistoryCommand.COMMAND_WORD:
             return new HistoryCommand();
