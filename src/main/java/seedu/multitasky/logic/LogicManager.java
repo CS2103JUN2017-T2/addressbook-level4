@@ -30,17 +30,20 @@ public class LogicManager extends ComponentManager implements Logic {
         this.parser = new Parser();
     }
 
+    // @@author A0140633R
     @Override
     public CommandResult execute(String commandText) throws CommandException, ParseException, DuplicateEntryException {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
         try {
             Command command = parser.parseCommand(commandText);
+            logger.info("User input successfully parsed into Command!");
             command.setData(model, history);
             return command.execute();
         } finally {
             history.add(commandText);
         }
     }
+    // @@author
 
     @Override
     public ObservableList<ReadOnlyEntry> getFilteredFloatingTaskList() {

@@ -86,7 +86,7 @@ public class DeleteCommandTest {
      * Returns a {@code DeleteCommand} with the parameter {@code index}.
      */
     private DeleteCommand prepareCommand(Index index) {
-        DeleteCommand deleteCommand = new DeleteByIndexCommand(index, new Prefix("/float"));
+        DeleteCommand deleteCommand = new DeleteByIndexCommand(index, new Prefix("float"));
         deleteCommand.setData(model, new CommandHistory());
         return deleteCommand;
     }
