@@ -27,10 +27,6 @@ import seedu.multitasky.model.tag.Tag;
 public class AddCommandParser {
     private ArgumentMultimap argMultimap;
 
-    public ArgumentMultimap getArgMultimap() {
-        return argMultimap;
-    }
-
     /**
      * Parses the given {@code String} of arguments in the context of the
      * AddCommand and returns an AddCommand object for execution.
@@ -39,6 +35,8 @@ public class AddCommandParser {
     public AddCommand parse(String args) throws ParseException {
         argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_BY, PREFIX_AT, PREFIX_FROM,
                                                  PREFIX_TO, PREFIX_TAG);
+        argMultimap.bringUnusedPrefixArgsToPreamble(PREFIX_BY, PREFIX_AT, PREFIX_FROM,
+                                                    PREFIX_TO, PREFIX_TAG);
         Calendar startDate = null;
         Calendar endDate = null;
         Prefix datePrefix;
