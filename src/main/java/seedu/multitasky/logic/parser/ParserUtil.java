@@ -97,15 +97,16 @@ public class ParserUtil {
 
     /**
      * Filters out Prefix's not mapped to anything in ArgumentMultimap parameter, and returns prefix that has
-     * arguments
-     * mapped to it.
+     * arguments mapped to it.
      * Precondition: 1 and only 1 Prefix of the given argument prefixes have arguments mapped to it.
      */
     public static Prefix getMainPrefix(ArgumentMultimap argMultimap, Prefix... prefixes) {
-        List<Prefix> temp = Stream.of(prefixes).filter(prefix -> argMultimap.getValue(prefix).isPresent())
+        List<Prefix> tempList = Stream.of(prefixes).filter(prefix -> argMultimap.getValue(prefix).isPresent())
                                   .collect(Collectors.toList());
-        assert (temp.size() == 1) : "More than one or zero Prefixes found in getMainPrefix!";
-        return temp.get(0);
+        if (tempList.size() != 1) {
+            throw new AssertionError("More than one or zero Prefixes found in getMainPrefix");
+        }
+        return tempList.get(0);
     }
 
     /**
