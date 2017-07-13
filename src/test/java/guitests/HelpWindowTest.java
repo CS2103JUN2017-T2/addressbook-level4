@@ -8,7 +8,7 @@ import guitests.guihandles.HelpWindowHandle;
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.logic.commands.HelpCommand;
 
-//@@author A0125586X
+// @@author A0125586X
 public class HelpWindowTest extends EntryBookGuiTest {
 
     @Test

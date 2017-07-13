@@ -16,7 +16,7 @@ import seedu.multitasky.testutil.EntryUtil;
 import seedu.multitasky.testutil.SampleEntries;
 import seedu.multitasky.testutil.TestUtil;
 
-//@@author A0125586X
+// @@author A0125586X
 public class AddCommandTest extends EntryBookGuiTest {
 
     /***************************
@@ -188,7 +188,6 @@ public class AddCommandTest extends EntryBookGuiTest {
 
     /**
      * Adds an event to the entry book as well as to the supplied array
-     *
      */
     private Entry[] assertAddEvent(Entry entryToAdd, Entry... currentList) {
         assertAddEventSuccess(entryToAdd, currentList);
@@ -197,7 +196,6 @@ public class AddCommandTest extends EntryBookGuiTest {
 
     /**
      * Adds a deadline to the entry book as well as to the supplied array
-     *
      */
     private Entry[] assertAddDeadline(Entry entryToAdd, Entry... currentList) {
         assertAddDeadlineSuccess(entryToAdd, currentList);

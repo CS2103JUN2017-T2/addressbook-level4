@@ -13,7 +13,7 @@ import seedu.multitasky.testutil.EntryUtil;
 import seedu.multitasky.testutil.SampleEntries;
 import seedu.multitasky.testutil.TestUtil;
 
-//@@author A0125586X
+// @@author A0125586X
 public class DeleteCommandTest extends EntryBookGuiTest {
 
     /*********************

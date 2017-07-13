@@ -9,7 +9,7 @@ import seedu.multitasky.logic.commands.ClearCommand;
 import seedu.multitasky.testutil.EntryUtil;
 import seedu.multitasky.testutil.SampleEntries;
 
-//@@author A0125586X
+// @@author A0125586X
 public class ClearCommandTest extends EntryBookGuiTest {
 
     /*********************

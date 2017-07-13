@@ -12,7 +12,7 @@ import org.junit.Test;
 import seedu.multitasky.logic.commands.ListCommand;
 import seedu.multitasky.ui.CommandBox;
 
-//@@author A0125586X
+// @@author A0125586X
 public class CommandBoxTest extends EntryBookGuiTest {
 
     private static final String COMMAND_THAT_SUCCEEDS = ListCommand.COMMAND_WORD;

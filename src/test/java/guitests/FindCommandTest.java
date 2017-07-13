@@ -10,7 +10,7 @@ import seedu.multitasky.logic.commands.FindCommand;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.testutil.SampleEntries;
 
-//@@author A0125586X
+// @@author A0125586X
 public class FindCommandTest extends EntryBookGuiTest {
 
     /**************
