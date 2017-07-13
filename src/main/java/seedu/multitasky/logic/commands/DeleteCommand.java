@@ -17,7 +17,7 @@ public abstract class DeleteCommand extends Command {
             + " entry listing.\n"
             + "Format: " + COMMAND_WORD + " [" + "[" + "KEYWORDS" + "]" + " |"
             + " [" + String.join(" | ", CliSyntax.PREFIX_EVENT.toString(), CliSyntax.PREFIX_DEADLINE.toString(),
-            CliSyntax.PREFIX_FLOATINGTASK.toString()) + "]" + " INDEX" + "]"
+            CliSyntax.PREFIX_FLOATINGTASK.toString()) + "]" + " INDEX" + "]" + "\n"
             + "All possible flags for Delete : 'event', 'deadline', 'float'";
 
     public static final String MESSAGE_SUCCESS = "Entry deleted:" + "\n"

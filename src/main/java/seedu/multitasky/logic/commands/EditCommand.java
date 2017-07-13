@@ -1,9 +1,6 @@
 package seedu.multitasky.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
-import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_NAME;
-import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.Calendar;
 import java.util.Optional;
@@ -31,7 +28,7 @@ public abstract class EditCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + " : Edits the entry identified by keywords"
             + " if it is the only entry found, or edits the entry identified by the index number of the last"
-            + " entry listing. Existing values will be overwritten by the input values.\n"
+            + " entry listing.\n"
             + "Format: " + COMMAND_WORD + " [" + "[" + "KEYWORDS" + "]" + " |"
             + " [" + String.join(" | ", CliSyntax.PREFIX_EVENT.toString(), CliSyntax.PREFIX_DEADLINE.toString(),
             CliSyntax.PREFIX_FLOATINGTASK.toString()) + "]" + " INDEX" + "]"
@@ -41,17 +38,24 @@ public abstract class EditCommand extends Command {
             + " " + CliSyntax.PREFIX_TO + " DATE" + "]" + "]"
             + " [" + CliSyntax.PREFIX_TAG + " TAGS..." + "]" + "\n"
             + "All possible flags for Edit : 'name', 'tag','by', 'from', 'to', 'at', 'on', 'event',"
-            + " 'deadline', 'float'";
+            + " 'deadline', 'float'" + "\n"
+            + "Note: Existing values will be overwritten by the input values.";
 
-    public static final String MESSAGE_SUCCESS = "Entry edited:" + "\n"
-                                                 + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s";
+    public static final String MESSAGE_SUCCESS = "Entry edited:" + "\n" + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s";
 
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.\n"
-                                                    + "Format: " + COMMAND_WORD + " [keywords] or "
-                                                    + PREFIX_FLOATINGTASK + " INDEX "
-                                                    + PREFIX_NAME + " NEW NAME " + PREFIX_TAG + " NEWTAGS";
+            + "Format: " + COMMAND_WORD + " [" + "[" + "KEYWORDS" + "]" + " |"
+            + " [" + String.join(" | ", CliSyntax.PREFIX_EVENT.toString(), CliSyntax.PREFIX_DEADLINE.toString(),
+            CliSyntax.PREFIX_FLOATINGTASK.toString()) + "]" + " INDEX" + "]"
+            + " [" + "[" + CliSyntax.PREFIX_NAME + " NAME" + "]"
+            + " |" + "[" + CliSyntax.PREFIX_BY + " DATE" + "]"
+            + " |" + " [" + CliSyntax.PREFIX_FROM + " DATE"
+            + " " + CliSyntax.PREFIX_TO + " DATE" + "]" + "]"
+            + " [" + CliSyntax.PREFIX_TAG + " TAGS..." + "]" + "\n"
+            + "All possible flags for Edit : 'name', 'tag', 'by', 'from', 'to', 'at', 'event',"
+            + " 'deadline', 'float'" + "\n";
 
-    public static final String MESSAGE_DUPLICATE_ENTRY = "This entry already exists in the address book.";
+    public static final String MESSAGE_DUPLICATE_ENTRY = "This entry already exists in the task manager.";
 
     protected final EditEntryDescriptor editEntryDescriptor;
     protected ReadOnlyEntry entryToEdit;

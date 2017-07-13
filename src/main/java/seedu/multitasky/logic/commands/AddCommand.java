@@ -22,7 +22,7 @@ public class AddCommand extends Command {
             + " |" + " [" + CliSyntax.PREFIX_FROM + " DATE" + " "
             + CliSyntax.PREFIX_TO + " DATE" + "]" + "]"
             + " [" + CliSyntax.PREFIX_TAG + " TAGS..." + "]" + "\n"
-            + "All possible flags for Add : 'by', 'from', 'to', 'at', 'on', 'tag'";
+            + "All possible flags for Add : 'by', 'from', 'to', 'at', 'tag'";
 
     public static final String MESSAGE_SUCCESS = "New entry added:" + "\n"
                                                  + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s";
