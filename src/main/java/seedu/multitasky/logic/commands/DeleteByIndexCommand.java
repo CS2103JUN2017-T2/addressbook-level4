@@ -28,10 +28,12 @@ public class DeleteByIndexCommand extends DeleteCommand {
     public CommandResult execute() throws CommandException, DuplicateEntryException {
         UnmodifiableObservableList<ReadOnlyEntry> listToDeleteFrom = ParserUtil
                 .getListIndicatedByPrefix(model, listIndicatorPrefix);
+        assert listToDeleteFrom != null;
 
         if (targetIndex.getZeroBased() >= listToDeleteFrom.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
         }
+
         entryToDelete = listToDeleteFrom.get(targetIndex.getZeroBased());
         try {
             model.deleteEntry(entryToDelete);

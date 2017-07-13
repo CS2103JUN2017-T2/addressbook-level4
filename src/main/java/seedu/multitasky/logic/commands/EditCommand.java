@@ -12,6 +12,7 @@ import java.util.Set;
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.commons.util.CollectionUtil;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
+import seedu.multitasky.logic.parser.CliSyntax;
 import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.Event;
@@ -28,16 +29,19 @@ public abstract class EditCommand extends Command {
 
     public static final String COMMAND_WORD = "edit";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD
-                                               + " : Edits the details of the entry either identified "
-                                               + "by keywords given or the index number used in the last"
-                                               + " entry listing. Existing values will be overwritten by "
-                                               + "the input values.\n" + "Format: " + COMMAND_WORD
-                                               + " KEYWORDS or " + PREFIX_FLOATINGTASK + " INDEX "
-                                               + PREFIX_NAME + " NEW NAME " + PREFIX_TAG + " NEWTAGS\n"
-                                               + "Example: " + COMMAND_WORD + " " + PREFIX_FLOATINGTASK
-                                               + " 1 " + PREFIX_NAME + " walk the dog " + PREFIX_TAG + "\n"
-                                               + "tip: this example clears all tags on the task!";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + " : Edits the entry identified by keywords"
+            + " if it is the only entry found, or edits the entry identified by the index number of the last"
+            + " entry listing. Existing values will be overwritten by the input values.\n"
+            + "Format: " + COMMAND_WORD + " [" + "[" + "KEYWORDS" + "]" + " |"
+            + " [" + String.join(" | ", CliSyntax.PREFIX_EVENT.toString(), CliSyntax.PREFIX_DEADLINE.toString(),
+            CliSyntax.PREFIX_FLOATINGTASK.toString()) + "]" + " INDEX" + "]"
+            + " [" + "[" + CliSyntax.PREFIX_NAME + " NAME" + "]"
+            + " |" + "[" + CliSyntax.PREFIX_BY + " DATE" + "]"
+            + " |" + " [" + CliSyntax.PREFIX_FROM + " DATE"
+            + " " + CliSyntax.PREFIX_TO + " DATE" + "]" + "]"
+            + " [" + CliSyntax.PREFIX_TAG + " TAGS..." + "]" + "\n"
+            + "All possible flags for Edit : 'name', 'tag','by', 'from', 'to', 'at', 'on', 'event',"
+            + " 'deadline', 'float'";
 
     public static final String MESSAGE_SUCCESS = "Entry edited:" + "\n"
                                                  + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s";
@@ -66,8 +70,7 @@ public abstract class EditCommand extends Command {
      * {@code entryToEdit} edited with {@code editEntryDescriptor}.
      */
     protected static Entry createEditedEntry(ReadOnlyEntry entryToEdit,
-                                             EditEntryDescriptor editEntryDescriptor)
-            throws CommandException {
+            EditEntryDescriptor editEntryDescriptor) throws CommandException {
         assert entryToEdit != null;
 
         Name updatedName = editEntryDescriptor.getName().orElse(entryToEdit.getName());
@@ -82,12 +85,13 @@ public abstract class EditCommand extends Command {
         } else if (updatedStartDate == null && updatedEndDate != null) {
             return new Deadline(updatedName, updatedEndDate, updatedTags);
         } else if (updatedStartDate != null && updatedEndDate != null) {
-            if (updatedEndDate.compareTo(updatedStartDate) <= 0) {
+            if (updatedEndDate.compareTo(updatedStartDate) < 0) {
                 throw new CommandException("Can not have end date before start date!");
             }
             return new Event(updatedName, updatedStartDate, updatedEndDate, updatedTags);
         } else {
-            throw new AssertionError("Cannot edit to entry that is not float, deadline or event.");
+            assert false : "Cannot edit to entry that is not float, deadline or event.";
+            return null;
         }
     }
 

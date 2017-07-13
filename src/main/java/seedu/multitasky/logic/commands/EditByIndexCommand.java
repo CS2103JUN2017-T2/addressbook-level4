@@ -39,6 +39,7 @@ public class EditByIndexCommand extends EditCommand {
     @Override
     public CommandResult execute() throws CommandException, DuplicateEntryException {
         List<ReadOnlyEntry> listToEditFrom = ParserUtil.getListIndicatedByPrefix(model, listIndicatorPrefix);
+        assert listToEditFrom != null;
 
         if (index.getZeroBased() >= listToEditFrom.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
