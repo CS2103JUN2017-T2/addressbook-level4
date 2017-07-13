@@ -5,6 +5,7 @@ import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Set;
 
 import org.junit.Rule;
@@ -21,6 +22,7 @@ import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 import seedu.multitasky.model.util.EntryBuilder;
+import seedu.multitasky.storage.exception.NothingToRedoException;
 
 public class AddCommandTest {
 
@@ -36,7 +38,7 @@ public class AddCommandTest {
     @Test
     public void execute_entryAcceptedByModel_addSuccessful() throws Exception {
         ModelStubAcceptingEntryAdded modelStub = new ModelStubAcceptingEntryAdded();
-        Entry validEntry = new EntryBuilder().build();
+        Entry validEntry = EntryBuilder.build();
 
         CommandResult commandResult = getAddCommandForEntry(validEntry, modelStub).execute();
 
@@ -158,6 +160,18 @@ public class AddCommandTest {
 
         @Override
         public void undoPreviousAction() {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void redoPreviousAction() throws NothingToRedoException {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void updateSortingComparators(Comparator<ReadOnlyEntry> eventComparator,
+                                             Comparator<ReadOnlyEntry> deadlineComparator,
+                                             Comparator<ReadOnlyEntry> floatingTaskComparator) {
             fail("This method should not be called.");
         }
 

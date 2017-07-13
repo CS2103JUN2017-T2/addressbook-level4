@@ -3,8 +3,16 @@ package seedu.multitasky.model.entry;
 import java.util.List;
 
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
+import seedu.multitasky.model.entry.util.Comparators;
 
 public class FloatingTaskList extends EntryList {
+
+    // @@author A0125586X
+    public FloatingTaskList() {
+        super();
+        comparator = Comparators.FLOATING_TASK_DEFAULT;
+    }
+    // @@author
 
     // @@author A0126623L
     /**

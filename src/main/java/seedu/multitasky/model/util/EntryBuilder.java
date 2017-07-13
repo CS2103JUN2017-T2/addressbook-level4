@@ -13,121 +13,259 @@ import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.tag.Tag;
 
+// @@author A0125586X
 /**
- * A utility class to help with building Entry objects.
+ * A utility class containing methods to construct Event, Deadline or FloatingTask objects.
  */
 public class EntryBuilder {
 
     public static final String DEFAULT_NAME = "defaultName";
     public static final String DEFAULT_TAGS = "defaultTag";
 
-    private String name;
-    private Set<Tag> tags;
-    private Calendar startDateAndTime = null;
-    private Calendar endDateAndTime = null;
-
-    private Entry entry;
-
-    public EntryBuilder() throws IllegalValueException {
-        Name defaultName = new Name(DEFAULT_NAME);
-        tags = SampleDataUtil.getTagSet(DEFAULT_TAGS);
-        name = defaultName.fullName;
-        this.entry = new FloatingTask(defaultName, tags);
-    }
-
     /**
-     * Initializes the EntryBuilder with the data of {@code entryToCopy}.
-     * {code entryToCopy} cannot be null.
+     * Builds an entry with the class-level default parameters
      */
-    public EntryBuilder(ReadOnlyEntry entryToCopy) {
-        Objects.requireNonNull(entryToCopy);
-        if (entryToCopy instanceof Event) {
-            this.entry = new Event(entryToCopy);
-            name = entryToCopy.getName().toString();
-            startDateAndTime = entryToCopy.getStartDateAndTime();
-            endDateAndTime = entryToCopy.getEndDateAndTime();
-            tags = entryToCopy.getTags();
-
-        } else if (entryToCopy instanceof Deadline) {
-            this.entry = new Deadline(entryToCopy);
-            name = entryToCopy.getName().toString();
-            endDateAndTime = entryToCopy.getEndDateAndTime();
-            tags = entryToCopy.getTags();
-        } else {
-            assert (entryToCopy instanceof FloatingTask);
-            this.entry = new FloatingTask(entryToCopy);
-            name = entryToCopy.getName().toString();
-            tags = entryToCopy.getTags();
+    public static Entry build() {
+        Entry entry;
+        try {
+            entry = build(DEFAULT_NAME, DEFAULT_TAGS);
+            return entry;
+        } catch (IllegalValueException e) {
+            throw new AssertionError("Sample data cannot be invalid");
         }
     }
 
-    public EntryBuilder withName(String name) throws IllegalValueException {
-        this.name = name;
-        this.entry.setName(new Name(name));
-        return this;
-    }
-
-    public EntryBuilder withTags(String... tags) throws IllegalValueException {
-        this.tags = SampleDataUtil.getTagSet(tags);
-        this.entry.setTags(SampleDataUtil.getTagSet(tags));
-        return this;
-    }
-
-    public EntryBuilder withTags(Set<Tag> tags) throws IllegalValueException {
-        this.tags = tags;
-        this.entry.setTags(tags);
-        return this;
-    }
-
-    public EntryBuilder withStartDateAndTime(Calendar startDateAndTime) {
-        this.startDateAndTime = startDateAndTime;
-        return this;
-    }
-
-    public EntryBuilder withEndDateAndTime(Calendar endDateAndTime) {
-        this.endDateAndTime = endDateAndTime;
-        return this;
-    }
-
-    public Entry build() throws Exception {
-        if (endDateAndTime == null) {
-            return entry;
-        } else if (startDateAndTime == null) {
-            entry = new Deadline(new Name(name), endDateAndTime, tags);
+    /******************
+     * Multi-builders *
+     *****************/
+    /**
+     * Builds the appropriate Event, Deadline or FloatingTask object as a copy of {@code entryToCopy}.
+     * @param entryToCopy the entry that data will be read from to create the new object
+     * @return            a copy of {@code entryToCopy}
+     */
+    public static Entry build(final ReadOnlyEntry entryToCopy) {
+        Objects.requireNonNull(entryToCopy);
+        Entry entry;
+        if (entryToCopy instanceof Event) {
+            entry = new Event(entryToCopy);
+        } else if (entryToCopy instanceof Deadline) {
+            entry = new Deadline(entryToCopy);
+        } else if (entryToCopy instanceof FloatingTask) {
+            entry = new FloatingTask(entryToCopy);
         } else {
-            entry = new Event(new Name(name), startDateAndTime, endDateAndTime, tags);
+            entry = null;
+            throw new AssertionError("entryToCopy must be Event, Deadline or FloatingTask");
         }
         return entry;
     }
 
-    // @@author A0126623L
+    /******************
+     * Event builders *
+     *****************/
     /**
-     * Builds an appropriate entry (i.e. Event, Deadline, FloatingTask, ...) based on the given argument.
-     *
-     * @return
-     * @throws IllegalValueException
+     * Builds an Event object from the provided arguments.
+     * @param name             the name of the event
+     * @param startDateAndTime the starting date and time of the event
+     * @param endDateAndTime   the ending date and time of the event
+     * @param tags             the tags associated with the event
+     * @return                 the constructed Event object - returns a Deadline or FloatingTask object if
+     *                         there are null Calendar parameters
+     * @throws IllegalValueException if any of the arguments are invalid or if there is a wrong combination of
+     *                               non-null start date and null end date.
      */
-
-    public Entry build(Name name, Calendar startDateAndTime, Calendar endDateAndTime, Set<Tag> tags)
+    public static Entry build(String name, Calendar startDateAndTime, Calendar endDateAndTime, String... tags)
             throws IllegalValueException {
+        return build(new Name(name), startDateAndTime, endDateAndTime, TagSetBuilder.getTagSet(tags));
+    }
 
+    /**
+     * Builds an Event object from the provided arguments.
+     * @param name             the name of the event
+     * @param startDateAndTime the starting date and time of the event
+     * @param endDateAndTime   the ending date and time of the event
+     * @param tags             the tags associated with the event
+     * @return                 the constructed Event object - returns a Deadline or FloatingTask object if
+     *                         there are null Calendar parameters
+     * @throws IllegalValueException if any of the arguments are invalid or if there is a wrong combination of
+     *                               non-null start date and null end date.
+     */
+    public static Entry build(String name, Calendar startDateAndTime, Calendar endDateAndTime, Set<Tag> tags)
+            throws IllegalValueException {
+        return build(new Name(name), startDateAndTime, endDateAndTime, tags);
+    }
+
+    /**
+     * Builds an Event object from the provided arguments.
+     * @param name             the name of the event
+     * @param startDateAndTime the starting date and time of the event
+     * @param endDateAndTime   the ending date and time of the event
+     * @param tags             the tags associated with the event
+     * @return                 the constructed Event object - returns a Deadline or FloatingTask object if
+     *                         there are null Calendar parameters
+     * @throws IllegalValueException if any of the arguments are invalid or if there is a wrong combination of
+     *                               non-null start date and null end date.
+     */
+    public static Entry build(Name name, Calendar startDateAndTime, Calendar endDateAndTime, String... tags)
+            throws IllegalValueException {
+        return build(name, startDateAndTime, endDateAndTime, TagSetBuilder.getTagSet(tags));
+    }
+
+    /**
+     * Builds an Event object from the provided arguments.
+     * @param name             the name of the event
+     * @param startDateAndTime the starting date and time of the event
+     * @param endDateAndTime   the ending date and time of the event
+     * @param tags             the tags associated with the event
+     * @return                 the constructed Event object - returns a Deadline or FloatingTask object if
+     *                         there are null Calendar parameters
+     * @throws IllegalValueException if any of the arguments are invalid or if there is a wrong combination of
+     *                               non-null start date and null end date.
+     */
+    public static Entry build(Name name, Calendar startDateAndTime, Calendar endDateAndTime, Set<Tag> tags)
+            throws IllegalValueException {
         if (startDateAndTime == null) {
-            // Floating task
             if (endDateAndTime == null) {
-                return new FloatingTask(name, tags);
-                // Deadline
+                Entry entry = build(name, tags);
+                return entry;
             } else {
-                return new Deadline(name, endDateAndTime, tags);
+                Entry entry = build(name, endDateAndTime, tags);
+                return entry;
             }
-            // Event
         } else if (endDateAndTime != null) {
-            return new Event(name, startDateAndTime, endDateAndTime, tags);
-            // Unknown combination of present start date but no end date
+            Entry entry = new Event(name, startDateAndTime, endDateAndTime, tags);
+            return entry;
         } else {
-            assert false : "Error in EntryBuilder.";
-            return null;
+            throw new IllegalValueException("Wrong combination of non-null start date and null end date");
         }
     }
-    // @@author
 
+    /*********************
+     * Deadline builders *
+     ********************/
+    /**
+     * Builds a Deadline object from the provided arguments.
+     * @param name             the name of the deadline
+     * @param endDateAndTime   the date and time of the deadline
+     * @param tags             the tags associated with the deadline
+     * @return                 the constructed Deadline object - returns a FloatingTask object if
+     *                         {@code endDateAndTime} is null
+     * @throws IllegalValueException if any of the arguments are invalid
+     */
+    public static Entry build(String name, Calendar endDateAndTime, String... tags)
+            throws IllegalValueException {
+        return build(new Name(name), endDateAndTime, TagSetBuilder.getTagSet(tags));
+    }
+
+    /**
+     * Builds a Deadline object from the provided arguments.
+     * @param name             the name of the deadline
+     * @param endDateAndTime   the date and time of the deadline
+     * @param tags             the tags associated with the deadline
+     * @return                 the constructed Deadline object - returns a FloatingTask object if
+     *                         {@code endDateAndTime} is null
+     * @throws IllegalValueException if any of the arguments are invalid
+     */
+    public static Entry build(String name, Calendar endDateAndTime, Set<Tag> tags)
+            throws IllegalValueException {
+        return build(new Name(name), endDateAndTime, tags);
+    }
+
+    /**
+     * Builds a Deadline object from the provided arguments.
+     * @param name             the name of the deadline
+     * @param endDateAndTime   the date and time of the deadline
+     * @param tags             the tags associated with the deadline
+     * @return                 the constructed Deadline object - returns a FloatingTask object if
+     *                         {@code endDateAndTime} is null
+     * @throws IllegalValueException if any of the arguments are invalid
+     */
+    public static Entry build(Name name, Calendar endDateAndTime, String... tags)
+            throws IllegalValueException {
+        return build(name, endDateAndTime, TagSetBuilder.getTagSet(tags));
+    }
+
+    /**
+     * Builds a Deadline object from the provided arguments.
+     * @param name             the name of the deadline
+     * @param endDateAndTime   the date and time of the deadline
+     * @param tags             the tags associated with the deadline
+     * @return                 the constructed Deadline object - returns a FloatingTask object if
+     *                         {@code endDateAndTime} is null
+     * @throws IllegalValueException if any of the arguments are invalid
+     */
+    public static Entry build(Name name, Calendar endDateAndTime, Set<Tag> tags)
+            throws IllegalValueException {
+        if (endDateAndTime == null) {
+            return build(name, tags);
+        } else {
+            return new Deadline(name, endDateAndTime, tags);
+        }
+    }
+
+    /*************************
+     * FloatingTask builders *
+     ************************/
+    /**
+     * Builds a FloatingTask object from the provided arguments.
+     * @param name             the name of the floating task
+     * @return                 the constructed FloatingTask object
+     * @throws IllegalValueException if any of the arguments are invalid
+     */
+    public static Entry build(String name) throws IllegalValueException {
+        return build(new Name(name), TagSetBuilder.getTagSet());
+    }
+
+    /**
+     * Builds a FloatingTask object from the provided arguments.
+     * @param name             the name of the floating task
+     * @return                 the constructed FloatingTask object
+     * @throws IllegalValueException if any of the arguments are invalid
+     */
+    public static Entry build(Name name) throws IllegalValueException {
+        return build(name, TagSetBuilder.getTagSet());
+    }
+
+    /**
+     * Builds a FloatingTask object from the provided arguments.
+     * @param name             the name of the floating task
+     * @param tags             the tags associated with the floating task
+     * @return                 the constructed FloatingTask object
+     * @throws IllegalValueException if any of the arguments are invalid
+     */
+    public static Entry build(String name, String... tags) throws IllegalValueException {
+        return build(new Name(name), TagSetBuilder.getTagSet(tags));
+    }
+
+    /**
+     * Builds a FloatingTask object from the provided arguments.
+     * @param name             the name of the floating task
+     * @param tags             the tags associated with the floating task
+     * @return                 the constructed FloatingTask object
+     * @throws IllegalValueException if any of the arguments are invalid
+     */
+    public static Entry build(String name, Set<Tag> tags) throws IllegalValueException {
+        return build(new Name(name), tags);
+    }
+
+    /**
+     * Builds a FloatingTask object from the provided arguments.
+     * @param name             the name of the floating task
+     * @param tags             the tags associated with the floating task
+     * @return                 the constructed FloatingTask object
+     * @throws IllegalValueException if any of the arguments are invalid
+     */
+    public static Entry build(Name name, String... tags) throws IllegalValueException {
+        return build(name, TagSetBuilder.getTagSet(tags));
+    }
+
+    /**
+     * Builds a FloatingTask object from the provided arguments.
+     * @param name             the name of the floating task
+     * @param tags             the tags associated with the floating task
+     * @return                 the constructed FloatingTask object
+     * @throws IllegalValueException if any of the arguments are invalid
+     */
+    public static Entry build(Name name, Set<Tag> tags) throws IllegalValueException {
+        return new FloatingTask(name, tags);
+    }
 }

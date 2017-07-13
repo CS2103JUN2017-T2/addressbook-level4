@@ -26,4 +26,8 @@ public class CliSyntax {
     public static final Prefix PREFIX_ARCHIVE = new Prefix("archive");
     public static final Prefix PREFIX_BIN = new Prefix("bin");
 
+    /* List types */
+    public static final Prefix PREFIX_UPCOMING = new Prefix("/upcoming");
+    public static final Prefix PREFIX_REVERSE = new Prefix("/reverse");
+
 }

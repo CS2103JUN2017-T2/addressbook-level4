@@ -132,9 +132,7 @@ public class XmlAdaptedEntry {
         }
 
         final Set<Tag> tags = new HashSet<>(entryTags);
-        EntryBuilder buildObject = new EntryBuilder();
-        Entry entry = buildObject.build(newName, startDateAndTimeToUse, endDateAndTimeToUse,
-                                        tags);
+        Entry entry = EntryBuilder.build(newName, startDateAndTimeToUse, endDateAndTimeToUse, tags);
         return entry;
     }
 }

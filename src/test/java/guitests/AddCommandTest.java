@@ -12,6 +12,7 @@ import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.tag.Tag;
 import seedu.multitasky.testutil.EntryUtil;
+import seedu.multitasky.testutil.SampleEntries;
 import seedu.multitasky.testutil.TestUtil;
 
 //@@author A0125586X
@@ -24,7 +25,7 @@ public class AddCommandTest extends EntryBookGuiTest {
     public void add_eventToEmptyList_success() {
         assertCleared();
         Entry[] currentList = new Entry[0];
-        Entry entryToAdd = typicalEntries.cat;
+        Entry entryToAdd = SampleEntries.CAT;
         currentList = assertAddEvent(entryToAdd, currentList);
     }
 
@@ -32,7 +33,7 @@ public class AddCommandTest extends EntryBookGuiTest {
     public void add_deadlineToEmptyList_success() {
         assertCleared();
         Entry[] currentList = new Entry[0];
-        Entry entryToAdd = typicalEntries.submission;
+        Entry entryToAdd = SampleEntries.SUBMISSION;
         currentList = assertAddDeadline(entryToAdd, currentList);
     }
 
@@ -40,7 +41,7 @@ public class AddCommandTest extends EntryBookGuiTest {
     public void add_floatingTaskToEmptyList_success() {
         assertCleared();
         Entry[] currentList = new Entry[0];
-        Entry entryToAdd = typicalEntries.spectacles;
+        Entry entryToAdd = SampleEntries.SPECTACLES;
         currentList = assertAddFloatingTask(entryToAdd, currentList);
     }
 
@@ -51,10 +52,10 @@ public class AddCommandTest extends EntryBookGuiTest {
     public void add_multipleEventToEmptyList_success() {
         assertCleared();
         Entry[] currentList = new Entry[0];
-        Entry entryToAdd = typicalEntries.dinner;
+        Entry entryToAdd = SampleEntries.DINNER;
         currentList = assertAddEvent(entryToAdd, currentList);
 
-        entryToAdd = typicalEntries.cat;
+        entryToAdd = SampleEntries.CAT;
         currentList = assertAddEvent(entryToAdd, currentList);
     }
 
@@ -62,10 +63,10 @@ public class AddCommandTest extends EntryBookGuiTest {
     public void add_multipleDeadlineToEmptyList_success() {
         assertCleared();
         Entry[] currentList = new Entry[0];
-        Entry entryToAdd = typicalEntries.paper;
+        Entry entryToAdd = SampleEntries.PAPER;
         currentList = assertAddDeadline(entryToAdd, currentList);
 
-        entryToAdd = typicalEntries.submission;
+        entryToAdd = SampleEntries.SUBMISSION;
         currentList = assertAddDeadline(entryToAdd, currentList);
     }
 
@@ -73,10 +74,10 @@ public class AddCommandTest extends EntryBookGuiTest {
     public void add_multipleFloatingTaskToEmptyList_success() {
         assertCleared();
         Entry[] currentList = new Entry[0];
-        Entry entryToAdd = typicalEntries.spectacles;
+        Entry entryToAdd = SampleEntries.SPECTACLES;
         currentList = assertAddFloatingTask(entryToAdd, currentList);
 
-        entryToAdd = typicalEntries.clean;
+        entryToAdd = SampleEntries.CLEAN;
         currentList = assertAddFloatingTask(entryToAdd, currentList);
     }
 
@@ -85,22 +86,22 @@ public class AddCommandTest extends EntryBookGuiTest {
      *********************************************/
     @Test
     public void add_eventToExistingList_success() {
-        Entry[] currentList = typicalEntries.getTypicalEvents();
-        Entry entryToAdd = typicalEntries.movie;
+        Entry[] currentList = SampleEntries.getSampleEvents();
+        Entry entryToAdd = SampleEntries.MOVIE;
         currentList = assertAddEvent(entryToAdd, currentList);
     }
 
     @Test
     public void add_deadlineToExistingList_success() {
-        Entry[] currentList = typicalEntries.getTypicalDeadlines();
-        Entry entryToAdd = typicalEntries.submission;
+        Entry[] currentList = SampleEntries.getSampleDeadlines();
+        Entry entryToAdd = SampleEntries.SUBMISSION;
         currentList = assertAddDeadline(entryToAdd, currentList);
     }
 
     @Test
     public void add_floatingTaskToExistingList_success() {
-        Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
-        Entry entryToAdd = typicalEntries.spectacles;
+        Entry[] currentList = SampleEntries.getSampleFloatingTasks();
+        Entry entryToAdd = SampleEntries.SPECTACLES;
         currentList = assertAddFloatingTask(entryToAdd, currentList);
     }
 
@@ -109,31 +110,31 @@ public class AddCommandTest extends EntryBookGuiTest {
      ***********************************************/
     @Test
     public void add_multipleUniqueEventToExistingList_success() {
-        Entry[] currentList = typicalEntries.getTypicalEvents();
-        Entry entryToAdd = typicalEntries.movie;
+        Entry[] currentList = SampleEntries.getSampleEvents();
+        Entry entryToAdd = SampleEntries.MOVIE;
         currentList = assertAddEvent(entryToAdd, currentList);
 
-        entryToAdd = typicalEntries.opening;
+        entryToAdd = SampleEntries.OPENING;
         currentList = assertAddEvent(entryToAdd, currentList);
     }
 
     @Test
     public void add_multipleUniqueDeadlineToExistingList_success() {
-        Entry[] currentList = typicalEntries.getTypicalDeadlines();
-        Entry entryToAdd = typicalEntries.submission;
+        Entry[] currentList = SampleEntries.getSampleDeadlines();
+        Entry entryToAdd = SampleEntries.SUBMISSION;
         currentList = assertAddDeadline(entryToAdd, currentList);
 
-        entryToAdd = typicalEntries.upgrade;
+        entryToAdd = SampleEntries.UPGRADE;
         currentList = assertAddDeadline(entryToAdd, currentList);
     }
 
     @Test
     public void add_multipleUniqueFloatingTaskToExistingList_success() {
-        Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
-        Entry entryToAdd = typicalEntries.spectacles;
+        Entry[] currentList = SampleEntries.getSampleFloatingTasks();
+        Entry entryToAdd = SampleEntries.SPECTACLES;
         currentList = assertAddFloatingTask(entryToAdd, currentList);
 
-        entryToAdd = typicalEntries.clean;
+        entryToAdd = SampleEntries.CLEAN;
         currentList = assertAddFloatingTask(entryToAdd, currentList);
     }
 
@@ -232,8 +233,8 @@ public class AddCommandTest extends EntryBookGuiTest {
      * Helps with the testing of command words with different character cases
      */
     private void assertAddWithCommandWord(String commandWord) {
-        Entry[] currentList = typicalEntries.getTypicalFloatingTasks();
-        Entry entryToAdd = typicalEntries.spectacles;
+        Entry[] currentList = SampleEntries.getSampleFloatingTasks();
+        Entry entryToAdd = SampleEntries.SPECTACLES;
         commandBox.runCommand(commandWord + " " + EntryUtil.getFloatingTaskDetailsForAdd(entryToAdd));
         assertFloatingTaskAdded(entryToAdd, currentList);
     }

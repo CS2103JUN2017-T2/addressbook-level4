@@ -8,8 +8,8 @@ import static seedu.multitasky.commons.core.Messages.MESSAGE_INVALID_ENTRY_DISPL
 import static seedu.multitasky.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_TAG;
-import static seedu.multitasky.model.util.SampleDataUtil.getTagSet;
-import static seedu.multitasky.testutil.TypicalEntries.INDEX_THIRD_ENTRY;
+import static seedu.multitasky.model.util.TagSetBuilder.getTagSet;
+import static seedu.multitasky.testutil.SampleEntries.INDEX_THIRD_ENTRY;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -238,7 +238,7 @@ public class LogicManagerTest {
         // prepare entry book state
         helper.addToModel(model, 2);
 
-        assertCommandSuccess(ListCommand.COMMAND_WORD, ListCommand.MESSAGE_SUCCESS, expectedModel);
+        assertCommandSuccess(ListCommand.COMMAND_WORD, ListCommand.MESSAGE_ACTIVE_SUCCESS, expectedModel);
     }
 
     /**
@@ -312,10 +312,10 @@ public class LogicManagerTest {
     @Test
     public void execute_find_onlyMatchesFullWordsInNames() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        Entry pTarget1 = new EntryBuilder().withName("bla bla KEY bla").build();
-        Entry pTarget2 = new EntryBuilder().withName("bla KEY bla bceofeia").build();
-        Entry p1 = new EntryBuilder().withName("KE Y").build();
-        Entry p2 = new EntryBuilder().withName("KEYKEYKEY sduauo").build();
+        Entry pTarget1 = EntryBuilder.build("bla bla KEY bla");
+        Entry pTarget2 = EntryBuilder.build("bla KEY bla bceofeia");
+        Entry p1 = EntryBuilder.build("KE Y");
+        Entry p2 = EntryBuilder.build("KEYKEYKEY sduauo");
 
         List<Entry> fourEntrys = helper.generateEntryList(p1, pTarget1, p2, pTarget2);
         Model expectedModel = new ModelManager(helper.generateEntryBook(fourEntrys), new UserPrefs());
@@ -330,10 +330,10 @@ public class LogicManagerTest {
     @Test
     public void execute_find_isNotCaseSensitive() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        Entry p1 = new EntryBuilder().withName("bla bla KEY bla").build();
-        Entry p2 = new EntryBuilder().withName("bla KEY bla bceofeia").build();
-        Entry p3 = new EntryBuilder().withName("key key").build();
-        Entry p4 = new EntryBuilder().withName("KEy sduauo").build();
+        Entry p1 = EntryBuilder.build("bla bla KEY bla");
+        Entry p2 = EntryBuilder.build("bla KEY bla bceofeia");
+        Entry p3 = EntryBuilder.build("key key");
+        Entry p4 = EntryBuilder.build("KEy sduauo");
 
         List<Entry> fourEntrys = helper.generateEntryList(p3, p1, p4, p2);
         Model expectedModel = new ModelManager(helper.generateEntryBook(fourEntrys), new UserPrefs());
@@ -348,10 +348,10 @@ public class LogicManagerTest {
     @Test
     public void execute_find_matchesIfAnyKeywordPresent() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        Entry pTarget1 = new EntryBuilder().withName("bla bla KEY bla").build();
-        Entry pTarget2 = new EntryBuilder().withName("bla rAnDoM bla bceofeia").build();
-        Entry pTarget3 = new EntryBuilder().withName("key key").build();
-        Entry p1 = new EntryBuilder().withName("sduauo").build();
+        Entry pTarget1 = EntryBuilder.build("bla bla KEY bla");
+        Entry pTarget2 = EntryBuilder.build("bla rAnDoM bla bceofeia");
+        Entry pTarget3 = EntryBuilder.build("key key");
+        Entry p1 = EntryBuilder.build("sduauo");
 
         List<Entry> fourEntrys = helper.generateEntryList(pTarget1, p1, pTarget2, pTarget3);
         Model expectedModel = new ModelManager(helper.generateEntryBook(fourEntrys), new UserPrefs());

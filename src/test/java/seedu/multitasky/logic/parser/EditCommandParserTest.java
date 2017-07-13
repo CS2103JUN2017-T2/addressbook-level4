@@ -10,9 +10,9 @@ import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_NAME_AMY;
 import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_NAME_BOB;
 import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_TAG_FRIEND;
 import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_TAG_HUSBAND;
-import static seedu.multitasky.testutil.TypicalEntries.INDEX_FIRST_ENTRY;
-import static seedu.multitasky.testutil.TypicalEntries.INDEX_SECOND_ENTRY;
-import static seedu.multitasky.testutil.TypicalEntries.INDEX_THIRD_ENTRY;
+import static seedu.multitasky.testutil.SampleEntries.INDEX_FIRST_ENTRY;
+import static seedu.multitasky.testutil.SampleEntries.INDEX_SECOND_ENTRY;
+import static seedu.multitasky.testutil.SampleEntries.INDEX_THIRD_ENTRY;
 
 import org.junit.Test;
 

@@ -16,7 +16,7 @@ import seedu.multitasky.model.ModelManager;
 import seedu.multitasky.model.UserPrefs;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
-import seedu.multitasky.testutil.TypicalEntries;
+import seedu.multitasky.testutil.SampleEntries;
 
 /**
  * Contains integration tests (interaction with the Model) and unit tests for ListCommand.
@@ -30,7 +30,7 @@ public class ListCommandTest {
     @Before
     public void setUp() {
         // TODO fix typical entries
-        model = new ModelManager(new TypicalEntries().getTypicalEntryBook(), new UserPrefs());
+        model = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
         expectedModel = new ModelManager(model.getEntryBook(), new UserPrefs());
 
         listCommand = new ListCommand();
@@ -39,13 +39,13 @@ public class ListCommandTest {
 
     @Test
     public void execute_listIsNotFiltered_showsSameList() throws Exception {
-        assertCommandSuccess(listCommand, model, ListCommand.MESSAGE_SUCCESS, expectedModel);
+        assertCommandSuccess(listCommand, model, ListCommand.MESSAGE_ACTIVE_SUCCESS, expectedModel);
     }
 
     @Test
     public void execute_listIsFiltered_showsEverything() throws Exception {
         showFirstEntryOnly(model);
-        assertCommandSuccess(listCommand, model, ListCommand.MESSAGE_SUCCESS, expectedModel);
+        assertCommandSuccess(listCommand, model, ListCommand.MESSAGE_ACTIVE_SUCCESS, expectedModel);
     }
 
     /**

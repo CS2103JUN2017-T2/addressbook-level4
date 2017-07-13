@@ -1,11 +1,13 @@
 package seedu.multitasky.model;
 
+import java.util.Comparator;
 import java.util.Set;
 
 import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.storage.exception.NothingToRedoException;
 import seedu.multitasky.storage.exception.NothingToUndoException;
 
 /**
@@ -26,6 +28,9 @@ public interface Model {
 
     /** Undo the previous data-changing action */
     void undoPreviousAction() throws NothingToUndoException;
+
+    /** Redo the previous undo action */
+    void redoPreviousAction() throws NothingToRedoException;
 
     /**
      * Replaces the given entry {@code target} with {@code editedEntry}.
@@ -73,5 +78,10 @@ public interface Model {
 
     /** Updates the filter of the filtered floating task list to filter by the given keywords */
     void updateFilteredFloatingTaskList(Set<String> keywords);
+
+    /** Updates the sorting comparators used. */
+    void updateSortingComparators(Comparator<ReadOnlyEntry> eventComparator,
+                                  Comparator<ReadOnlyEntry> deadlineComparator,
+                                  Comparator<ReadOnlyEntry> floatingTaskComparator);
 
 }
