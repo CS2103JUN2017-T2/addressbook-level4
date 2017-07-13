@@ -25,7 +25,6 @@ public class Deadline extends Entry {
 
     /**
      * Creates a copy of the given ReadOnlyEntry.
-     *
      * @param source must be type Deadline.
      */
     public Deadline(ReadOnlyEntry source) {
@@ -39,7 +38,6 @@ public class Deadline extends Entry {
 
     /**
      * Updates this entry with the details of {@code replacement}.
-     *
      * @param replacement must be of type Deadline.
      */
     @Override
@@ -61,6 +59,10 @@ public class Deadline extends Entry {
 
     public void setEndDateAndTime(Calendar endDateAndTime) {
         _endDateAndTime = endDateAndTime;
+
+        // Ignore difference in millisecond and seconds
+        _endDateAndTime.set(Calendar.MILLISECOND, 0);
+        _endDateAndTime.set(Calendar.SECOND, 0);
     }
 
     public String getEndDateAndTimeString() {
@@ -84,6 +86,7 @@ public class Deadline extends Entry {
         return (other instanceof Deadline
                 && this.getName().equals(other.getName()) // instanceof handles nulls
                 && this.getEndDateAndTime().equals(other.getEndDateAndTime())
+                && this.getState().equals(other.getState())
                 && this.getTags().equals(other.getTags()));
     }
     // @@author
@@ -91,13 +94,15 @@ public class Deadline extends Entry {
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(getName(), getEndDateAndTime(), getTags());
+        return Objects.hash(getName(), getEndDateAndTime(), getState(), getTags());
     }
 
     // @@author A0126623L
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
+
+        // TODO: Include state in string?
         builder.append(getName())
                .append(" Deadline: ")
                .append(dateFormatter.format(getEndDateAndTime().getTime()))

@@ -42,18 +42,19 @@ public abstract class Entry implements ReadOnlyEntry {
      * Every field must be present and not null.
      * The instantiated Entry will be considered an active entry.
      */
-    protected Entry(Name name, State state, Set<Tag> tags) {
+    protected Entry(Name name, Set<Tag> tags) {
         requireAllNonNull(name, tags);
         this._name = name;
         this._tags = new UniqueTagList(tags); // protect internal tags from changes in the arg list
-        this._state = state;
+        this._state = State.ACTIVE;
     }
 
     /**
      * Creates a copy of the given ReadOnlyEntry.
      */
     public Entry(ReadOnlyEntry source) {
-        this(source.getName(), source.getState(), source.getTags());
+        this(source.getName(), source.getTags());
+        this.setState(source.getState());
     }
 
     public void setName(Name name) {
@@ -92,6 +93,7 @@ public abstract class Entry implements ReadOnlyEntry {
 
     /**
      * Updates this entry with the details of {@code replacement}.
+     * @param replacement
      */
     public void resetData(ReadOnlyEntry replacement) {
         requireNonNull(replacement);
