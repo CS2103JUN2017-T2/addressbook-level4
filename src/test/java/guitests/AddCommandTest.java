@@ -8,6 +8,7 @@ import guitests.guihandles.EntryCardHandle;
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.logic.commands.AddCommand;
 import seedu.multitasky.logic.commands.ClearCommand;
+import seedu.multitasky.logic.parser.CliSyntax;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.tag.Tag;
@@ -18,38 +19,11 @@ import seedu.multitasky.testutil.TestUtil;
 //@@author A0125586X
 public class AddCommandTest extends EntryBookGuiTest {
 
-    /******************************************
-     * Adding a single entry to an empty list *
-     ******************************************/
+    /***************************
+     * Adding to an empty list *
+     **************************/
     @Test
-    public void add_eventToEmptyList_success() {
-        assertCleared();
-        Entry[] currentList = new Entry[0];
-        Entry entryToAdd = SampleEntries.CAT;
-        currentList = assertAddEvent(entryToAdd, currentList);
-    }
-
-    @Test
-    public void add_deadlineToEmptyList_success() {
-        assertCleared();
-        Entry[] currentList = new Entry[0];
-        Entry entryToAdd = SampleEntries.SUBMISSION;
-        currentList = assertAddDeadline(entryToAdd, currentList);
-    }
-
-    @Test
-    public void add_floatingTaskToEmptyList_success() {
-        assertCleared();
-        Entry[] currentList = new Entry[0];
-        Entry entryToAdd = SampleEntries.SPECTACLES;
-        currentList = assertAddFloatingTask(entryToAdd, currentList);
-    }
-
-    /********************************************
-     * Adding multiple entries to an empty list *
-     ********************************************/
-    @Test
-    public void add_multipleEventToEmptyList_success() {
+    public void add_eventsToEmptyList_success() {
         assertCleared();
         Entry[] currentList = new Entry[0];
         Entry entryToAdd = SampleEntries.DINNER;
@@ -60,7 +34,7 @@ public class AddCommandTest extends EntryBookGuiTest {
     }
 
     @Test
-    public void add_multipleDeadlineToEmptyList_success() {
+    public void add_deadlinesToEmptyList_success() {
         assertCleared();
         Entry[] currentList = new Entry[0];
         Entry entryToAdd = SampleEntries.PAPER;
@@ -71,7 +45,7 @@ public class AddCommandTest extends EntryBookGuiTest {
     }
 
     @Test
-    public void add_multipleFloatingTaskToEmptyList_success() {
+    public void add_floatingTasksToEmptyList_success() {
         assertCleared();
         Entry[] currentList = new Entry[0];
         Entry entryToAdd = SampleEntries.SPECTACLES;
@@ -81,35 +55,11 @@ public class AddCommandTest extends EntryBookGuiTest {
         currentList = assertAddFloatingTask(entryToAdd, currentList);
     }
 
-    /*********************************************
-     * Adding a single entry to an existing list *
-     *********************************************/
+    /***************************
+     * Adding an existing list *
+     **************************/
     @Test
-    public void add_eventToExistingList_success() {
-        Entry[] currentList = SampleEntries.getSampleEvents();
-        Entry entryToAdd = SampleEntries.MOVIE;
-        currentList = assertAddEvent(entryToAdd, currentList);
-    }
-
-    @Test
-    public void add_deadlineToExistingList_success() {
-        Entry[] currentList = SampleEntries.getSampleDeadlines();
-        Entry entryToAdd = SampleEntries.SUBMISSION;
-        currentList = assertAddDeadline(entryToAdd, currentList);
-    }
-
-    @Test
-    public void add_floatingTaskToExistingList_success() {
-        Entry[] currentList = SampleEntries.getSampleFloatingTasks();
-        Entry entryToAdd = SampleEntries.SPECTACLES;
-        currentList = assertAddFloatingTask(entryToAdd, currentList);
-    }
-
-    /***********************************************
-     * Adding multiple entries to an existing list *
-     ***********************************************/
-    @Test
-    public void add_multipleUniqueEventToExistingList_success() {
+    public void add_eventsToExistingList_success() {
         Entry[] currentList = SampleEntries.getSampleEvents();
         Entry entryToAdd = SampleEntries.MOVIE;
         currentList = assertAddEvent(entryToAdd, currentList);
@@ -119,7 +69,7 @@ public class AddCommandTest extends EntryBookGuiTest {
     }
 
     @Test
-    public void add_multipleUniqueDeadlineToExistingList_success() {
+    public void add_deadlinesToExistingList_success() {
         Entry[] currentList = SampleEntries.getSampleDeadlines();
         Entry entryToAdd = SampleEntries.SUBMISSION;
         currentList = assertAddDeadline(entryToAdd, currentList);
@@ -129,7 +79,7 @@ public class AddCommandTest extends EntryBookGuiTest {
     }
 
     @Test
-    public void add_multipleUniqueFloatingTaskToExistingList_success() {
+    public void add_floatingTaskToExistingList_success() {
         Entry[] currentList = SampleEntries.getSampleFloatingTasks();
         Entry entryToAdd = SampleEntries.SPECTACLES;
         currentList = assertAddFloatingTask(entryToAdd, currentList);
@@ -143,38 +93,35 @@ public class AddCommandTest extends EntryBookGuiTest {
      **************************************/
     @Test
     public void add_unknownCommandName_errorMessage() {
-        commandBox.runCommand("ad");
+        commandBox.runCommand(AddCommand.COMMAND_WORD.substring(0, AddCommand.COMMAND_WORD.length() - 1));
         assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
 
-        commandBox.runCommand("addd");
+        commandBox.runCommand(AddCommand.COMMAND_WORD + "a");
         assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
     }
 
     @Test
     public void add_invalidCommandFormat_errorMessage() {
-        commandBox.runCommand("add");
-        assertResultMessage(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
-
-        commandBox.runCommand("add /tag");
+        commandBox.runCommand(AddCommand.COMMAND_WORD);
         assertResultMessage(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
     }
 
 
     @Test
     public void add_invalidEntryName_errorMessage() {
-        commandBox.runCommand("add $");
+        commandBox.runCommand(AddCommand.COMMAND_WORD + " $");
         assertResultMessage(Name.MESSAGE_NAME_CONSTRAINTS);
 
-        commandBox.runCommand("add /");
+        commandBox.runCommand(AddCommand.COMMAND_WORD + " /");
         assertResultMessage(Name.MESSAGE_NAME_CONSTRAINTS);
     }
 
     @Test
     public void add_invalidTags_errorMessage() {
-        commandBox.runCommand("add task /tag");
+        commandBox.runCommand(AddCommand.COMMAND_WORD + " task " + CliSyntax.PREFIX_TAG);
         assertResultMessage(Tag.MESSAGE_TAG_CONSTRAINTS);
 
-        commandBox.runCommand("add task /tag $");
+        commandBox.runCommand(AddCommand.COMMAND_WORD + " task " + CliSyntax.PREFIX_TAG + " $");
         assertResultMessage(Tag.MESSAGE_TAG_CONSTRAINTS);
     }
 

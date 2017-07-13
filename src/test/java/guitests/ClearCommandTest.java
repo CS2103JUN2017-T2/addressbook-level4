@@ -1,6 +1,5 @@
 package guitests;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -19,14 +18,6 @@ public class ClearCommandTest extends EntryBookGuiTest {
     @Test
     public void clear_emptyList_success() {
         assertClearCommandSuccess();
-        assertClearCommandSuccess();
-    }
-
-    @Test
-    public void clear_nonEmptyList_success() {
-        assertFalse(eventListPanel.isEmpty());
-        assertFalse(deadlineListPanel.isEmpty());
-        assertFalse(floatingTaskListPanel.isEmpty());
         assertClearCommandSuccess();
     }
 
@@ -59,10 +50,10 @@ public class ClearCommandTest extends EntryBookGuiTest {
      **************************************/
     @Test
     public void clear_unknownCommandName_errorMessage() {
-        commandBox.runCommand("clea");
+        commandBox.runCommand(ClearCommand.COMMAND_WORD.substring(0, ClearCommand.COMMAND_WORD.length() - 1));
         assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
 
-        commandBox.runCommand("clearr");
+        commandBox.runCommand(ClearCommand.COMMAND_WORD + "a");
         assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
     }
 

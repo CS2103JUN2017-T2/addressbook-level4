@@ -57,8 +57,6 @@ public class CommandBoxTest extends EntryBookGuiTest {
     public void commandBox_mixFailedSuccessfulCommand_correctStyle() {
         assertBehaviorForSuccessfulCommand();
         assertBehaviorForFailedCommand();
-        assertBehaviorForFailedCommand();
-        assertBehaviorForSuccessfulCommand();
         assertBehaviorForSuccessfulCommand();
         assertBehaviorForFailedCommand();
         assertBehaviorForSuccessfulCommand();

@@ -52,24 +52,19 @@ public class HelpWindowTest extends EntryBookGuiTest {
     }
 
     @Test
-    public void help_tabAutocompleteFromOneChar_failure() {
+    public void help_tabAutocomplete_success() {
         assertHelpTabAutocompleteFailure(HelpCommand.COMMAND_WORD.substring(0, 1));
-    }
-
-    @Test
-    public void help_tabAutocompleteFromTwoChars_success() {
-        assertHelpTabAutocomplete(HelpCommand.COMMAND_WORD.substring(0, 2));
+        for (int i = 2; i < HelpCommand.COMMAND_WORD.length(); ++i) {
+            assertHelpTabAutocomplete(HelpCommand.COMMAND_WORD.substring(0, i));
+        }
     }
 
     @Test
     public void help_unknownCommandName_errorMessage() {
-        commandBox.runCommand("h");
+        commandBox.runCommand(HelpCommand.COMMAND_WORD.substring(0, HelpCommand.COMMAND_WORD.length() - 1));
         assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
 
-        commandBox.runCommand("hel");
-        assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
-
-        commandBox.runCommand("helpp");
+        commandBox.runCommand(HelpCommand.COMMAND_WORD + "a");
         assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
     }
 
