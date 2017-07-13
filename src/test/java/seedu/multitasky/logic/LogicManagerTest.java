@@ -275,7 +275,7 @@ public class LogicManagerTest {
             model.addEntry(p);
         }
 
-        assertCommandException(commandWord + " " + PREFIX_FLOATINGTASK
+        assertCommandException(commandWord + " " + PREFIX_FLOATINGTASK + " "
                                + INDEX_THIRD_ENTRY.getOneBased(), expectedMessage);
     }
 
@@ -299,7 +299,7 @@ public class LogicManagerTest {
         expectedModel.deleteEntry(threeEntrys.get(1));
         helper.addToModel(model, threeEntrys);
 
-        assertCommandSuccess(DeleteCommand.COMMAND_WORD + " /float 2",
+        assertCommandSuccess(DeleteCommand.COMMAND_WORD + " float 2",
                              String.format(DeleteCommand.MESSAGE_SUCCESS, threeEntrys.get(1)), expectedModel);
     }
 
@@ -377,7 +377,7 @@ public class LogicManagerTest {
             assertEquals(MESSAGE_UNKNOWN_COMMAND, pe.getMessage());
         }
 
-        String invalidCommandExecute = "delete /float 1"; // entry book is of size 0; index out of bounds
+        String invalidCommandExecute = "delete float 1"; // entry book is of size 0; index out of bounds
         try {
             logic.execute(invalidCommandExecute);
             fail("The expected CommandException was not thrown.");
@@ -426,7 +426,7 @@ public class LogicManagerTest {
 
             Set<Tag> tags = p.getTags();
             for (Tag t : tags) {
-                cmd.append(" " + PREFIX_TAG.getPrefix()).append(t.tagName);
+                cmd.append(" " + PREFIX_TAG.getPrefix()).append(" ").append(t.tagName);
             }
 
             return cmd.toString();
