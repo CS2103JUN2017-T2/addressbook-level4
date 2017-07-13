@@ -47,16 +47,15 @@ public class EditCommandParser {
         argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_FLOATINGTASK, PREFIX_DEADLINE, PREFIX_EVENT,
                                                  PREFIX_NAME, PREFIX_FROM, PREFIX_BY, PREFIX_AT, PREFIX_TO,
                                                  PREFIX_TAG);
-        String trimmedArgs = argMultimap.getPreamble().get();
+        String argPreamble = argMultimap.getPreamble().get();
         EditEntryDescriptor editEntryDescriptor = new EditEntryDescriptor();
 
-        if (args.trim().isEmpty()) {
-            throw new ParseException(
-                                     String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+        if (args.trim().isEmpty()) { // print help message if command word used without args
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                                                    EditCommand.MESSAGE_USAGE));
         }
 
-        if (hasIndexFlag(argMultimap)) {
+        if (hasIndexFlag(argMultimap)) { // edit by index
             if (hasInvalidFlagCombination(argMultimap)) {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                                                        DeleteCommand.MESSAGE_USAGE));
@@ -66,19 +65,19 @@ public class EditCommandParser {
             initEntryEditor(argMultimap, editEntryDescriptor);
 
             try {
-                Prefix listIndicatorPrefix = ParserUtil.getDatePrefix(argMultimap, PREFIX_FLOATINGTASK,
+                Prefix listIndicatorPrefix = ParserUtil.getMainPrefix(argMultimap, PREFIX_FLOATINGTASK,
                                                                       PREFIX_DEADLINE, PREFIX_EVENT);
                 index = ParserUtil.parseIndex(argMultimap.getValue(listIndicatorPrefix).get());
+                return new EditByIndexCommand(index, listIndicatorPrefix, editEntryDescriptor);
             } catch (IllegalValueException ive) {
-                throw new ParseException(
-                                         String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                                                        EditCommand.MESSAGE_USAGE));
             }
-            return new EditByIndexCommand(index, editEntryDescriptor);
+
         } else { // search by find
 
             initEntryEditor(argMultimap, editEntryDescriptor);
-            final String[] keywords = trimmedArgs.split("\\s+");
+            final String[] keywords = argPreamble.split("\\s+");
             final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
 
             return new EditByFindCommand(keywordSet, editEntryDescriptor);
@@ -86,7 +85,8 @@ public class EditCommandParser {
     }
 
     /*
-     * Intializes the entry editor by parsing new values to replace old data. throws ParseException if entry
+     * Intializes the entry editor by parsing new values that will replace old data. throws ParseException if
+     * entry
      * data are of wrong format or no fields are edited.
      */
     private void initEntryEditor(ArgumentMultimap argMultimap,
@@ -104,7 +104,7 @@ public class EditCommandParser {
             ParserUtil.parseDate(argMultimap.getValue(PREFIX_BY))
                       .ifPresent(editEntryDescriptor::setEndDate);
             parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG))
-                                                                  .ifPresent(editEntryDescriptor::setTags);
+                      .ifPresent(editEntryDescriptor::setTags);
         } catch (IllegalValueException ive) {
             throw new ParseException(ive.getMessage(), ive);
         }

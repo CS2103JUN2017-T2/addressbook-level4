@@ -22,7 +22,7 @@ import seedu.multitasky.storage.exception.NothingToUndoException;
 
 //@@author A0126623L
 /**
- * Represents the in-memory model of the address book data. All changes to any
+ * Represents the in-memory model of the entry book data. All changes to any
  * model should be synchronized.
  */
 public class ModelManager extends ComponentManager implements Model {

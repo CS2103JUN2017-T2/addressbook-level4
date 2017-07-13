@@ -1,13 +1,10 @@
 package seedu.multitasky.logic.commands;
 
-import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_DEADLINE;
-import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_EVENT;
-import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
-
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
+import seedu.multitasky.logic.parser.ParserUtil;
 import seedu.multitasky.logic.parser.Prefix;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
@@ -28,21 +25,15 @@ public class DeleteByIndexCommand extends DeleteCommand {
     }
 
     @Override
-    public CommandResult execute() throws CommandException , DuplicateEntryException {
-        UnmodifiableObservableList<ReadOnlyEntry> listToDeleteFrom;
-        assert listIndicatorPrefix != null;
-        if (listIndicatorPrefix.equals(PREFIX_FLOATINGTASK)) {
-            listToDeleteFrom = model.getFilteredFloatingTaskList();
-        } else if (listIndicatorPrefix.equals(PREFIX_DEADLINE)) {
-            listToDeleteFrom = model.getFilteredDeadlineList();
-        } else {
-            assert (listIndicatorPrefix.equals(PREFIX_EVENT));
-            listToDeleteFrom = model.getFilteredEventList();
-        }
+    public CommandResult execute() throws CommandException, DuplicateEntryException {
+        UnmodifiableObservableList<ReadOnlyEntry> listToDeleteFrom = ParserUtil
+                .getListIndicatedByPrefix(model, listIndicatorPrefix);
+        assert listToDeleteFrom != null;
 
         if (targetIndex.getZeroBased() >= listToDeleteFrom.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
         }
+
         entryToDelete = listToDeleteFrom.get(targetIndex.getZeroBased());
         try {
             model.deleteEntry(entryToDelete);

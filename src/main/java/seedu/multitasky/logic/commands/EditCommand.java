@@ -1,9 +1,6 @@
 package seedu.multitasky.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
-import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_NAME;
-import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.Calendar;
 import java.util.Optional;
@@ -11,6 +8,8 @@ import java.util.Set;
 
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.commons.util.CollectionUtil;
+import seedu.multitasky.logic.commands.exceptions.CommandException;
+import seedu.multitasky.logic.parser.CliSyntax;
 import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.Event;
@@ -27,26 +26,36 @@ public abstract class EditCommand extends Command {
 
     public static final String COMMAND_WORD = "edit";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD
-                                               + " : Edits the details of the entry either identified "
-                                               + "by keywords given or the index number used in the last"
-                                               + " entry listing. Existing values will be overwritten by "
-                                               + "the input values.\n" + "Format: " + COMMAND_WORD
-                                               + " KEYWORDS or " + PREFIX_FLOATINGTASK + " INDEX "
-                                               + PREFIX_NAME + " NEW NAME " + PREFIX_TAG + " NEWTAGS\n"
-                                               + "Example: " + COMMAND_WORD + " " + PREFIX_FLOATINGTASK
-                                               + " 1 " + PREFIX_NAME + " walk the dog " + PREFIX_TAG + "\n"
-                                               + "tip: this example clears all tags on the task!";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + " : Edits the entry identified by keywords"
+            + " if it is the only entry found, or edits the entry identified by the index number of the last"
+            + " entry listing.\n"
+            + "Format: " + COMMAND_WORD + " [" + "[" + "KEYWORDS" + "]" + " |"
+            + " [" + String.join(" | ", CliSyntax.PREFIX_EVENT.toString(), CliSyntax.PREFIX_DEADLINE.toString(),
+            CliSyntax.PREFIX_FLOATINGTASK.toString()) + "]" + " INDEX" + "]"
+            + " [" + "[" + CliSyntax.PREFIX_NAME + " NAME" + "]"
+            + " |" + "[" + CliSyntax.PREFIX_BY + " DATE" + "]"
+            + " |" + " [" + CliSyntax.PREFIX_FROM + " DATE"
+            + " " + CliSyntax.PREFIX_TO + " DATE" + "]" + "]"
+            + " [" + CliSyntax.PREFIX_TAG + " TAGS..." + "]" + "\n"
+            + "All possible flags for Edit : 'name', 'tag','by', 'from', 'to', 'at', 'on', 'event',"
+            + " 'deadline', 'float'" + "\n"
+            + "Note: Existing values will be overwritten by the input values.";
 
-    public static final String MESSAGE_SUCCESS = "Entry edited:" + "\n"
-                                                 + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s";
+    public static final String MESSAGE_SUCCESS = "Entry edited:" + "\n" + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s";
 
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.\n"
-                                                    + "Format: " + COMMAND_WORD + " [keywords] or "
-                                                    + PREFIX_FLOATINGTASK + " INDEX "
-                                                    + PREFIX_NAME + " NEW NAME " + PREFIX_TAG + " NEWTAGS";
+            + "Format: " + COMMAND_WORD + " [" + "[" + "KEYWORDS" + "]" + " |"
+            + " [" + String.join(" | ", CliSyntax.PREFIX_EVENT.toString(), CliSyntax.PREFIX_DEADLINE.toString(),
+            CliSyntax.PREFIX_FLOATINGTASK.toString()) + "]" + " INDEX" + "]"
+            + " [" + "[" + CliSyntax.PREFIX_NAME + " NAME" + "]"
+            + " |" + "[" + CliSyntax.PREFIX_BY + " DATE" + "]"
+            + " |" + " [" + CliSyntax.PREFIX_FROM + " DATE"
+            + " " + CliSyntax.PREFIX_TO + " DATE" + "]" + "]"
+            + " [" + CliSyntax.PREFIX_TAG + " TAGS..." + "]" + "\n"
+            + "All possible flags for Edit : 'name', 'tag', 'by', 'from', 'to', 'at', 'event',"
+            + " 'deadline', 'float'" + "\n";
 
-    public static final String MESSAGE_DUPLICATE_ENTRY = "This entry already exists in the address book.";
+    public static final String MESSAGE_DUPLICATE_ENTRY = "This entry already exists in the task manager.";
 
     protected final EditEntryDescriptor editEntryDescriptor;
     protected ReadOnlyEntry entryToEdit;
@@ -65,22 +74,28 @@ public abstract class EditCommand extends Command {
      * {@code entryToEdit} edited with {@code editEntryDescriptor}.
      */
     protected static Entry createEditedEntry(ReadOnlyEntry entryToEdit,
-                                             EditEntryDescriptor editEntryDescriptor) {
+            EditEntryDescriptor editEntryDescriptor) throws CommandException {
         assert entryToEdit != null;
 
         Name updatedName = editEntryDescriptor.getName().orElse(entryToEdit.getName());
         Set<Tag> updatedTags = editEntryDescriptor.getTags().orElse(entryToEdit.getTags());
+        Calendar updatedStartDate = editEntryDescriptor.getStartDate()
+                                                       .orElse(entryToEdit.getStartDateAndTime());
+        Calendar updatedEndDate = editEntryDescriptor.getEndDate()
+                                                     .orElse(entryToEdit.getEndDateAndTime());
 
-        // TODO (entryToEdit.getEndDateAndTime()) != null
-        if (!editEntryDescriptor.getEndDate().isPresent() && entryToEdit.getEndDateAndTime() == null) {
+        if (updatedStartDate == null && updatedEndDate == null) {
             return new FloatingTask(updatedName, updatedTags);
-        } else if (!editEntryDescriptor.getStartDate().isPresent() && entryToEdit.getStartDateAndTime() == null) {
-            Calendar updatedEndDate = editEntryDescriptor.getEndDate().orElse(entryToEdit.getEndDateAndTime());
+        } else if (updatedStartDate == null && updatedEndDate != null) {
             return new Deadline(updatedName, updatedEndDate, updatedTags);
-        } else {
-            Calendar updatedStartDate = editEntryDescriptor.getStartDate().orElse(entryToEdit.getStartDateAndTime());
-            Calendar updatedEndDate = editEntryDescriptor.getEndDate().orElse(entryToEdit.getEndDateAndTime());
+        } else if (updatedStartDate != null && updatedEndDate != null) {
+            if (updatedEndDate.compareTo(updatedStartDate) < 0) {
+                throw new CommandException("Can not have end date before start date!");
+            }
             return new Event(updatedName, updatedStartDate, updatedEndDate, updatedTags);
+        } else {
+            assert false : "Cannot edit to entry that is not float, deadline or event.";
+            return null;
         }
     }
 
@@ -106,12 +121,16 @@ public abstract class EditCommand extends Command {
      * will replace the corresponding field value of the entry.
      */
     public static class EditEntryDescriptor {
-        private Name name = null;
-        private Set<Tag> tags = null;
-        private Calendar startDate = null;
-        private Calendar endDate = null;
+        private Name name;
+        private Set<Tag> tags;
+        private Calendar startDate;
+        private Calendar endDate;
 
         public EditEntryDescriptor() {
+            name = null;
+            tags = null;
+            startDate = null;
+            endDate = null;
         }
 
         public EditEntryDescriptor(EditEntryDescriptor toCopy) {
@@ -133,7 +152,7 @@ public abstract class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(this.name, this.tags);
+            return CollectionUtil.isAnyNonNull(this.name, this.tags, this.startDate, this.endDate);
         }
 
         public Optional<Calendar> getStartDate() {
