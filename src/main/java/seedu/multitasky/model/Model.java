@@ -1,5 +1,6 @@
 package seedu.multitasky.model;
 
+import java.util.Comparator;
 import java.util.Set;
 
 import seedu.multitasky.commons.core.UnmodifiableObservableList;
@@ -77,5 +78,10 @@ public interface Model {
 
     /** Updates the filter of the filtered floating task list to filter by the given keywords */
     void updateFilteredFloatingTaskList(Set<String> keywords);
+
+    /** Updates the sorting comparators used. */
+    void updateSortingComparators(Comparator<ReadOnlyEntry> eventComparator,
+                                  Comparator<ReadOnlyEntry> deadlineComparator,
+                                  Comparator<ReadOnlyEntry> floatingTaskComparator);
 
 }

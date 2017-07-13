@@ -8,12 +8,15 @@ import java.util.GregorianCalendar;
 import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
 
+
 // @@author A0140633R
 /**
  * Contains utility methods used for parsing strings into dates in the various parser classes.
+ * depracated since V0.4 - functions of this class have been replaced by prettyTime lib.
  */
+@Deprecated
 public class DateUtil {
-    //TODO add in support for "[.]" and "\\s", for some reason not working.
+    //TODO add in support for "[.]" and "\\s"
     private static final String[] dateSeparators = { "/", "-" };
     private static final String[] timeSeparators = { ":", "-", "/" };
 

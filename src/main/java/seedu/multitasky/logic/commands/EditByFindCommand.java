@@ -1,12 +1,12 @@
 package seedu.multitasky.logic.commands;
 
-import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
+import seedu.multitasky.logic.parser.CliSyntax;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
@@ -17,12 +17,16 @@ import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
  * Edits an entry identified using the type of entry followed by displayed index.
  */
 public class EditByFindCommand extends EditCommand {
-    public static final String MESSAGE_NO_ENTRIES = "No entries found! Please try again "
-                                                    + "with different keywords.";
+    public static final String MESSAGE_NO_ENTRIES = "No entries found! Please try again with different keywords";
 
     public static final String MESSAGE_MULTIPLE_ENTRIES = "More than one entry found! \n"
-                                                          + "Use " + COMMAND_WORD + " " + PREFIX_FLOATINGTASK
-                                                          + " INDEX to specify which entry to edit.";
+            + "Use " + COMMAND_WORD + " [" + String.join(" | ", CliSyntax.PREFIX_EVENT.toString(),
+            CliSyntax.PREFIX_DEADLINE.toString(), CliSyntax.PREFIX_FLOATINGTASK.toString()) + "]"
+            + " INDEX to specify which entry to edit.";
+
+    public static final String MESSAGE_SUCCESS = "Entry edited:" + "\n"
+            + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
+            + "One entry found and edited! Listing all entries now.";
 
     private Set<String> keywords;
 
@@ -37,29 +41,30 @@ public class EditByFindCommand extends EditCommand {
 
     @Override
     public CommandResult execute() throws CommandException, DuplicateEntryException {
+
         // update all 3 lists with new keywords.
         model.updateFilteredDeadlineList(keywords);
         model.updateFilteredEventList(keywords);
         model.updateFilteredFloatingTaskList(keywords);
 
-        // find out whether only 1 entry is found.
-        List<ReadOnlyEntry> tempAllList = new ArrayList<>();
-        tempAllList.addAll(model.getFilteredDeadlineList());
-        tempAllList.addAll(model.getFilteredEventList());
-        tempAllList.addAll(model.getFilteredFloatingTaskList());
+        // collate a combined list to measure how many entries are found.
+        List<ReadOnlyEntry> allList = new ArrayList<>();
+        allList.addAll(model.getFilteredDeadlineList());
+        allList.addAll(model.getFilteredEventList());
+        allList.addAll(model.getFilteredFloatingTaskList());
 
-        if (tempAllList.size() == 1) {
-            ReadOnlyEntry entryToEdit = tempAllList.get(0);
+        if (allList.size() == 1) { //proceed to edit
+            ReadOnlyEntry entryToEdit = allList.get(0);
             Entry editedEntry = createEditedEntry(entryToEdit, editEntryDescriptor);
             try {
                 model.updateEntry(entryToEdit, editedEntry);
             } catch (EntryNotFoundException pnfe) {
-                throw new AssertionError("The target entry cannot be missing");
+                assert false : "The target entry cannot be missing";
             }
             model.updateAllFilteredListToShowAll();
             return new CommandResult(String.format(MESSAGE_SUCCESS, entryToEdit));
         }
-        if (tempAllList.size() >= 2) {
+        if (allList.size() >= 2) {
             return new CommandResult(MESSAGE_MULTIPLE_ENTRIES);
         } else {
             return new CommandResult(MESSAGE_NO_ENTRIES);

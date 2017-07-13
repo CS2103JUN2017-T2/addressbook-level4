@@ -50,7 +50,7 @@ public class DeleteCommandParser {
             }
 
             try {
-                Prefix listIndicatorPrefix = ParserUtil.getDatePrefix(argMultimap, PREFIX_FLOATINGTASK,
+                Prefix listIndicatorPrefix = ParserUtil.getMainPrefix(argMultimap, PREFIX_FLOATINGTASK,
                                                                       PREFIX_DEADLINE, PREFIX_EVENT);
                 Index index = ParserUtil.parseIndex(argMultimap.getValue(listIndicatorPrefix).get());
                 return new DeleteByIndexCommand(index, listIndicatorPrefix);

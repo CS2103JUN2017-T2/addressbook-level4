@@ -2,6 +2,7 @@ package seedu.multitasky.model;
 
 import static seedu.multitasky.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.util.Comparator;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -21,7 +22,7 @@ import seedu.multitasky.storage.exception.NothingToUndoException;
 
 //@@author A0126623L
 /**
- * Represents the in-memory model of the address book data. All changes to any
+ * Represents the in-memory model of the entry book data. All changes to any
  * model should be synchronized.
  */
 public class ModelManager extends ComponentManager implements Model {
@@ -236,6 +237,16 @@ public class ModelManager extends ComponentManager implements Model {
     private void updateFilteredFloatingTaskList(Expression expression) {
         _filteredFloatingTaskList.setPredicate(expression::satisfies);
     }
+    // @@author
+
+    // @@author A0125586X
+    /** Updates the sorting comparators used. */
+    public void updateSortingComparators(Comparator<ReadOnlyEntry> eventComparator,
+                                         Comparator<ReadOnlyEntry> deadlineComparator,
+                                         Comparator<ReadOnlyEntry> floatingTaskComparator) {
+        _entryBook.setComparators(eventComparator, deadlineComparator, floatingTaskComparator);
+    }
+    // @@author
 
     // @@author A0126623L
     @Override
