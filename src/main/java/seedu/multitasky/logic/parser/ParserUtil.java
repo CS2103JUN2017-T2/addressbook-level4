@@ -7,6 +7,8 @@ import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
 
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -14,10 +16,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
+
 import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.commons.util.StringUtil;
+import seedu.multitasky.logic.parser.exceptions.ParseException;
 import seedu.multitasky.model.Model;
 import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
@@ -58,8 +63,27 @@ public class ParserUtil {
      */
     public static Optional<Calendar> parseDate(Optional<String> inputArgs) throws IllegalValueException {
         requireNonNull(inputArgs);
-        return inputArgs.isPresent() ? Optional.of(DateUtil.stringToCalendar(inputArgs.get(), null))
+        return inputArgs.isPresent() ? Optional.of(parseDate(inputArgs.get()))
                                      : Optional.empty();
+    }
+
+    /**
+     * Converts input string to Calendar if format conforms to standard format and returns the Calendar.
+     *
+     * @throws ParseException if input args String cannot be parsed into a Date.
+     */
+    public static Calendar parseDate(String args) throws ParseException {
+        PrettyTimeParser ptp = new PrettyTimeParser();
+        Calendar calendar = new GregorianCalendar();
+        try {
+            List<Date> dates = ptp.parse(args);
+            assert (!dates.isEmpty()) : "parse date error not caught";
+            Date date = dates.get(0);
+            calendar.setTime(date);
+            return calendar;
+        } catch (Exception e) {
+            throw new ParseException(String.format("Unable to parse date: %1$s", args));
+        }
     }
 
     /**
@@ -104,7 +128,7 @@ public class ParserUtil {
         List<Prefix> tempList = Stream.of(prefixes).filter(prefix -> argMultimap.getValue(prefix).isPresent())
                                   .collect(Collectors.toList());
         if (tempList.size() != 1) {
-            throw new AssertionError("More than one or zero Prefixes found in getMainPrefix");
+            assert false : "More than one or zero Prefixes found in getMainPrefix";
         }
         return tempList.get(0);
     }
@@ -114,9 +138,10 @@ public class ParserUtil {
      * and return it.
      */
     public static UnmodifiableObservableList<ReadOnlyEntry> getListIndicatedByPrefix(
-                Model model, Prefix listIndicatorPrefix) {
+            Model model, Prefix listIndicatorPrefix) {
         UnmodifiableObservableList<ReadOnlyEntry> indicatedList;
         assert listIndicatorPrefix != null;
+
         if (listIndicatorPrefix.equals(PREFIX_FLOATINGTASK)) {
             indicatedList = model.getFilteredFloatingTaskList();
         } else if (listIndicatorPrefix.equals(PREFIX_DEADLINE)) {
@@ -125,7 +150,7 @@ public class ParserUtil {
             indicatedList = model.getFilteredEventList();
         } else {
             indicatedList = null;
-            assert false : "DeleteByIndexCommand must be initialized with a proper listIndicatorPrefix!";
+            assert false : "Indexes should only be indicated by float, deadline or event";
         }
         return indicatedList;
     }
