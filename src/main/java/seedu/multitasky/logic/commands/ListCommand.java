@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import seedu.multitasky.logic.parser.CliSyntax;
+import seedu.multitasky.model.entry.util.Comparators;
 
 // @@author A0125586X
 /**
@@ -23,9 +24,15 @@ public class ListCommand extends Command {
 
     public static final String MESSAGE_ACTIVE_SUCCESS = "Listed all active entries";
 
-    public static final String MESAGE_UPCOMING_SUCCESS = "Listed all upcoming entries";
+    public static final String MESSAGE_ARCHIVE_SUCCESS = "Listed all entries in the archive";
 
-    public static final String MESSAGE_REVERSE_SUCCESS = "Listed all entries in reverse";
+    public static final String MESSAGE_BIN_SUCCESS = "Listed all entries in the bin";
+
+    public static final String MESSAGE_DEFAULT_ORDER = "in default order";
+
+    public static final String MESSAGE_REVERSE_ORDER = "in reverse order";
+
+    public static final String MESSAGE_UPCOMING_ORDER = "in upcoming order";
 
     public static final String[] PREFIX_LIST = {CliSyntax.PREFIX_ARCHIVE.toString(),
                                                 CliSyntax.PREFIX_BIN.toString(),
@@ -37,7 +44,7 @@ public class ListCommand extends Command {
     }
 
     public enum Ordering {
-        DEFAULT, UPCOMING, REVERSE
+        DEFAULT, REVERSE, UPCOMING
     }
 
     private ShowType showType;
@@ -64,10 +71,10 @@ public class ListCommand extends Command {
             showType = ShowType.ACTIVE;
         }
 
-        if (flagList.contains(CliSyntax.PREFIX_UPCOMING.toString())) {
-            ordering = Ordering.UPCOMING;
-        } else if (flagList.contains(CliSyntax.PREFIX_REVERSE.toString())) {
+        if (flagList.contains(CliSyntax.PREFIX_REVERSE.toString())) {
             ordering = Ordering.REVERSE;
+        } else if (flagList.contains(CliSyntax.PREFIX_UPCOMING.toString())) {
+            ordering = Ordering.UPCOMING;
         } else {
             ordering = Ordering.DEFAULT;
         }
@@ -76,8 +83,43 @@ public class ListCommand extends Command {
 
     @Override
     public CommandResult execute() {
-        model.updateAllFilteredListToShowAll();
-        return new CommandResult(MESSAGE_ACTIVE_SUCCESS);
+        StringBuilder commandResultBuilder = new StringBuilder();
+        // TODO show archive/bin
+        switch (showType) {
+        case ARCHIVE:
+            commandResultBuilder.append(MESSAGE_ARCHIVE_SUCCESS);
+            break;
+        case BIN:
+            commandResultBuilder.append(MESSAGE_BIN_SUCCESS);
+            break;
+        case ACTIVE:
+            commandResultBuilder.append(MESSAGE_ACTIVE_SUCCESS);
+            break;
+        default:
+            throw new AssertionError("Unknown list show type");
+        }
+
+        switch (ordering) {
+        case REVERSE:
+            model.updateSortingComparators(Comparators.EVENT_REVERSE, Comparators.DEADLINE_REVERSE,
+                                           Comparators.FLOATING_TASK_REVERSE);
+            model.updateAllFilteredListToShowAll();
+            commandResultBuilder.append(" ").append(MESSAGE_REVERSE_ORDER);
+            return new CommandResult(commandResultBuilder.toString());
+        case UPCOMING:
+            model.updateSortingComparators(Comparators.EVENT_UPCOMING, Comparators.DEADLINE_UPCOMING,
+                                           Comparators.FLOATING_TASK_UPCOMING);
+            model.updateAllFilteredListToShowAll();
+            commandResultBuilder.append(" ").append(MESSAGE_UPCOMING_ORDER);
+            return new CommandResult(commandResultBuilder.toString());
+        case DEFAULT:
+            model.updateSortingComparators(Comparators.EVENT_DEFAULT, Comparators.DEADLINE_DEFAULT,
+                                           Comparators.FLOATING_TASK_DEFAULT);
+            model.updateAllFilteredListToShowAll();
+            return new CommandResult(commandResultBuilder.toString());
+        default:
+            throw new AssertionError("Unknown list command ordering type");
+        }
     }
 
 }

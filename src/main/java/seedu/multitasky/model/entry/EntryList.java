@@ -3,6 +3,7 @@ package seedu.multitasky.model.entry;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 
 import javafx.collections.FXCollections;
@@ -11,6 +12,7 @@ import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.commons.util.CollectionUtil;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.util.Comparators;
 
 /**
  * A list of entries that does not allow nulls.
@@ -22,6 +24,8 @@ import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 public abstract class EntryList implements Iterable<Entry> {
 
     protected final ObservableList<Entry> internalList = FXCollections.observableArrayList();
+
+    protected Comparator<ReadOnlyEntry> comparator = Comparators.ENTRY_DEFAULT;
 
     // @@author A0126623L
     /**
@@ -124,11 +128,18 @@ public abstract class EntryList implements Iterable<Entry> {
 
     // @@author A0125586X
     /**
-     * Sorts the internal list by the Comparable interface already implemented for the various
-     * Entry subclasses
+     * Sorts the internal list using the comparator stored inside the class
      */
     protected void sortInternalList() {
-        Collections.sort(internalList);
+        Collections.sort(internalList, comparator);
+    }
+
+    /**
+     * Sets the comparator for this list, and sorts it using the comparator.
+     */
+    public void setComparator(Comparator<ReadOnlyEntry> comparator) {
+        this.comparator = comparator;
+        sortInternalList();
     }
     // @@author
 }

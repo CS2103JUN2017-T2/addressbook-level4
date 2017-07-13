@@ -3,6 +3,7 @@ package seedu.multitasky.model;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -132,6 +133,16 @@ public class EntryBook implements ReadOnlyEntryBook {
             assert false : "EntryBooks should not have duplicate tags";
         }
         syncMasterTagListWith(_activeList);
+    }
+    // @@author
+
+    // @@author A0125586X
+    public void setComparators(Comparator<ReadOnlyEntry> eventComparator,
+                               Comparator<ReadOnlyEntry> deadlineComparator,
+                               Comparator<ReadOnlyEntry> floatingTaskComparator) {
+        _eventList.setComparator(eventComparator);
+        _deadlineList.setComparator(deadlineComparator);
+        _floatingTaskList.setComparator(floatingTaskComparator);
     }
     // @@author
 

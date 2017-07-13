@@ -9,7 +9,7 @@ import seedu.multitasky.model.tag.Tag;
  * A read-only immutable interface for a Entry in the entrybook.
  * Implementations should guarantee: details are present and not null, field values are validated.
  */
-public interface ReadOnlyEntry extends Comparable<ReadOnlyEntry> {
+public interface ReadOnlyEntry {
 
     Name getName();
 
