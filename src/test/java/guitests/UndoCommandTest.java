@@ -5,8 +5,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import guitests.guihandles.EntryCardHandle;
-import seedu.multitasky.commons.core.Messages;
-import seedu.multitasky.logic.commands.DeleteCommand;
 import seedu.multitasky.logic.commands.UndoCommand;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.testutil.EntryUtil;
