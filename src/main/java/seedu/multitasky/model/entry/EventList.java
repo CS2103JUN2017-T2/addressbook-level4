@@ -4,12 +4,20 @@ import java.util.List;
 
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.util.Comparators;
 
 //@@author A0126623L
 /**
  * A list of Event objects that does not allow nulls.
  */
 public class EventList extends EntryList {
+
+    // @@author A0125586X
+    public EventList() {
+        super();
+        comparator = Comparators.EVENT_DEFAULT;
+    }
+    // @@author
 
     // @@author A0126623L
     /**

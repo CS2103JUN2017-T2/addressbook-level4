@@ -19,10 +19,13 @@ import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.commons.util.FileUtil;
 import seedu.multitasky.commons.util.XmlUtil;
+import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.model.entry.Event;
 import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
+import seedu.multitasky.model.entry.util.Comparators;
 
 /**
  * A utility class for test cases.
@@ -165,7 +168,17 @@ public class TestUtil {
     public static Entry[] addEntriesToSortedList(final Entry[] entries, Entry... entriesToAdd) {
         List<Entry> listOfEntries = asList(entries);
         listOfEntries.addAll(asList(entriesToAdd));
-        Collections.sort(listOfEntries);
+        if (entries.length > 0) {
+            if (entries[0] instanceof Event) {
+                Collections.sort(listOfEntries, Comparators.EVENT_DEFAULT);
+            } else if (entries[0] instanceof Deadline) {
+                Collections.sort(listOfEntries, Comparators.DEADLINE_DEFAULT);
+            } else if (entries[0] instanceof FloatingTask) {
+                Collections.sort(listOfEntries, Comparators.FLOATING_TASK_DEFAULT);
+            } else {
+                throw new AssertionError("Unknown entry array type");
+            }
+        }
         return listOfEntries.toArray(new Entry[listOfEntries.size()]);
     }
 

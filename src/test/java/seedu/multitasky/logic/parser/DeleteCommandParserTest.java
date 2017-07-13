@@ -37,7 +37,7 @@ public class DeleteCommandParserTest {
 
     @Test
     public void parse_validIndexArgs_returnsDeleteByIndexCommand() throws Exception {
-        DeleteCommand command = parser.parse(" /float 1");
+        DeleteCommand command = parser.parse(" float 1");
         assertTrue(command instanceof DeleteByIndexCommand);
     }
 

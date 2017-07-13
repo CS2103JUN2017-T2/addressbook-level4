@@ -1,10 +1,14 @@
 package seedu.multitasky.logic.commands;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
+import seedu.multitasky.logic.parser.ParserUtil;
+import seedu.multitasky.logic.parser.Prefix;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
@@ -15,16 +19,17 @@ import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
  * Edits an entry identified using the type of entry followed by displayed index.
  */
 public class EditByIndexCommand extends EditCommand {
-
     private final Index index;
+    private final Prefix listIndicatorPrefix;
 
     /**
      * @param index of the entry in the filtered entry list to edit
      * @param editEntryDescriptor details to edit the entry with
      */
-    public EditByIndexCommand(Index index, EditEntryDescriptor editEntryDescriptor) {
+    public EditByIndexCommand(Index index, Prefix listIndicatorPrefix, EditEntryDescriptor editEntryDescriptor) {
         super(editEntryDescriptor);
         this.index = index;
+        this.listIndicatorPrefix = listIndicatorPrefix;
     }
 
     public Index getIndex() {
@@ -33,22 +38,28 @@ public class EditByIndexCommand extends EditCommand {
 
     @Override
     public CommandResult execute() throws CommandException, DuplicateEntryException {
-        List<ReadOnlyEntry> lastShownList = model.getFilteredFloatingTaskList();
+        List<ReadOnlyEntry> listToEditFrom = ParserUtil.getListIndicatedByPrefix(model, listIndicatorPrefix);
+        assert listToEditFrom != null;
 
-        if (index.getZeroBased() >= lastShownList.size()) {
+        if (index.getZeroBased() >= listToEditFrom.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
         }
 
-        ReadOnlyEntry entryToEdit = lastShownList.get(index.getZeroBased());
+        ReadOnlyEntry entryToEdit = listToEditFrom.get(index.getZeroBased());
         Entry editedEntry = createEditedEntry(entryToEdit, editEntryDescriptor);
 
         try {
             model.updateEntry(entryToEdit, editedEntry);
+            // either underlying FilteredList in ModelManager is not updating properly unless we update
+            // predicates. to find a neater way to reflect the change to ui
+            // and without needing to call a FilteredListshowAll
+            model.updateFilteredEventList(new HashSet<>(Arrays.asList("change filter")));
+            model.updateFilteredDeadlineList(new HashSet<>(Arrays.asList("change filter")));
+            model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList("change filter")));
+            model.updateAllFilteredListToShowAll();
         } catch (EntryNotFoundException pnfe) {
             throw new AssertionError("The target entry cannot be missing");
         }
-
-        model.updateAllFilteredListToShowAll();
         return new CommandResult(String.format(MESSAGE_SUCCESS, entryToEdit));
     }
 

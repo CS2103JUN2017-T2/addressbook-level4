@@ -18,7 +18,6 @@ import seedu.multitasky.testutil.EntryUtil;
 import seedu.multitasky.testutil.SampleEntries;
 import seedu.multitasky.ui.StatusBarFooter;
 
-
 public class StatusBarFooterTest extends EntryBookGuiTest {
 
     private Clock originalClock;

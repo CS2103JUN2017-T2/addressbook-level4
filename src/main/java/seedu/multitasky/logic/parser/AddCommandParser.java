@@ -41,6 +41,7 @@ public class AddCommandParser {
                                                  PREFIX_TO, PREFIX_TAG);
         Calendar startDate = null;
         Calendar endDate = null;
+        Prefix datePrefix;
 
         // check for no args input
         if (args.trim().isEmpty()) {
@@ -72,14 +73,12 @@ public class AddCommandParser {
                 Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
 
                 // only PREFIX_BY to indicate deadline.
-                Prefix datePrefix = PREFIX_BY;
-                endDate = DateUtil.stringToCalendar(argMultimap.getValue(datePrefix).get(),
-                                                    null);
+                datePrefix = PREFIX_BY;
+                endDate = ParserUtil.parseDate(argMultimap.getValue(datePrefix).get());
                 Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
                 ReadOnlyEntry entry = new Deadline(name, endDate, tagList);
 
                 return new AddCommand(entry);
-
             } catch (IllegalValueException ive) {
                 throw new ParseException(ive.getMessage(), ive);
             }
@@ -87,12 +86,13 @@ public class AddCommandParser {
         } else if (isEvent()) {
             try {
                 Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
-                Prefix startDatePrefix = ParserUtil.getDatePrefix(argMultimap, PREFIX_FROM, PREFIX_AT);
-                Prefix endDatePrefix = ParserUtil.getDatePrefix(argMultimap, PREFIX_TO, PREFIX_BY);
-
-                endDate = DateUtil.stringToCalendar(argMultimap.getValue(endDatePrefix).get(),
-                                                    null);
-                startDate = DateUtil.stringToCalendar(argMultimap.getValue(startDatePrefix).get(), endDate);
+                Prefix startDatePrefix = ParserUtil.getMainPrefix(argMultimap, PREFIX_FROM, PREFIX_AT);
+                Prefix endDatePrefix = ParserUtil.getMainPrefix(argMultimap, PREFIX_TO, PREFIX_BY);
+                endDate = ParserUtil.parseDate(argMultimap.getValue(endDatePrefix).get());
+                startDate = ParserUtil.parseDate(argMultimap.getValue(startDatePrefix).get());
+                if (endDate.compareTo(startDate) < 0) {
+                    throw new ParseException("End date should not be before start date!");
+                }
                 Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
                 ReadOnlyEntry entry = new Event(name, startDate, endDate, tagList);
 

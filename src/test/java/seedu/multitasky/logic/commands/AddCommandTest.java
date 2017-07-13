@@ -5,6 +5,7 @@ import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Set;
 
 import org.junit.Rule;
@@ -164,6 +165,13 @@ public class AddCommandTest {
 
         @Override
         public void redoPreviousAction() throws NothingToRedoException {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void updateSortingComparators(Comparator<ReadOnlyEntry> eventComparator,
+                                             Comparator<ReadOnlyEntry> deadlineComparator,
+                                             Comparator<ReadOnlyEntry> floatingTaskComparator) {
             fail("This method should not be called.");
         }
 

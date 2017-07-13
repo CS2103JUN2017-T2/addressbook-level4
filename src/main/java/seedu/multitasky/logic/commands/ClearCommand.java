@@ -15,6 +15,7 @@ public class ClearCommand extends Command {
     @Override
     public CommandResult execute() {
         requireNonNull(model);
+
         model.resetData(new EntryBook());
         return new CommandResult(MESSAGE_SUCCESS);
     }

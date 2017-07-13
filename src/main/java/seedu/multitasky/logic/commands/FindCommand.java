@@ -10,12 +10,9 @@ public class FindCommand extends Command {
 
     public static final String COMMAND_WORD = "find";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD
-                                               + ": Finds all entries whose names/tags contain any of "
-                                               + "the specified keywords (case-sensitive) and displays them "
-                                               + "as a list with index numbers.\n"
-                                               + "Format: " + COMMAND_WORD + " KEYWORD [MORE_KEYWORDS]...\n"
-                                               + "Example: " + COMMAND_WORD + " science lecture";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all entries whose names/tags contain any "
+            + "of the specified keywords (non case-sensitive) and displays them as a list with index numbers.\n"
+            + "Format: " + COMMAND_WORD + " KEYWORD [MORE_KEYWORDS]...\n";
 
     private final Set<String> keywords;
 
