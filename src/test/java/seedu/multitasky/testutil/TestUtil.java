@@ -168,14 +168,16 @@ public class TestUtil {
     public static Entry[] addEntriesToSortedList(final Entry[] entries, Entry... entriesToAdd) {
         List<Entry> listOfEntries = asList(entries);
         listOfEntries.addAll(asList(entriesToAdd));
-        if (entries instanceof Event[]) {
-            Collections.sort(listOfEntries, Comparators.EVENT_DEFAULT);
-        } else if (entries instanceof Deadline[]) {
-            Collections.sort(listOfEntries, Comparators.DEADLINE_DEFAULT);
-        } else if (entries instanceof FloatingTask[]) {
-            Collections.sort(listOfEntries, Comparators.FLOATING_TASK_DEFAULT);
-        } else {
-            throw new AssertionError("Unknown entry array type");
+        if (entries.length > 0) {
+            if (entries[0] instanceof Event) {
+                Collections.sort(listOfEntries, Comparators.EVENT_DEFAULT);
+            } else if (entries[0] instanceof Deadline) {
+                Collections.sort(listOfEntries, Comparators.DEADLINE_DEFAULT);
+            } else if (entries[0] instanceof FloatingTask) {
+                Collections.sort(listOfEntries, Comparators.FLOATING_TASK_DEFAULT);
+            } else {
+                throw new AssertionError("Unknown entry array type");
+            }
         }
         return listOfEntries.toArray(new Entry[listOfEntries.size()]);
     }
