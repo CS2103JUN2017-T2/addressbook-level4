@@ -49,6 +49,9 @@ public class EditByIndexCommand extends EditCommand {
 
         try {
             model.updateEntry(entryToEdit, editedEntry);
+            // either underlying FilteredList in ModelManager is not updating properly unless we update
+            // predicates. to find a neater way to reflect the change to ui
+            // and without needing to call a FilteredListshowAll
             model.updateFilteredEventList(new HashSet<>(Arrays.asList("change filter")));
             model.updateFilteredDeadlineList(new HashSet<>(Arrays.asList("change filter")));
             model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList("change filter")));

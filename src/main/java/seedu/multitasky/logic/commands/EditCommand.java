@@ -11,6 +11,7 @@ import java.util.Set;
 
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.commons.util.CollectionUtil;
+import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.Event;
@@ -65,22 +66,28 @@ public abstract class EditCommand extends Command {
      * {@code entryToEdit} edited with {@code editEntryDescriptor}.
      */
     protected static Entry createEditedEntry(ReadOnlyEntry entryToEdit,
-                                             EditEntryDescriptor editEntryDescriptor) {
+                                             EditEntryDescriptor editEntryDescriptor)
+            throws CommandException {
         assert entryToEdit != null;
 
         Name updatedName = editEntryDescriptor.getName().orElse(entryToEdit.getName());
         Set<Tag> updatedTags = editEntryDescriptor.getTags().orElse(entryToEdit.getTags());
+        Calendar updatedStartDate = editEntryDescriptor.getStartDate()
+                                                       .orElse(entryToEdit.getStartDateAndTime());
+        Calendar updatedEndDate = editEntryDescriptor.getEndDate()
+                                                     .orElse(entryToEdit.getEndDateAndTime());
 
-        // TODO (entryToEdit.getEndDateAndTime()) != null
-        if (!editEntryDescriptor.getEndDate().isPresent() && entryToEdit.getEndDateAndTime() == null) {
+        if (updatedStartDate == null && updatedEndDate == null) {
             return new FloatingTask(updatedName, updatedTags);
-        } else if (!editEntryDescriptor.getStartDate().isPresent() && entryToEdit.getStartDateAndTime() == null) {
-            Calendar updatedEndDate = editEntryDescriptor.getEndDate().orElse(entryToEdit.getEndDateAndTime());
+        } else if (updatedStartDate == null && updatedEndDate != null) {
             return new Deadline(updatedName, updatedEndDate, updatedTags);
-        } else {
-            Calendar updatedStartDate = editEntryDescriptor.getStartDate().orElse(entryToEdit.getStartDateAndTime());
-            Calendar updatedEndDate = editEntryDescriptor.getEndDate().orElse(entryToEdit.getEndDateAndTime());
+        } else if (updatedStartDate != null && updatedEndDate != null) {
+            if (updatedEndDate.compareTo(updatedStartDate) <= 0) {
+                throw new CommandException("Can not have end date before start date!");
+            }
             return new Event(updatedName, updatedStartDate, updatedEndDate, updatedTags);
+        } else {
+            throw new AssertionError("Cannot edit to entry that is not float, deadline or event.");
         }
     }
 
