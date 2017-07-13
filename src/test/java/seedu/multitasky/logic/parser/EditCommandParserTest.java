@@ -30,14 +30,14 @@ import seedu.multitasky.testutil.EditEntryDescriptorBuilder;
 public class EditCommandParserTest {
 
     private static final String PREFIX_FLOAT = " " + PREFIX_FLOATINGTASK.getPrefix() + " ";
-    private static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
-    private static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
-    private static final String TAG_DESC_FRIEND = " " + PREFIX_TAG + VALID_TAG_FRIEND;
-    private static final String TAG_DESC_HUSBAND = " " + PREFIX_TAG + VALID_TAG_HUSBAND;
+    private static final String NAME_DESC_AMY = " " + PREFIX_NAME + " " + VALID_NAME_AMY;
+    private static final String NAME_DESC_BOB = " " + PREFIX_NAME + " " + VALID_NAME_BOB;
+    private static final String TAG_DESC_FRIEND = " " + PREFIX_TAG + " " + VALID_TAG_FRIEND;
+    private static final String TAG_DESC_HUSBAND = " " + PREFIX_TAG + " " + VALID_TAG_HUSBAND;
     private static final String TAG_EMPTY = " " + PREFIX_TAG;
 
     private static final String INVALID_NAME_DESC = " " + PREFIX_NAME + ""; // empty names not allowed
-    private static final String INVALID_TAG_DESC = " " + PREFIX_TAG + "hubby*"; // '*' not allowed in tags
+    private static final String INVALID_TAG_DESC = " " + PREFIX_TAG + " >hubby*";
 
     private static final String MESSAGE_INVALID_FORMAT =
                                                        String.format(MESSAGE_INVALID_COMMAND_FORMAT,
@@ -69,7 +69,7 @@ public class EditCommandParserTest {
                            Tag.MESSAGE_TAG_CONSTRAINTS);
 
         // multiple invalid values, but only the first invalid value is captured
-        assertParseFailure(PREFIX_FLOAT + "1" + INVALID_NAME_DESC + INVALID_TAG_DESC,
+        assertParseFailure(PREFIX_FLOAT + " 1 " + INVALID_NAME_DESC + INVALID_TAG_DESC,
                            Name.MESSAGE_NAME_CONSTRAINTS);
     }
 

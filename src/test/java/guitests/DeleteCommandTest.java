@@ -13,7 +13,7 @@ import seedu.multitasky.testutil.EntryUtil;
 import seedu.multitasky.testutil.SampleEntries;
 import seedu.multitasky.testutil.TestUtil;
 
-//@@author A0125586X
+// @@author A0125586X
 public class DeleteCommandTest extends EntryBookGuiTest {
 
     /*********************
@@ -34,6 +34,14 @@ public class DeleteCommandTest extends EntryBookGuiTest {
     }
 
     @Test
+    public void delete_invalidEventIndex_errorMessage() {
+        Entry[] currentList = SampleEntries.getSampleEvents();
+        Index targetIndex = Index.fromOneBased(currentList.length + 1);
+        commandBox.runCommand(EntryUtil.getEventDeleteByIndexCommand(targetIndex));
+        assertResultMessage(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
+    }
+
+    @Test
     public void delete_firstDeadlineByIndex_success() {
         Entry[] currentList = SampleEntries.getSampleDeadlines();
         Index targetIndex = SampleEntries.INDEX_FIRST_ENTRY;
@@ -45,6 +53,14 @@ public class DeleteCommandTest extends EntryBookGuiTest {
         Entry[] currentList = SampleEntries.getSampleDeadlines();
         Index targetIndex = Index.fromOneBased(currentList.length);
         assertDeleteDeadlineSuccess(targetIndex, currentList);
+    }
+
+    @Test
+    public void delete_invalidDeadlineIndex_errorMessage() {
+        Entry[] currentList = SampleEntries.getSampleDeadlines();
+        Index targetIndex = Index.fromOneBased(currentList.length + 1);
+        commandBox.runCommand(EntryUtil.getDeadlineDeleteByIndexCommand(targetIndex));
+        assertResultMessage(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
     }
 
     @Test
@@ -82,16 +98,17 @@ public class DeleteCommandTest extends EntryBookGuiTest {
      **************************************/
     @Test
     public void delete_unknownCommandName_errorMessage() {
-        commandBox.runCommand("delet");
+        commandBox.runCommand(DeleteCommand.COMMAND_WORD
+                              .substring(0, DeleteCommand.COMMAND_WORD.length() - 1));
         assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
 
-        commandBox.runCommand("deletee");
+        commandBox.runCommand(DeleteCommand.COMMAND_WORD + "a");
         assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
     }
 
     @Test
     public void delete_invalidCommandFormat_errorMessage() {
-        commandBox.runCommand("delete");
+        commandBox.runCommand(DeleteCommand.COMMAND_WORD);
         assertResultMessage(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
                                           DeleteCommand.MESSAGE_USAGE));
     }

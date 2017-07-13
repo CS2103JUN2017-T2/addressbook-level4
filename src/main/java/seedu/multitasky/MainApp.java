@@ -32,6 +32,7 @@ import seedu.multitasky.storage.Storage;
 import seedu.multitasky.storage.StorageManager;
 import seedu.multitasky.storage.UserPrefsStorage;
 import seedu.multitasky.storage.XmlEntryBookStorage;
+import seedu.multitasky.testutil.SampleEntries;
 import seedu.multitasky.ui.Ui;
 import seedu.multitasky.ui.UiManager;
 
@@ -85,8 +86,8 @@ public class MainApp extends Application {
         try {
             entryBookOptional = storage.readEntryBook();
             if (!entryBookOptional.isPresent()) {
-                logger.info("Data file not found. Will be starting with an empty EntryBook");
-                initialData = new EntryBook();
+                logger.info("Data file not found. Will be starting with some sample entries");
+                initialData = SampleEntries.getSampleEntryBook();
             } else {
                 initialData = entryBookOptional.get();
                 storage.handleEntryBookChangedEvent(new EntryBookChangedEvent(initialData));

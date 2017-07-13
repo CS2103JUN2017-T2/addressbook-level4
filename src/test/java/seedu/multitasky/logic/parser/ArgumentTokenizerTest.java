@@ -78,7 +78,7 @@ public class ArgumentTokenizerTest {
     @Test
     public void tokenize_multipleArguments() {
         // Only two arguments are present
-        String argsString = "SomePreambleString -t dashT-Value /tagslashTag value";
+        String argsString = "SomePreambleString -t dashT-Value /tag slashTag value";
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(argsString, slashTag, dashT, hatQ);
         assertPreamblePresent(argMultimap, "SomePreambleString");
         assertArgumentPresent(argMultimap, slashTag, "slashTag value");
@@ -86,7 +86,7 @@ public class ArgumentTokenizerTest {
         assertArgumentAbsent(argMultimap, hatQ);
 
         // All three arguments are present
-        argsString = "Different Preamble String ^Q111 -t dashT-Value /tagslashTag value";
+        argsString = "Different Preamble String ^Q 111 -t dashT-Value /tag slashTag value";
         argMultimap = ArgumentTokenizer.tokenize(argsString, slashTag, dashT, hatQ);
         assertPreamblePresent(argMultimap, "Different Preamble String");
         assertArgumentPresent(argMultimap, slashTag, "slashTag value");
