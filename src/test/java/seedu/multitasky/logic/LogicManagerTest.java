@@ -238,7 +238,7 @@ public class LogicManagerTest {
         // prepare entry book state
         helper.addToModel(model, 2);
 
-        assertCommandSuccess(ListCommand.COMMAND_WORD, ListCommand.MESSAGE_SUCCESS, expectedModel);
+        assertCommandSuccess(ListCommand.COMMAND_WORD, ListCommand.MESSAGE_ACTIVE_SUCCESS, expectedModel);
     }
 
     /**
