@@ -93,7 +93,7 @@ public class DeadlineListTest {
      * Tests if sample entries used in this test class are considered equal when necessary.
      */
     @Test
-    public void millisecondsDiffNotConsideredDifferent() {
+    public void millisecondsDiffShouldNotBeConsideredDifferent() {
         /*
          * Because of the way they are instantiated, the start time of
          * the deadlines of sampleDeadlineArray's and deadlineList1's first deadline
@@ -101,8 +101,6 @@ public class DeadlineListTest {
          * considered different as the constructor reset milliseconds to
          * zero.
          */
-        System.out.println(sampleDeadlineArray[0].getEndDateAndTime().toString());
-        System.out.println(deadlineList1.asObservableList().get(0).getEndDateAndTime().toString());
         assertTrue(sampleDeadlineArray[0].equals(deadlineList1.asObservableList().get(0)));
     }
 

@@ -26,7 +26,8 @@ public class EditByIndexCommand extends EditCommand {
      * @param index of the entry in the filtered entry list to edit
      * @param editEntryDescriptor details to edit the entry with
      */
-    public EditByIndexCommand(Index index, Prefix listIndicatorPrefix, EditEntryDescriptor editEntryDescriptor) {
+    public EditByIndexCommand(Index index, Prefix listIndicatorPrefix,
+            EditEntryDescriptor editEntryDescriptor) {
         super(editEntryDescriptor);
         this.index = index;
         this.listIndicatorPrefix = listIndicatorPrefix;
@@ -53,9 +54,11 @@ public class EditByIndexCommand extends EditCommand {
             // either underlying FilteredList in ModelManager is not updating properly unless we update
             // predicates. to find a neater way to reflect the change to ui
             // and without needing to call a FilteredListshowAll
-            model.updateFilteredEventList(new HashSet<>(Arrays.asList("change filter")));
-            model.updateFilteredDeadlineList(new HashSet<>(Arrays.asList("change filter")));
-            model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList("change filter")));
+            model.updateFilteredEventList(new HashSet<>(Arrays.asList("change filter")), Entry.State.ACTIVE);
+            model.updateFilteredDeadlineList(new HashSet<>(Arrays.asList("change filter")),
+                                             Entry.State.ACTIVE);
+            model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList("change filter")),
+                                                 Entry.State.ACTIVE);
             model.updateAllFilteredListToShowAll();
         } catch (EntryNotFoundException pnfe) {
             throw new AssertionError("The target entry cannot be missing");

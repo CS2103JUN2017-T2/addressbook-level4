@@ -14,6 +14,7 @@ import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.model.Model;
 import seedu.multitasky.model.ModelManager;
 import seedu.multitasky.model.UserPrefs;
+import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.testutil.SampleEntries;
@@ -54,7 +55,7 @@ public class ListCommandTest {
     private void showFirstEntryOnly(Model model) {
         ReadOnlyEntry entry = model.getEntryBook().getFloatingTaskList().get(0);
         final String[] splitName = entry.getName().fullName.split("\\s+");
-        model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList(splitName)));
+        model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList(splitName)), Entry.State.ACTIVE);
 
         assertTrue(model.getFilteredFloatingTaskList().size() == 1);
     }
@@ -64,7 +65,8 @@ public class ListCommandTest {
      * - the result message matches {@code expectedMessage} <br>
      * - the address book and the filtered entry list in the {@code model} matches that of {@code expectedModel}
      */
-    public static void assertCommandSuccess(Command command, Model model, String expectedMessage, Model expectedModel)
+    public static void assertCommandSuccess(Command command, Model model, String expectedMessage,
+                                            Model expectedModel)
             throws CommandException, DuplicateEntryException {
         CommandResult result = command.execute();
         assertEquals(expectedMessage, result.feedbackToUser);

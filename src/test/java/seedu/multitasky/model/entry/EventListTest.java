@@ -93,7 +93,7 @@ public class EventListTest {
      * Tests if sample entries used in this test class are considered equal when necessary.
      */
     @Test
-    public void millisecondsDiffNotConsideredDifferent() {
+    public void millisecondsDiffShouldNotBeConsideredDifferent() {
         /*
          * Because of the way they are instantiated, the start time of
          * the events of sampleEventArray's and eventList1's first event

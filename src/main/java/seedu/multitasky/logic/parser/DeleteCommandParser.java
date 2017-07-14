@@ -59,9 +59,9 @@ public class DeleteCommandParser {
             }
 
         } else { // process to delete by find.
-            String trimmedArgs = argMultimap.getPreamble().get();
-
-            final String[] keywords = trimmedArgs.split("\\s+");
+            String searchString = argMultimap.getPreamble().get()
+                                             .replaceAll("\\" + CliSyntax.PREFIX_ESCAPE, "");
+            final String[] keywords = searchString.split("\\s+");
             final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
 
             return new DeleteByFindCommand(keywordSet);
