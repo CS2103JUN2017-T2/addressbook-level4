@@ -30,7 +30,7 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
     @XmlElement
     private List<XmlAdaptedEntry> deadlines;
     @XmlElement
-    private List<XmlAdaptedEntry> archived;
+    private List<XmlAdaptedEntry> archive;
     @XmlElement
     private List<XmlAdaptedEntry> bin;
     @XmlElement
@@ -46,7 +46,7 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
         events = new ArrayList<>();
         floatingTasks = new ArrayList<>();
         deadlines = new ArrayList<>();
-        archived = new ArrayList<>();
+        archive = new ArrayList<>();
         bin = new ArrayList<>();
         active = new ArrayList<>();
         tags = new ArrayList<>();
@@ -59,9 +59,15 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
         this();
         events.addAll(src.getEventList().stream().map(XmlAdaptedEntry::new).collect(Collectors.toList()));
         deadlines.addAll(src.getDeadlineList().stream().map(XmlAdaptedEntry::new)
-                            .collect(Collectors.toList()));
+                .collect(Collectors.toList()));
         floatingTasks.addAll(src.getFloatingTaskList().stream().map(XmlAdaptedEntry::new)
-                                .collect(Collectors.toList()));
+                .collect(Collectors.toList()));
+        archive.addAll(src.getArchive().stream().map(XmlAdaptedEntry::new)
+                .collect(Collectors.toList()));
+        bin.addAll(src.getBin().stream().map(XmlAdaptedEntry::new)
+                .collect(Collectors.toList()));
+        active.addAll(src.getActiveList().stream().map(XmlAdaptedEntry::new)
+                .collect(Collectors.toList()));
         tags.addAll(src.getTagList().stream().map(XmlAdaptedTag::new).collect(Collectors.toList()));
     }
 
@@ -108,22 +114,8 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
     }
 
     @Override
-    public ObservableList<ReadOnlyEntry> getActiveList() {
-        final ObservableList<Entry> actives = this.active.stream().map(p -> {
-            try {
-                return p.toModelType();
-            } catch (Exception e) {
-                e.printStackTrace();
-                // TODO: better error handling
-                return null;
-            }
-        }).collect(Collectors.toCollection(FXCollections::observableArrayList));
-        return new UnmodifiableObservableList<>(actives);
-    }
-
-    @Override
     public ObservableList<ReadOnlyEntry> getArchive() {
-        final ObservableList<Entry> archives = this.archived.stream().map(p -> {
+        final ObservableList<Entry> archive = this.archive.stream().map(p -> {
             try {
                 return p.toModelType();
             } catch (Exception e) {
@@ -132,12 +124,12 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
                 return null;
             }
         }).collect(Collectors.toCollection(FXCollections::observableArrayList));
-        return new UnmodifiableObservableList<>(archives);
+        return new UnmodifiableObservableList<>(archive);
     }
 
     @Override
     public ObservableList<ReadOnlyEntry> getBin() {
-        final ObservableList<Entry> bins = this.bin.stream().map(p -> {
+        final ObservableList<Entry> bin = this.bin.stream().map(p -> {
             try {
                 return p.toModelType();
             } catch (Exception e) {
@@ -146,7 +138,21 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
                 return null;
             }
         }).collect(Collectors.toCollection(FXCollections::observableArrayList));
-        return new UnmodifiableObservableList<>(bins);
+        return new UnmodifiableObservableList<>(bin);
+    }
+
+    @Override
+    public ObservableList<ReadOnlyEntry> getActiveList() {
+        final ObservableList<Entry> active = this.active.stream().map(p -> {
+            try {
+                return p.toModelType();
+            } catch (Exception e) {
+                e.printStackTrace();
+                // TODO: better error handling
+                return null;
+            }
+        }).collect(Collectors.toCollection(FXCollections::observableArrayList));
+        return new UnmodifiableObservableList<>(active);
     }
 
     @Override

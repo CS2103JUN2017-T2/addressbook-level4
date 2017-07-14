@@ -1,11 +1,7 @@
 package seedu.multitasky.storage;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,8 +30,8 @@ public class XmlAdaptedEntry {
     @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
 
-    /** Formatter to parse date into a human-editable string to store in the XML file */
-    private DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm");
+    /** To convert Date to String to store in XML file and String back to Date to return to Model */
+    private StorageDateConverter converter = new StorageDateConverter();
 
     /**
      * Constructs an XmlAdaptedEntry. This is the no-arg constructor that is
@@ -52,51 +48,17 @@ public class XmlAdaptedEntry {
         name = source.getName().fullName;
 
         if (source.getStartDateAndTime() != null) {
-            startDateAndTime = convertDateToString(source.getStartDateAndTime());
+            startDateAndTime = converter.convertDateToString(source.getStartDateAndTime());
         }
+
         if (source.getEndDateAndTime() != null) {
-            endDateAndTime = convertDateToString(source.getEndDateAndTime());
+            endDateAndTime = converter.convertDateToString(source.getEndDateAndTime());
         }
+
         tagged = new ArrayList<>();
         for (Tag tag : source.getTags()) {
             tagged.add(new XmlAdaptedTag(tag));
         }
-    }
-
-    /**
-     * This converts the Calendar object into a string type to be stored in XML file in a human editable
-     * format.
-     */
-    public String convertDateToString(Calendar given) {
-        String dateToString = df.format(given.getTime());
-        return dateToString;
-    }
-
-    /**
-     * This converts a String to a Calendar object to be passed back to Model.
-     *
-     * @throws Exception
-     */
-    public Calendar convertStringToDate(String given) throws Exception {
-        Calendar setDate = null;
-        Date toConvert = new Date();
-        try {
-            toConvert = df.parse(given);
-            setDate = setTheTime(toConvert);
-        } catch (ParseException e) {
-            throw new Exception("Unable to set the time!");
-        }
-        setDate.setTime(toConvert);
-        return setDate;
-    }
-
-    /**
-     * Sub-method to convert Date to String.
-     */
-    public Calendar setTheTime(Date given) {
-        Calendar toBeSet = Calendar.getInstance();
-        toBeSet.setTime(given);
-        return toBeSet;
     }
 
     /**
@@ -117,7 +79,7 @@ public class XmlAdaptedEntry {
 
         if (startDateAndTime != null) {
             try {
-                startDateAndTimeToUse = convertStringToDate(startDateAndTime);
+                startDateAndTimeToUse = converter.convertStringToDate(startDateAndTime);
             } catch (Exception e) {
                 throw new Exception("Start time is invalid!");
             }
@@ -125,7 +87,7 @@ public class XmlAdaptedEntry {
 
         if (endDateAndTime != null) {
             try {
-                endDateAndTimeToUse = convertStringToDate(endDateAndTime);
+                endDateAndTimeToUse = converter.convertStringToDate(endDateAndTime);
             } catch (Exception e) {
                 throw new Exception("End time is invalid!");
             }

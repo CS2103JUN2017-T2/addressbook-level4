@@ -32,7 +32,7 @@ import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.testutil.SampleEntries;
 import seedu.multitasky.testutil.TestUtil;
 
-//@@author A0125586X
+// @@author A0125586X
 /**
  * A GUI Test class for EntryBook.
  */

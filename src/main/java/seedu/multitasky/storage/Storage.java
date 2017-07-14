@@ -41,10 +41,15 @@ public interface Storage extends EntryBookStorage, UserPrefsStorage {
      * Changes the current version of the Entry Book to the previous one on the hard disk.
      * Raises {@link DataSavingExceptionEvent} if there was an error during saving.
      *
-     * @throws DataConversionException
      * @throws Exception
      */
-    void handleEntryBookToUndoEvent(EntryBookToUndoEvent e) throws DataConversionException, Exception;
+    void handleEntryBookToUndoEvent(EntryBookToUndoEvent e) throws Exception;
 
+    /**
+     * Changes the current version of the Entry Book to the next one (saved as a snapshot) on the hard disk.
+     * Raises {@link DataSavingExceptionEvent} if there was an error during saving.
+     *
+     * @throws Exception
+     */
     void handleEntryBookToRedoEvent(EntryBookToRedoEvent e) throws Exception;
 }

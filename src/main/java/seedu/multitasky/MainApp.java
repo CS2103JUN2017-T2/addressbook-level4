@@ -15,6 +15,7 @@ import seedu.multitasky.commons.core.EventsCenter;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.core.Version;
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
+import seedu.multitasky.commons.events.ui.EntryAppRequestEvent;
 import seedu.multitasky.commons.events.ui.ExitAppRequestEvent;
 import seedu.multitasky.commons.exceptions.DataConversionException;
 import seedu.multitasky.commons.util.ConfigUtil;
@@ -82,15 +83,24 @@ public class MainApp extends Application {
     private Model initModelManager(Storage storage, UserPrefs userPrefs) {
         Optional<ReadOnlyEntryBook> entryBookOptional;
         ReadOnlyEntryBook initialData;
+        // @@author A0132788U
+        /**
+         * Deletes snapshot files from previous run.
+         */
+        EntryAppRequestEvent event = new EntryAppRequestEvent();
         try {
             entryBookOptional = storage.readEntryBook();
             if (!entryBookOptional.isPresent()) {
+                event.deleteAllSnapshotFiles();
                 logger.info("Data file not found. Will be starting with an empty EntryBook");
                 initialData = new EntryBook();
+                storage.handleEntryBookChangedEvent(new EntryBookChangedEvent(initialData));
             } else {
+                event.deleteAllSnapshotFiles();
                 initialData = entryBookOptional.get();
                 storage.handleEntryBookChangedEvent(new EntryBookChangedEvent(initialData));
             }
+            // @@author
         } catch (DataConversionException e) {
             logger.warning("Data file not in the correct format. Will be starting with an empty EntryBook");
             initialData = new EntryBook();
@@ -187,17 +197,11 @@ public class MainApp extends Application {
         System.exit(0);
     }
 
-    // @@author A0132788U
-    /**
-     * Logs the info, deletes snapshot files, and then exits the app.
-     */
     @Subscribe
     public void handleExitAppRequestEvent(ExitAppRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        event.deleteAllSnapshotFiles(storage);
         this.stop();
     }
-    // @@author
 
     public static void main(String[] args) {
         launch(args);
