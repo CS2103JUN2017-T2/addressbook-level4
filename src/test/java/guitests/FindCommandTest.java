@@ -71,7 +71,7 @@ public class FindCommandTest extends EntryBookGuiTest {
      *********************************/
     @Test
     public void find_matchingPartialKeyword_multipleDeadlineResults() {
-        assertFindDeadlineResult("s", 3, SampleEntries.TAX, SampleEntries.PAPER);
+        assertFindDeadlineResult("s", 4, SampleEntries.TAX, SampleEntries.PAPER);
     }
 
     @Test

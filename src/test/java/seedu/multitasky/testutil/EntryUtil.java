@@ -11,7 +11,7 @@ import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.Event;
 import seedu.multitasky.model.entry.FloatingTask;
 
-//@@author A0125586X
+// @@author A0125586X
 /**
  * A utility class for Entry.
  */
@@ -118,4 +118,5 @@ public class EntryUtil {
                .append(calendar.get(Calendar.MINUTE));
         return builder.toString();
     }
+
 }

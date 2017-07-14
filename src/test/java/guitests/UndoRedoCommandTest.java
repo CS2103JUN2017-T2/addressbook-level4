@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import guitests.guihandles.EntryCardHandle;
-import seedu.multitasky.logic.commands.ListCommand;
 import seedu.multitasky.logic.commands.RedoCommand;
 import seedu.multitasky.logic.commands.UndoCommand;
 import seedu.multitasky.model.entry.Entry;
@@ -29,13 +28,6 @@ public class UndoRedoCommandTest extends EntryBookGuiTest {
     public void redo_noSnapshot_errorMessage() {
         commandBox.runCommand(RedoCommand.COMMAND_WORD);
         assertResultMessage(RedoCommand.MESSAGE_FAILURE);
-    }
-
-    @Test
-    public void undo_nonMutatingCommand_errorMessage() {
-        commandBox.runCommand(ListCommand.COMMAND_WORD);
-        commandBox.runCommand(UndoCommand.COMMAND_WORD);
-        assertResultMessage(UndoCommand.MESSAGE_FAILURE);
     }
 
     /*************************
