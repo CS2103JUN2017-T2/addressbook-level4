@@ -40,6 +40,9 @@ public class StatusBarFooterTest extends EntryBookGuiTest {
         assertEquals(StatusBarFooter.SYNC_STATUS_INITIAL, statusBarFooter.getSyncStatus());
     }
 
+    /*****************
+     * Model mutated *
+     ****************/
     @Test
     public void syncStatus_mutatingCommandSucceeds_syncStatusUpdated() {
         String timestamp = new Date(injectedClock.millis()).toString();
@@ -49,6 +52,9 @@ public class StatusBarFooterTest extends EntryBookGuiTest {
         assertEquals(expected, statusBarFooter.getSyncStatus());
     }
 
+    /*********************
+     * Model not mutated *
+     ********************/
     @Test
     public void syncStatus_nonMutatingCommandSucceeds_syncStatusRemainsUnchanged() {
         assertTrue(commandBox.runCommand(ListCommand.COMMAND_WORD)); // non-mutating command succeeds

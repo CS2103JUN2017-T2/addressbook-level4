@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.commons.core.index.Index;
+import seedu.multitasky.logic.commands.DeleteByFindCommand;
 import seedu.multitasky.logic.commands.DeleteCommand;
 import seedu.multitasky.logic.parser.CliSyntax;
 import seedu.multitasky.model.entry.Entry;
@@ -23,14 +24,14 @@ public class DeleteCommandTest extends EntryBookGuiTest {
     public void delete_firstEventByIndex_success() {
         Entry[] currentList = SampleEntries.getSampleEvents();
         Index targetIndex = SampleEntries.INDEX_FIRST_ENTRY;
-        assertDeleteEventSuccess(targetIndex, currentList);
+        assertDeleteEventByIndexSuccess(targetIndex, currentList);
     }
 
     @Test
     public void delete_lastEventByIndex_success() {
         Entry[] currentList = SampleEntries.getSampleEvents();
         Index targetIndex = Index.fromOneBased(currentList.length);
-        assertDeleteEventSuccess(targetIndex, currentList);
+        assertDeleteEventByIndexSuccess(targetIndex, currentList);
     }
 
     @Test
@@ -45,14 +46,14 @@ public class DeleteCommandTest extends EntryBookGuiTest {
     public void delete_firstDeadlineByIndex_success() {
         Entry[] currentList = SampleEntries.getSampleDeadlines();
         Index targetIndex = SampleEntries.INDEX_FIRST_ENTRY;
-        assertDeleteDeadlineSuccess(targetIndex, currentList);
+        assertDeleteDeadlineByIndexSuccess(targetIndex, currentList);
     }
 
     @Test
     public void delete_lastDeadlineByIndex_success() {
         Entry[] currentList = SampleEntries.getSampleDeadlines();
         Index targetIndex = Index.fromOneBased(currentList.length);
-        assertDeleteDeadlineSuccess(targetIndex, currentList);
+        assertDeleteDeadlineByIndexSuccess(targetIndex, currentList);
     }
 
     @Test
@@ -67,14 +68,14 @@ public class DeleteCommandTest extends EntryBookGuiTest {
     public void delete_firstFloatingTaskByIndex_success() {
         Entry[] currentList = SampleEntries.getSampleFloatingTasks();
         Index targetIndex = SampleEntries.INDEX_FIRST_ENTRY;
-        assertDeleteFloatingTaskSuccess(targetIndex, currentList);
+        assertDeleteFloatingTaskByIndexSuccess(targetIndex, currentList);
     }
 
     @Test
     public void delete_lastFloatingTaskByIndex_success() {
         Entry[] currentList = SampleEntries.getSampleFloatingTasks();
         Index targetIndex = Index.fromOneBased(currentList.length);
-        assertDeleteFloatingTaskSuccess(targetIndex, currentList);
+        assertDeleteFloatingTaskByIndexSuccess(targetIndex, currentList);
     }
 
     @Test
@@ -87,15 +88,34 @@ public class DeleteCommandTest extends EntryBookGuiTest {
 
     /***********************
      * Deleting by Keyword *
-     ***********************/
+     **********************/
     @Test
-    public void delete_floatingTaskKeyword_singleMatch() {
+    public void delete_eventKeyword_success() {
+        Entry[] currentList = SampleEntries.getSampleEvents();
+        Entry entryToDelete = SampleEntries.DINNER;
+        commandBox.runCommand(DeleteCommand.COMMAND_WORD + " dinner");
+        assertEventDeletedByKeyword(entryToDelete, currentList);
+    }
 
+    @Test
+    public void delete_deadlineKeyword_success() {
+        Entry[] currentList = SampleEntries.getSampleDeadlines();
+        Entry entryToDelete = SampleEntries.TAX;
+        commandBox.runCommand(DeleteCommand.COMMAND_WORD + " tax");
+        assertDeadlineDeletedByKeyword(entryToDelete, currentList);
+    }
+
+    @Test
+    public void delete_floatingTaskKeyword_success() {
+        Entry[] currentList = SampleEntries.getSampleFloatingTasks();
+        Entry entryToDelete = SampleEntries.PROGRAMMING;
+        commandBox.runCommand(DeleteCommand.COMMAND_WORD + " programming");
+        assertFloatingTaskDeletedByKeyword(entryToDelete, currentList);
     }
 
     /**************************************
      * Different types of invalid wording *
-     **************************************/
+     *************************************/
     @Test
     public void delete_unknownCommandName_errorMessage() {
         commandBox.runCommand(DeleteCommand.COMMAND_WORD
@@ -177,7 +197,7 @@ public class DeleteCommandTest extends EntryBookGuiTest {
      * Runs the delete command to delete the event at {@code index} and confirms the result is correct.
      * @param currentList A copy of the current list of events (before deletion).
      */
-    private void assertDeleteEventSuccess(Index index, final Entry[] currentList) {
+    private void assertDeleteEventByIndexSuccess(Index index, final Entry[] currentList) {
         Entry entryToDelete = currentList[index.getZeroBased()];
         commandBox.runCommand(EntryUtil.getEventDeleteByIndexCommand(index));
         assertEventDeleted(entryToDelete, currentList);
@@ -187,7 +207,7 @@ public class DeleteCommandTest extends EntryBookGuiTest {
      * Runs the delete command to delete the deadline at {@code index} and confirms the result is correct.
      * @param currentList A copy of the current list of deadlines (before deletion).
      */
-    private void assertDeleteDeadlineSuccess(Index index, final Entry[] currentList) {
+    private void assertDeleteDeadlineByIndexSuccess(Index index, final Entry[] currentList) {
         Entry entryToDelete = currentList[index.getZeroBased()];
         commandBox.runCommand(EntryUtil.getDeadlineDeleteByIndexCommand(index));
         assertDeadlineDeleted(entryToDelete, currentList);
@@ -197,28 +217,55 @@ public class DeleteCommandTest extends EntryBookGuiTest {
      * Runs the delete command to delete the floating task at {@code index} and confirms the result is correct.
      * @param currentList A copy of the current list of floating tasks (before deletion).
      */
-    private void assertDeleteFloatingTaskSuccess(Index index, final Entry[] currentList) {
+    private void assertDeleteFloatingTaskByIndexSuccess(Index index, final Entry[] currentList) {
         Entry entryToDelete = currentList[index.getZeroBased()];
         commandBox.runCommand(EntryUtil.getFloatingTaskDeleteByIndexCommand(index));
         assertFloatingTaskDeleted(entryToDelete, currentList);
     }
 
     private void assertEventDeleted(Entry entryDeleted, final Entry[] currentList) {
-        Entry[] expectedList = TestUtil.removeEntriesFromList(currentList, entryDeleted);
-        assertTrue(eventListPanel.isListMatching(expectedList));
+        assertEventRemovedFromList(entryDeleted, currentList);
         assertResultMessage(String.format(DeleteCommand.MESSAGE_SUCCESS, entryDeleted));
+    }
+
+    private void assertEventDeletedByKeyword(Entry entryDeleted, final Entry[] currentList) {
+        assertEventRemovedFromList(entryDeleted, currentList);
+        assertResultMessage(String.format(DeleteByFindCommand.MESSAGE_SUCCESS, entryDeleted));
     }
 
     private void assertDeadlineDeleted(Entry entryDeleted, final Entry[] currentList) {
-        Entry[] expectedList = TestUtil.removeEntriesFromList(currentList, entryDeleted);
-        assertTrue(deadlineListPanel.isListMatching(expectedList));
+        assertDeadlineRemovedFromList(entryDeleted, currentList);
         assertResultMessage(String.format(DeleteCommand.MESSAGE_SUCCESS, entryDeleted));
     }
 
+    private void assertDeadlineDeletedByKeyword(Entry entryDeleted, final Entry[] currentList) {
+        assertDeadlineRemovedFromList(entryDeleted, currentList);
+        assertResultMessage(String.format(DeleteByFindCommand.MESSAGE_SUCCESS, entryDeleted));
+    }
+
     private void assertFloatingTaskDeleted(Entry entryDeleted, final Entry[] currentList) {
+        assertFloatingTaskRemovedFromList(entryDeleted, currentList);
+        assertResultMessage(String.format(DeleteCommand.MESSAGE_SUCCESS, entryDeleted));
+    }
+
+    private void assertFloatingTaskDeletedByKeyword(Entry entryDeleted, final Entry[] currentList) {
+        assertFloatingTaskRemovedFromList(entryDeleted, currentList);
+        assertResultMessage(String.format(DeleteByFindCommand.MESSAGE_SUCCESS, entryDeleted));
+    }
+
+    private void assertEventRemovedFromList(Entry entryDeleted, final Entry[] currentList) {
+        Entry[] expectedList = TestUtil.removeEntriesFromList(currentList, entryDeleted);
+        assertTrue(eventListPanel.isListMatching(expectedList));
+    }
+
+    private void assertDeadlineRemovedFromList(Entry entryDeleted, final Entry[] currentList) {
+        Entry[] expectedList = TestUtil.removeEntriesFromList(currentList, entryDeleted);
+        assertTrue(deadlineListPanel.isListMatching(expectedList));
+    }
+
+    private void assertFloatingTaskRemovedFromList(Entry entryDeleted, final Entry[] currentList) {
         Entry[] expectedList = TestUtil.removeEntriesFromList(currentList, entryDeleted);
         assertTrue(floatingTaskListPanel.isListMatching(expectedList));
-        assertResultMessage(String.format(DeleteCommand.MESSAGE_SUCCESS, entryDeleted));
     }
 
 }

@@ -5,6 +5,8 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import guitests.guihandles.EntryCardHandle;
+import seedu.multitasky.logic.commands.ListCommand;
+import seedu.multitasky.logic.commands.RedoCommand;
 import seedu.multitasky.logic.commands.UndoCommand;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.testutil.EntryUtil;
@@ -12,23 +14,35 @@ import seedu.multitasky.testutil.SampleEntries;
 import seedu.multitasky.testutil.TestUtil;
 
 // @@author A0125586X
-public class UndoCommandTest extends EntryBookGuiTest {
+public class UndoRedoCommandTest extends EntryBookGuiTest {
 
-    /*******************
-     * Nothing to undo *
-     ******************/
+    /************************
+     * Nothing to undo/redo *
+     ***********************/
     @Test
-    public void undo_noCommands_errorMessage() {
-        // TODO make sure that on startup, all the snapshots are deleted
+    public void undo_noSnapshot_errorMessage() {
         commandBox.runCommand(UndoCommand.COMMAND_WORD);
         assertResultMessage(UndoCommand.MESSAGE_FAILURE);
     }
 
-    /********************
-     * undo add command *
-     *******************/
     @Test
-    public void undo_addEvents_success() {
+    public void redo_noSnapshot_errorMessage() {
+        commandBox.runCommand(RedoCommand.COMMAND_WORD);
+        assertResultMessage(RedoCommand.MESSAGE_FAILURE);
+    }
+
+    @Test
+    public void undo_nonMutatingCommand_errorMessage() {
+        commandBox.runCommand(ListCommand.COMMAND_WORD);
+        commandBox.runCommand(UndoCommand.COMMAND_WORD);
+        assertResultMessage(UndoCommand.MESSAGE_FAILURE);
+    }
+
+    /*************************
+     * Undo/redo add command *
+     ************************/
+    @Test
+    public void undoRedo_addEvents_success() {
         Entry[] currentList = SampleEntries.getSampleEvents();
         Entry[] startingList = currentList.clone();
         Entry entryToAdd = SampleEntries.MOVIE;
@@ -47,6 +61,12 @@ public class UndoCommandTest extends EntryBookGuiTest {
 
         commandBox.runCommand(UndoCommand.COMMAND_WORD);
         assertTrue(eventListPanel.isListMatching(startingList));
+
+        commandBox.runCommand(RedoCommand.COMMAND_WORD);
+        assertTrue(eventListPanel.isListMatching(middleList));
+
+        commandBox.runCommand(RedoCommand.COMMAND_WORD);
+        assertTrue(eventListPanel.isListMatching(currentList));
     }
 
     /**

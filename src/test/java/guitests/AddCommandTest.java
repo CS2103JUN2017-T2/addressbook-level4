@@ -165,6 +165,9 @@ public class AddCommandTest extends EntryBookGuiTest {
         for (int i = 1; i < AddCommand.COMMAND_WORD.length(); ++i) {
             assertAddTabAutocomplete(AddCommand.COMMAND_WORD.substring(0, i));
         }
+        assertAddTabAutocomplete(AddCommand.COMMAND_WORD + "a");
+        assertAddTabAutocomplete(AddCommand.COMMAND_WORD + "aa");
+        assertAddTabAutocomplete(AddCommand.COMMAND_WORD + "aaa");
     }
 
     /**

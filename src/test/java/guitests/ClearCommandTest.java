@@ -57,7 +57,6 @@ public class ClearCommandTest extends EntryBookGuiTest {
         assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
     }
 
-
     /*******************************
      * Mixed-case and autocomplete *
      ******************************/
@@ -97,6 +96,7 @@ public class ClearCommandTest extends EntryBookGuiTest {
         for (int i = 1; i < ClearCommand.COMMAND_WORD.length(); ++i) {
             assertClearTabAutocomplete(ClearCommand.COMMAND_WORD.substring(0, i));
         }
+        assertClearTabAutocomplete(ClearCommand.COMMAND_WORD + "a");
     }
 
     /**
