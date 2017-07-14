@@ -16,6 +16,7 @@ public class CliSyntax {
     public static final Prefix PREFIX_AT = new Prefix("at");
     public static final Prefix PREFIX_TO = new Prefix("to");
     public static final Prefix PREFIX_TAG = new Prefix("tag");
+    public static final Prefix PREFIX_ESCAPE = new Prefix("\\");
 
     /* Entry type */
     public static final Prefix PREFIX_EVENT = new Prefix("event");

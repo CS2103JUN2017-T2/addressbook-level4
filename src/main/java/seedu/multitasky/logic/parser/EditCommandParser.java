@@ -21,7 +21,6 @@ import java.util.Set;
 
 import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.commons.exceptions.IllegalValueException;
-import seedu.multitasky.logic.commands.DeleteCommand;
 import seedu.multitasky.logic.commands.EditByFindCommand;
 import seedu.multitasky.logic.commands.EditByIndexCommand;
 import seedu.multitasky.logic.commands.EditCommand;
@@ -47,7 +46,6 @@ public class EditCommandParser {
         argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_FLOATINGTASK, PREFIX_DEADLINE, PREFIX_EVENT,
                                                  PREFIX_NAME, PREFIX_FROM, PREFIX_BY, PREFIX_AT, PREFIX_TO,
                                                  PREFIX_TAG);
-        String argPreamble = argMultimap.getPreamble().get();
         EditEntryDescriptor editEntryDescriptor = new EditEntryDescriptor();
 
         if (args.trim().isEmpty()) { // print help message if command word used without args
@@ -58,7 +56,7 @@ public class EditCommandParser {
         if (hasIndexFlag(argMultimap)) { // edit by index
             if (hasInvalidFlagCombination(argMultimap)) {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                                                       DeleteCommand.MESSAGE_USAGE));
+                                                       EditCommand.MESSAGE_USAGE));
             }
 
             Index index;
@@ -77,7 +75,9 @@ public class EditCommandParser {
         } else { // search by find
 
             initEntryEditor(argMultimap, editEntryDescriptor);
-            final String[] keywords = argPreamble.split("\\s+");
+            String searchString = argMultimap.getPreamble().get()
+                    .replaceAll("\\" + CliSyntax.PREFIX_ESCAPE, "");
+            final String[] keywords = searchString.split("\\s+");
             final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
 
             return new EditByFindCommand(keywordSet, editEntryDescriptor);

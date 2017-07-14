@@ -61,23 +61,4 @@ public class ArgumentMultimap {
         return getValue(new Prefix(""));
     }
 
-    /**
-     * Extends preamble value within the ArgumentMultimap with any prefixs and their values,
-     * if the prefix has more than one value mapped to it.
-     */
-    public void bringUnusedPrefixArgsToPreamble(Prefix...prefixs) {
-        Prefix preamblePrefix = new Prefix("");
-        for (Prefix prefix : prefixs) {
-            List<String> list = getAllValues(prefix);
-            if (list.size() > 1) { //more than one prefix used to describe
-                for (int i = 0; i < list.size() - 1; i++) { //all except last value
-                    String toConcat = argMultimap.get(preamblePrefix).get(0) + " " + prefix.toString() + " " + list.get(i);
-                    List<String> replacementList = new ArrayList<>();
-                    replacementList.add(toConcat);
-                    argMultimap.put(preamblePrefix, replacementList);
-                }
-            }
-        }
-    }
-
 }
