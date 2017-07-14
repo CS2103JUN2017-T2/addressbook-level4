@@ -13,7 +13,8 @@ import java.util.HashSet;
  */
 public class PowerMatch {
 
-    public static final int PERMUTATION_MATCH_ALLOWED_LENGTH = 8;
+    public static final int PERMUTATION_MATCH_MAX_ALLOWED_LENGTH = 8;
+    public static final int MISSING_INNER_MATCH_MAX_ALLOWED_LENGTH = 8;
 
     /**
      * Attempts to find a match between the input and a single entry in {@code potentialMatches}.
@@ -46,14 +47,31 @@ public class PowerMatch {
             return match;
         }
 
-        if (input.length() < PERMUTATION_MATCH_ALLOWED_LENGTH) {
+        if (input.length() <= PERMUTATION_MATCH_MAX_ALLOWED_LENGTH) {
             match = getPermutationMatch(keyword, potentialMatches);
             if (match != null) {
                 return match;
             }
         }
 
+        if (input.length() <= MISSING_INNER_MATCH_MAX_ALLOWED_LENGTH) {
+            match = getMissingInnerMatch(keyword, potentialMatches);
+            if (match != null) {
+                return match;
+            }
+        }
+
         return input;
+    }
+
+    private static String getRegexMatch(final String regex, final ArrayList<String> potentialMatches) {
+        ArrayList<String> matches = new ArrayList<>();
+        for (String potentialMatch : potentialMatches) {
+            if (potentialMatch.matches(regex)) {
+                matches.add(potentialMatch);
+            }
+        }
+        return filterMatches(matches);
     }
 
     private static String getSubstringMatch(final String keyword, final ArrayList<String> potentialMatches) {
@@ -93,11 +111,41 @@ public class PowerMatch {
         return null;
     }
 
-    private static ArrayList<String> getPermutations(String keyword) {
+    private static String getMissingInnerMatch(final String keyword,
+                                               final ArrayList<String> potentialMatches) {
+        final ArrayList<String> permutations = getMissingInnerPermutations(keyword);
+        String match;
+        for (String permutation : permutations) {
+            // Use of regex instead of string literal comparison here
+            match = getRegexMatch(permutation, potentialMatches);
+            if (match != null) {
+                return match;
+            }
+        }
+        return null;
+    }
+
+    private static ArrayList<String> getPermutations(final String keyword) {
         HashSet<String> permutations = new HashSet<>();
         ArrayList<String> chars = new ArrayList<>(Arrays.asList(keyword.split("")));
         generateUniquePermutations(chars, 0, keyword.length() - 1, permutations);
         return new ArrayList<String>(permutations);
+    }
+
+    private static ArrayList<String> getMissingInnerPermutations(final String keyword) {
+        HashSet<String> permutations = new HashSet<>();
+        ArrayList<String> chars = new ArrayList<>(Arrays.asList(keyword.split("")));
+        // Add in a regex expression for any missing non-whitespace character
+        chars.add("(\\S+)");
+        generateUniquePermutations(chars, 0, keyword.length(), permutations); // No -1 due to the extra regex
+        // Add in regex expressions before and after to match any substring
+        ArrayList<String> permutationsList = new ArrayList<>(permutations);
+        for (int i = 0; i < permutationsList.size(); ++i) {
+            String permutation = permutationsList.get(i);
+            permutation = "(.+|.?)" + permutation + "(.+|.?)";
+            permutationsList.set(i, permutation);
+        }
+        return permutationsList;
     }
 
     private static void generateUniquePermutations(ArrayList<String> chars, int i, int permutationLength,
@@ -114,7 +162,7 @@ public class PowerMatch {
         }
     }
 
-    private static String buildString(ArrayList<String> chars) {
+    private static String buildString(final ArrayList<String> chars) {
         StringBuilder builder = new StringBuilder();
         for (String string : chars) {
             builder.append(string);

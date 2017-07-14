@@ -124,7 +124,8 @@ public class CommandAutocomplete {
                 splitCommand = extractLastWord(splitCommand[1]);
                 // The middle portion of the input remains unchanged
                 commandResult.append(splitCommand[0]).append(" ");
-                commandResult.append(autocompletePrefix(splitCommand[1], commandMatch)).append(" ");
+                commandResult.append(autocompletePrefix(splitCommand[LAST_WORD_IDX], commandMatch))
+                             .append(" ");
             }
         } else {
             // No information to go on to autocomplete anything else
