@@ -19,6 +19,7 @@ public class StorageDateConverter {
 
     public StorageDateConverter() {
         super();
+        formatter.setLenient(false);
     }
 
     /**
