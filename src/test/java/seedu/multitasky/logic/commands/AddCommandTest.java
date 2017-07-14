@@ -113,18 +113,6 @@ public class AddCommandTest {
         }
 
         @Override
-        public UnmodifiableObservableList<ReadOnlyEntry> getArchive() {
-            fail("This method should not be called.");
-            return null;
-        }
-
-        @Override
-        public UnmodifiableObservableList<ReadOnlyEntry> getBin() {
-            fail("This method should not be called.");
-            return null;
-        }
-
-        @Override
         public void updateFilteredEventListToShowAll() {
             fail("This method should not be called.");
         }
@@ -188,6 +176,21 @@ public class AddCommandTest {
         public void updateSortingComparators(Comparator<ReadOnlyEntry> eventComparator,
                                              Comparator<ReadOnlyEntry> deadlineComparator,
                                              Comparator<ReadOnlyEntry> floatingTaskComparator) {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void updateAllFilteredListToShowAllActiveEntries() {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void updateAllFilteredListToShowAllArchivedEntries() {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void updateAllFilteredListToShowAllDeletedEntries() {
             fail("This method should not be called.");
         }
 

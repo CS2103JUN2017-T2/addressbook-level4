@@ -59,15 +59,11 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
         this();
         events.addAll(src.getEventList().stream().map(XmlAdaptedEntry::new).collect(Collectors.toList()));
         deadlines.addAll(src.getDeadlineList().stream().map(XmlAdaptedEntry::new)
-                .collect(Collectors.toList()));
+                            .collect(Collectors.toList()));
         floatingTasks.addAll(src.getFloatingTaskList().stream().map(XmlAdaptedEntry::new)
-                .collect(Collectors.toList()));
-        archive.addAll(src.getArchive().stream().map(XmlAdaptedEntry::new)
-                .collect(Collectors.toList()));
-        bin.addAll(src.getBin().stream().map(XmlAdaptedEntry::new)
-                .collect(Collectors.toList()));
+                                .collect(Collectors.toList()));
         active.addAll(src.getActiveList().stream().map(XmlAdaptedEntry::new)
-                .collect(Collectors.toList()));
+                         .collect(Collectors.toList()));
         tags.addAll(src.getTagList().stream().map(XmlAdaptedTag::new).collect(Collectors.toList()));
     }
 
@@ -111,34 +107,6 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
             }
         }).collect(Collectors.toCollection(FXCollections::observableArrayList));
         return new UnmodifiableObservableList<>(floatingTasks);
-    }
-
-    @Override
-    public ObservableList<ReadOnlyEntry> getArchive() {
-        final ObservableList<Entry> archive = this.archive.stream().map(p -> {
-            try {
-                return p.toModelType();
-            } catch (Exception e) {
-                e.printStackTrace();
-                // TODO: better error handling
-                return null;
-            }
-        }).collect(Collectors.toCollection(FXCollections::observableArrayList));
-        return new UnmodifiableObservableList<>(archive);
-    }
-
-    @Override
-    public ObservableList<ReadOnlyEntry> getBin() {
-        final ObservableList<Entry> bin = this.bin.stream().map(p -> {
-            try {
-                return p.toModelType();
-            } catch (Exception e) {
-                e.printStackTrace();
-                // TODO: better error handling
-                return null;
-            }
-        }).collect(Collectors.toCollection(FXCollections::observableArrayList));
-        return new UnmodifiableObservableList<>(bin);
     }
 
     @Override
