@@ -213,18 +213,18 @@ public class ModelManager extends ComponentManager implements Model {
     // @@author A0126623L
     @Override
     public void updateAllFilteredListToShowAllActiveEntries() {
-        this.updateFilteredEventList(null, Entry.State.ACTIVE);
-        this.updateFilteredDeadlineList(null, Entry.State.ACTIVE);
-        this.updateFilteredFloatingTaskList(null, Entry.State.ACTIVE);
+        this.updateFilteredEventList(new HashSet<String>(), Entry.State.ACTIVE);
+        this.updateFilteredDeadlineList(new HashSet<String>(), Entry.State.ACTIVE);
+        this.updateFilteredFloatingTaskList(new HashSet<String>(), Entry.State.ACTIVE);
     }
     // @@author
 
     // @@author A0126623L
     @Override
     public void updateAllFilteredListToShowAllArchivedEntries() {
-        this.updateFilteredEventList(null, Entry.State.ARCHIVED);
-        this.updateFilteredDeadlineList(null, Entry.State.ARCHIVED);
-        this.updateFilteredFloatingTaskList(null, Entry.State.ARCHIVED);
+        this.updateFilteredEventList(new HashSet<String>(), Entry.State.ARCHIVED);
+        this.updateFilteredDeadlineList(new HashSet<String>(), Entry.State.ARCHIVED);
+        this.updateFilteredFloatingTaskList(new HashSet<String>(), Entry.State.ARCHIVED);
     }
     // @@author
 
