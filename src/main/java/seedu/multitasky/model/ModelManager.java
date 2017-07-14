@@ -37,6 +37,8 @@ public class ModelManager extends ComponentManager implements Model {
     // @@author A0126623L
     /**
      * Initializes a ModelManager with the given entryBook and userPrefs.
+     * Note that the reference of the entries in the given {@code entryBook}
+     * will be copied. Entries themselves will not be copied.
      */
     public ModelManager(ReadOnlyEntryBook entryBook, UserPrefs userPrefs) {
         super();
