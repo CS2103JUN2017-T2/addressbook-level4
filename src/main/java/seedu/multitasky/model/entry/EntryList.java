@@ -13,6 +13,7 @@ import seedu.multitasky.commons.util.CollectionUtil;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 import seedu.multitasky.model.entry.util.Comparators;
+import seedu.multitasky.model.util.EntryBuilder;
 
 /**
  * A list of entries that does not allow nulls.
@@ -86,6 +87,20 @@ public abstract class EntryList implements Iterable<Entry> {
             throw new EntryNotFoundException();
         }
         return entryFoundAndDeleted;
+    }
+
+    // @@author A0126623L
+    /**
+     * Changes the state (i.e. ACTIVE, ARCHIVED, DELETED) of an existing entry to {@code newState}.
+     * @param entryToChange
+     * @param newState
+     * @throws DuplicateEntryException, EntryNotFoundException
+     */
+    public void changeEntryState(ReadOnlyEntry entryToChange, Entry.State newState)
+            throws DuplicateEntryException, EntryNotFoundException {
+        Entry editedEntry = EntryBuilder.build(entryToChange);
+        editedEntry.setState(newState);
+        this.updateEntry(entryToChange, editedEntry);
     }
 
     /**

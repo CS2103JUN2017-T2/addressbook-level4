@@ -16,18 +16,6 @@ public interface ReadOnlyEntryBook {
     ObservableList<ReadOnlyEntry> getActiveList();
 
     /**
-     * Returns an unmodifiable view of the archived entry list.
-     * TODO: Update this Javadoc if duplicate is not allowed in the future.
-     */
-    ObservableList<ReadOnlyEntry> getArchive();
-
-    /**
-     * Returns an unmodifiable view of the deleted entry list.
-     * TODO: Update this Javadoc if duplicate is not allowed in the future.
-     */
-    ObservableList<ReadOnlyEntry> getBin();
-
-    /**
      * Returns an unmodifiable view of the (active) event list.
      * TODO: Update this Javadoc if duplicate is not allowed in the future.
      */

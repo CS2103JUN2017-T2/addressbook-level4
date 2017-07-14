@@ -170,18 +170,6 @@ public class ModelManager extends ComponentManager implements Model {
 
     // @@author A0126623L
     @Override
-    public UnmodifiableObservableList<ReadOnlyEntry> getArchive() {
-        return new UnmodifiableObservableList<>(_entryBook.getArchive());
-    }
-
-    // @@author A0126623L
-    @Override
-    public UnmodifiableObservableList<ReadOnlyEntry> getBin() {
-        return new UnmodifiableObservableList<>(_entryBook.getBin());
-    }
-
-    // @@author A0126623L
-    @Override
     public void updateFilteredEventListToShowAll() {
         _filteredEventList.setPredicate(null);
     }

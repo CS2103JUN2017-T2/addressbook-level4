@@ -66,6 +66,9 @@ public abstract class Entry implements ReadOnlyEntry {
         return _name;
     }
 
+    /**
+     * @param state cannot be null
+     */
     public void setState(State state) {
         this._state = requireNonNull(state);
     }

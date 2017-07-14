@@ -53,12 +53,6 @@ public interface Model {
     /** Returns the active entry list as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
     UnmodifiableObservableList<ReadOnlyEntry> getActiveList();
 
-    /** Returns the entry archive as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
-    UnmodifiableObservableList<ReadOnlyEntry> getArchive();
-
-    /** Returns the entry bin as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
-    UnmodifiableObservableList<ReadOnlyEntry> getBin();
-
     /** Updates the filter of the filtered event list to show all entries */
     void updateFilteredEventListToShowAll();
 
