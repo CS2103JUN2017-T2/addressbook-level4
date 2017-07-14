@@ -20,8 +20,8 @@ public class UndoCommandTest extends EntryBookGuiTest {
     @Test
     public void undo_noCommands_errorMessage() {
         // TODO make sure that on startup, all the snapshots are deleted
-        //commandBox.runCommand(UndoCommand.COMMAND_WORD);
-        //assertResultMessage(UndoCommand.MESSAGE_FAILURE);
+        commandBox.runCommand(UndoCommand.COMMAND_WORD);
+        assertResultMessage(UndoCommand.MESSAGE_FAILURE);
     }
 
     /********************

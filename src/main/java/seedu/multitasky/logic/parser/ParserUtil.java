@@ -55,7 +55,11 @@ public class ParserUtil {
      */
     public static Optional<Name> parseName(Optional<String> name) throws IllegalValueException {
         requireNonNull(name);
-        return name.isPresent() ? Optional.of(new Name(name.get())) : Optional.empty();
+        if (!name.isPresent()) {
+            return Optional.empty();
+        } else {
+            return Optional.of(new Name(name.get().replaceAll("\\" + CliSyntax.PREFIX_ESCAPE.toString(), "")));
+        }
     }
 
     /**

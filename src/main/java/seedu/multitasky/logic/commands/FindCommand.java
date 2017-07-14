@@ -2,6 +2,8 @@ package seedu.multitasky.logic.commands;
 
 import java.util.Set;
 
+import seedu.multitasky.logic.parser.CliSyntax;
+
 /**
  * Finds and lists all entries in entry book whose name contains any of the argument keywords.
  * Keyword matching is case sensitive.
@@ -13,6 +15,9 @@ public class FindCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all entries whose names/tags contain any "
             + "of the specified keywords (non case-sensitive) and displays them as a list with index numbers.\n"
             + "Format: " + COMMAND_WORD + " KEYWORD [MORE_KEYWORDS]...\n";
+
+    public static final String[] VALID_PREFIXES = {CliSyntax.PREFIX_ARCHIVE.toString(),
+                                                   CliSyntax.PREFIX_BIN.toString()};
 
     private final Set<String> keywords;
 
