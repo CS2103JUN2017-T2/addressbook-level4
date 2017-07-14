@@ -20,7 +20,7 @@ public class Deadline extends Entry {
         super(name, tags);
         requireAllNonNull(endDateAndTime);
         _startDateAndTime = null;
-        _endDateAndTime = endDateAndTime;
+        this.setEndDateAndTime(endDateAndTime);
     }
 
     /**

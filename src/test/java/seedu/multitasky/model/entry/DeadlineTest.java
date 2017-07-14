@@ -25,7 +25,7 @@ public class DeadlineTest {
      * The first two deadlines are meaningfully equivalent, the remaining are unique.
      * @return Deadline[] of 5 sample deadlines.
      */
-    public static Deadline[] getSampleDeadlineArrayData() {
+    public static Deadline[] getSampleDeadlineArray() {
 
         Calendar calendar1 = Calendar.getInstance();
         calendar1.set(2017, 6, 7, 18, 30); // 7th July 2017, 6:30pm
@@ -51,17 +51,17 @@ public class DeadlineTest {
 
     // @@author A0126623L
     /**
-     * method that returns list of Deadlines of 5 sample elements.
+     * Returns a list of Deadlines of 5 sample elements.
      */
-    public static List<Deadline> getSampleDeadlineListData() {
-        return Arrays.asList(DeadlineTest.getSampleDeadlineArrayData());
+    public static List<Deadline> getSampleDeadlineList() {
+        return Arrays.asList(DeadlineTest.getSampleDeadlineArray());
     }
     // @@author
 
     // @@author A0126623L
     @Before
     public void setUp() {
-        Deadline[] sampleDeadlineArrayData = getSampleDeadlineArrayData();
+        Deadline[] sampleDeadlineArrayData = getSampleDeadlineArray();
 
         deadline1 = sampleDeadlineArrayData[0];
         deadline2 = sampleDeadlineArrayData[1];

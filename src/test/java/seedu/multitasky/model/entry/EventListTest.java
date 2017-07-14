@@ -14,10 +14,6 @@ import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 import seedu.multitasky.model.util.EntryBuilder;
 
 // @@author A0126623L
-/**
- * TODO: Make SetUp less dependent on actual classes, e.g. create utility classes to generate
- * Events, Deadlines and Floating Tasks.
- */
 public class EventListTest {
 
     private EventList eventList1, eventList2, eventList3;
@@ -25,7 +21,7 @@ public class EventListTest {
 
     // @@author A0126623L
     /**
-     * Copies the given events collection into an Event List.
+     * Copies the events in the given events collection into an Event List.
      *
      * @param events cannot be null
      * @return EventList
@@ -129,6 +125,7 @@ public class EventListTest {
         }
     }
 
+    // @@author A0126623L
     @Test(expected = DuplicateEntryException.class)
     public void addTest_duplicateEvent_throwDuplicateEntryException() throws DuplicateEntryException {
         EventList eventListUnderTest = EventListTest.copyEventList(eventList1);
