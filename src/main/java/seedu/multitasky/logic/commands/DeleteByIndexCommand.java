@@ -40,6 +40,8 @@ public class DeleteByIndexCommand extends DeleteCommand {
         } catch (EntryNotFoundException enfe) {
             assert false : "The target entry cannot be missing";
         }
+        // TODO might need to do same thing as edit by index here if we are not changing
+        // the state of the FilteredList but merely setting entry state to completed.
         return new CommandResult(String.format(MESSAGE_SUCCESS, entryToDelete));
     }
 
