@@ -23,6 +23,10 @@ public abstract class DeleteCommand extends Command {
     public static final String MESSAGE_SUCCESS = "Entry deleted:" + "\n"
                                                  + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s";
 
+    public static final String[] VALID_PREFIXES = {CliSyntax.PREFIX_EVENT.toString(),
+                                                   CliSyntax.PREFIX_DEADLINE.toString(),
+                                                   CliSyntax.PREFIX_FLOATINGTASK.toString()};
+
     protected ReadOnlyEntry entryToDelete;
 
 }

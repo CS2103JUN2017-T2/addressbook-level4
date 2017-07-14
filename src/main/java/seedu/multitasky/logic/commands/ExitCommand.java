@@ -12,6 +12,8 @@ public class ExitCommand extends Command {
 
     public static final String MESSAGE_EXIT_ACKNOWLEDGEMENT = "Exiting Entry Book as requested ...";
 
+    public static final String[] VALID_PREFIXES = {};
+
     @Override
     public CommandResult execute() {
         EventsCenter.getInstance().post(new ExitAppRequestEvent());

@@ -14,6 +14,8 @@ public class UndoCommand extends Command {
     public static final String MESSAGE_SUCCESS = "Undo previous action";
     public static final String MESSAGE_FAILURE = "Nothing to undo";
 
+    public static final String[] VALID_PREFIXES = {};
+
     @Override
     public CommandResult execute() throws CommandException {
         try {

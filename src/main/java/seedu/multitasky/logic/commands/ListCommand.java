@@ -34,10 +34,10 @@ public class ListCommand extends Command {
 
     public static final String MESSAGE_UPCOMING_ORDER = "in upcoming order";
 
-    public static final String[] PREFIX_LIST = {CliSyntax.PREFIX_ARCHIVE.toString(),
-                                                CliSyntax.PREFIX_BIN.toString(),
-                                                CliSyntax.PREFIX_UPCOMING.toString(),
-                                                CliSyntax.PREFIX_REVERSE.toString()};
+    public static final String[] VALID_PREFIXES = {CliSyntax.PREFIX_ARCHIVE.toString(),
+                                                   CliSyntax.PREFIX_BIN.toString(),
+                                                   CliSyntax.PREFIX_UPCOMING.toString(),
+                                                   CliSyntax.PREFIX_REVERSE.toString()};
 
     public enum ShowType {
         ACTIVE, ARCHIVE, BIN
