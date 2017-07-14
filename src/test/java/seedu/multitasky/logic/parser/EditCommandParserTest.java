@@ -10,6 +10,7 @@ import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FROM;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.multitasky.logic.parser.ParserUtil.MESSAGE_FAIL_PARSE_DATE;
 import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_DATE_11_JULY_17;
 import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_DATE_12_JULY_17;
 import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_DATE_20_DEC_17;
@@ -95,12 +96,12 @@ public class EditCommandParserTest {
 
         // does not allow parsing of terms prettyTime lib does not recognize.
         assertParseFailure(PREFIX_DESC_FLOAT + " 1" + INVALID_DATE_END_DESC,
-                           String.format(ParserUtil.MESSAGE_FAIL_PARSE_DATE, "end of time"));
+                           String.format(MESSAGE_FAIL_PARSE_DATE, "end of time"));
         // catches all start date invalid values before end date ones
         assertParseFailure(PREFIX_DESC_FLOAT + " 1" + INVALID_DATE_START_DESC + INVALID_DATE_END_DESC,
-                           String.format(ParserUtil.MESSAGE_FAIL_PARSE_DATE, "start of time"));
+                           String.format(MESSAGE_FAIL_PARSE_DATE, "start of time"));
         assertParseFailure(PREFIX_DESC_FLOAT + " 1" + INVALID_DATE_END_DESC + INVALID_DATE_START_DESC,
-                           String.format(ParserUtil.MESSAGE_FAIL_PARSE_DATE, "start of time"));
+                           String.format(MESSAGE_FAIL_PARSE_DATE, "start of time"));
 
         // multiple invalid values, but only the first invalid value is captured
         assertParseFailure(PREFIX_DESC_FLOAT + " 1" + INVALID_NAME_DESC + INVALID_TAG_DESC,
