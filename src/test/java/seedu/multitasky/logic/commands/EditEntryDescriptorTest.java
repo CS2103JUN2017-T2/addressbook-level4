@@ -4,8 +4,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.multitasky.testutil.EditCommandTestUtil.DESC_AMY;
 import static seedu.multitasky.testutil.EditCommandTestUtil.DESC_BOB;
-import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_NAME_BOB;
-import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_TAG_HUSBAND;
+import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_NAME_MEETING;
+import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_TAG_URGENT;
 
 import org.junit.Test;
 
@@ -33,11 +33,11 @@ public class EditEntryDescriptorTest {
         assertFalse(DESC_AMY.equals(DESC_BOB));
 
         // different name -> returns false
-        EditEntryDescriptor editedAmy = new EditEntryDescriptorBuilder(DESC_AMY).withName(VALID_NAME_BOB).build();
+        EditEntryDescriptor editedAmy = new EditEntryDescriptorBuilder(DESC_AMY).withName(VALID_NAME_MEETING).build();
         assertFalse(DESC_AMY.equals(editedAmy));
 
         // different tags -> returns false
-        editedAmy = new EditEntryDescriptorBuilder(DESC_AMY).withTags(VALID_TAG_HUSBAND).build();
+        editedAmy = new EditEntryDescriptorBuilder(DESC_AMY).withTags(VALID_TAG_URGENT).build();
         assertFalse(DESC_AMY.equals(editedAmy));
     }
 }

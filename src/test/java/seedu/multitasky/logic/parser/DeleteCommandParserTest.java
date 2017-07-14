@@ -53,7 +53,12 @@ public class DeleteCommandParserTest {
         assertTrue(command instanceof DeleteByFindCommand);
 
         // accidently adding invalid tags will default to performing a find with those tags
-        command = parser.parse(" archive "); //prefix used for listing
+        command = parser.parse(" archive "); // prefix used for list command
+        assertTrue(command instanceof DeleteByFindCommand);
+
+        // parser should be able to parse strings with escaped terms.
+        command = parser.parse("keyword but with \\escaped \\terms");
         assertTrue(command instanceof DeleteByFindCommand);
     }
+
 }
