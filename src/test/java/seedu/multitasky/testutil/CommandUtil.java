@@ -69,11 +69,43 @@ public class CommandUtil {
     }
 
     /**
+     * Returns an edit command string for editing a deadline by index.
+     */
+    public static String getEditDeadlineByIndexCommand(Index index, Entry editedEntry) {
+        return EditCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_DEADLINE + " " + index.getOneBased() + " "
+               + CliSyntax.PREFIX_NAME + " " + getDeadlineDetails(editedEntry);
+    }
+
+    /**
+     * Returns an edit command string for editing a floating task by index.
+     */
+    public static String getEditFloatingTaskByIndexCommand(Index index, Entry editedEntry) {
+        return EditCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_FLOATINGTASK + " " + index.getOneBased() + " "
+               + CliSyntax.PREFIX_NAME + " " + getFloatingTaskDetails(editedEntry);
+    }
+
+    /**
      * Returns an edit command string for editing an event by keyword.
      */
     public static String getEditEventByKeywordCommand(String keywords, Entry editedEntry) {
         return EditCommand.COMMAND_WORD + " " + keywords + " "
                + CliSyntax.PREFIX_NAME + " " + getEventDetails(editedEntry);
+    }
+
+    /**
+     * Returns an edit command string for editing a deadline by keyword.
+     */
+    public static String getEditDeadlineByKeywordCommand(String keywords, Entry editedEntry) {
+        return EditCommand.COMMAND_WORD + " " + keywords + " "
+               + CliSyntax.PREFIX_NAME + " " + getDeadlineDetails(editedEntry);
+    }
+
+    /**
+     * Returns an edit command string for editing a deadline by keyword.
+     */
+    public static String getEditFloatingTaskByKeywordCommand(String keywords, Entry editedEntry) {
+        return EditCommand.COMMAND_WORD + " " + keywords + " "
+               + CliSyntax.PREFIX_NAME + " " + getFloatingTaskDetails(editedEntry);
     }
 
     /**
