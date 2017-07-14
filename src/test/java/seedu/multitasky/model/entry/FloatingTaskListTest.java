@@ -93,24 +93,6 @@ public class FloatingTaskListTest {
 
     // @@author A0126623L
     /**
-     * Tests if sample entries used in this test class are considered equal when necessary.
-     */
-    @Test
-    public void millisecondsDiffNotConsideredDifferent() {
-        /*
-         * Because of the way they are instantiated, the start time of
-         * the floatingTasks of sampleFloatingTaskArray's and floatingTaskList1's first floatingTask
-         * element are different by milliseconds. This should not be
-         * considered different as the constructor reset milliseconds to
-         * zero.
-         */
-        System.out.println(sampleFloatingTaskArray[0].getEndDateAndTime().toString());
-        System.out.println(floatingTaskList1.asObservableList().get(0).getEndDateAndTime().toString());
-        assertTrue(sampleFloatingTaskArray[0].equals(floatingTaskList1.asObservableList().get(0)));
-    }
-
-    // @@author A0126623L
-    /**
      * Dependent on the correct functioning of the contains method.
      */
     @Test
