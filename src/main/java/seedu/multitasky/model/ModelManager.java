@@ -2,6 +2,8 @@ package seedu.multitasky.model;
 
 import static seedu.multitasky.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -13,7 +15,10 @@ import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
 import seedu.multitasky.commons.events.model.EntryBookToRedoEvent;
 import seedu.multitasky.commons.events.model.EntryBookToUndoEvent;
+import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.model.entry.Event;
+import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
@@ -215,6 +220,14 @@ public class ModelManager extends ComponentManager implements Model {
         updateFilteredEventList(new PredicateExpression(new NameAndStatusQualifier(keywords, state)));
     }
 
+    // @@author A0125586X
+    @Override
+    public void updateFilteredEventList(Calendar startDate, Calendar endDate, Entry.State state) {
+        updateFilteredEventList(new PredicateExpression(new DateAndStatusQualifier(startDate, endDate,
+                                                                                   state)));
+    }
+
+    // @@author A0126623L
     private void updateFilteredEventList(Expression expression) {
         _filteredEventList.setPredicate(expression::satisfies);
     }
@@ -225,6 +238,14 @@ public class ModelManager extends ComponentManager implements Model {
         updateFilteredDeadlineList(new PredicateExpression(new NameAndStatusQualifier(keywords, state)));
     }
 
+    // @@author A0125586X
+    @Override
+    public void updateFilteredDeadlineList(Calendar startDate, Calendar endDate, Entry.State state) {
+        updateFilteredDeadlineList(new PredicateExpression(new DateAndStatusQualifier(startDate, endDate,
+                                                                                      state)));
+    }
+
+    // @@author A0126623L
     private void updateFilteredDeadlineList(Expression expression) {
         _filteredDeadlineList.setPredicate(expression::satisfies);
     }
@@ -235,6 +256,14 @@ public class ModelManager extends ComponentManager implements Model {
         updateFilteredFloatingTaskList(new PredicateExpression(new NameAndStatusQualifier(keywords, state)));
     }
 
+    // @@author A0125586X
+    @Override
+    public void updateFilteredFloatingTaskList(Calendar startDate, Calendar endDate, Entry.State state) {
+        updateFilteredFloatingTaskList(new PredicateExpression(new DateAndStatusQualifier(startDate, endDate,
+                                                                                          state)));
+    }
+
+    // @@author A0126623L
     private void updateFilteredFloatingTaskList(Expression expression) {
         _filteredFloatingTaskList.setPredicate(expression::satisfies);
     }
@@ -374,4 +403,62 @@ public class ModelManager extends ComponentManager implements Model {
         }
     }
     // @@author
+
+    // @@author A0125586X
+    /**
+     * Represents a qualifier can check if a ReadOnlyEntry falls within a given date range.
+     */
+    private class DateAndStatusQualifier implements Qualifier {
+
+        private Calendar startDate;
+        private Calendar endDate;
+        private Entry.State state;
+
+        private DateFormat dateFormat;
+
+        DateAndStatusQualifier(Calendar startDate, Calendar endDate, Entry.State state) {
+            assert startDate != null : "startDate for DateAndStatusQualifier cannot be null";
+            assert endDate != null : "endDate for DateAndStatusQualifier cannot be null";
+            assert state != null : "state for DateAndStatusQualifier cannot be null";
+
+            this.startDate = startDate;
+            this.endDate = endDate;
+            this.state = state;
+
+            dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT);
+        }
+
+        @Override
+        public boolean run(ReadOnlyEntry entry) {
+            if (!entry.getState().equals(state)) {
+                return false;
+            }
+            if (entry instanceof FloatingTask) {
+                return true;
+            } else if (entry instanceof Deadline) {
+                if (isWithinRange(entry.getEndDateAndTime())) {
+                    return true;
+                }
+            } else if (entry instanceof Event) {
+                // For now, event is shown as long as the starting date is within the range
+                if (isWithinRange(entry.getStartDateAndTime())) {
+                    return true;
+                }
+            } else {
+                assert false : "DateAndStatusQualifier::run received entry of unknown Entry subclass type";
+            }
+            return true;
+        }
+
+        private boolean isWithinRange(Calendar checkDate) {
+            return (checkDate.compareTo(startDate) >= 0) && (checkDate.compareTo(endDate) <= 0);
+        }
+
+        @Override
+        public String toString() {
+            return "startDate = " + dateFormat.format(startDate) + ", endDate = "
+                   + dateFormat.format(endDate);
+        }
+    }
+
 }
