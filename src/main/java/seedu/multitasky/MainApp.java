@@ -94,6 +94,7 @@ public class MainApp extends Application {
                 event.deleteAllSnapshotFiles();
                 logger.info("Data file not found. Will be starting with an empty EntryBook");
                 initialData = new EntryBook();
+                storage.handleEntryBookChangedEvent(new EntryBookChangedEvent(initialData));
             } else {
                 event.deleteAllSnapshotFiles();
                 initialData = entryBookOptional.get();
