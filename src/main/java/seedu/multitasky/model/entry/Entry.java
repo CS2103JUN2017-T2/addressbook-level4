@@ -22,7 +22,24 @@ public abstract class Entry implements ReadOnlyEntry {
      * The three possible states are: ACTIVE, ARCHIVED, DELETED
      */
     public enum State {
-        ACTIVE, ARCHIVED, DELETED
+        ACTIVE {
+            @Override
+            public String toString() {
+                return "ACTIVE";
+            }
+        },
+        ARCHIVED {
+            @Override
+            public String toString() {
+                return "ARCHIVED";
+            }
+        },
+        DELETED {
+            @Override
+            public String toString() {
+                return "DELETED";
+            }
+        };
     };
     // @@author
 
