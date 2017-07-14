@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.Objects;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -37,7 +38,9 @@ public abstract class EntryList implements Iterable<Entry> {
     public void add(ReadOnlyEntry toAdd) throws DuplicateEntryException {
         requireNonNull(toAdd);
         if (contains(toAdd)) {
-            throw new DuplicateEntryException();
+            if (!isArchivedOrDeletedFloatingTask(toAdd)) {
+                throw new DuplicateEntryException();
+            }
         }
     };
     // @@author
@@ -118,8 +121,8 @@ public abstract class EntryList implements Iterable<Entry> {
      * @throws EntryNotFoundException if {@code target} could not be found in the list.
      * @throws DuplicateEntryException if {@code editedEntry} already exists in the list.
      */
-    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws DuplicateEntryException,
-            EntryNotFoundException {
+    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
+            throws DuplicateEntryException, EntryNotFoundException {
         requireNonNull(editedEntry);
 
         int index = internalList.indexOf(target);
@@ -130,7 +133,9 @@ public abstract class EntryList implements Iterable<Entry> {
         Entry entryToUpdate = internalList.get(index);
 
         if (internalList.contains(editedEntry)) {
-            throw new DuplicateEntryException();
+            if (!isArchivedOrDeletedFloatingTask(editedEntry)) {
+                throw new DuplicateEntryException();
+            }
         }
 
         entryToUpdate.resetData(editedEntry);
@@ -140,6 +145,21 @@ public abstract class EntryList implements Iterable<Entry> {
         // Then, EntryCard should then bind its text labels to those observable properties.
         internalList.set(index, entryToUpdate);
     }
+
+    // @@author A0126623L
+    /**
+     * Checks if the given entry is a floating task with the "archived" or "deleted" status, which is allowed in model.
+     *
+     * @param entry must not be null.
+     * @return boolean
+     */
+    public static boolean isArchivedOrDeletedFloatingTask(ReadOnlyEntry entry) {
+        Objects.requireNonNull(entry);
+        return (entry instanceof FloatingTask
+                && (entry.getState().equals(Entry.State.ARCHIVED)
+                    || entry.getState().equals(Entry.State.DELETED)));
+    }
+    // @@author A0126623L
 
     // @@author A0125586X
     /**
