@@ -65,6 +65,15 @@ public interface Model {
     /** Updates the filter of all filtered lists to show all entries */
     public void updateAllFilteredListToShowAll();
 
+    /** Updates the filter of all filtered lists to show all active entries */
+    public void updateAllFilteredListToShowAllActiveEntries();
+
+    /** Updates the filter of all filtered lists to show all archived entries */
+    public void updateAllFilteredListToShowAllArchivedEntries();
+
+    /** Updates the filter of all filtered lists to show all deleted entries */
+    public void updateAllFilteredListToShowAllDeletedEntries();
+
     /** Updates the filter of the filtered event list to filter by the given keywords and state */
     void updateFilteredEventList(Set<String> keywords, Entry.State state);
 
