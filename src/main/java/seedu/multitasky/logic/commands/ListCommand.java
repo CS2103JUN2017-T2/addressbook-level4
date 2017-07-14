@@ -37,7 +37,9 @@ public class ListCommand extends Command {
     public static final String[] VALID_PREFIXES = {CliSyntax.PREFIX_ARCHIVE.toString(),
                                                    CliSyntax.PREFIX_BIN.toString(),
                                                    CliSyntax.PREFIX_UPCOMING.toString(),
-                                                   CliSyntax.PREFIX_REVERSE.toString()};
+                                                   CliSyntax.PREFIX_REVERSE.toString(),
+                                                   CliSyntax.PREFIX_FROM.toString(),
+                                                   CliSyntax.PREFIX_TO.toString()};
 
     public enum ShowType {
         ACTIVE, ARCHIVE, BIN
