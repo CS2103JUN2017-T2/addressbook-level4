@@ -3,6 +3,7 @@ package seedu.multitasky.model;
 import static seedu.multitasky.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -123,6 +124,14 @@ public class ModelManager extends ComponentManager implements Model {
     }
     // @@author
 
+    // @@author A0126623L
+    @Override
+    public void changeEntryState(ReadOnlyEntry entryToChange, Entry.State newState)
+            throws DuplicateEntryException, EntryNotFoundException {
+        _entryBook.changeEntryState(entryToChange, newState);
+        indicateEntryBookChanged();
+    }
+
     @Override
     public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws DuplicateEntryException,
             EntryNotFoundException {
@@ -204,27 +213,27 @@ public class ModelManager extends ComponentManager implements Model {
     // @@author A0126623L
     @Override
     public void updateAllFilteredListToShowAllActiveEntries() {
-        this.updateFilteredEventList(null, Entry.State.ACTIVE);
-        this.updateFilteredDeadlineList(null, Entry.State.ACTIVE);
-        this.updateFilteredFloatingTaskList(null, Entry.State.ACTIVE);
+        this.updateFilteredEventList(new HashSet<String>(), Entry.State.ACTIVE);
+        this.updateFilteredDeadlineList(new HashSet<String>(), Entry.State.ACTIVE);
+        this.updateFilteredFloatingTaskList(new HashSet<String>(), Entry.State.ACTIVE);
     }
     // @@author
 
     // @@author A0126623L
     @Override
     public void updateAllFilteredListToShowAllArchivedEntries() {
-        this.updateFilteredEventList(null, Entry.State.ARCHIVED);
-        this.updateFilteredDeadlineList(null, Entry.State.ARCHIVED);
-        this.updateFilteredFloatingTaskList(null, Entry.State.ARCHIVED);
+        this.updateFilteredEventList(new HashSet<String>(), Entry.State.ARCHIVED);
+        this.updateFilteredDeadlineList(new HashSet<String>(), Entry.State.ARCHIVED);
+        this.updateFilteredFloatingTaskList(new HashSet<String>(), Entry.State.ARCHIVED);
     }
     // @@author
 
     // @@author A0126623L
     @Override
     public void updateAllFilteredListToShowAllDeletedEntries() {
-        this.updateFilteredEventList(null, Entry.State.DELETED);
-        this.updateFilteredDeadlineList(null, Entry.State.DELETED);
-        this.updateFilteredFloatingTaskList(null, Entry.State.DELETED);
+        this.updateFilteredEventList(new HashSet<String>(), Entry.State.DELETED);
+        this.updateFilteredDeadlineList(new HashSet<String>(), Entry.State.DELETED);
+        this.updateFilteredFloatingTaskList(new HashSet<String>(), Entry.State.DELETED);
     }
     // @@author
 

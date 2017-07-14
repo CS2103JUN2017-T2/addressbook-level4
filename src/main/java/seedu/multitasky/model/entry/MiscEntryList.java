@@ -20,15 +20,7 @@ public class MiscEntryList extends EntryList {
     public void add(ReadOnlyEntry toAdd) throws DuplicateEntryException {
         super.add(toAdd);
         assert (toAdd instanceof Entry);
-        add((Entry) toAdd);
-    }
-
-    // @@author A0126623L
-    /**
-     * Private helper method to add entry references to ActiveList.
-     */
-    private void add(Entry toAdd) {
-        this.internalList.add(toAdd);
+        internalList.add((Entry) toAdd);
     }
 
     // @@author A0126623L

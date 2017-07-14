@@ -18,8 +18,10 @@ import seedu.multitasky.logic.CommandHistory;
 import seedu.multitasky.model.Model;
 import seedu.multitasky.model.ReadOnlyEntryBook;
 import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.model.entry.Entry.State;
 import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 import seedu.multitasky.model.util.EntryBuilder;
 import seedu.multitasky.storage.exception.NothingToRedoException;
@@ -175,6 +177,12 @@ public class AddCommandTest {
 
         @Override
         public void updateAllFilteredListToShowAllDeletedEntries() {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void changeEntryState(ReadOnlyEntry entryToChange, State newState)
+                throws DuplicateEntryException, EntryNotFoundException {
             fail("This method should not be called.");
         }
 
