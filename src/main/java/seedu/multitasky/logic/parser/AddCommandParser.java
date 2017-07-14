@@ -35,7 +35,6 @@ public class AddCommandParser {
     public AddCommand parse(String args) throws ParseException {
         argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_BY, PREFIX_AT, PREFIX_FROM,
                                                  PREFIX_TO, PREFIX_TAG);
-
         Calendar startDate = null;
         Calendar endDate = null;
         Prefix datePrefix;
