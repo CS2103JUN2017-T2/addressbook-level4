@@ -20,13 +20,17 @@ public class EditByFindCommand extends EditCommand {
     public static final String MESSAGE_NO_ENTRIES = "No entries found! Please try again with different keywords";
 
     public static final String MESSAGE_MULTIPLE_ENTRIES = "More than one entry found! \n"
-            + "Use " + COMMAND_WORD + " [" + String.join(" | ", CliSyntax.PREFIX_EVENT.toString(),
-            CliSyntax.PREFIX_DEADLINE.toString(), CliSyntax.PREFIX_FLOATINGTASK.toString()) + "]"
-            + " INDEX to specify which entry to edit.";
+                                                          + "Use " + COMMAND_WORD + " ["
+                                                          + String.join(" | ",
+                                                                        CliSyntax.PREFIX_EVENT.toString(),
+                                                                        CliSyntax.PREFIX_DEADLINE.toString(),
+                                                                        CliSyntax.PREFIX_FLOATINGTASK.toString())
+                                                          + "]"
+                                                          + " INDEX to specify which entry to edit.";
 
     public static final String MESSAGE_SUCCESS = "Entry edited:" + "\n"
-            + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
-            + "One entry found and edited! Listing all entries now.";
+                                                 + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
+                                                 + "One entry found and edited! Listing all entries now.";
 
     private Set<String> keywords;
 
@@ -43,9 +47,9 @@ public class EditByFindCommand extends EditCommand {
     public CommandResult execute() throws CommandException, DuplicateEntryException {
 
         // update all 3 lists with new keywords.
-        model.updateFilteredDeadlineList(keywords);
-        model.updateFilteredEventList(keywords);
-        model.updateFilteredFloatingTaskList(keywords);
+        model.updateFilteredDeadlineList(keywords, Entry.State.ACTIVE);
+        model.updateFilteredEventList(keywords, Entry.State.ACTIVE);
+        model.updateFilteredFloatingTaskList(keywords, Entry.State.ACTIVE);
 
         // collate a combined list to measure how many entries are found.
         List<ReadOnlyEntry> allList = new ArrayList<>();
@@ -53,7 +57,7 @@ public class EditByFindCommand extends EditCommand {
         allList.addAll(model.getFilteredEventList());
         allList.addAll(model.getFilteredFloatingTaskList());
 
-        if (allList.size() == 1) { //proceed to edit
+        if (allList.size() == 1) { // proceed to edit
             ReadOnlyEntry entryToEdit = allList.get(0);
             Entry editedEntry = createEditedEntry(entryToEdit, editEntryDescriptor);
             try {
