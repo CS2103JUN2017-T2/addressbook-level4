@@ -33,6 +33,7 @@ import seedu.multitasky.model.tag.UniqueTagList;
  */
 public class EntryBook implements ReadOnlyEntryBook {
 
+    // TODO: Decide later if it's useful to keep an internal active list
     private final MiscEntryList _activeList;
     private final EventList _eventList;
     private final DeadlineList _deadlineList;
@@ -100,7 +101,6 @@ public class EntryBook implements ReadOnlyEntryBook {
             setDeadlineList(newData.getDeadlineList());
             setFloatingTaskList(newData.getFloatingTaskList());
 
-            // TODO: Decide later if it's still necessary to keep an internal active list
             setActiveList();
         } catch (DuplicateEntryException e) {
             assert false : "EntryBooks should not have duplicate entries";
@@ -136,11 +136,6 @@ public class EntryBook implements ReadOnlyEntryBook {
      * and updates the Tag objects in the entry to point to those in {@link #tags}.
      */
     public void addEntry(ReadOnlyEntry e) throws DuplicateEntryException {
-        /**
-         * TODO: Duplicate entries are temporarily allowed in bin and archive in V0.3. This should be
-         * changed for V0.4.
-         */
-
         addToEntrySubtypeList(e);
 
         Entry newEntry = convertToEntry(e);
@@ -191,9 +186,6 @@ public class EntryBook implements ReadOnlyEntryBook {
 
         Entry editedEntry = convertToEntry(editedReadOnlyEntry);
         syncMasterTagListWith(editedEntry);
-        // TODO: the tags master list will be updated even though the below line fails.
-        // This can cause the tags master list to have additional tags that are not tagged to any entry
-        // in the entry list.
     }
     // @@author
 
@@ -275,7 +267,6 @@ public class EntryBook implements ReadOnlyEntryBook {
      * @throws DuplicateEntryException, EntryNotFoundException
      */
     public boolean removeEntry(ReadOnlyEntry entryToRemove) throws EntryNotFoundException {
-        // TODO: Decide later if it's still necessary to keep an internal active list
         return (_activeList.remove(entryToRemove) && removeFromEntrySubtypeList(entryToRemove));
     }
 
@@ -307,7 +298,6 @@ public class EntryBook implements ReadOnlyEntryBook {
      */
     public void changeEntryState(ReadOnlyEntry entryToChange, Entry.State newState)
             throws DuplicateEntryException, EntryNotFoundException {
-        // TODO: Decide later if it's more efficient to do this directly using active list
         if (entryToChange instanceof Event) {
             _eventList.changeEntryState(entryToChange, newState);
         } else if (entryToChange instanceof Deadline) {
@@ -333,7 +323,6 @@ public class EntryBook implements ReadOnlyEntryBook {
     public String toString() {
         return _activeList.asObservableList().size() + " active entries, " + _tags.asObservableList().size()
                + " tags";
-        // TODO: refine later
     }
 
     @Override
