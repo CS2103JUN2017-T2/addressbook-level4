@@ -26,7 +26,6 @@ import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.tag.Tag;
 import seedu.multitasky.testutil.EditEntryDescriptorBuilder;
 
-// TODO implement edit by find portions
 public class EditCommandParserTest {
 
     private static final String PREFIX_FLOAT = " " + PREFIX_FLOATINGTASK.getPrefix() + " ";
@@ -47,8 +46,11 @@ public class EditCommandParserTest {
 
     @Test
     public void parse_missingParts_failure() {
-        // no field specified
+        // by index but no field specified
         assertParseFailure(PREFIX_FLOAT + "1", EditCommand.MESSAGE_NOT_EDITED);
+
+        // edit by keywords but no field specified
+        assertParseFailure("try keyword search", EditCommand.MESSAGE_NOT_EDITED);
 
         // no index and no field specified
         assertParseFailure("", MESSAGE_INVALID_FORMAT);
