@@ -345,8 +345,6 @@ public class ModelManager extends ComponentManager implements Model {
      */
     private class NameAndStatusQualifier implements Qualifier {
 
-        // TODO:
-        // change variable name to 'nameAndTagKeyWords'.
         private Set<String> nameAndTagKeywords;
         private Entry.State state;
 
