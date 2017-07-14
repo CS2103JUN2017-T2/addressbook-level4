@@ -37,6 +37,8 @@ public class ModelManager extends ComponentManager implements Model {
     // @@author A0126623L
     /**
      * Initializes a ModelManager with the given entryBook and userPrefs.
+     * Note that the reference of the entries in the given {@code entryBook}
+     * will be copied. Entries themselves will not be copied.
      */
     public ModelManager(ReadOnlyEntryBook entryBook, UserPrefs userPrefs) {
         super();
@@ -170,18 +172,6 @@ public class ModelManager extends ComponentManager implements Model {
 
     // @@author A0126623L
     @Override
-    public UnmodifiableObservableList<ReadOnlyEntry> getArchive() {
-        return new UnmodifiableObservableList<>(_entryBook.getArchive());
-    }
-
-    // @@author A0126623L
-    @Override
-    public UnmodifiableObservableList<ReadOnlyEntry> getBin() {
-        return new UnmodifiableObservableList<>(_entryBook.getBin());
-    }
-
-    // @@author A0126623L
-    @Override
     public void updateFilteredEventListToShowAll() {
         _filteredEventList.setPredicate(null);
     }
@@ -197,7 +187,9 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateFilteredFloatingTaskListToShowAll() {
         _filteredFloatingTaskList.setPredicate(null);
     }
+    // @@author
 
+    // @@author A0126623L
     /**
      * Updates all filtered list to show all entries.
      */
@@ -211,9 +203,37 @@ public class ModelManager extends ComponentManager implements Model {
 
     // @@author A0126623L
     @Override
+    public void updateAllFilteredListToShowAllActiveEntries() {
+        this.updateFilteredEventList(null, Entry.State.ACTIVE);
+        this.updateFilteredDeadlineList(null, Entry.State.ACTIVE);
+        this.updateFilteredFloatingTaskList(null, Entry.State.ACTIVE);
+    }
+    // @@author
+
+    // @@author A0126623L
+    @Override
+    public void updateAllFilteredListToShowAllArchivedEntries() {
+        this.updateFilteredEventList(null, Entry.State.ARCHIVED);
+        this.updateFilteredDeadlineList(null, Entry.State.ARCHIVED);
+        this.updateFilteredFloatingTaskList(null, Entry.State.ARCHIVED);
+    }
+    // @@author
+
+    // @@author A0126623L
+    @Override
+    public void updateAllFilteredListToShowAllDeletedEntries() {
+        this.updateFilteredEventList(null, Entry.State.DELETED);
+        this.updateFilteredDeadlineList(null, Entry.State.DELETED);
+        this.updateFilteredFloatingTaskList(null, Entry.State.DELETED);
+    }
+    // @@author
+
+    // @@author A0126623L
+    @Override
     public void updateFilteredEventList(Set<String> keywords, Entry.State state) {
         updateFilteredEventList(new PredicateExpression(new NameAndStatusQualifier(keywords, state)));
     }
+    // @@author
 
     private void updateFilteredEventList(Expression expression) {
         _filteredEventList.setPredicate(expression::satisfies);
