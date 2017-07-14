@@ -13,6 +13,7 @@ import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
 import seedu.multitasky.commons.events.model.EntryBookToRedoEvent;
 import seedu.multitasky.commons.events.model.EntryBookToUndoEvent;
+import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
@@ -210,8 +211,8 @@ public class ModelManager extends ComponentManager implements Model {
 
     // @@author A0126623L
     @Override
-    public void updateFilteredEventList(Set<String> keywords) {
-        updateFilteredEventList(new PredicateExpression(new NameQualifier(keywords)));
+    public void updateFilteredEventList(Set<String> keywords, Entry.State state) {
+        updateFilteredEventList(new PredicateExpression(new NameAndStatusQualifier(keywords, state)));
     }
 
     private void updateFilteredEventList(Expression expression) {
@@ -220,8 +221,8 @@ public class ModelManager extends ComponentManager implements Model {
 
     // @@author A0126623L
     @Override
-    public void updateFilteredDeadlineList(Set<String> keywords) {
-        updateFilteredDeadlineList(new PredicateExpression(new NameQualifier(keywords)));
+    public void updateFilteredDeadlineList(Set<String> keywords, Entry.State state) {
+        updateFilteredDeadlineList(new PredicateExpression(new NameAndStatusQualifier(keywords, state)));
     }
 
     private void updateFilteredDeadlineList(Expression expression) {
@@ -230,8 +231,8 @@ public class ModelManager extends ComponentManager implements Model {
 
     // @@author A0126623L
     @Override
-    public void updateFilteredFloatingTaskList(Set<String> keywords) {
-        updateFilteredFloatingTaskList(new PredicateExpression(new NameQualifier(keywords)));
+    public void updateFilteredFloatingTaskList(Set<String> keywords, Entry.State state) {
+        updateFilteredFloatingTaskList(new PredicateExpression(new NameAndStatusQualifier(keywords, state)));
     }
 
     private void updateFilteredFloatingTaskList(Expression expression) {
@@ -241,6 +242,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     // @@author A0125586X
     /** Updates the sorting comparators used. */
+    @Override
     public void updateSortingComparators(Comparator<ReadOnlyEntry> eventComparator,
                                          Comparator<ReadOnlyEntry> deadlineComparator,
                                          Comparator<ReadOnlyEntry> floatingTaskComparator) {
@@ -312,14 +314,16 @@ public class ModelManager extends ComponentManager implements Model {
      * Represents a qualifier can check the presence of all keywords in the name
      * and tags of a ReadOnlyEntry.
      */
-    private class NameQualifier implements Qualifier {
+    private class NameAndStatusQualifier implements Qualifier {
 
         // TODO:
         // change variable name to 'nameAndTagKeyWords'.
         private Set<String> nameAndTagKeywords;
+        private Entry.State state;
 
-        NameQualifier(Set<String> nameKeywords) {
+        NameAndStatusQualifier(Set<String> nameKeywords, Entry.State state) {
             this.nameAndTagKeywords = nameKeywords;
+            this.state = state;
         }
 
         // @@author A0126623L
@@ -332,6 +336,10 @@ public class ModelManager extends ComponentManager implements Model {
          */
         @Override
         public boolean run(ReadOnlyEntry entry) {
+            if (!entry.getState().equals(state)) {
+                return false;
+            }
+
             String wordsInNameAndTags = parseWordsInNameAndTags(entry);
 
             for (String keyword : nameAndTagKeywords) {
@@ -341,6 +349,7 @@ public class ModelManager extends ComponentManager implements Model {
             }
             return true;
         }
+        // @@author A0126623L
 
         // @@author A0126623L
         /**
