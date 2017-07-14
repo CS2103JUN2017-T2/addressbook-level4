@@ -39,15 +39,7 @@ public class EntryBook implements ReadOnlyEntryBook {
     private final FloatingTaskList _floatingTaskList;
     private final UniqueTagList _tags;
 
-    /*
-     * The 'unusual' code block below is an non-static initialization block, sometimes used to avoid
-     * duplication
-     * between constructors. See https://docs.oracle.com/javase/tutorial/java/javaOO/initial.html
-     * TODO: Improve this section.
-     * Note that non-static init blocks are not recommended to use. There are other ways to avoid duplication
-     * among constructors.
-     */
-    {
+    public EntryBook() {
         _activeList = new MiscEntryList();
         _eventList = new EventList();
         _deadlineList = new DeadlineList();
@@ -55,13 +47,11 @@ public class EntryBook implements ReadOnlyEntryBook {
         _tags = new UniqueTagList();
     }
 
-    public EntryBook() {
-    }
-
     /**
      * Creates an EntryBook using the Entries and Tags in the {@code toBeCopied}
      */
     public EntryBook(ReadOnlyEntryBook toBeCopied) {
+        this();
         resetData(toBeCopied);
     }
 
