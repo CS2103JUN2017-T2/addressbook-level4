@@ -39,7 +39,7 @@ public class ListCommandParser {
     private boolean hasValidFlagCombination(String... flags) {
         ArrayList<String> flagList = new ArrayList<String>(Arrays.asList(flags));
         // Cannot have any unknown flags
-        if (!Arrays.asList(ListCommand.PREFIX_LIST).containsAll(flagList)) {
+        if (!Arrays.asList(ListCommand.VALID_PREFIXES).containsAll(flagList)) {
             return false;
         }
         // Check for invalid flag combinations

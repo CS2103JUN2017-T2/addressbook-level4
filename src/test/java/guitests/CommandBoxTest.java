@@ -17,6 +17,7 @@ public class CommandBoxTest extends EntryBookGuiTest {
 
     private static final String COMMAND_THAT_SUCCEEDS = ListCommand.COMMAND_WORD;
     private static final String COMMAND_THAT_FAILS = "invalid command";
+    private static final String COMMAND_THAT_CANNOT_AUTOCOMPLETE = "arstarstarst";
 
     private static final String[] DUMMY_COMMANDS = {
         "dummy command 1",
@@ -90,6 +91,13 @@ public class CommandBoxTest extends EntryBookGuiTest {
         commandBox.pressUpKey();
         commandBox.pressDownKey();
         assertCommandBox(DUMMY_COMMANDS[1]);
+    }
+
+    @Test
+    public void commandbox_nonMatchingKeyword_noAutocompleteChange() {
+        commandBox.enterCommand(COMMAND_THAT_CANNOT_AUTOCOMPLETE);
+        commandBox.pressTabKey();
+        assertCommandBox(COMMAND_THAT_CANNOT_AUTOCOMPLETE);
     }
 
     /**

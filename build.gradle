@@ -129,15 +129,15 @@ class EntryBookTest extends Test {
         systemProperty 'testfx.setup.timeout', '60000'
 
         /*
-         * Prints the currently running test's name in the CI's build log,
-         * so that we can check if tests are being silently skipped or
-         * stalling the build.
+         * Prints the currently running test's name so that we can check if
+         * tests are being silently skipped or stalling the build.
+         * Modified to always print to give feedback even when running on
+         * the desktop command line compared to just in CI.
          */
-        if (System.env.'CI') {
-            beforeTest { descriptor ->
-                logger.lifecycle('Running test: ' + descriptor)
-            }
+        beforeTest { descriptor ->
+            logger.lifecycle('Running test: ' + descriptor)
         }
+
     }
 
     public void setHeadless() {

@@ -18,6 +18,8 @@ public class HistoryCommand extends Command {
     public static final String MESSAGE_SUCCESS = "Entered commands (from most recent to earliest):\n%1$s";
     public static final String MESSAGE_NO_HISTORY = "You have not yet entered any commands.";
 
+    public static final String[] VALID_PREFIXES = {};
+
     @Override
     public CommandResult execute() {
         List<String> previousCommands = history.getHistory();

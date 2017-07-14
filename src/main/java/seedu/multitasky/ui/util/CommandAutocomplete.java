@@ -2,6 +2,9 @@ package seedu.multitasky.ui.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -9,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
+import seedu.multitasky.commons.util.PowerMatch;
 import seedu.multitasky.logic.commands.AddCommand;
 import seedu.multitasky.logic.commands.ClearCommand;
 import seedu.multitasky.logic.commands.DeleteCommand;
@@ -18,18 +22,22 @@ import seedu.multitasky.logic.commands.FindCommand;
 import seedu.multitasky.logic.commands.HelpCommand;
 import seedu.multitasky.logic.commands.HistoryCommand;
 import seedu.multitasky.logic.commands.ListCommand;
+import seedu.multitasky.logic.commands.RedoCommand;
 import seedu.multitasky.logic.commands.UndoCommand;
 
-
-//@@author A0125586X
+// @@author A0125586X
 /**
  * Provides autocomplete functionality to the command box.
- * If the string that the user has typed so far matches the beginning of only one command word,
- * pressing the tab key will complete that command word automatically
+ * Uses {@code PowerMatch} from {@code seedu.multitasky.commons.util} to come up with matches.
+ * Listens and responds to the {@code TAB} key pressed automatically, as long as it's pressed while
+ * focus is on the command text field.
  */
 public class CommandAutocomplete {
 
-    private static final ArrayList<String> allCommandWords = new ArrayList<String>(Arrays.asList(new String[] {
+    private static final int COMMAND_WORD_IDX = 0;
+    private static final int LAST_WORD_IDX = 1;
+
+    private static final ArrayList<String> commandWords = new ArrayList<String>(Arrays.asList(new String[] {
         AddCommand.COMMAND_WORD,
         ClearCommand.COMMAND_WORD,
         DeleteCommand.COMMAND_WORD,
@@ -39,8 +47,37 @@ public class CommandAutocomplete {
         HelpCommand.COMMAND_WORD,
         HistoryCommand.COMMAND_WORD,
         ListCommand.COMMAND_WORD,
+        RedoCommand.COMMAND_WORD,
         UndoCommand.COMMAND_WORD,
     }));
+
+    private static final HashMap<String, String[]> commandKeywords;
+
+    private static final Set<String> prefixOnlyCommands;
+
+    static {
+        commandKeywords = new HashMap<>();
+        commandKeywords.put(AddCommand.COMMAND_WORD, AddCommand.VALID_PREFIXES);
+        commandKeywords.put(ClearCommand.COMMAND_WORD, ClearCommand.VALID_PREFIXES);
+        commandKeywords.put(DeleteCommand.COMMAND_WORD, DeleteCommand.VALID_PREFIXES);
+        commandKeywords.put(EditCommand.COMMAND_WORD, EditCommand.VALID_PREFIXES);
+        commandKeywords.put(ExitCommand.COMMAND_WORD, ExitCommand.VALID_PREFIXES);
+        commandKeywords.put(FindCommand.COMMAND_WORD, FindCommand.VALID_PREFIXES);
+        commandKeywords.put(HelpCommand.COMMAND_WORD, HelpCommand.VALID_PREFIXES);
+        commandKeywords.put(HistoryCommand.COMMAND_WORD, HistoryCommand.VALID_PREFIXES);
+        commandKeywords.put(ListCommand.COMMAND_WORD, ListCommand.VALID_PREFIXES);
+        commandKeywords.put(RedoCommand.COMMAND_WORD, RedoCommand.VALID_PREFIXES);
+        commandKeywords.put(UndoCommand.COMMAND_WORD, UndoCommand.VALID_PREFIXES);
+
+        prefixOnlyCommands = new HashSet<>();
+        prefixOnlyCommands.add(ClearCommand.COMMAND_WORD);
+        prefixOnlyCommands.add(ExitCommand.COMMAND_WORD);
+        prefixOnlyCommands.add(HelpCommand.COMMAND_WORD);
+        prefixOnlyCommands.add(HistoryCommand.COMMAND_WORD);
+        prefixOnlyCommands.add(ListCommand.COMMAND_WORD);
+        prefixOnlyCommands.add(RedoCommand.COMMAND_WORD);
+        prefixOnlyCommands.add(UndoCommand.COMMAND_WORD);
+    }
 
     @FXML
     private Region commandBoxRegion;
@@ -67,45 +104,106 @@ public class CommandAutocomplete {
     }
 
     private void autocomplete() {
-        final String[] input = commandTextField.getText().trim().split(" ");
-        if (input.length == 1) {
-            ArrayList<String> commandMatches = getCommandSubstringMatches(input[0]);
-            if (commandMatches.size() == 1) {
-                setText(commandMatches.get(0) + " ");
-            } else {
-                commandMatches = getCommandStartingMatches(input[0]);
-                if (commandMatches.size() == 1) {
-                    setText(commandMatches.get(0) + " ");
+        StringBuilder commandResult = new StringBuilder();
+        String[] splitCommand = extractCommandWord(commandTextField.getText().trim());
+        String commandMatch = autocompleteCommandWord(splitCommand[COMMAND_WORD_IDX]);
+        commandResult.append(commandMatch).append(" ");
+
+        // Managed to autocomplete to a valid command word
+        if (commandWords.contains(commandMatch)) {
+            if (splitCommand[1].length() == 0) {
+                // No other words to autocomplete, do nothing
+            } else if (prefixOnlyCommands.contains(commandMatch)) {
+                // We can attempt to autocomplete each of the words into prefixes
+                String[] matches = matchPrefixes(commandMatch, separateWords(splitCommand[1]));
+                for (String match : matches) {
+                    commandResult.append(match).append(" ");
                 }
+            } else {
+                // We can only attempt to autocomplete the last word into a prefix
+                splitCommand = extractLastWord(splitCommand[1]);
+                // The middle portion of the input remains unchanged
+                commandResult.append(splitCommand[0]).append(" ");
+                commandResult.append(autocompletePrefix(splitCommand[LAST_WORD_IDX], commandMatch))
+                             .append(" ");
             }
+        } else {
+            // No information to go on to autocomplete anything else
+            return;
+        }
+        setCommandFieldText(commandResult.toString());
+        return;
+    }
+
+    private String[] matchPrefixes(String commandWord, String... keywords) {
+        String[] results = new String[keywords.length];
+        for (int i = 0; i < keywords.length; ++i) {
+            results[i] = autocompletePrefix(keywords[i], commandWord);
+        }
+        return results;
+    }
+
+    private String autocompleteCommandWord(String keyword) {
+        String match = PowerMatch.match(keyword, commandWords);
+        if (match != null) {
+            return match;
+        } else {
+            return keyword;
         }
     }
 
-    private ArrayList<String> getCommandSubstringMatches(String input) {
-        final ArrayList<String> commandMatches = new ArrayList<>();
-        // Allow for case-insensitive match
-        input = input.trim().toLowerCase();
-        for (String commandWord : allCommandWords) {
-            if (commandWord.indexOf(input) != -1) {
-                commandMatches.add(commandWord);
-            }
+    private String autocompletePrefix(String keyword, String commandWord) {
+        String match = PowerMatch.match(keyword, new ArrayList<String>(
+                                                        Arrays.asList(commandKeywords.get(commandWord))));
+        if (match != null) {
+            return match;
+        } else {
+            return keyword;
         }
-        return commandMatches;
     }
 
-    private ArrayList<String> getCommandStartingMatches(String input) {
-        final ArrayList<String> commandMatches = new ArrayList<>();
-        // Allow for case-insensitive match
-        input = input.trim().toLowerCase();
-        for (String commandWord : allCommandWords) {
-            if (commandWord.startsWith(input)) {
-                commandMatches.add(commandWord);
-            }
+    /**
+     * Separates the command word from the rest of the input string.
+     * @return an array of strings with two elements. The first element is the extracted command word
+     * and the second is the rest of the input string with the command word removed.
+     */
+    private String[] extractCommandWord(String input) {
+        // Command word should be followed by whitespace
+        String[] words = input.split("\\s+");
+        if (words.length > 0) {
+            return new String[] {
+                words[COMMAND_WORD_IDX],
+                input.substring(words[COMMAND_WORD_IDX].length()).trim()
+            };
         }
-        return commandMatches;
+        return new String[] { "", "" };
     }
 
-    private void setText(String text) {
+    /**
+     * Separates the last word from the rest of the input string.
+     * @return an array of strings with two elements. The first element is the input string except for the
+     * last word, and the second is the last word.
+     */
+    private String[] extractLastWord(String input) {
+        // Words should be delimited by whitespace
+        String[] words = input.split("\\s+");
+        if (words.length > 0) {
+            return new String[] {
+                input.substring(0, input.length() - words[words.length - 1].length()).trim(),
+                words[words.length - 1]
+            };
+        }
+        return new String[] { "", "" };
+    }
+
+    /**
+     * Separates the words from the input string, delimited by whitespace.
+     */
+    private String[] separateWords(String input) {
+        return input.split("\\s+");
+    }
+
+    private void setCommandFieldText(String text) {
         commandTextField.setText(text);
         setCursorToCommandTextFieldEnd();
     }

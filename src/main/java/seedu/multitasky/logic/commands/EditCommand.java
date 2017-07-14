@@ -57,6 +57,16 @@ public abstract class EditCommand extends Command {
 
     public static final String MESSAGE_DUPLICATE_ENTRY = "This entry already exists in the task manager.";
 
+    public static final String[] VALID_PREFIXES = {CliSyntax.PREFIX_EVENT.toString(),
+                                                   CliSyntax.PREFIX_DEADLINE.toString(),
+                                                   CliSyntax.PREFIX_FLOATINGTASK.toString(),
+                                                   CliSyntax.PREFIX_NAME.toString(),
+                                                   CliSyntax.PREFIX_FROM.toString(),
+                                                   CliSyntax.PREFIX_BY.toString(),
+                                                   CliSyntax.PREFIX_AT.toString(),
+                                                   CliSyntax.PREFIX_TO.toString(),
+                                                   CliSyntax.PREFIX_TAG.toString()};
+
     protected final EditEntryDescriptor editEntryDescriptor;
     protected ReadOnlyEntry entryToEdit;
 

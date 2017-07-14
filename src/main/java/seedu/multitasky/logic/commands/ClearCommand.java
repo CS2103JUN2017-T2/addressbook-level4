@@ -12,6 +12,8 @@ public class ClearCommand extends Command {
     public static final String COMMAND_WORD = "clear";
     public static final String MESSAGE_SUCCESS = "Entry book has been cleared!";
 
+    public static final String[] VALID_PREFIXES = {};
+
     @Override
     public CommandResult execute() {
         requireNonNull(model);
