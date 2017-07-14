@@ -1,11 +1,10 @@
 package seedu.multitasky.logic.commands;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Calendar;
 
 import seedu.multitasky.logic.parser.CliSyntax;
+import seedu.multitasky.logic.parser.Prefix;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.util.Comparators;
 
@@ -44,6 +43,14 @@ public class ListCommand extends Command {
                                                    CliSyntax.PREFIX_FROM.toString(),
                                                    CliSyntax.PREFIX_TO.toString()};
 
+    public static final Prefix[] VALID_PREFIXES_ARRAY = {CliSyntax.PREFIX_ARCHIVE,
+                                                         CliSyntax.PREFIX_BIN,
+                                                         CliSyntax.PREFIX_UPCOMING,
+                                                         CliSyntax.PREFIX_REVERSE,
+                                                         CliSyntax.PREFIX_FROM,
+                                                         CliSyntax.PREFIX_TO};
+
+
     public enum ShowType {
         ACTIVE, ARCHIVE, BIN
     }
@@ -52,45 +59,36 @@ public class ListCommand extends Command {
         DEFAULT, REVERSE, UPCOMING
     }
 
-    private static final Set<String> KEYWORD_SHOW_ALL;
-
     private ShowType showType;
     private Ordering ordering;
 
-    static {
-        KEYWORD_SHOW_ALL = new HashSet<>();
-        KEYWORD_SHOW_ALL.add("");
-    }
+    private Calendar startDate;
+    private Calendar endDate;
 
     public ListCommand() {
         showType = ShowType.ACTIVE;
         ordering = Ordering.DEFAULT;
     }
 
-    public ListCommand(ShowType showType, Ordering ordering) {
-        this.showType = showType;
-        this.ordering = ordering;
-    }
+    public ListCommand(Calendar startDate, Calendar endDate, ArrayList<String> prefixes) {
+        this.startDate = startDate;
+        this.endDate = endDate;
 
-    public ListCommand(String... flags) {
-        ArrayList<String> flagList = new ArrayList<String>(Arrays.asList(flags));
-
-        if (flagList.contains(CliSyntax.PREFIX_ARCHIVE.toString())) {
+        if (prefixes.contains(CliSyntax.PREFIX_ARCHIVE.toString())) {
             showType = ShowType.ARCHIVE;
-        } else if (flagList.contains(CliSyntax.PREFIX_BIN.toString())) {
+        } else if (prefixes.contains(CliSyntax.PREFIX_BIN.toString())) {
             showType = ShowType.BIN;
         } else {
             showType = ShowType.ACTIVE;
         }
 
-        if (flagList.contains(CliSyntax.PREFIX_REVERSE.toString())) {
+        if (prefixes.contains(CliSyntax.PREFIX_REVERSE.toString())) {
             ordering = Ordering.REVERSE;
-        } else if (flagList.contains(CliSyntax.PREFIX_UPCOMING.toString())) {
+        } else if (prefixes.contains(CliSyntax.PREFIX_UPCOMING.toString())) {
             ordering = Ordering.UPCOMING;
         } else {
             ordering = Ordering.DEFAULT;
         }
-
     }
 
     @Override
@@ -99,21 +97,21 @@ public class ListCommand extends Command {
         switch (showType) {
         case ARCHIVE:
             commandResultBuilder.append(MESSAGE_ARCHIVE_SUCCESS);
-            model.updateFilteredEventList(KEYWORD_SHOW_ALL, Entry.State.ARCHIVED);
-            model.updateFilteredDeadlineList(KEYWORD_SHOW_ALL, Entry.State.ARCHIVED);
-            model.updateFilteredFloatingTaskList(KEYWORD_SHOW_ALL, Entry.State.ARCHIVED);
+            model.updateFilteredEventList(startDate, endDate, Entry.State.ARCHIVED);
+            model.updateFilteredDeadlineList(startDate, endDate, Entry.State.ARCHIVED);
+            model.updateFilteredFloatingTaskList(startDate, endDate, Entry.State.ARCHIVED);
             break;
         case BIN:
             commandResultBuilder.append(MESSAGE_BIN_SUCCESS);
-            model.updateFilteredEventList(KEYWORD_SHOW_ALL, Entry.State.DELETED);
-            model.updateFilteredDeadlineList(KEYWORD_SHOW_ALL, Entry.State.DELETED);
-            model.updateFilteredFloatingTaskList(KEYWORD_SHOW_ALL, Entry.State.DELETED);
+            model.updateFilteredEventList(startDate, endDate, Entry.State.DELETED);
+            model.updateFilteredDeadlineList(startDate, endDate, Entry.State.DELETED);
+            model.updateFilteredFloatingTaskList(startDate, endDate, Entry.State.DELETED);
             break;
         case ACTIVE:
             commandResultBuilder.append(MESSAGE_ACTIVE_SUCCESS);
-            model.updateFilteredEventList(KEYWORD_SHOW_ALL, Entry.State.ACTIVE);
-            model.updateFilteredDeadlineList(KEYWORD_SHOW_ALL, Entry.State.ACTIVE);
-            model.updateFilteredFloatingTaskList(KEYWORD_SHOW_ALL, Entry.State.ACTIVE);
+            model.updateFilteredEventList(startDate, endDate, Entry.State.ACTIVE);
+            model.updateFilteredDeadlineList(startDate, endDate, Entry.State.ACTIVE);
+            model.updateFilteredFloatingTaskList(startDate, endDate, Entry.State.ACTIVE);
             break;
         default:
             throw new AssertionError("Unknown list show type");

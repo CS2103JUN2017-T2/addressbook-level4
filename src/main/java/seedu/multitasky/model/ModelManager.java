@@ -437,8 +437,6 @@ public class ModelManager extends ComponentManager implements Model {
         private DateFormat dateFormat;
 
         DateAndStatusQualifier(Calendar startDate, Calendar endDate, Entry.State state) {
-            assert startDate != null : "startDate for DateAndStatusQualifier cannot be null";
-            assert endDate != null : "endDate for DateAndStatusQualifier cannot be null";
             assert state != null : "state for DateAndStatusQualifier cannot be null";
 
             this.startDate = startDate;
@@ -467,17 +465,40 @@ public class ModelManager extends ComponentManager implements Model {
             } else {
                 assert false : "DateAndStatusQualifier::run received entry of unknown Entry subclass type";
             }
-            return true;
+            return false;
         }
 
         private boolean isWithinRange(Calendar checkDate) {
-            return (checkDate.compareTo(startDate) >= 0) && (checkDate.compareTo(endDate) <= 0);
+            if (startDate == null) {
+                if (endDate == null) {
+                    return true;
+                } else {
+                    return checkDate.compareTo(endDate) <= 0;
+                }
+            } else if (endDate == null) {
+                return checkDate.compareTo(startDate) >= 0;
+            } else {
+                return (checkDate.compareTo(startDate) <= 0) && (checkDate.compareTo(endDate) >= 0);
+            }
         }
 
         @Override
         public String toString() {
-            return "startDate = " + dateFormat.format(startDate) + ", endDate = "
-                   + dateFormat.format(endDate);
+            StringBuilder builder = new StringBuilder();
+            builder.append("startDate = ");
+            if (startDate == null) {
+                builder.append("null");
+            } else {
+                builder.append(dateFormat.format(startDate));
+            }
+            builder.append(", endDate = ");
+            if (endDate == null) {
+                builder.append("null");
+            } else {
+                builder.append(dateFormat.format(endDate));
+            }
+            builder.append(", state = ").append(state.toString());
+            return builder.toString();
         }
     }
 
