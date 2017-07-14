@@ -116,25 +116,24 @@ Examples:
 * `complete clean up room`
 * `complete /deadline 3`
 
-//<!-- @@author A0126623L -->
+//<!-- @@author A0125586X -->
 === Listing all entries : `list`
 
 Displays a list of entries sorted by datetime. +
-Format: `list [/from START_DATE_TIME][/to END_DATE_TIME] [/archive | /bin]`
+Format: `list [from START_DATE_TIME] [to END_DATE_TIME] [archive | bin] [reverse | upcoming]`
 
 ****
 * By default the active entries will be listed.
-* The `/archive` and `/bin` options are used to list archived and deleted entries respectively.
-* `/from` and `/to` are used to list entries from/upto a certain datetime.
+* The `archive` and `bin` flags are to list the archived and deleted entries respectively.
+* The `from` and `to` flags are used to specify a time period that only entries that fall within this period are shown. If `to` is specified but not `from`, then all the entries up to the later time bound are shown.
+* The `reverse` flag lists entries in reverse order, starting from the entry furthest in the future. This does not alter the ordering of floating tasks.
+* The `upcoming` flag lists entries in the future first, with the first upcoming entry at the top. Past entries are moved to the bottom of the list.
 ****
-
-*Defaults from `config.json`* +
-
-* The default number of entries to list can be configured using `listNumResults`
 
 Examples:
 * `list`
-* `list /to 050717 1400 /archive`
+* `list to 10pm today`
+* `list upcoming`
 
 //<!-- @@author A0125586X -->
 === Editing an entry : `edit`
@@ -262,6 +261,23 @@ Format: `exit`
 
 MultiTasky data is saved in the hard disk automatically after any command that changes the data. +
 There is no need to save manually.
+
+//<!-- @@author A0125586X -->
+=== Autocomplete
+
+Autocomplete functionality is enabled when entering commands. Simply press the `tab` key and MultiTasky will attempt to correct/complete words that you've typed so far. +
+Here are some examples you can try:
+
+* Autocomplete will only complete your input if it's sure that that's the word you want.
+** Type `e` and press `tab`. Notice how nothing has changed as there are two possibilities for this input: `edit` and `exit`. Now add an `x` behind `e` to get `ex` and now it completes to `exit` when you press `tab`.
+* Autocomplete is able to figure out what you want not just from the beginnings of words, but also from the middle.
+** Notice that typing just `x` and pressing `tab` gives you `exit` as well.
+* Don't worry if you sometimes make mistakes when typing. Autocomplete is able to compensate for the occasional typo, so you don't have to spend time going back to change a small typo.
+** Try typing `lisft` and pressing `tab`. This autocorrects to `list`.
+* For certain commands Autocomplete can even work on every word you've typed, not just the actual command word.
+** If you want to delete the first deadline in the list, you can type `d d` and press `tab`, and it completes to `delete deadline`. Now all you need is to enter `1` and press `enter` to execute your command.
+** This goes beyond just two words. Try typing in `l a r` which completes to `list archive reverse`.
+//<!-- @@author -->
 
 == FAQ
 

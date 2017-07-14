@@ -224,6 +224,17 @@ The `Storage` component,
 
 Classes used by multiple components are in the `seedu.multitasky.commons` package.
 
+//<!-- @@author A0125586X -->
+==== PowerMatch
+
+PowerMatch is the algorithm that powers the command autocomplete as well as PowerFind. When checking if a given input matches a potential match, it performs the following checks:
+
+* Substring check - if the input is a substring of the potential match
+* Permutation check - if the input characters permutated in a different way produce a match
+* Missing characters check - if the input with additional characters added in produces a match
+* Additional/wrong characters check - if the input with characters changed/removed produces a match
+//<!-- @@author -->
+
 == Implementation
 
 === Logging

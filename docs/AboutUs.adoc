@@ -9,8 +9,15 @@ We are a team based in the http://www.comp.nus.edu.sg[School of Computing, Natio
 == http://github.com/mattheuslee[Mattheus Lee]
 image::mattheuslee.jpg[width="150", align="left"]
 
-Role: Team Leader +
-Responsibilities: Git, Deliverables and scheduling, Integration, GUI and commons
+* Role: Team Leader
+* Components in charge of: https://github.com/CS2103JUN2017-T2/main/blob/master/docs/DeveloperGuide.adoc#ui-component[GUI], commons
+* Aspects/tools in charge of: Git, Deliverables and scheduling, Integration
+* Features implemented:
+** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#listing-all-entries-code-list-code[List entries]
+** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#autocomplete[Command Autocomplete] using https://github.com/CS2103JUN2017-T2/main/blob/V0.4/docs/DeveloperGuide.adoc#ui-component[PowerSearch]
+* Code written: https://github.com/CS2103JUN2017-T2/main/blob/master/collated/main/A0125586X.md[functional code], https://github.com/CS2103JUN2017-T2/main/blob/master/collated/test/A0125586X.md[test code] and https://github.com/CS2103JUN2017-T2/main/blob/master/collated/docs/A0125586X.md[documentation]
+* Other major contributions:
+    * Set up Travis, AppVeyor and Coveralls
 
 '''
 
