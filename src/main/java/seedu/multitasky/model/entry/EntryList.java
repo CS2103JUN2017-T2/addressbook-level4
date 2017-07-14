@@ -90,7 +90,7 @@ public abstract class EntryList implements Iterable<Entry> {
 
     /**
      * Clears the current list of entries and add all elements from replacement.
-     *
+     * The updated list of entries will contain the references to the elements in {@code replacement}.
      * @param replacement
      */
     public void setEntries(EntryList replacement) {

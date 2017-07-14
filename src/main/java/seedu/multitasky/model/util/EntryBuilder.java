@@ -70,7 +70,7 @@ public class EntryBuilder {
      * @param tags             the tags associated with the event
      * @return                 the constructed Event object - returns a Deadline or FloatingTask object if
      *                         there are null Calendar parameters
-     * @throws IllegalValueException if any of the arguments are invalid or if there is a wrong combination of
+     * @throws IllegalValueException if any of the arguments are invalid or if there is the combination of
      *                               non-null start date and null end date.
      */
     public static Entry build(String name, Calendar startDateAndTime, Calendar endDateAndTime, String... tags)
@@ -86,7 +86,7 @@ public class EntryBuilder {
      * @param tags             the tags associated with the event
      * @return                 the constructed Event object - returns a Deadline or FloatingTask object if
      *                         there are null Calendar parameters
-     * @throws IllegalValueException if any of the arguments are invalid or if there is a wrong combination of
+     * @throws IllegalValueException if any of the arguments are invalid or if there is the combination of
      *                               non-null start date and null end date.
      */
     public static Entry build(String name, Calendar startDateAndTime, Calendar endDateAndTime, Set<Tag> tags)
@@ -102,7 +102,7 @@ public class EntryBuilder {
      * @param tags             the tags associated with the event
      * @return                 the constructed Event object - returns a Deadline or FloatingTask object if
      *                         there are null Calendar parameters
-     * @throws IllegalValueException if any of the arguments are invalid or if there is a wrong combination of
+     * @throws IllegalValueException if any of the arguments are invalid or if there is the combination of
      *                               non-null start date and null end date.
      */
     public static Entry build(Name name, Calendar startDateAndTime, Calendar endDateAndTime, String... tags)
@@ -118,7 +118,7 @@ public class EntryBuilder {
      * @param tags             the tags associated with the event
      * @return                 the constructed Event object - returns a Deadline or FloatingTask object if
      *                         there are null Calendar parameters
-     * @throws IllegalValueException if any of the arguments are invalid or if there is a wrong combination of
+     * @throws IllegalValueException if any of the arguments are invalid or if there is the combination of
      *                               non-null start date and null end date.
      */
     public static Entry build(Name name, Calendar startDateAndTime, Calendar endDateAndTime, Set<Tag> tags)

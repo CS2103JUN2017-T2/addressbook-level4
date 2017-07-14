@@ -144,17 +144,17 @@ public class AddCommandTest {
         }
 
         @Override
-        public void updateFilteredEventList(Set<String> keywords) {
+        public void updateFilteredEventList(Set<String> keywords, Entry.State state) {
             fail("This method should not be called.");
         }
 
         @Override
-        public void updateFilteredDeadlineList(Set<String> keywords) {
+        public void updateFilteredDeadlineList(Set<String> keywords, Entry.State state) {
             fail("This method should not be called.");
         }
 
         @Override
-        public void updateFilteredFloatingTaskList(Set<String> keywords) {
+        public void updateFilteredFloatingTaskList(Set<String> keywords, Entry.State state) {
             fail("This method should not be called.");
         }
 

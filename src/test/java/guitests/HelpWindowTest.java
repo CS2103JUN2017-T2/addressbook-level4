@@ -11,6 +11,9 @@ import seedu.multitasky.logic.commands.HelpCommand;
 // @@author A0125586X
 public class HelpWindowTest extends EntryBookGuiTest {
 
+    /*********************
+     * Using accelerator *
+     ********************/
     @Test
     public void helpWindow_usingAcceleratorInCommandBox_open() {
         commandBox.clickOnTextField();
@@ -41,24 +44,25 @@ public class HelpWindowTest extends EntryBookGuiTest {
         assertHelpWindowOpen(mainMenu.openHelpWindowUsingAccelerator());
     }
 
+    /*********************
+     * Using help button *
+     ********************/
     @Test
     public void helpWindow_usingMenuButton_open() {
         assertHelpWindowOpen(mainMenu.openHelpWindowUsingMenu());
     }
 
+    /*****************
+     * Using command *
+     ****************/
     @Test
     public void helpWindow_usingCommand_open() {
         assertHelpWindowOpen(commandBox.runHelpCommand());
     }
 
-    @Test
-    public void help_tabAutocomplete_success() {
-        assertHelpTabAutocompleteFailure(HelpCommand.COMMAND_WORD.substring(0, 1));
-        for (int i = 2; i < HelpCommand.COMMAND_WORD.length(); ++i) {
-            assertHelpTabAutocomplete(HelpCommand.COMMAND_WORD.substring(0, i));
-        }
-    }
-
+    /**************************************
+     * Different types of invalid wording *
+     *************************************/
     @Test
     public void help_unknownCommandName_errorMessage() {
         commandBox.runCommand(HelpCommand.COMMAND_WORD.substring(0, HelpCommand.COMMAND_WORD.length() - 1));
@@ -66,6 +70,19 @@ public class HelpWindowTest extends EntryBookGuiTest {
 
         commandBox.runCommand(HelpCommand.COMMAND_WORD + "a");
         assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
+    }
+
+    /*******************************
+     * Mixed-case and autocomplete *
+     ******************************/
+    @Test
+    public void help_tabAutocomplete_success() {
+        assertHelpTabAutocompleteFailure(HelpCommand.COMMAND_WORD.substring(0, 1));
+        for (int i = 2; i < HelpCommand.COMMAND_WORD.length(); ++i) {
+            assertHelpTabAutocomplete(HelpCommand.COMMAND_WORD.substring(0, i));
+        }
+        assertHelpTabAutocomplete(HelpCommand.COMMAND_WORD + "a");
+        assertHelpTabAutocomplete(HelpCommand.COMMAND_WORD + "aa");
     }
 
     /**

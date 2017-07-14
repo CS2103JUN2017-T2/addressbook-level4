@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.Set;
 
 import seedu.multitasky.commons.core.UnmodifiableObservableList;
+import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
@@ -70,14 +71,14 @@ public interface Model {
     /** Updates the filter of all filtered lists to show all entries */
     public void updateAllFilteredListToShowAll();
 
-    /** Updates the filter of the filtered event list to filter by the given keywords */
-    void updateFilteredEventList(Set<String> keywords);
+    /** Updates the filter of the filtered event list to filter by the given keywords and state */
+    void updateFilteredEventList(Set<String> keywords, Entry.State state);
 
-    /** Updates the filter of the filtered deadline list to filter by the given keywords */
-    void updateFilteredDeadlineList(Set<String> keywords);
+    /** Updates the filter of the filtered deadline list to filter by the given keywords and state */
+    void updateFilteredDeadlineList(Set<String> keywords, Entry.State state);
 
-    /** Updates the filter of the filtered floating task list to filter by the given keywords */
-    void updateFilteredFloatingTaskList(Set<String> keywords);
+    /** Updates the filter of the filtered floating task list to filter by the given keywords and state */
+    void updateFilteredFloatingTaskList(Set<String> keywords, Entry.State state);
 
     /** Updates the sorting comparators used. */
     void updateSortingComparators(Comparator<ReadOnlyEntry> eventComparator,
