@@ -18,7 +18,6 @@ import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.logic.CommandHistory;
 import seedu.multitasky.logic.commands.EditCommand.EditEntryDescriptor;
-import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.Model;
 import seedu.multitasky.model.ModelManager;
 import seedu.multitasky.model.UserPrefs;
@@ -41,7 +40,7 @@ public class EditCommandTest {
         EditEntryDescriptor descriptor = new EditEntryDescriptorBuilder(editedEntry).build();
         EditCommand editCommand = prepareCommand(INDEX_FIRST_ENTRY, descriptor);
         String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, editedEntry);
-        Model expectedModel = new ModelManager(new EntryBook(model.getEntryBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
         expectedModel.updateEntry(model.getFilteredFloatingTaskList().get(INDEX_FIRST_ENTRY.getZeroBased()),
                                   editedEntry);
         CommandTestUtil.assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);

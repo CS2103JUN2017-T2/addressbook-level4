@@ -33,6 +33,10 @@ public class DeleteByFindCommand extends DeleteCommand {
         this.keywords = keywords;
     }
 
+    public Set<String> getKeywords() {
+        return keywords;
+    }
+
     @Override
     public CommandResult execute() throws CommandException , DuplicateEntryException {
 
