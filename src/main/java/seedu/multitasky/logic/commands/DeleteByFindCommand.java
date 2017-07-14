@@ -59,7 +59,7 @@ public class DeleteByFindCommand extends DeleteCommand {
             } catch (EntryNotFoundException e) {
                 assert false : "The target entry cannot be missing";
             }
-            model.updateAllFilteredListToShowAll();
+            model.updateAllFilteredListToShowAllActiveEntries();
             return new CommandResult(String.format(MESSAGE_SUCCESS, entryToDelete));
         } else {
             if (allList.size() >= 2) { // multiple entries found

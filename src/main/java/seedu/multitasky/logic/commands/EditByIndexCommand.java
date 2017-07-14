@@ -54,12 +54,13 @@ public class EditByIndexCommand extends EditCommand {
             // either underlying FilteredList in ModelManager is not updating properly unless we update
             // predicates. to find a neater way to reflect the change to ui
             // and without needing to call a FilteredListshowAll
-            model.updateFilteredEventList(new HashSet<>(Arrays.asList("change filter")), Entry.State.ACTIVE);
+            model.updateFilteredEventList(new HashSet<>(Arrays.asList("change filter")),
+                                          Entry.State.ACTIVE);
             model.updateFilteredDeadlineList(new HashSet<>(Arrays.asList("change filter")),
                                              Entry.State.ACTIVE);
             model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList("change filter")),
                                                  Entry.State.ACTIVE);
-            model.updateAllFilteredListToShowAll();
+            model.updateAllFilteredListToShowAllActiveEntries();
         } catch (EntryNotFoundException pnfe) {
             throw new AssertionError("The target entry cannot be missing");
         }
