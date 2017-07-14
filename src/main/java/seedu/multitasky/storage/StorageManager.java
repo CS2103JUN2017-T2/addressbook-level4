@@ -23,6 +23,7 @@ import seedu.multitasky.model.UserPrefs;
  */
 public class StorageManager extends ComponentManager implements Storage {
 
+    /** Variable to store number of snapshots for deletion during exit */
     private static int numSnapshots = 0;
     private static final Logger logger = LogsCenter.getLogger(StorageManager.class);
     private EntryBookStorage entryBookStorage;
@@ -42,6 +43,7 @@ public class StorageManager extends ComponentManager implements Storage {
         StorageManager.numSnapshots = numSnapshots;
     }
 
+    /** Method to decrement snapshot index for deletion during app exit */
     public static void decrementNumSnapshots() {
         numSnapshots--;
     }
@@ -86,22 +88,6 @@ public class StorageManager extends ComponentManager implements Storage {
         return UserPrefs.getEntryBookSnapshotPath() + numSnapshots + ".xml";
     }
 
-    /**
-     * Gets the proper filepath of the previous snapshot needed for undo
-     */
-    public static String getPreviousEntryBookSnapshotPath() {
-        UserPrefs.decrementIndexByOne();
-        return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
-    }
-
-    /**
-     * Gets the proper filepath of the next snapshot needed for redo
-     */
-    public static String getNextEntryBookSnapshotPath() {
-        UserPrefs.incrementIndexByOne();
-        return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
-    }
-
     // @@author
     @Override
     public Optional<ReadOnlyEntryBook> readEntryBook() throws DataConversionException, IOException {
@@ -126,6 +112,23 @@ public class StorageManager extends ComponentManager implements Storage {
     }
 
     // @@author A0132788U
+    // ================ StorageManager methods ==============================
+    /**
+     * Gets the proper filepath of the previous snapshot needed for undo
+     */
+    public static String getPreviousEntryBookSnapshotPath() {
+        UserPrefs.decrementIndexByOne();
+        return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
+    }
+
+    /**
+     * Gets the proper filepath of the next snapshot needed for redo
+     */
+    public static String getNextEntryBookSnapshotPath() {
+        UserPrefs.incrementIndexByOne();
+        return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
+    }
+
     /**
      * Loads data from the previous SnapshotPath for undo.
      *
