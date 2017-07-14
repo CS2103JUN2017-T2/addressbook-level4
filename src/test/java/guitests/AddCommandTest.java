@@ -12,7 +12,7 @@ import seedu.multitasky.logic.parser.CliSyntax;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.tag.Tag;
-import seedu.multitasky.testutil.EntryUtil;
+import seedu.multitasky.testutil.CommandUtil;
 import seedu.multitasky.testutil.SampleEntries;
 import seedu.multitasky.testutil.TestUtil;
 
@@ -165,6 +165,9 @@ public class AddCommandTest extends EntryBookGuiTest {
         for (int i = 1; i < AddCommand.COMMAND_WORD.length(); ++i) {
             assertAddTabAutocomplete(AddCommand.COMMAND_WORD.substring(0, i));
         }
+        assertAddTabAutocomplete(AddCommand.COMMAND_WORD + "a");
+        assertAddTabAutocomplete(AddCommand.COMMAND_WORD + "aa");
+        assertAddTabAutocomplete(AddCommand.COMMAND_WORD + "aaa");
     }
 
     /**
@@ -182,7 +185,7 @@ public class AddCommandTest extends EntryBookGuiTest {
     private void assertAddWithCommandWord(String commandWord) {
         Entry[] currentList = SampleEntries.getSampleFloatingTasks();
         Entry entryToAdd = SampleEntries.SPECTACLES;
-        commandBox.runCommand(commandWord + " " + EntryUtil.getFloatingTaskDetailsForAdd(entryToAdd));
+        commandBox.runCommand(commandWord + " " + CommandUtil.getFloatingTaskDetails(entryToAdd));
         assertFloatingTaskAdded(entryToAdd, currentList);
     }
 
@@ -226,7 +229,7 @@ public class AddCommandTest extends EntryBookGuiTest {
      * Attempts to add an entry as an event and confirms that it has been added.
      */
     private void assertAddEventSuccess(Entry entryToAdd, Entry... currentList) {
-        commandBox.runCommand(EntryUtil.getEventAddCommand(entryToAdd));
+        commandBox.runCommand(CommandUtil.getAddEventCommand(entryToAdd));
         assertEventAdded(entryToAdd, currentList);
     }
 
@@ -234,7 +237,7 @@ public class AddCommandTest extends EntryBookGuiTest {
      * Attempts to add an entry as a deadline and confirms that it has been added.
      */
     private void assertAddDeadlineSuccess(Entry entryToAdd, Entry... currentList) {
-        commandBox.runCommand(EntryUtil.getDeadlineAddCommand(entryToAdd));
+        commandBox.runCommand(CommandUtil.getAddDeadlineCommand(entryToAdd));
         assertDeadlineAdded(entryToAdd, currentList);
     }
 
@@ -242,7 +245,7 @@ public class AddCommandTest extends EntryBookGuiTest {
      * Attempts to add an entry as a floating task and confirms that it has been added.
      */
     private void assertAddFloatingTaskSuccess(Entry entryToAdd, Entry... currentList) {
-        commandBox.runCommand(EntryUtil.getFloatingTaskAddCommand(entryToAdd));
+        commandBox.runCommand(CommandUtil.getAddFloatingTaskCommand(entryToAdd));
         assertFloatingTaskAdded(entryToAdd, currentList);
     }
 

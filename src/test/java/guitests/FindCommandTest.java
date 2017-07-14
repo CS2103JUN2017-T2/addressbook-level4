@@ -47,6 +47,16 @@ public class FindCommandTest extends EntryBookGuiTest {
     }
 
     @Test
+    public void find_matchingPartialKeyword_singleDeadlineResult() {
+        assertFindDeadlineResult("rms", 1, SampleEntries.TAX);
+    }
+
+    @Test
+    public void find_matchingFullKeyword_singleDeadlineResult() {
+        assertFindDeadlineResult("forms", 1, SampleEntries.TAX);
+    }
+
+    @Test
     public void find_matchingPartialKeyword_singleFloatingTaskResult() {
         assertFindFloatingTaskResult("gra", 1, SampleEntries.PROGRAMMING);
     }
@@ -60,8 +70,8 @@ public class FindCommandTest extends EntryBookGuiTest {
      * Multiple results for each type *
      *********************************/
     @Test
-    public void find_matchingPartialKeyword_multipleFloatingTaskResults() {
-        assertFindFloatingTaskResult("ear", 2, SampleEntries.COOK, SampleEntries.PROGRAMMING);
+    public void find_matchingPartialKeyword_multipleDeadlineResults() {
+        assertFindDeadlineResult("s", 4, SampleEntries.TAX, SampleEntries.PAPER);
     }
 
     @Test
@@ -128,6 +138,8 @@ public class FindCommandTest extends EntryBookGuiTest {
         for (int i = 1; i < FindCommand.COMMAND_WORD.length(); ++i) {
             assertFindTabAutocomplete(FindCommand.COMMAND_WORD.substring(0, i));
         }
+        assertFindTabAutocomplete(FindCommand.COMMAND_WORD + "a");
+        assertFindTabAutocomplete(FindCommand.COMMAND_WORD + "aa");
     }
 
     /**

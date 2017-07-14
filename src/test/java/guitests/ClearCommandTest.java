@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.logic.commands.ClearCommand;
-import seedu.multitasky.testutil.EntryUtil;
+import seedu.multitasky.testutil.CommandUtil;
 import seedu.multitasky.testutil.SampleEntries;
 
 // @@author A0125586X
@@ -27,21 +27,21 @@ public class ClearCommandTest extends EntryBookGuiTest {
     @Test
     public void clear_addEventAfterClear_success() {
         assertClearCommandSuccess();
-        commandBox.runCommand(EntryUtil.getEventAddCommand(SampleEntries.CAT));
+        commandBox.runCommand(CommandUtil.getAddEventCommand(SampleEntries.CAT));
         assertTrue(eventListPanel.isListMatching(SampleEntries.CAT));
     }
 
     @Test
     public void clear_addDeadlineAfterClear_success() {
         assertClearCommandSuccess();
-        commandBox.runCommand(EntryUtil.getDeadlineAddCommand(SampleEntries.SUBMISSION));
+        commandBox.runCommand(CommandUtil.getAddDeadlineCommand(SampleEntries.SUBMISSION));
         assertTrue(deadlineListPanel.isListMatching(SampleEntries.SUBMISSION));
     }
 
     @Test
     public void clear_addFloatingTaskAfterClear_success() {
         assertClearCommandSuccess();
-        commandBox.runCommand(EntryUtil.getFloatingTaskAddCommand(SampleEntries.CLEAN));
+        commandBox.runCommand(CommandUtil.getAddFloatingTaskCommand(SampleEntries.CLEAN));
         assertTrue(floatingTaskListPanel.isListMatching(SampleEntries.CLEAN));
     }
 
@@ -56,7 +56,6 @@ public class ClearCommandTest extends EntryBookGuiTest {
         commandBox.runCommand(ClearCommand.COMMAND_WORD + "a");
         assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
     }
-
 
     /*******************************
      * Mixed-case and autocomplete *
@@ -97,6 +96,7 @@ public class ClearCommandTest extends EntryBookGuiTest {
         for (int i = 1; i < ClearCommand.COMMAND_WORD.length(); ++i) {
             assertClearTabAutocomplete(ClearCommand.COMMAND_WORD.substring(0, i));
         }
+        assertClearTabAutocomplete(ClearCommand.COMMAND_WORD + "a");
     }
 
     /**
