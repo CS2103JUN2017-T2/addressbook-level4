@@ -59,20 +59,24 @@ public class FloatingTask extends Entry {
     @Override
     public boolean isSameStateAs(ReadOnlyEntry other) {
         return (other instanceof FloatingTask // instanceof handles nulls
-                && this.getName().equals(other.getName()) && this.getTags().equals(other.getTags()));
+                && this.getName().equals(other.getName())
+                && this.getState().equals(other.getState())
+                && this.getTags().equals(other.getTags()));
     }
     // @@author
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(getName(), getTags());
+        return Objects.hash(getName(), getState(), getTags());
     }
 
     // @@author A0126623L
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
+
+        // TODO: Include state in string?
         builder.append(getName()).append(" Tags: ");
         getTags().forEach(builder::append);
         return builder.toString();

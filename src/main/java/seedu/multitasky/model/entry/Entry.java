@@ -16,6 +16,16 @@ import seedu.multitasky.model.tag.UniqueTagList;
  */
 public abstract class Entry implements ReadOnlyEntry {
 
+    // @@ author A0126623L
+    /**
+     * Represents the state of an entry.
+     * The three possible states are: ACTIVE, ARCHIVED, DELETED
+     */
+    public enum State {
+        ACTIVE, ARCHIVED, DELETED
+    };
+    // @@author
+
     // @@author A0126623L
     /**
      * Date formatter for subclasses that need to format Date objects.
@@ -26,14 +36,17 @@ public abstract class Entry implements ReadOnlyEntry {
 
     private Name _name;
     private UniqueTagList _tags;
+    private State _state;
 
     /**
      * Every field must be present and not null.
+     * The instantiated Entry will be considered an active entry.
      */
-    public Entry(Name name, Set<Tag> tags) {
+    protected Entry(Name name, Set<Tag> tags) {
         requireAllNonNull(name, tags);
         this._name = name;
         this._tags = new UniqueTagList(tags); // protect internal tags from changes in the arg list
+        this._state = State.ACTIVE;
     }
 
     /**
@@ -41,6 +54,7 @@ public abstract class Entry implements ReadOnlyEntry {
      */
     public Entry(ReadOnlyEntry source) {
         this(source.getName(), source.getTags());
+        this.setState(source.getState());
     }
 
     public void setName(Name name) {
@@ -50,6 +64,15 @@ public abstract class Entry implements ReadOnlyEntry {
     @Override
     public Name getName() {
         return _name;
+    }
+
+    public void setState(State state) {
+        this._state = requireNonNull(state);
+    }
+
+    @Override
+    public State getState() {
+        return _state;
     }
 
     /**
@@ -70,12 +93,14 @@ public abstract class Entry implements ReadOnlyEntry {
 
     /**
      * Updates this entry with the details of {@code replacement}.
+     * @param replacement
      */
     public void resetData(ReadOnlyEntry replacement) {
         requireNonNull(replacement);
 
         this.setName(replacement.getName());
         this.setTags(replacement.getTags());
+        this.setState(replacement.getState());
     }
 
 }

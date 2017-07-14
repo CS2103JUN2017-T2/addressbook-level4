@@ -38,7 +38,8 @@ public class EventList extends EntryList {
 
     // @@author A0125586X
     /**
-     * Overrides updateEntry in EntryList to sort after updating in case start date was changed.
+     * Updates an existing entry with the data of a given Entry.
+     * The list is sorted after updating in case start date was changed.
      *
      * @throws EntryNotFoundException if {@code target} could not be found in the list.
      * @throws DuplicateEntryException if {@code editedEntry} already exists in the list.

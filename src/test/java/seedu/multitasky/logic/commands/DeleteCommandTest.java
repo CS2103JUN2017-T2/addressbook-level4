@@ -17,6 +17,7 @@ import seedu.multitasky.logic.parser.Prefix;
 import seedu.multitasky.model.Model;
 import seedu.multitasky.model.ModelManager;
 import seedu.multitasky.model.UserPrefs;
+import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.testutil.SampleEntries;
 
@@ -30,7 +31,8 @@ public class DeleteCommandTest {
 
     @Test
     public void execute_validIndexUnfilteredList_success() throws Exception {
-        ReadOnlyEntry entryToDelete = model.getFilteredFloatingTaskList().get(INDEX_FIRST_ENTRY.getZeroBased());
+        ReadOnlyEntry entryToDelete = model.getFilteredFloatingTaskList()
+                                           .get(INDEX_FIRST_ENTRY.getZeroBased());
         DeleteCommand deleteCommand = prepareCommand(INDEX_FIRST_ENTRY);
 
         String expectedMessage = String.format(DeleteCommand.MESSAGE_SUCCESS, entryToDelete);
@@ -46,28 +48,28 @@ public class DeleteCommandTest {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredFloatingTaskList().size() + 1);
         DeleteCommand deleteCommand = prepareCommand(outOfBoundIndex);
 
-        CommandTestUtil.assertCommandFailure(deleteCommand, model, Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
+        CommandTestUtil.assertCommandFailure(deleteCommand, model,
+                                             Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
     }
 
-    //TODO fix bug from ModelManager updateFilteredList. look at NameQualifier.run(),
-    // right now if emptySet is given as keywords, the for loop is not executed and returns true. (should be false)
+    // TODO fix bug from ModelManager updateFilteredList. look at NameQualifier.run(),
+    // right now if emptySet is given as keywords, the for loop is not executed and returns true. (should be
+    // false)
     // reimplement test after fixing.
-    /*@Test
-    public void execute_validIndexFilteredList_success() throws Exception {
-        showFirstEntryOnly(model);
-
-        ReadOnlyEntry entryToDelete = model.getFilteredFloatingTaskList().get(INDEX_FIRST_ENTRY.getZeroBased());
-        DeleteCommand deleteCommand = prepareCommand(INDEX_FIRST_ENTRY);
-
-        String expectedMessage = String.format(DeleteCommand.MESSAGE_SUCCESS, entryToDelete);
-
-        Model expectedModel = new ModelManager(model.getEntryBook(), new UserPrefs());
-        expectedModel.deleteEntry(entryToDelete);
-        showNoEntry(expectedModel);
-
-        CommandTestUtil.assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
-    }
-    */
+    /*
+     * @Test
+     * public void execute_validIndexFilteredList_success() throws Exception {
+     * showFirstEntryOnly(model);
+     * ReadOnlyEntry entryToDelete =
+     * model.getFilteredFloatingTaskList().get(INDEX_FIRST_ENTRY.getZeroBased());
+     * DeleteCommand deleteCommand = prepareCommand(INDEX_FIRST_ENTRY);
+     * String expectedMessage = String.format(DeleteCommand.MESSAGE_SUCCESS, entryToDelete);
+     * Model expectedModel = new ModelManager(model.getEntryBook(), new UserPrefs());
+     * expectedModel.deleteEntry(entryToDelete);
+     * showNoEntry(expectedModel);
+     * CommandTestUtil.assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
+     * }
+     */
 
     @Test
     public void execute_invalidIndexFilteredList_throwsCommandException() throws Exception {
@@ -79,7 +81,8 @@ public class DeleteCommandTest {
 
         DeleteCommand deleteCommand = prepareCommand(outOfBoundIndex);
 
-        CommandTestUtil.assertCommandFailure(deleteCommand, model, Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
+        CommandTestUtil.assertCommandFailure(deleteCommand, model,
+                                             Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
     }
 
     /**
@@ -97,7 +100,7 @@ public class DeleteCommandTest {
     private void showFirstEntryOnly(Model model) {
         ReadOnlyEntry entry = model.getEntryBook().getFloatingTaskList().get(0);
         final String[] splitName = entry.getName().fullName.split("\\s+");
-        model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList(splitName)));
+        model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList(splitName)), Entry.State.ACTIVE);
 
         assert model.getFilteredFloatingTaskList().size() == 1;
     }
@@ -106,7 +109,7 @@ public class DeleteCommandTest {
      * Updates {@code model}'s filtered list to show no one.
      */
     private void showNoEntry(Model model) {
-        model.updateFilteredFloatingTaskList(Collections.emptySet());
+        model.updateFilteredFloatingTaskList(Collections.emptySet(), Entry.State.ACTIVE);
         assert model.getFilteredFloatingTaskList().isEmpty();
     }
 }

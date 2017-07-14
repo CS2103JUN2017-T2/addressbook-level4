@@ -7,6 +7,7 @@ import java.util.Set;
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.logic.parser.CliSyntax;
+import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
@@ -19,13 +20,17 @@ public class DeleteByFindCommand extends DeleteCommand {
     public static final String MESSAGE_NO_ENTRIES = "No entries found! Please try again with different keywords";
 
     public static final String MESSAGE_MULTIPLE_ENTRIES = "More than one entry found! \n"
-            + "Use " + COMMAND_WORD + " [" + String.join(" | ", CliSyntax.PREFIX_EVENT.toString(),
-            CliSyntax.PREFIX_DEADLINE.toString(), CliSyntax.PREFIX_FLOATINGTASK.toString()) + "]"
-            + " INDEX to specify which entry to delete.";
+                                                          + "Use " + COMMAND_WORD + " ["
+                                                          + String.join(" | ",
+                                                                        CliSyntax.PREFIX_EVENT.toString(),
+                                                                        CliSyntax.PREFIX_DEADLINE.toString(),
+                                                                        CliSyntax.PREFIX_FLOATINGTASK.toString())
+                                                          + "]"
+                                                          + " INDEX to specify which entry to delete.";
 
     public static final String MESSAGE_SUCCESS = "Entry deleted:" + "\n"
-            + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
-            + "One entry found and deleted! Listing all entries now.";
+                                                 + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
+                                                 + "One entry found and deleted! Listing all entries now.";
 
     private Set<String> keywords;
 
@@ -34,12 +39,12 @@ public class DeleteByFindCommand extends DeleteCommand {
     }
 
     @Override
-    public CommandResult execute() throws CommandException , DuplicateEntryException {
+    public CommandResult execute() throws CommandException, DuplicateEntryException {
 
         // update all 3 lists with new keywords.
-        model.updateFilteredDeadlineList(keywords);
-        model.updateFilteredEventList(keywords);
-        model.updateFilteredFloatingTaskList(keywords);
+        model.updateFilteredDeadlineList(keywords, Entry.State.ACTIVE);
+        model.updateFilteredEventList(keywords, Entry.State.ACTIVE);
+        model.updateFilteredFloatingTaskList(keywords, Entry.State.ACTIVE);
 
         // collate a combined list to measure how many entries are found.
         List<ReadOnlyEntry> allList = new ArrayList<>();

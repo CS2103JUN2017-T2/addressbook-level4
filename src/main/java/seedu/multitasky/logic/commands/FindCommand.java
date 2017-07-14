@@ -3,6 +3,7 @@ package seedu.multitasky.logic.commands;
 import java.util.Set;
 
 import seedu.multitasky.logic.parser.CliSyntax;
+import seedu.multitasky.model.entry.Entry;
 
 /**
  * Finds and lists all entries in entry book whose name contains any of the argument keywords.
@@ -29,9 +30,9 @@ public class FindCommand extends Command {
     public CommandResult execute() {
 
         // update all 3 lists with new keywords.
-        model.updateFilteredDeadlineList(keywords);
-        model.updateFilteredEventList(keywords);
-        model.updateFilteredFloatingTaskList(keywords);
+        model.updateFilteredDeadlineList(keywords, Entry.State.ACTIVE);
+        model.updateFilteredEventList(keywords, Entry.State.ACTIVE);
+        model.updateFilteredFloatingTaskList(keywords, Entry.State.ACTIVE);
 
         // get size of each lists for printing.
         int deadlineSize = model.getFilteredDeadlineList().size();
