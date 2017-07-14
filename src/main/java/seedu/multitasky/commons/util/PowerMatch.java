@@ -15,7 +15,7 @@ public class PowerMatch {
 
     public static final int PERMUTATION_MATCH_MAX_ALLOWED_LENGTH = 8;
     public static final int MISSING_INNER_MATCH_MAX_ALLOWED_LENGTH = 8;
-    public static final int WRONG_INNER_MATCH_MAX_ALLOWED_LENGTH = 8;
+    public static final int WRONG_INNER_MATCH_MAX_ALLOWED_LENGTH = 6;
 
     public static final String REGEX_ANY_NON_WHITESPACE = "((\\S+)?)";
     public static final String REGEX_ANY_PRESENT_NON_WHITESPACE = "(\\S+)";
@@ -216,6 +216,35 @@ public class PowerMatch {
                 chars.set(j, jTemp);
             }
         }
+        /**
+         * For three wrong/extra characters:
+         * Replace each three-character combination in turn with a regex expression
+         * that can match any non-whitespace character or no character at all
+         */
+        for (int i = 0; i < chars.size(); ++i) {
+            for (int j = i + 1; j < chars.size(); ++j) {
+                for (int k = j + 1; k < chars.size(); ++k) {
+                    String iTemp = chars.get(i);
+                    String jTemp = chars.get(j);
+                    String kTemp = chars.get(k);
+                    chars.set(i, REGEX_ANY_NON_WHITESPACE);
+                    chars.set(j, REGEX_ANY_NON_WHITESPACE);
+                    chars.set(k, REGEX_ANY_NON_WHITESPACE);
+                    HashSet<String> tempPermutations = new HashSet<>();
+                    generateUniquePermutations(chars, 0, keyword.length() - 1, tempPermutations);
+                    for (String permutation : tempPermutations) {
+                        permutations.add(permutation);
+                    }
+                    chars.set(i, iTemp);
+                    chars.set(j, jTemp);
+                    chars.set(k, jTemp);
+                }
+            }
+        }
+        /**
+         * Stopping at three since it's a bit unreasonable to expect the user to enter four or more
+         * wrong/extra characters in a single word
+         */
         // Add in regex expressions before and after to match any substring
         ArrayList<String> permutationsList = new ArrayList<>(permutations);
         for (int i = 0; i < permutationsList.size(); ++i) {
