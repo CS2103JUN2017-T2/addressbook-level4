@@ -8,7 +8,7 @@ import guitests.guihandles.EntryCardHandle;
 import seedu.multitasky.logic.commands.RedoCommand;
 import seedu.multitasky.logic.commands.UndoCommand;
 import seedu.multitasky.model.entry.Entry;
-import seedu.multitasky.testutil.EntryUtil;
+import seedu.multitasky.testutil.CommandUtil;
 import seedu.multitasky.testutil.SampleEntries;
 import seedu.multitasky.testutil.TestUtil;
 
@@ -38,13 +38,13 @@ public class UndoRedoCommandTest extends EntryBookGuiTest {
         Entry[] currentList = SampleEntries.getSampleEvents();
         Entry[] startingList = currentList.clone();
         Entry entryToAdd = SampleEntries.MOVIE;
-        commandBox.runCommand(EntryUtil.getEventAddCommand(entryToAdd));
+        commandBox.runCommand(CommandUtil.getAddEventCommand(entryToAdd));
         assertEventAdded(entryToAdd, currentList);
         currentList = TestUtil.addEntriesToSortedList(currentList, entryToAdd);
 
         Entry[] middleList = currentList.clone();
         entryToAdd = SampleEntries.OPENING;
-        commandBox.runCommand(EntryUtil.getEventAddCommand(entryToAdd));
+        commandBox.runCommand(CommandUtil.getAddEventCommand(entryToAdd));
         assertEventAdded(entryToAdd, currentList);
         currentList = TestUtil.addEntriesToSortedList(currentList, entryToAdd);
 

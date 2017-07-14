@@ -14,7 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import seedu.multitasky.logic.commands.ListCommand;
-import seedu.multitasky.testutil.EntryUtil;
+import seedu.multitasky.testutil.CommandUtil;
 import seedu.multitasky.testutil.SampleEntries;
 import seedu.multitasky.ui.StatusBarFooter;
 
@@ -48,7 +48,7 @@ public class StatusBarFooterTest extends EntryBookGuiTest {
         String timestamp = new Date(injectedClock.millis()).toString();
         String expected = String.format(StatusBarFooter.SYNC_STATUS_UPDATED, timestamp);
         // Mutating command succeeds
-        assertTrue(commandBox.runCommand(EntryUtil.getFloatingTaskAddCommand(SampleEntries.SPECTACLES)));
+        assertTrue(commandBox.runCommand(CommandUtil.getAddFloatingTaskCommand(SampleEntries.SPECTACLES)));
         assertEquals(expected, statusBarFooter.getSyncStatus());
     }
 

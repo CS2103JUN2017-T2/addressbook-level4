@@ -3,16 +3,62 @@ package seedu.multitasky.testutil;
 import java.util.Calendar;
 
 import seedu.multitasky.commons.core.index.Index;
+import seedu.multitasky.logic.commands.AddCommand;
+import seedu.multitasky.logic.commands.DeleteCommand;
 import seedu.multitasky.logic.commands.EditCommand;
 import seedu.multitasky.logic.parser.CliSyntax;
+import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.Event;
+import seedu.multitasky.model.entry.FloatingTask;
 
 // @@author A0125586X
 /**
  * A utility class for commands, to get the correct command phrase for testing.
  */
 public class CommandUtil {
+
+    /**
+     * Returns an add command string for adding an event.
+     */
+    public static String getAddEventCommand(Entry entry) {
+        return AddCommand.COMMAND_WORD + " " + getEventDetails(entry);
+    }
+
+    /**
+     * Returns an add command string for adding a deadline.
+     */
+    public static String getAddDeadlineCommand(Entry entry) {
+        return AddCommand.COMMAND_WORD + " " + getDeadlineDetails(entry);
+    }
+
+    /**
+     * Returns an add command string for adding a floating task.
+     */
+    public static String getAddFloatingTaskCommand(Entry entry) {
+        return AddCommand.COMMAND_WORD + " " + getFloatingTaskDetails(entry);
+    }
+
+    /**
+     * Returns a delete command string for deleting an event by index.
+     */
+    public static String getDeleteEventByIndexCommand(Index index) {
+        return DeleteCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_EVENT + " " + index.getOneBased();
+    }
+
+    /**
+     * Returns a delete command string for deleting a deadline by index.
+     */
+    public static String getDeleteDeadlineByIndexCommand(Index index) {
+        return DeleteCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_DEADLINE + " " + index.getOneBased();
+    }
+
+    /**
+     * Returns a delete command string for deleting a floating task by index.
+     */
+    public static String getDeleteFloatingTaskByIndexCommand(Index index) {
+        return DeleteCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_FLOATINGTASK + " " + index.getOneBased();
+    }
 
     /**
      * Returns an edit command string for editing an event by index.
@@ -36,13 +82,39 @@ public class CommandUtil {
     public static String getEventDetails(Entry entry) {
         assert entry instanceof Event;
         StringBuilder builder = new StringBuilder();
-        builder.append(entry.getName().toString() + " ")
-               .append(CliSyntax.PREFIX_FROM + " ")
-               .append(getDateDetailsAsInputString(entry.getStartDateAndTime()) + " ")
-               .append(CliSyntax.PREFIX_TO + " ")
-               .append(getDateDetailsAsInputString(entry.getEndDateAndTime()) + " ");
-        builder.append(CliSyntax.PREFIX_TAG + " ");
-        entry.getTags().stream().forEach(s -> builder.append(s.tagName + " "));
+        builder.append(entry.getName().toString()).append(" ")
+               .append(CliSyntax.PREFIX_FROM).append(" ")
+               .append(getDateDetailsAsInputString(entry.getStartDateAndTime())).append(" ")
+               .append(CliSyntax.PREFIX_TO).append(" ")
+               .append(getDateDetailsAsInputString(entry.getEndDateAndTime())).append(" ");
+        builder.append(CliSyntax.PREFIX_TAG).append(" ");
+        entry.getTags().stream().forEach(s -> builder.append(s.tagName).append(" "));
+        return builder.toString();
+    }
+
+    /**
+     * Returns the part of command string for the given {@code entry}'s details.
+     */
+    public static String getDeadlineDetails(Entry entry) {
+        assert entry instanceof Deadline;
+        StringBuilder builder = new StringBuilder();
+        builder.append(entry.getName().toString()).append(" ")
+               .append(CliSyntax.PREFIX_BY).append(" ")
+               .append(getDateDetailsAsInputString(entry.getEndDateAndTime())).append(" ");
+        builder.append(CliSyntax.PREFIX_TAG).append(" ");
+        entry.getTags().stream().forEach(s -> builder.append(s.tagName).append(" "));
+        return builder.toString();
+    }
+
+    /**
+     * Returns the part of command string for the given {@code entry}'s details.
+     */
+    public static String getFloatingTaskDetails(Entry entry) {
+        assert entry instanceof FloatingTask;
+        StringBuilder builder = new StringBuilder();
+        builder.append(entry.getName().toString()).append(" ");
+        builder.append(CliSyntax.PREFIX_TAG).append(" ");
+        entry.getTags().stream().forEach(s -> builder.append(s.tagName).append(" "));
         return builder.toString();
     }
 
