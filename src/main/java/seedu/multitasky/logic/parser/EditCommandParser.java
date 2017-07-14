@@ -76,7 +76,7 @@ public class EditCommandParser {
 
             initEntryEditor(argMultimap, editEntryDescriptor);
             String searchString = argMultimap.getPreamble().get()
-                    .replaceAll("\\" + CliSyntax.PREFIX_ESCAPE, "");
+                                             .replaceAll("\\" + CliSyntax.PREFIX_ESCAPE, "");
             final String[] keywords = searchString.split("\\s+");
             final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
 
