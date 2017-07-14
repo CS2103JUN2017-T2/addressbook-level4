@@ -15,16 +15,22 @@ public class PowerMatch {
 
     public static final int PERMUTATION_MATCH_MAX_ALLOWED_LENGTH = 8;
     public static final int MISSING_INNER_MATCH_MAX_ALLOWED_LENGTH = 8;
+    public static final int WRONG_INNER_MATCH_MAX_ALLOWED_LENGTH = 8;
+
+    public static final String REGEX_ANY_NON_WHITESPACE = "((\\S+)?)";
+    public static final String REGEX_ANY_PRESENT_NON_WHITESPACE = "(\\S+)";
+    public static final String REGEX_ANY_CHARACTER = "((.+)?)";
 
     /**
      * Attempts to find a match between the input and a single entry in {@code potentialMatches}.
-     * Types of matches attempted are substring, prefix, permutation, missing inner characters.
+     * Types of matches attempted are substring, prefix, permutation, missing inner characters,
+     * wrong/extra inner characters.
 
      * @param input            the input to attempt to find a match for
      * @param potentialMatches the list of potential matches for {@code input}
      * @return the match for {@code input}, if one is found. Otherwise the original {@code input} is returned.
      *         {@code null} is returned if there is a null input string or {@code potentialMatches} is null.
-     * */
+     */
     public static String match(String input, final ArrayList<String> potentialMatches) {
         if (input == null || potentialMatches == null) {
             return null;
@@ -56,6 +62,13 @@ public class PowerMatch {
 
         if (input.length() <= MISSING_INNER_MATCH_MAX_ALLOWED_LENGTH) {
             match = getMissingInnerMatch(keyword, potentialMatches);
+            if (match != null) {
+                return match;
+            }
+        }
+
+        if (input.length() <= WRONG_INNER_MATCH_MAX_ALLOWED_LENGTH) {
+            match = getWrongInnerMatch(keyword, potentialMatches);
             if (match != null) {
                 return match;
             }
@@ -125,6 +138,23 @@ public class PowerMatch {
         return null;
     }
 
+    /**
+     * Currently only accounts for a single wrong character (can be either mistyped or extra)
+     */
+    private static String getWrongInnerMatch(final String keyword,
+                                             final ArrayList<String> potentialMatches) {
+        final ArrayList<String> permutations = getWrongInnerPermutations(keyword);
+        String match;
+        for (String permutation : permutations) {
+            // Use of regex instead of string literal comparison here
+            match = getRegexMatch(permutation, potentialMatches);
+            if (match != null) {
+                return match;
+            }
+        }
+        return null;
+    }
+
     private static ArrayList<String> getPermutations(final String keyword) {
         HashSet<String> permutations = new HashSet<>();
         ArrayList<String> chars = new ArrayList<>(Arrays.asList(keyword.split("")));
@@ -136,13 +166,61 @@ public class PowerMatch {
         HashSet<String> permutations = new HashSet<>();
         ArrayList<String> chars = new ArrayList<>(Arrays.asList(keyword.split("")));
         // Add in a regex expression for any missing non-whitespace character
-        chars.add("(\\S+)");
+        chars.add(REGEX_ANY_PRESENT_NON_WHITESPACE);
         generateUniquePermutations(chars, 0, keyword.length(), permutations); // No -1 due to the extra regex
         // Add in regex expressions before and after to match any substring
         ArrayList<String> permutationsList = new ArrayList<>(permutations);
         for (int i = 0; i < permutationsList.size(); ++i) {
             String permutation = permutationsList.get(i);
-            permutation = "(.+|.?)" + permutation + "(.+|.?)";
+            permutation = REGEX_ANY_CHARACTER + permutation + REGEX_ANY_CHARACTER;
+            permutationsList.set(i, permutation);
+        }
+        return permutationsList;
+    }
+
+    private static ArrayList<String> getWrongInnerPermutations(final String keyword) {
+        HashSet<String> permutations = new HashSet<>();
+        ArrayList<String> chars = new ArrayList<>(Arrays.asList(keyword.split("")));
+        /**
+         * For single wrong/extra character:
+         * Replace each character in turn with a regex expression
+         * that can match any non-whitespace character or no character at all
+         */
+        for (int i = 0; i < chars.size(); ++i) {
+            String temp = chars.get(i);
+            chars.set(i, REGEX_ANY_NON_WHITESPACE);
+            HashSet<String> tempPermutations = new HashSet<>();
+            generateUniquePermutations(chars, 0, keyword.length() - 1, tempPermutations);
+            for (String permutation : tempPermutations) {
+                permutations.add(permutation);
+            }
+            chars.set(i, temp);
+        }
+        /**
+         * For two wrong/extra characters:
+         * Replace each two-character combination in turn with a regex expression
+         * that can match any non-whitespace character or no character at all
+         */
+        for (int i = 0; i < chars.size(); ++i) {
+            for (int j = i + 1; j < chars.size(); ++j) {
+                String iTemp = chars.get(i);
+                String jTemp = chars.get(j);
+                chars.set(i, REGEX_ANY_NON_WHITESPACE);
+                chars.set(j, REGEX_ANY_NON_WHITESPACE);
+                HashSet<String> tempPermutations = new HashSet<>();
+                generateUniquePermutations(chars, 0, keyword.length() - 1, tempPermutations);
+                for (String permutation : tempPermutations) {
+                    permutations.add(permutation);
+                }
+                chars.set(i, iTemp);
+                chars.set(j, jTemp);
+            }
+        }
+        // Add in regex expressions before and after to match any substring
+        ArrayList<String> permutationsList = new ArrayList<>(permutations);
+        for (int i = 0; i < permutationsList.size(); ++i) {
+            String permutation = permutationsList.get(i);
+            permutation = REGEX_ANY_CHARACTER + permutation + REGEX_ANY_CHARACTER;
             permutationsList.set(i, permutation);
         }
         return permutationsList;
