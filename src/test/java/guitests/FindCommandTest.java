@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import javafx.scene.input.KeyCode;
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.logic.commands.ClearCommand;
 import seedu.multitasky.logic.commands.FindCommand;
@@ -142,6 +143,15 @@ public class FindCommandTest extends EntryBookGuiTest {
         assertFindTabAutocomplete(FindCommand.COMMAND_WORD + "aa");
     }
 
+    @Test
+    public void find_keyboardShortcut_success() {
+        commandBox.pressKey(KeyCode.F3);
+        assertTrue(commandBox.getCommandInput().equals(FindCommand.COMMAND_WORD + " "));
+    }
+
+    /*******************
+     * Utility methods *
+     ******************/
     /**
      * Confirms that the given input string will autocomplete to the correct find command word.
      */
