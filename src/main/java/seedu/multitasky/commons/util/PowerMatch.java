@@ -17,7 +17,7 @@ public class PowerMatch {
     public static final int MISSING_INNER_MATCH_MAX_ALLOWED_LENGTH = 8;
     public static final int WRONG_INNER_MATCH_MAX_ALLOWED_LENGTH = 6;
 
-    public static final String REGEX_ANY_NON_WHITESPACE = "(\\S?)+";
+    public static final String REGEX_ANY_NON_WHITESPACE = "((\\S?)+)";
     public static final String REGEX_ANY_PRESENT_NON_WHITESPACE = "(\\S+)";
     public static final String REGEX_ANY_CHARACTER = "((.+)?)";
 

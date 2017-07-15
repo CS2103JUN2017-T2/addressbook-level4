@@ -24,7 +24,7 @@ import seedu.multitasky.logic.commands.ListCommand;
 import seedu.multitasky.logic.commands.RedoCommand;
 import seedu.multitasky.logic.commands.UndoCommand;
 
-// @@author A0125586X - reused
+// @@author A0125586X
 /**
  * Provides autocomplete functionality to the command box.
  * Uses {@code PowerMatch} from {@code seedu.multitasky.commons.util} to come up with matches.
