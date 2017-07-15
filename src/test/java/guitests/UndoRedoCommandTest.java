@@ -36,11 +36,13 @@ public class UndoRedoCommandTest extends EntryBookGuiTest {
     @Test
     public void undo_shortcutNoSnapshot_errorMessage() {
         commandBox.pressKeyCombination(new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN));
+        assertResultMessage(UndoCommand.MESSAGE_FAILURE);
     }
 
     @Test
     public void redo_shortcutNoSnapshot_errorMessage() {
         commandBox.pressKeyCombination(new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN));
+        assertResultMessage(RedoCommand.MESSAGE_FAILURE);
     }
 
     /*************************
