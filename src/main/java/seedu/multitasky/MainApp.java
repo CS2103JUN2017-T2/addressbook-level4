@@ -85,7 +85,8 @@ public class MainApp extends Application {
         ReadOnlyEntryBook initialData;
         // @@author A0132788U
         /**
-         * Deletes snapshot files from previous run.
+         * Deletes snapshot files from previous run., then loads the EntryBook/creates a new EntryBook if it doesn't
+         * exist.
          */
         EntryAppRequestEvent event = new EntryAppRequestEvent();
         try {
