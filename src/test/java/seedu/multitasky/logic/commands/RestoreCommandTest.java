@@ -21,35 +21,37 @@ import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.testutil.SampleEntries;
 
-//TODO implement delete by find tests and separate out delete by index / abstract class delete tests from here.
+//TODO implement restore by find tests and separate out restore by index / abstract class restore tests from here.
+
+//@@author A0126623L reused
 /**
- * Contains integration tests (interaction with the Model) and unit tests for {@code DeleteCommand}.
- */
-public class DeleteCommandTest {
+* Contains integration tests (interaction with the Model) and unit tests for {@code RestoreCommand}.
+*/
+public class RestoreCommandTest {
 
     private Model model = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
 
     @Test
     public void execute_validIndexUnfilteredList_success() throws Exception {
-        ReadOnlyEntry entryToDelete = model.getFilteredFloatingTaskList()
-                                           .get(INDEX_FIRST_ENTRY.getZeroBased());
-        DeleteCommand deleteCommand = prepareCommand(INDEX_FIRST_ENTRY);
+        ReadOnlyEntry entryToRestore = model.getFilteredFloatingTaskList()
+                                            .get(INDEX_FIRST_ENTRY.getZeroBased());
+        RestoreCommand restoreCommand = prepareCommand(INDEX_FIRST_ENTRY);
 
-        String expectedMessage = String.format(DeleteCommand.MESSAGE_SUCCESS, entryToDelete);
+        String expectedMessage = String.format(RestoreCommand.MESSAGE_SUCCESS, entryToRestore);
 
         ModelManager expectedModel = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
-        expectedModel.changeEntryState(entryToDelete, Entry.State.DELETED);
+        model.changeEntryState(entryToRestore, Entry.State.DELETED);
         expectedModel.updateAllFilteredListToShowAllActiveEntries();
 
-        CommandTestUtil.assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
+        CommandTestUtil.assertCommandSuccess(restoreCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
     public void execute_invalidIndexUnfilteredList_throwsCommandException() throws Exception {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredFloatingTaskList().size() + 1);
-        DeleteCommand deleteCommand = prepareCommand(outOfBoundIndex);
+        RestoreCommand restoreCommand = prepareCommand(outOfBoundIndex);
 
-        CommandTestUtil.assertCommandFailure(deleteCommand, model,
+        CommandTestUtil.assertCommandFailure(restoreCommand, model,
                                              Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
     }
 
@@ -61,14 +63,14 @@ public class DeleteCommandTest {
      * @Test
      * public void execute_validIndexFilteredList_success() throws Exception {
      * showFirstEntryOnly(model);
-     * ReadOnlyEntry entryToDelete =
+     * ReadOnlyEntry entryToRestore =
      * model.getFilteredFloatingTaskList().get(INDEX_FIRST_ENTRY.getZeroBased());
-     * DeleteCommand deleteCommand = prepareCommand(INDEX_FIRST_ENTRY);
-     * String expectedMessage = String.format(DeleteCommand.MESSAGE_SUCCESS, entryToDelete);
+     * RestoreCommand restoreCommand = prepareCommand(INDEX_FIRST_ENTRY);
+     * String expectedMessage = String.format(RestoreCommand.MESSAGE_SUCCESS, entryToRestore);
      * Model expectedModel = new ModelManager(model.getEntryBook(), new UserPrefs());
-     * expectedModel.deleteEntry(entryToDelete);
+     * expectedModel.restoreEntry(entryToRestore);
      * showNoEntry(expectedModel);
-     * CommandTestUtil.assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
+     * CommandTestUtil.assertCommandSuccess(restoreCommand, model, expectedMessage, expectedModel);
      * }
      */
 
@@ -80,19 +82,19 @@ public class DeleteCommandTest {
         // ensures that outOfBoundIndex is still in bounds of entry book list
         assertTrue(outOfBoundIndex.getZeroBased() < model.getEntryBook().getFloatingTaskList().size());
 
-        DeleteCommand deleteCommand = prepareCommand(outOfBoundIndex);
+        RestoreCommand restoreCommand = prepareCommand(outOfBoundIndex);
 
-        CommandTestUtil.assertCommandFailure(deleteCommand, model,
+        CommandTestUtil.assertCommandFailure(restoreCommand, model,
                                              Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
     }
 
     /**
-     * Returns a {@code DeleteCommand} with the parameter {@code index}.
+     * Returns a {@code RestoreCommand} with the parameter {@code index}.
      */
-    private DeleteCommand prepareCommand(Index index) {
-        DeleteCommand deleteCommand = new DeleteByIndexCommand(index, new Prefix("float"));
-        deleteCommand.setData(model, new CommandHistory());
-        return deleteCommand;
+    private RestoreCommand prepareCommand(Index index) {
+        RestoreCommand restoreCommand = new RestoreByIndexCommand(index, new Prefix("float"));
+        restoreCommand.setData(model, new CommandHistory());
+        return restoreCommand;
     }
 
     /**
@@ -113,4 +115,5 @@ public class DeleteCommandTest {
         model.updateFilteredFloatingTaskList(Collections.emptySet(), Entry.State.ACTIVE);
         assert model.getFilteredFloatingTaskList().isEmpty();
     }
+
 }
