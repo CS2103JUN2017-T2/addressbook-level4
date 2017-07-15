@@ -2,15 +2,20 @@ package seedu.multitasky.ui;
 
 import java.util.logging.Logger;
 
+import com.google.common.eventbus.Subscribe;
+
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 import seedu.multitasky.commons.core.LogsCenter;
+import seedu.multitasky.commons.events.ui.NewCommandEvent;
+import seedu.multitasky.commons.events.ui.NewCommandToExecuteEvent;
 import seedu.multitasky.commons.events.ui.NewResultAvailableEvent;
 import seedu.multitasky.logic.Logic;
 import seedu.multitasky.logic.commands.CommandResult;
+import seedu.multitasky.logic.commands.ListCommand;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
@@ -43,6 +48,8 @@ public class CommandBox extends UiPart<Region> {
         commandHistory = new CommandHistory(getRoot(), commandTextField);
         commandAutocomplete = new CommandAutocomplete(getRoot(), commandTextField);
         setCommandTextFieldFocus();
+        onlyShowActiveEntries();
+        registerAsAnEventHandler(this);
     }
 
     /**
@@ -60,8 +67,16 @@ public class CommandBox extends UiPart<Region> {
     @FXML
     private void handleCommandInputChanged() throws DuplicateEntryException {
         commandHistory.saveCommand();
+        executeLogic(commandTextField.getText().trim());
+        commandTextField.setText("");
+    }
+
+    /**
+     * Calls the logic component to execute the command given by the string.
+     */
+    private void executeLogic(String command) {
         try {
-            CommandResult commandResult = logic.execute(commandTextField.getText().trim());
+            CommandResult commandResult = logic.execute(command);
             // process result of the command
             setStyleToIndicateCommandSuccess();
             logger.info("Result: " + commandResult.feedbackToUser);
@@ -70,14 +85,13 @@ public class CommandBox extends UiPart<Region> {
         } catch (CommandException | ParseException e) {
             // handle command failure
             setStyleToIndicateCommandFailure();
-            logger.info("Invalid command: " + commandTextField.getText().trim());
+            logger.info("Invalid command: " + command);
             raise(new NewResultAvailableEvent(e.getMessage()));
         } catch (DuplicateEntryException e) {
             setStyleToIndicateCommandFailure();
-            logger.info("Unable to add duplicate entry with command: " + commandTextField.getText().trim());
+            logger.info("Unable to add duplicate entry with command: " + command);
             raise(new NewResultAvailableEvent(e.getMessage()));
         }
-        commandTextField.setText("");
     }
 
     /**
@@ -98,6 +112,25 @@ public class CommandBox extends UiPart<Region> {
         }
 
         styleClass.add(ERROR_STYLE_CLASS);
+    }
+
+    private void onlyShowActiveEntries() {
+        try {
+            logic.execute(ListCommand.COMMAND_WORD);
+        } catch (Exception e) {
+            assert false : "Initial list of active entries cannot throw exceptions";
+        }
+    }
+
+    @Subscribe
+    private void handleNewCommandEvent(NewCommandEvent event) {
+        commandTextField.setText(event.command);
+        commandTextField.positionCaret(commandTextField.getText().length());
+    }
+
+    @Subscribe
+    private void handleNewCommandToExecuteEvent(NewCommandToExecuteEvent event) {
+        executeLogic(event.command);
     }
 
 }

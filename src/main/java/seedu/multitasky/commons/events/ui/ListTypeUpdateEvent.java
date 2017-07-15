@@ -5,7 +5,7 @@ import seedu.multitasky.model.entry.Entry;
 
 // @@author A0125586X
 /**
- * Indicates that the entries listed in the UI are now a different type (active/archived/deleted)
+ * Indicates that the entries listed in the UI are now a different type (active/archived/deleted).
  */
 public class ListTypeUpdateEvent extends BaseEvent {
 

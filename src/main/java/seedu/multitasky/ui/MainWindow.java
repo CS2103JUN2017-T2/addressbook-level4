@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputControl;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
@@ -18,8 +20,16 @@ import seedu.multitasky.commons.core.GuiSettings;
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.commons.events.ui.ExitAppRequestEvent;
 import seedu.multitasky.commons.events.ui.ListTypeUpdateEvent;
+import seedu.multitasky.commons.events.ui.NewCommandEvent;
+import seedu.multitasky.commons.events.ui.NewCommandToExecuteEvent;
 import seedu.multitasky.commons.util.FxViewUtil;
 import seedu.multitasky.logic.Logic;
+import seedu.multitasky.logic.commands.EditCommand;
+import seedu.multitasky.logic.commands.ExitCommand;
+import seedu.multitasky.logic.commands.FindCommand;
+import seedu.multitasky.logic.commands.ListCommand;
+import seedu.multitasky.logic.commands.RedoCommand;
+import seedu.multitasky.logic.commands.UndoCommand;
 import seedu.multitasky.model.UserPrefs;
 import seedu.multitasky.model.entry.Entry;
 
@@ -87,6 +97,7 @@ public class MainWindow extends UiPart<Region> {
         primaryStage.setScene(scene);
 
         setAccelerators();
+        setCommandShortcuts();
 
         registerAsAnEventHandler(this);
     }
@@ -99,31 +110,54 @@ public class MainWindow extends UiPart<Region> {
         setAccelerator(helpMenuItem, KeyCombination.valueOf("F1"));
     }
 
+    private void setCommandShortcuts() {
+        setCommandExecuteShortcut(UndoCommand.COMMAND_WORD,
+                                  new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN));
+        setCommandExecuteShortcut(RedoCommand.COMMAND_WORD,
+                                  new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN));
+
+        setCommandShortcut(EditCommand.COMMAND_WORD + " ", new KeyCodeCombination(KeyCode.F2));
+        setCommandShortcut(FindCommand.COMMAND_WORD + " ", new KeyCodeCombination(KeyCode.F3));
+        setCommandShortcut(ExitCommand.COMMAND_WORD + " ", new KeyCodeCombination(KeyCode.F4));
+        setCommandShortcut(ListCommand.COMMAND_WORD + " ", new KeyCodeCombination(KeyCode.F5));
+    }
+
     /**
      * Sets the accelerator of a MenuItem.
      * @param keyCombination the KeyCombination value of the accelerator
      */
     private void setAccelerator(MenuItem menuItem, KeyCombination keyCombination) {
         menuItem.setAccelerator(keyCombination);
-
-        /*
-         * TODO: the code below can be removed once the bug reported here
-         * https://bugs.openjdk.java.net/browse/JDK-8131666
-         * is fixed in later version of SDK.
-         *
-         * According to the bug report, TextInputControl (TextField, TextArea) will
-         * consume function-key events. Because CommandBox contains a TextField, and
-         * ResultDisplay contains a TextArea, thus some accelerators (e.g F1) will
-         * not work when the focus is in them because the key event is consumed by
-         * the TextInputControl(s).
-         *
-         * For now, we add following event filter to capture such key events and open
-         * help window purposely so to support accelerators even when focus is
-         * in CommandBox or ResultDisplay.
-         */
         getRoot().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getTarget() instanceof TextInputControl && keyCombination.match(event)) {
                 menuItem.getOnAction().handle(new ActionEvent());
+                event.consume();
+            }
+        });
+    }
+
+    /**
+     * Sets up a command execute shortcut.
+     * When the shortcut key combination is pressed, the command string is executed.
+     */
+    private void setCommandExecuteShortcut(String command, KeyCodeCombination keyCodeCombination) {
+        getRoot().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getTarget() instanceof TextInputControl && keyCodeCombination.match(event)) {
+                raise(new NewCommandToExecuteEvent(command));
+                event.consume();
+            }
+        });
+    }
+
+    /**
+     * Sets up a command shortcut.
+     * When the shortcut key combination is pressed, the command string is entered into the command box,
+     * but not executed.
+     */
+    private void setCommandShortcut(String command, KeyCodeCombination keyCodeCombination) {
+        getRoot().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getTarget() instanceof TextInputControl && keyCodeCombination.match(event)) {
+                raise(new NewCommandEvent(command));
                 event.consume();
             }
         });

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import javafx.scene.input.KeyCode;
 import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.logic.commands.ListCommand;
 import seedu.multitasky.logic.parser.CliSyntax;
@@ -92,6 +93,15 @@ public class ListCommandTest extends EntryBookGuiTest {
         assertTrue(floatingTaskListPanel.isListMatching(entryToDelete));
     }
 
+    @Test
+    public void list_keyboardShortcut_success() {
+        commandBox.pressKey(KeyCode.F5);
+        assertTrue(commandBox.getCommandInput().equals(ListCommand.COMMAND_WORD + " "));
+    }
+
+    /*******************
+     * Utility methods *
+     ******************/
     private Entry[] reverse(Entry... entries) {
         Entry[] reversed = new Entry[entries.length];
         for (int i = 0; i < entries.length; ++i) {
