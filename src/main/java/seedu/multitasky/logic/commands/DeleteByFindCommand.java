@@ -22,9 +22,9 @@ public class DeleteByFindCommand extends DeleteCommand {
     public static final String MESSAGE_MULTIPLE_ENTRIES = "More than one entry found! \n"
                                                           + "Use " + COMMAND_WORD + " ["
                                                           + String.join(" | ",
-                                                                        CliSyntax.PREFIX_EVENT.toString(),
-                                                                        CliSyntax.PREFIX_DEADLINE.toString(),
-                                                                        CliSyntax.PREFIX_FLOATINGTASK.toString())
+                                                                  CliSyntax.PREFIX_EVENT.toString(),
+                                                                  CliSyntax.PREFIX_DEADLINE.toString(),
+                                                                  CliSyntax.PREFIX_FLOATINGTASK.toString())
                                                           + "]"
                                                           + " INDEX to specify which entry to delete.";
 
@@ -67,8 +67,6 @@ public class DeleteByFindCommand extends DeleteCommand {
             model.updateFilteredDeadlineList(history.getPrevSearch(), history.getPrevState());
             model.updateFilteredEventList(history.getPrevSearch(), history.getPrevState());
             model.updateFilteredFloatingTaskList(history.getPrevSearch(), history.getPrevState());
-            // set search terms to what i searched with in this rendition
-            history.setPrevSearch(keywords, Entry.State.ACTIVE);
 
             return new CommandResult(String.format(MESSAGE_SUCCESS, entryToDelete));
         } else {

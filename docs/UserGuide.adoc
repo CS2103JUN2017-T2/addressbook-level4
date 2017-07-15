@@ -103,7 +103,7 @@ Examples:
 === Completing a task : `complete`
 
 Finds and checkmarks a task as completed and moves it to archive. +
-Format: `complete [KEYWORD_1 KEYWORD_2...] | [/event | /deadline | /float INDEX]`
+Format: `complete [KEYWORD_1 KEYWORD_2...] | [event | deadline | float INDEX]`
 
 * There are two ways to select an entry to complete: searching by `KEYWORD`, or specifying the `INDEX`.
 ** The keyword searches both the entry name and tags, and a found entry must match all keywords.
@@ -114,7 +114,7 @@ Format: `complete [KEYWORD_1 KEYWORD_2...] | [/event | /deadline | /float INDEX]
 Examples:
 
 * `complete clean up room`
-* `complete /deadline 3`
+* `complete deadline 3`
 
 //<!-- @@author A0126623L -->
 === Listing all entries : `list`

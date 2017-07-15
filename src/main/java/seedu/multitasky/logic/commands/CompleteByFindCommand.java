@@ -12,35 +12,34 @@ import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 
-// @@author A0140633R
-/**
- * Edits an entry identified using the type of entry followed by displayed index.
+// @@author A0132788U-reused
+/*
+ * Finds entries from given keywords and completes the entry if it is the only one found and moves it to archive.
  */
-public class EditByFindCommand extends EditCommand {
+public class CompleteByFindCommand extends CompleteCommand {
     public static final String MESSAGE_NO_ENTRIES = "No entries found! Please try again with different keywords";
 
     public static final String MESSAGE_MULTIPLE_ENTRIES = "More than one entry found! \n"
                                                           + "Use " + COMMAND_WORD + " ["
                                                           + String.join(" | ",
-                                                                        CliSyntax.PREFIX_EVENT.toString(),
-                                                                        CliSyntax.PREFIX_DEADLINE.toString(),
-                                                                        CliSyntax.PREFIX_FLOATINGTASK.toString())
+                                                                  CliSyntax.PREFIX_EVENT.toString(),
+                                                                  CliSyntax.PREFIX_DEADLINE.toString(),
+                                                                  CliSyntax.PREFIX_FLOATINGTASK.toString())
                                                           + "]"
-                                                          + " INDEX to specify which entry to edit.";
+                                                          + " INDEX to specify which entry to complete.";
 
-    public static final String MESSAGE_SUCCESS = "Entry edited:" + "\n"
+    public static final String MESSAGE_SUCCESS = "Entry completed:" + "\n"
                                                  + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
-                                                 + "One entry found and edited! Listing all entries now.";
+                                                 + "One entry found and completed! Listing all entries now.";
 
     private Set<String> keywords;
 
-    /**
-     * @param index of the entry in the filtered entry list to edit
-     * @param editEntryDescriptor details to edit the entry with
-     */
-    public EditByFindCommand(Set<String> keywords, EditEntryDescriptor editEntryDescriptor) {
-        super(editEntryDescriptor);
+    public CompleteByFindCommand(Set<String> keywords) {
         this.keywords = keywords;
+    }
+
+    public Set<String> getKeywords() {
+        return keywords;
     }
 
     @Override
@@ -57,12 +56,11 @@ public class EditByFindCommand extends EditCommand {
         allList.addAll(model.getFilteredEventList());
         allList.addAll(model.getFilteredFloatingTaskList());
 
-        if (allList.size() == 1) { // proceed to edit
-            ReadOnlyEntry entryToEdit = allList.get(0);
-            Entry editedEntry = createEditedEntry(entryToEdit, editEntryDescriptor);
+        if (allList.size() == 1) { // proceed to complete
+            entryToComplete = allList.get(0);
             try {
-                model.updateEntry(entryToEdit, editedEntry);
-            } catch (EntryNotFoundException pnfe) {
+                model.changeEntryState(entryToComplete, Entry.State.ARCHIVED);
+            } catch (EntryNotFoundException e) {
                 assert false : "The target entry cannot be missing";
             }
             // refresh list view after updating.
@@ -70,15 +68,16 @@ public class EditByFindCommand extends EditCommand {
             model.updateFilteredEventList(history.getPrevSearch(), history.getPrevState());
             model.updateFilteredFloatingTaskList(history.getPrevSearch(), history.getPrevState());
 
-            return new CommandResult(String.format(MESSAGE_SUCCESS, entryToEdit));
+            return new CommandResult(String.format(MESSAGE_SUCCESS, entryToComplete));
         } else {
             history.setPrevSearch(keywords, Entry.State.ACTIVE);
-            if (allList.size() >= 2) {
+            if (allList.size() >= 2) { // multiple entries found
                 return new CommandResult(MESSAGE_MULTIPLE_ENTRIES);
             } else {
-                assert allList.size() == 0;
+                assert (allList.size() == 0); // no entries found
                 return new CommandResult(MESSAGE_NO_ENTRIES);
             }
         }
     }
+
 }
