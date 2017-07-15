@@ -159,4 +159,24 @@ public class ParserUtil {
         return indicatedList;
     }
 
+    /**
+     * searches through the input string for for prefixes and returns the prefix that has the
+     * last occurence
+     * returns null if not found
+     */
+    public static Prefix getLastPrefix(String stringToSearch, Prefix...prefixes) {
+        // to deal with cases with prefix right at end or start
+        String extendedSearchString = " " + stringToSearch + " ";
+        Prefix foundPrefix = null;
+        int maxIndex = 0;
+        for (Prefix prefix : prefixes) {
+            Integer lastOccurence = extendedSearchString.lastIndexOf(" " + prefix + " ");
+            if (lastOccurence > maxIndex) {
+                maxIndex = lastOccurence;
+                foundPrefix = prefix;
+            }
+        }
+        return foundPrefix;
+    }
+
 }
