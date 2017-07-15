@@ -18,7 +18,7 @@ import seedu.multitasky.logic.commands.RestoreByIndexCommand;
 import seedu.multitasky.logic.commands.RestoreCommand;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
 
-// @@author A0126623L reused
+// @@author A0126623L-reused
 /**
  * Parses input arguments and creates a new DeleteCommand object
  */
@@ -71,7 +71,7 @@ public class RestoreCommandParser {
     }
     // @@author
 
-    // @@author A0126623L reused
+    // @@author A0126623L-reused
     /**
      * A method that returns true if flags are given in an illogical manner for restoring commands.
      * illogical := any 2 of /float, /deadline, /event used together.
@@ -87,7 +87,7 @@ public class RestoreCommandParser {
     }
     // @@author
 
-    // @@author A0126623L reused
+    // @@author A0126623L-reused
     /**
      * A method that returns true if flags in given ArgumentMultimap has at least one index-indicating
      * Prefix mapped to some arguments.
