@@ -1,6 +1,5 @@
 package seedu.multitasky.ui.util;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,7 +24,7 @@ import seedu.multitasky.logic.commands.ListCommand;
 import seedu.multitasky.logic.commands.RedoCommand;
 import seedu.multitasky.logic.commands.UndoCommand;
 
-// @@author A0125586X
+// @@author A0125586X - reused
 /**
  * Provides autocomplete functionality to the command box.
  * Uses {@code PowerMatch} from {@code seedu.multitasky.commons.util} to come up with matches.
@@ -37,7 +36,7 @@ public class CommandAutocomplete {
     private static final int COMMAND_WORD_IDX = 0;
     private static final int LAST_WORD_IDX = 1;
 
-    private static final ArrayList<String> commandWords = new ArrayList<String>(Arrays.asList(new String[] {
+    private static final String[] commandWords = new String[] {
         AddCommand.COMMAND_WORD,
         ClearCommand.COMMAND_WORD,
         DeleteCommand.COMMAND_WORD,
@@ -49,7 +48,7 @@ public class CommandAutocomplete {
         ListCommand.COMMAND_WORD,
         RedoCommand.COMMAND_WORD,
         UndoCommand.COMMAND_WORD,
-    }));
+    };
 
     private static final HashMap<String, String[]> commandKeywords;
 
@@ -110,7 +109,7 @@ public class CommandAutocomplete {
         commandResult.append(commandMatch).append(" ");
 
         // Managed to autocomplete to a valid command word
-        if (commandWords.contains(commandMatch)) {
+        if (Arrays.asList(commandWords).contains(commandMatch)) {
             if (splitCommand[1].length() == 0) {
                 // No other words to autocomplete, do nothing
             } else if (prefixOnlyCommands.contains(commandMatch)) {
@@ -155,8 +154,7 @@ public class CommandAutocomplete {
     }
 
     private String autocompletePrefix(String keyword, String commandWord) {
-        String match = PowerMatch.match(keyword, new ArrayList<String>(
-                                                        Arrays.asList(commandKeywords.get(commandWord))));
+        String match = PowerMatch.match(keyword, commandKeywords.get(commandWord));
         if (match != null) {
             return match;
         } else {

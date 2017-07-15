@@ -17,7 +17,7 @@ public class PowerMatch {
     public static final int MISSING_INNER_MATCH_MAX_ALLOWED_LENGTH = 8;
     public static final int WRONG_INNER_MATCH_MAX_ALLOWED_LENGTH = 6;
 
-    public static final String REGEX_ANY_NON_WHITESPACE = "((\\S+)?)";
+    public static final String REGEX_ANY_NON_WHITESPACE = "(\\S?)+";
     public static final String REGEX_ANY_PRESENT_NON_WHITESPACE = "(\\S+)";
     public static final String REGEX_ANY_CHARACTER = "((.+)?)";
 
@@ -25,23 +25,19 @@ public class PowerMatch {
      * Attempts to find a match between the input and a single entry in {@code potentialMatches}.
      * Types of matches attempted are substring, prefix, permutation, missing inner characters,
      * wrong/extra inner characters.
-
+     *
      * @param input            the input to attempt to find a match for
      * @param potentialMatches the list of potential matches for {@code input}
-     * @return the match for {@code input}, if one is found. Otherwise the original {@code input} is returned.
-     *         {@code null} is returned if there is a null input string or {@code potentialMatches} is null.
+     * @return the match for {@code input}, if one is found. Otherwise {@code null} is returned.
+     *         {@code null} is also returned if there is a null input string or {@code potentialMatches} is null.
      */
-    public static String match(String input, final ArrayList<String> potentialMatches) {
-        if (input == null || potentialMatches == null) {
+    public static String match(final String input, final String... potentialMatches) {
+        if (input == null || potentialMatches == null || input.isEmpty() || potentialMatches.length == 0) {
             return null;
         }
-        if (potentialMatches.size() == 0) {
-            return input;
-        }
-
         // Create copy to avoid modifying original input string
         String keyword = new String(input.trim().toLowerCase());
-        String match;
+        String match = null;
 
         match = getSubstringMatch(keyword, potentialMatches);
         if (match != null) {
@@ -74,10 +70,39 @@ public class PowerMatch {
             }
         }
 
-        return input;
+        return null;
     }
 
-    private static String getRegexMatch(final String regex, final ArrayList<String> potentialMatches) {
+    /**
+     * Attempts to match the input with the potential match.
+     * Types of matches attempted are substring, prefix, permutation, missing inner characters,
+     * wrong/extra inner characters.
+     *
+     * @param input          the input to attempt to find a match for
+     * @param potentialMatch the potential match {@code input}
+     * @return if {@code input} can be matched to {@code potentialMatch} using the PowerMatch algorithm.
+     */
+    public static boolean isMatch(final String input, final String potentialMatch) {
+        if (input == null || potentialMatch == null || potentialMatch.isEmpty()) {
+            return false;
+        } else if (input.isEmpty()) {
+            return true;
+        }
+        // Create copy to avoid modifying original input string
+        String keyword = new String(input.trim().toLowerCase());
+
+        return getSubstringMatch(keyword, potentialMatch) != null
+               || getPrefixMatch(keyword, potentialMatch) != null
+               || (input.length() < PERMUTATION_MATCH_MAX_ALLOWED_LENGTH
+                    && getPermutationMatch(keyword, potentialMatch) != null)
+               || (input.length() < MISSING_INNER_MATCH_MAX_ALLOWED_LENGTH
+                    && getMissingInnerMatch(keyword, potentialMatch) != null)
+               || (input.length() < WRONG_INNER_MATCH_MAX_ALLOWED_LENGTH
+                    && getWrongInnerMatch(keyword, potentialMatch) != null);
+    }
+
+
+    private static String getRegexMatch(final String regex, final String... potentialMatches) {
         ArrayList<String> matches = new ArrayList<>();
         for (String potentialMatch : potentialMatches) {
             if (potentialMatch.matches(regex)) {
@@ -87,7 +112,7 @@ public class PowerMatch {
         return filterMatches(matches);
     }
 
-    private static String getSubstringMatch(final String keyword, final ArrayList<String> potentialMatches) {
+    private static String getSubstringMatch(final String keyword, final String... potentialMatches) {
         final ArrayList<String> matches = new ArrayList<>();
         for (String potentialMatch : potentialMatches) {
             if (potentialMatch.contains(keyword)) {
@@ -97,7 +122,7 @@ public class PowerMatch {
         return filterMatches(matches);
     }
 
-    private static String getPrefixMatch(final String keyword, final ArrayList<String> potentialMatches) {
+    private static String getPrefixMatch(final String keyword, final String... potentialMatches) {
         final ArrayList<String> matches = new ArrayList<>();
         for (String potentialMatch : potentialMatches) {
             if (potentialMatch.startsWith(keyword)) {
@@ -108,7 +133,7 @@ public class PowerMatch {
     }
 
     private static String getPermutationMatch(final String keyword,
-                                              final ArrayList<String> potentialMatches) {
+                                              final String... potentialMatches) {
         final ArrayList<String> permutations = getPermutations(keyword);
         String match;
         for (String permutation : permutations) {
@@ -125,7 +150,7 @@ public class PowerMatch {
     }
 
     private static String getMissingInnerMatch(final String keyword,
-                                               final ArrayList<String> potentialMatches) {
+                                               final String... potentialMatches) {
         final ArrayList<String> permutations = getMissingInnerPermutations(keyword);
         String match;
         for (String permutation : permutations) {
@@ -142,7 +167,7 @@ public class PowerMatch {
      * Currently only accounts for a single wrong character (can be either mistyped or extra)
      */
     private static String getWrongInnerMatch(final String keyword,
-                                             final ArrayList<String> potentialMatches) {
+                                             final String... potentialMatches) {
         final ArrayList<String> permutations = getWrongInnerPermutations(keyword);
         String match;
         for (String permutation : permutations) {
