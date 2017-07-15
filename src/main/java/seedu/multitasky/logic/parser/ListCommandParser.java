@@ -30,7 +30,7 @@ public class ListCommandParser {
         // TODO modify ArgumentTokenizer to be able to detect without preamble
         ArgumentMultimap argumentMultimap = ArgumentTokenizer.tokenize("preamble " + trimmedArgs,
                                                                        toPrefixArray(ListCommand.VALID_PREFIXES));
-        ArrayList<String> prefixesPresent = getPresentPrefixes(argumentMultimap, ListCommand.VALID_PREFIXES);
+        ArrayList<String> prefixesPresent = argumentMultimap.getPresentPrefixes(ListCommand.VALID_PREFIXES);
         if (!hasValidPrefixCombination(prefixesPresent)) {
             throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
                                                    ListCommand.MESSAGE_USAGE));
@@ -61,17 +61,6 @@ public class ListCommandParser {
         } catch (ParseException e) {
             return null;
         }
-    }
-
-    private ArrayList<String> getPresentPrefixes(ArgumentMultimap argumentMultimap, String... prefixes) {
-        ArrayList<String> presentPrefixes = new ArrayList<>();
-        for (String prefix : prefixes) {
-            if (argumentMultimap.getAllValues(new Prefix(prefix)).size() != 0) {
-                presentPrefixes.add(prefix);
-            } else {
-            }
-        }
-        return presentPrefixes;
     }
 
     private boolean hasValidPrefixCombination(ArrayList<String> prefixes) {

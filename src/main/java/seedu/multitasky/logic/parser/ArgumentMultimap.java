@@ -60,4 +60,18 @@ public class ArgumentMultimap {
         return getValue(new Prefix(""));
     }
 
+    // @@author A0125586X
+    /**
+     * Method to extract an ArrayList of specified prefixes that are present in the ArgumentMultimap
+     */
+    public ArrayList<String> getPresentPrefixes(String... prefixes) {
+        ArrayList<String> presentPrefixes = new ArrayList<>();
+        for (String prefix : prefixes) {
+            if (getAllValues(new Prefix(prefix)).size() != 0) {
+                presentPrefixes.add(prefix);
+            }
+        }
+        return presentPrefixes;
+    }
+
 }
