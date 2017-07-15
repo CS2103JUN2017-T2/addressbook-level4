@@ -61,8 +61,6 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
                 .collect(Collectors.toList()));
         floatingTasks.addAll(src.getFloatingTaskList().stream().map(XmlAdaptedEntry::new)
                 .collect(Collectors.toList()));
-        active.addAll(src.getActiveList().stream().map(XmlAdaptedEntry::new)
-                .collect(Collectors.toList()));
         tags.addAll(src.getTagList().stream().map(XmlAdaptedTag::new).collect(Collectors.toList()));
     }
 
