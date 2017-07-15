@@ -42,16 +42,7 @@ public class RestoreByFindCommand extends RestoreCommand {
     @Override
     public CommandResult execute() throws CommandException, DuplicateEntryException {
 
-        // update all 3 lists with new keywords.
-        model.updateFilteredDeadlineList(keywords, Entry.State.ACTIVE);
-        model.updateFilteredEventList(keywords, Entry.State.ACTIVE);
-        model.updateFilteredFloatingTaskList(keywords, Entry.State.ACTIVE);
-
-        // collate a combined list to measure how many entries are found.
-        List<ReadOnlyEntry> allList = new ArrayList<>();
-        allList.addAll(model.getFilteredDeadlineList());
-        allList.addAll(model.getFilteredEventList());
-        allList.addAll(model.getFilteredFloatingTaskList());
+        List<ReadOnlyEntry> allList = collateArchivedAndDeletedEntries();
 
         if (allList.size() == 1) { // proceed to restore
             entryToRestore = allList.get(0);
@@ -65,9 +56,18 @@ public class RestoreByFindCommand extends RestoreCommand {
             } catch (EntryNotFoundException e) {
                 assert false : "The target entry cannot be missing";
             }
-            model.updateAllFilteredListToShowAllActiveEntries();
+
+            // refresh list view after updating.
+            model.updateFilteredDeadlineList(history.getPrevSearch(), history.getPrevState());
+            model.updateFilteredEventList(history.getPrevSearch(), history.getPrevState());
+            model.updateFilteredFloatingTaskList(history.getPrevSearch(), history.getPrevState());
+
+            history.setPrevSearch(keywords, history.getPrevState());
+
             return new CommandResult(String.format(MESSAGE_SUCCESS, entryToRestore));
         } else {
+            history.setPrevSearch(keywords, history.getPrevState());
+
             if (allList.size() >= 2) { // multiple entries found
                 return new CommandResult(MESSAGE_MULTIPLE_ENTRIES);
             } else {
@@ -75,6 +75,32 @@ public class RestoreByFindCommand extends RestoreCommand {
                 return new CommandResult(MESSAGE_NO_ENTRIES);
             }
         }
+    }
+
+    /**
+     * Collects all archived and deleted entries that matches search keywords.
+     * @return List of matched entries
+     */
+    private List<ReadOnlyEntry> collateArchivedAndDeletedEntries() {
+
+        List<ReadOnlyEntry> allList = new ArrayList<>();
+        // Filter and collate archived entries that matches keywords
+        model.updateFilteredDeadlineList(keywords, Entry.State.ARCHIVED);
+        model.updateFilteredEventList(keywords, Entry.State.ARCHIVED);
+        model.updateFilteredFloatingTaskList(keywords, Entry.State.ARCHIVED);
+        allList.addAll(model.getFilteredDeadlineList());
+        allList.addAll(model.getFilteredEventList());
+        allList.addAll(model.getFilteredFloatingTaskList());
+
+        // Filter and collate deleted entries that matches keywords
+        model.updateFilteredDeadlineList(keywords, Entry.State.DELETED);
+        model.updateFilteredEventList(keywords, Entry.State.DELETED);
+        model.updateFilteredFloatingTaskList(keywords, Entry.State.DELETED);
+        allList.addAll(model.getFilteredDeadlineList());
+        allList.addAll(model.getFilteredEventList());
+        allList.addAll(model.getFilteredFloatingTaskList());
+
+        return allList;
     }
 
 }

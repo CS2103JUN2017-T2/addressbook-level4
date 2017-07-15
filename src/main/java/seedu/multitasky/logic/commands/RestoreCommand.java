@@ -1,7 +1,11 @@
 package seedu.multitasky.logic.commands;
 
+import java.util.Objects;
+
 import seedu.multitasky.commons.core.Messages;
+import seedu.multitasky.logic.CommandHistory;
 import seedu.multitasky.logic.parser.CliSyntax;
+import seedu.multitasky.model.Model;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 
 //@@author A0126623L-reused
@@ -31,5 +35,14 @@ public abstract class RestoreCommand extends Command {
                                                    CliSyntax.PREFIX_FLOATINGTASK.toString()};
 
     protected ReadOnlyEntry entryToRestore;
+
+    @Override
+    public void setData(Model model, CommandHistory history) {
+        //TODO: Consider refactoring these to the superclass's setData();
+        Objects.requireNonNull(history);
+        Objects.requireNonNull(model);
+        this.model = model;
+        this.history = history;
+    }
 
 }

@@ -48,6 +48,12 @@ public class RestoreByIndexCommand extends RestoreCommand {
         } catch (EntryNotFoundException enfe) {
             assert false : "The target entry cannot be missing";
         }
+
+        // refresh list view after updating.
+        model.updateFilteredDeadlineList(history.getPrevSearch(), history.getPrevState());
+        model.updateFilteredEventList(history.getPrevSearch(), history.getPrevState());
+        model.updateFilteredFloatingTaskList(history.getPrevSearch(), history.getPrevState());
+
         return new CommandResult(String.format(MESSAGE_SUCCESS, entryToRestore));
     }
 
