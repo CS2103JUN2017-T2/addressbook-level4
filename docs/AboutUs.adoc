@@ -25,8 +25,16 @@ image::mattheuslee.jpg[width="150", align="left"]
 === http://github.com/ChuaPingChan[Chua Ping Chan]
 image::chuapingchan.png[width="150", align="left"]
 
-Role: Developer +
-Responsibilities: Model(component), Testing, Code Quality, Meeting Minutes
+* Role: Developer
+* Components in charge of: https://github.com/CS2103JUN2017-T2/main/blob/master/docs/DeveloperGuide.adoc#model-component[Model]
+* Aspects/tools in charge of: Code Quality, Testing
+* Features implemented:
+** Archive and Bin feature
+** Restore command
+** Find command -- AND-search on names and tags
+* Code written: https://github.com/CS2103JUN2017-T2/main/blob/master/collated/main/A0126623L.md[functional code], https://github.com/CS2103JUN2017-T2/main/blob/master/collated/test/A0126623L.md[test code] and https://github.com/CS2103JUN2017-T2/main/blob/master/collated/docs/A0126623L.md[documentation]
+* Other major contributions:
+** Maintain meeting minutes
 
 '''
 == http://github.com/kevinLamKB[Kevin Lam]
