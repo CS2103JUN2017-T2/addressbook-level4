@@ -65,7 +65,7 @@ public class EditByFindCommand extends EditCommand {
             } catch (EntryNotFoundException pnfe) {
                 assert false : "The target entry cannot be missing";
             }
-            model.updateAllFilteredListToShowAll();
+            model.updateAllFilteredListToShowAllActiveEntries();
             return new CommandResult(String.format(MESSAGE_SUCCESS, entryToEdit));
         }
         if (allList.size() >= 2) {

@@ -28,6 +28,10 @@ public interface Model {
     /** Adds the given entry */
     void addEntry(ReadOnlyEntry entry) throws DuplicateEntryException;
 
+    /** Updates the state of a given entry. */
+    void changeEntryState(ReadOnlyEntry entryToChange, Entry.State newState)
+            throws DuplicateEntryException, EntryNotFoundException;
+
     /** Undo the previous data-changing action */
     void undoPreviousAction() throws NothingToUndoException;
 

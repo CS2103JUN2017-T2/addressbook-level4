@@ -55,11 +55,11 @@ public class DeleteByFindCommand extends DeleteCommand {
         if (allList.size() == 1) { // proceed to delete
             entryToDelete = allList.get(0);
             try {
-                model.deleteEntry(entryToDelete);
+                model.changeEntryState(entryToDelete, Entry.State.DELETED);
             } catch (EntryNotFoundException e) {
                 assert false : "The target entry cannot be missing";
             }
-            model.updateAllFilteredListToShowAll();
+            model.updateAllFilteredListToShowAllActiveEntries();
             return new CommandResult(String.format(MESSAGE_SUCCESS, entryToDelete));
         } else {
             if (allList.size() >= 2) { // multiple entries found
