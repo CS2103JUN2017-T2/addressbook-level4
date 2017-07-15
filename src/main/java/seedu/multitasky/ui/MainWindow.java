@@ -1,8 +1,11 @@
 package seedu.multitasky.ui;
 
+import com.google.common.eventbus.Subscribe;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCombination;
@@ -12,10 +15,13 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import seedu.multitasky.commons.core.Config;
 import seedu.multitasky.commons.core.GuiSettings;
+import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.commons.events.ui.ExitAppRequestEvent;
+import seedu.multitasky.commons.events.ui.ListTypeUpdateEvent;
 import seedu.multitasky.commons.util.FxViewUtil;
 import seedu.multitasky.logic.Logic;
 import seedu.multitasky.model.UserPrefs;
+import seedu.multitasky.model.entry.Entry;
 
 //@@author A0125586X
 /**
@@ -40,10 +46,10 @@ public class MainWindow extends UiPart<Region> {
     private UserPrefs prefs;
 
     @FXML
-    private StackPane commandBoxPlaceholder;
+    private MenuItem helpMenuItem;
 
     @FXML
-    private MenuItem helpMenuItem;
+    private Label stateCurrentlyShown;
 
     @FXML
     private StackPane eventListPanelPlaceholder;
@@ -56,6 +62,9 @@ public class MainWindow extends UiPart<Region> {
 
     @FXML
     private StackPane resultDisplayPlaceholder;
+
+    @FXML
+    private StackPane commandBoxPlaceholder;
 
     @FXML
     private StackPane statusbarPlaceholder;
@@ -119,7 +128,9 @@ public class MainWindow extends UiPart<Region> {
     }
 
     void fillInnerParts() {
-        //TODO add respective logic.getFiltered****List when API calls are ready
+        stateCurrentlyShown.setText(String.format(Messages.MESSAGE_CURRENTLY_DISPLAYING,
+                                    stateToString(Entry.State.ACTIVE)));
+
         eventListPanel = new EventListPanel(logic.getFilteredEventList());
         eventListPanelPlaceholder.getChildren().add(eventListPanel.getRoot());
 
@@ -142,6 +153,24 @@ public class MainWindow extends UiPart<Region> {
 
     void hide() {
         primaryStage.hide();
+    }
+
+    /**
+     * To format the state in a form that is consistent with command syntax.
+     * ARCHIVED -> archive
+     * DELETED -> bin
+     */
+    private String stateToString(Entry.State state) {
+        switch (state) {
+        case ACTIVE:
+            return "active";
+        case ARCHIVED:
+            return "archive";
+        case DELETED:
+            return "bin";
+        default:
+            return "error";
+        }
     }
 
     private void setTitle(String appTitle) {
@@ -209,6 +238,12 @@ public class MainWindow extends UiPart<Region> {
 
     public FloatingTaskListPanel getFloatingTaskListPanel() {
         return this.floatingTaskListPanel;
+    }
+
+    @Subscribe
+    private void handleListTypeUpdateEvent(ListTypeUpdateEvent event) {
+        stateCurrentlyShown.setText(String.format(Messages.MESSAGE_CURRENTLY_DISPLAYING,
+                                    stateToString(event.state)));
     }
 
 }
