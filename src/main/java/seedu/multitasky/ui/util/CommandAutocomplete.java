@@ -122,8 +122,10 @@ public class CommandAutocomplete {
             } else {
                 // We can only attempt to autocomplete the last word into a prefix
                 splitCommand = extractLastWord(splitCommand[1]);
-                // The middle portion of the input remains unchanged
-                commandResult.append(splitCommand[0]).append(" ");
+                // The middle portion of the input remains unchanged, append if present
+                if (splitCommand[0].trim().length() > 0) {
+                    commandResult.append(splitCommand[0]).append(" ");
+                }
                 commandResult.append(autocompletePrefix(splitCommand[LAST_WORD_IDX], commandMatch))
                              .append(" ");
             }
@@ -172,7 +174,7 @@ public class CommandAutocomplete {
         String[] words = input.split("\\s+");
         if (words.length > 0) {
             return new String[] {
-                words[COMMAND_WORD_IDX],
+                words[COMMAND_WORD_IDX].trim(),
                 input.substring(words[COMMAND_WORD_IDX].length()).trim()
             };
         }
@@ -190,7 +192,7 @@ public class CommandAutocomplete {
         if (words.length > 0) {
             return new String[] {
                 input.substring(0, input.length() - words[words.length - 1].length()).trim(),
-                words[words.length - 1]
+                words[words.length - 1].trim()
             };
         }
         return new String[] { "", "" };

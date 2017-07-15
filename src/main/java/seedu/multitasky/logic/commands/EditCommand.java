@@ -8,8 +8,10 @@ import java.util.Set;
 
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.commons.util.CollectionUtil;
+import seedu.multitasky.logic.CommandHistory;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.logic.parser.CliSyntax;
+import seedu.multitasky.model.Model;
 import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.Event;
@@ -57,6 +59,8 @@ public abstract class EditCommand extends Command {
 
     public static final String MESSAGE_DUPLICATE_ENTRY = "This entry already exists in the task manager.";
 
+    public static final String MESSAGE_ENDDATE_AFTER_STARTDATE = "Can not have end date before start date!";
+
     public static final String[] VALID_PREFIXES = {CliSyntax.PREFIX_EVENT.toString(),
                                                    CliSyntax.PREFIX_DEADLINE.toString(),
                                                    CliSyntax.PREFIX_FLOATINGTASK.toString(),
@@ -64,6 +68,7 @@ public abstract class EditCommand extends Command {
                                                    CliSyntax.PREFIX_FROM.toString(),
                                                    CliSyntax.PREFIX_BY.toString(),
                                                    CliSyntax.PREFIX_AT.toString(),
+                                                   CliSyntax.PREFIX_ON.toString(),
                                                    CliSyntax.PREFIX_TO.toString(),
                                                    CliSyntax.PREFIX_TAG.toString()};
 
@@ -100,7 +105,7 @@ public abstract class EditCommand extends Command {
             return new Deadline(updatedName, updatedEndDate, updatedTags);
         } else if (updatedStartDate != null && updatedEndDate != null) {
             if (updatedEndDate.compareTo(updatedStartDate) < 0) {
-                throw new CommandException("Can not have end date before start date!");
+                throw new CommandException(MESSAGE_ENDDATE_AFTER_STARTDATE);
             }
             return new Event(updatedName, updatedStartDate, updatedEndDate, updatedTags);
         } else {
@@ -211,10 +216,17 @@ public abstract class EditCommand extends Command {
 
             // state check
             EditEntryDescriptor e = (EditEntryDescriptor) other;
-
             return getName().equals(e.getName()) && getTags().equals(e.getTags())
                    && getStartDate().equals(e.getStartDate()) && getEndDate().equals(e.getEndDate());
         }
+    }
+
+    @Override
+    public void setData(Model model, CommandHistory history) {
+        requireNonNull(model);
+        requireNonNull(history);
+        this.model = model;
+        this.history = history;
     }
 
 }

@@ -22,9 +22,9 @@ public class DeleteByFindCommand extends DeleteCommand {
     public static final String MESSAGE_MULTIPLE_ENTRIES = "More than one entry found! \n"
                                                           + "Use " + COMMAND_WORD + " ["
                                                           + String.join(" | ",
-                                                                        CliSyntax.PREFIX_EVENT.toString(),
-                                                                        CliSyntax.PREFIX_DEADLINE.toString(),
-                                                                        CliSyntax.PREFIX_FLOATINGTASK.toString())
+                                                                  CliSyntax.PREFIX_EVENT.toString(),
+                                                                  CliSyntax.PREFIX_DEADLINE.toString(),
+                                                                  CliSyntax.PREFIX_FLOATINGTASK.toString())
                                                           + "]"
                                                           + " INDEX to specify which entry to delete.";
 
@@ -36,6 +36,10 @@ public class DeleteByFindCommand extends DeleteCommand {
 
     public DeleteByFindCommand(Set<String> keywords) {
         this.keywords = keywords;
+    }
+
+    public Set<String> getKeywords() {
+        return keywords;
     }
 
     @Override
@@ -59,9 +63,15 @@ public class DeleteByFindCommand extends DeleteCommand {
             } catch (EntryNotFoundException e) {
                 assert false : "The target entry cannot be missing";
             }
-            model.updateAllFilteredListToShowAllActiveEntries();
+            // refresh list view after updating.
+            model.updateFilteredDeadlineList(history.getPrevSearch(), history.getPrevState());
+            model.updateFilteredEventList(history.getPrevSearch(), history.getPrevState());
+            model.updateFilteredFloatingTaskList(history.getPrevSearch(), history.getPrevState());
+
             return new CommandResult(String.format(MESSAGE_SUCCESS, entryToDelete));
         } else {
+            // save what search i did
+            history.setPrevSearch(keywords, Entry.State.ACTIVE);
             if (allList.size() >= 2) { // multiple entries found
                 return new CommandResult(MESSAGE_MULTIPLE_ENTRIES);
             } else {

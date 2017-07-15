@@ -53,7 +53,7 @@ public class DateUtil {
 
         // endDate has been initiated, startDate should not be initiated after endDate.
         if (endDate != null) {
-            if (endDate.compareTo(calendar) < 0) { // end date is equal or later than start date
+            if (endDate.compareTo(calendar) < 0) { // end date is equal or earlier than start date
                 throw new ParseException("End Date cannot be before Start Date!");
             }
         }

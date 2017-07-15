@@ -49,14 +49,11 @@ public class EditByIndexCommand extends EditCommand {
 
         try {
             model.updateEntry(entryToEdit, editedEntry);
-            // TODO remove once confirmed we really dont need this any more.
-            /*model.updateFilteredEventList(new HashSet<>(Arrays.asList("change filter")),
-                                          Entry.State.ACTIVE);
-            model.updateFilteredDeadlineList(new HashSet<>(Arrays.asList("change filter")),
-                                             Entry.State.ACTIVE);
-            model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList("change filter")),
-                                                 Entry.State.ACTIVE);
-            model.updateAllFilteredListToShowAllActiveEntries(); */
+
+            // refresh list view after updating
+            model.updateFilteredDeadlineList(history.getPrevSearch(), history.getPrevState());
+            model.updateFilteredEventList(history.getPrevSearch(), history.getPrevState());
+            model.updateFilteredFloatingTaskList(history.getPrevSearch(), history.getPrevState());
         } catch (EntryNotFoundException pnfe) {
             throw new AssertionError("The target entry cannot be missing");
         }

@@ -1,9 +1,18 @@
 package seedu.multitasky.logic.commands;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashSet;
+
+import seedu.multitasky.commons.core.EventsCenter;
+import seedu.multitasky.commons.events.BaseEvent;
+import seedu.multitasky.commons.events.ui.ListTypeUpdateEvent;
+import seedu.multitasky.logic.CommandHistory;
 import seedu.multitasky.logic.parser.CliSyntax;
+import seedu.multitasky.model.Model;
+import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.util.Comparators;
 
 // @@author A0125586X
@@ -34,10 +43,12 @@ public class ListCommand extends Command {
 
     public static final String MESSAGE_UPCOMING_ORDER = "in upcoming order";
 
-    public static final String[] VALID_PREFIXES = {CliSyntax.PREFIX_ARCHIVE.toString(),
-                                                   CliSyntax.PREFIX_BIN.toString(),
-                                                   CliSyntax.PREFIX_UPCOMING.toString(),
-                                                   CliSyntax.PREFIX_REVERSE.toString()};
+    public static final String[] VALID_PREFIXES = { CliSyntax.PREFIX_ARCHIVE.toString(),
+                                                    CliSyntax.PREFIX_BIN.toString(),
+                                                    CliSyntax.PREFIX_UPCOMING.toString(),
+                                                    CliSyntax.PREFIX_REVERSE.toString(),
+                                                    CliSyntax.PREFIX_FROM.toString(),
+                                                    CliSyntax.PREFIX_TO.toString() };
 
     public enum ShowType {
         ACTIVE, ARCHIVE, BIN
@@ -50,50 +61,63 @@ public class ListCommand extends Command {
     private ShowType showType;
     private Ordering ordering;
 
+    private Calendar startDate;
+    private Calendar endDate;
+
     public ListCommand() {
         showType = ShowType.ACTIVE;
         ordering = Ordering.DEFAULT;
     }
 
-    public ListCommand(ShowType showType, Ordering ordering) {
-        this.showType = showType;
-        this.ordering = ordering;
-    }
+    public ListCommand(Calendar startDate, Calendar endDate, ArrayList<String> prefixes) {
+        this.startDate = startDate;
+        this.endDate = endDate;
 
-    public ListCommand(String... flags) {
-        ArrayList<String> flagList = new ArrayList<String>(Arrays.asList(flags));
-
-        if (flagList.contains(CliSyntax.PREFIX_ARCHIVE.toString())) {
+        if (prefixes.contains(CliSyntax.PREFIX_ARCHIVE.toString())) {
             showType = ShowType.ARCHIVE;
-        } else if (flagList.contains(CliSyntax.PREFIX_BIN.toString())) {
+        } else if (prefixes.contains(CliSyntax.PREFIX_BIN.toString())) {
             showType = ShowType.BIN;
         } else {
             showType = ShowType.ACTIVE;
         }
 
-        if (flagList.contains(CliSyntax.PREFIX_REVERSE.toString())) {
+        if (prefixes.contains(CliSyntax.PREFIX_REVERSE.toString())) {
             ordering = Ordering.REVERSE;
-        } else if (flagList.contains(CliSyntax.PREFIX_UPCOMING.toString())) {
+        } else if (prefixes.contains(CliSyntax.PREFIX_UPCOMING.toString())) {
             ordering = Ordering.UPCOMING;
         } else {
             ordering = Ordering.DEFAULT;
         }
-
     }
 
     @Override
     public CommandResult execute() {
         StringBuilder commandResultBuilder = new StringBuilder();
-        // TODO show archive/bin
+
         switch (showType) {
         case ARCHIVE:
             commandResultBuilder.append(MESSAGE_ARCHIVE_SUCCESS);
+            model.updateFilteredEventList(startDate, endDate, Entry.State.ARCHIVED);
+            model.updateFilteredDeadlineList(startDate, endDate, Entry.State.ARCHIVED);
+            model.updateFilteredFloatingTaskList(startDate, endDate, Entry.State.ARCHIVED);
+            raise(new ListTypeUpdateEvent(Entry.State.ARCHIVED));
+            history.setPrevSearch(new HashSet<String>(), Entry.State.ARCHIVED);
             break;
         case BIN:
             commandResultBuilder.append(MESSAGE_BIN_SUCCESS);
+            model.updateFilteredEventList(startDate, endDate, Entry.State.DELETED);
+            model.updateFilteredDeadlineList(startDate, endDate, Entry.State.DELETED);
+            model.updateFilteredFloatingTaskList(startDate, endDate, Entry.State.DELETED);
+            raise(new ListTypeUpdateEvent(Entry.State.DELETED));
+            history.setPrevSearch(new HashSet<String>(), Entry.State.DELETED);
             break;
         case ACTIVE:
             commandResultBuilder.append(MESSAGE_ACTIVE_SUCCESS);
+            model.updateFilteredEventList(startDate, endDate, Entry.State.ACTIVE);
+            model.updateFilteredDeadlineList(startDate, endDate, Entry.State.ACTIVE);
+            model.updateFilteredFloatingTaskList(startDate, endDate, Entry.State.ACTIVE);
+            raise(new ListTypeUpdateEvent(Entry.State.ACTIVE));
+            history.setPrevSearch(new HashSet<String>(), Entry.State.ACTIVE);
             break;
         default:
             throw new AssertionError("Unknown list show type");
@@ -102,24 +126,33 @@ public class ListCommand extends Command {
         switch (ordering) {
         case REVERSE:
             model.updateSortingComparators(Comparators.EVENT_REVERSE, Comparators.DEADLINE_REVERSE,
-                                           Comparators.FLOATING_TASK_REVERSE);
-            model.updateAllFilteredListToShowAll();
+                    Comparators.FLOATING_TASK_REVERSE);
             commandResultBuilder.append(" ").append(MESSAGE_REVERSE_ORDER);
             return new CommandResult(commandResultBuilder.toString());
         case UPCOMING:
             model.updateSortingComparators(Comparators.EVENT_UPCOMING, Comparators.DEADLINE_UPCOMING,
-                                           Comparators.FLOATING_TASK_UPCOMING);
-            model.updateAllFilteredListToShowAll();
+                    Comparators.FLOATING_TASK_UPCOMING);
             commandResultBuilder.append(" ").append(MESSAGE_UPCOMING_ORDER);
             return new CommandResult(commandResultBuilder.toString());
         case DEFAULT:
             model.updateSortingComparators(Comparators.EVENT_DEFAULT, Comparators.DEADLINE_DEFAULT,
-                                           Comparators.FLOATING_TASK_DEFAULT);
-            model.updateAllFilteredListToShowAll();
+                    Comparators.FLOATING_TASK_DEFAULT);
             return new CommandResult(commandResultBuilder.toString());
         default:
             throw new AssertionError("Unknown list command ordering type");
         }
+    }
+
+    private void raise(BaseEvent event) {
+        EventsCenter.getInstance().post(event);
+    }
+
+    @Override
+    public void setData(Model model, CommandHistory history) {
+        requireNonNull(model);
+        requireNonNull(history);
+        this.model = model;
+        this.history = history;
     }
 
 }

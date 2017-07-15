@@ -1,5 +1,7 @@
 package seedu.multitasky.logic.commands;
 
+import java.util.Objects;
+
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.commons.core.index.Index;
@@ -11,42 +13,48 @@ import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 
-// @@author A0140633R
+//@@author A0126623L-reused
 /*
- * Deletes an entry identified using the type of entry followed by displayed index.
- */
-public class DeleteByIndexCommand extends DeleteCommand {
+* Restores an entry identified using the type of entry followed by displayed index.
+*/
+public class RestoreByIndexCommand extends RestoreCommand {
 
     private Index targetIndex;
     private Prefix listIndicatorPrefix;
 
-    public DeleteByIndexCommand(Index targetIndex, Prefix listIndicatorPrefix) {
+    public RestoreByIndexCommand(Index targetIndex, Prefix listIndicatorPrefix) {
         this.targetIndex = targetIndex;
         this.listIndicatorPrefix = listIndicatorPrefix;
     }
 
     @Override
     public CommandResult execute() throws CommandException, DuplicateEntryException {
-        UnmodifiableObservableList<ReadOnlyEntry> listToDeleteFrom = ParserUtil
+        UnmodifiableObservableList<ReadOnlyEntry> listToRestoreFrom = ParserUtil
                 .getListIndicatedByPrefix(model, listIndicatorPrefix);
-        assert listToDeleteFrom != null;
+        Objects.requireNonNull(listToRestoreFrom);
 
-        if (targetIndex.getZeroBased() >= listToDeleteFrom.size()) {
+        if (targetIndex.getZeroBased() >= listToRestoreFrom.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
         }
 
-        entryToDelete = listToDeleteFrom.get(targetIndex.getZeroBased());
+        entryToRestore = listToRestoreFrom.get(targetIndex.getZeroBased());
+
+        if (entryToRestore.isActive()) {
+            throw new CommandException(RestoreCommand.MESSAGE_ENTRY_ALREADY_ACTIVE);
+        }
+
         try {
-            model.changeEntryState(entryToDelete, Entry.State.DELETED);
+            model.changeEntryState(entryToRestore, Entry.State.ACTIVE);;
         } catch (EntryNotFoundException enfe) {
             assert false : "The target entry cannot be missing";
         }
-        // refresh list view after updating.
-        model.updateFilteredDeadlineList(history.getPrevSearch(), Entry.State.ACTIVE);
-        model.updateFilteredEventList(history.getPrevSearch(), Entry.State.ACTIVE);
-        model.updateFilteredFloatingTaskList(history.getPrevSearch(), Entry.State.ACTIVE);
 
-        return new CommandResult(String.format(MESSAGE_SUCCESS, entryToDelete));
+        // refresh list view after updating.
+        model.updateFilteredDeadlineList(history.getPrevSearch(), history.getPrevState());
+        model.updateFilteredEventList(history.getPrevSearch(), history.getPrevState());
+        model.updateFilteredFloatingTaskList(history.getPrevSearch(), history.getPrevState());
+
+        return new CommandResult(String.format(MESSAGE_SUCCESS, entryToRestore));
     }
 
 }
