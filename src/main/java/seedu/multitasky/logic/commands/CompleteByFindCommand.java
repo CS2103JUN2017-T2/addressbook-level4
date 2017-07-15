@@ -67,6 +67,7 @@ public class CompleteByFindCommand extends CompleteCommand {
             model.updateFilteredDeadlineList(history.getPrevSearch(), history.getPrevState());
             model.updateFilteredEventList(history.getPrevSearch(), history.getPrevState());
             model.updateFilteredFloatingTaskList(history.getPrevSearch(), history.getPrevState());
+
             return new CommandResult(String.format(MESSAGE_SUCCESS, entryToComplete));
         } else {
             history.setPrevSearch(keywords, Entry.State.ACTIVE);
