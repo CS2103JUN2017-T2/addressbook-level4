@@ -30,6 +30,7 @@ public class AddCommand extends Command {
     public static final String[] VALID_PREFIXES = {CliSyntax.PREFIX_FROM.toString(),
                                                    CliSyntax.PREFIX_BY.toString(),
                                                    CliSyntax.PREFIX_AT.toString(),
+                                                   CliSyntax.PREFIX_ON.toString(),
                                                    CliSyntax.PREFIX_TO.toString(),
                                                    CliSyntax.PREFIX_TAG.toString()};
 

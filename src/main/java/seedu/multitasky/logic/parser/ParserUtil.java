@@ -22,6 +22,7 @@ import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.commons.util.StringUtil;
+import seedu.multitasky.logic.parser.exceptions.ParseException;
 import seedu.multitasky.model.Model;
 import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
@@ -77,20 +78,20 @@ public class ParserUtil {
      *
      * @throws IllegalValueException if input args String cannot be parsed into a Date.
      */
-    public static Calendar parseDate(String args) throws IllegalValueException {
+    public static Calendar parseDate(String args) throws ParseException {
         PrettyTimeParser ptp = new PrettyTimeParser();
         Calendar calendar = new GregorianCalendar();
         try {
             List<Date> dates = ptp.parse(args);
             if (dates.size() != 1) {
-                throw new IllegalValueException(String.format(MESSAGE_FAIL_PARSE_DATE, args));
+                throw new ParseException(String.format(MESSAGE_FAIL_PARSE_DATE, args));
             }
             Date date = dates.get(0);
             calendar.setTime(date);
             return calendar;
         } catch (Exception e) {
             // double exception catching as a fail-safe
-            throw new IllegalValueException(String.format(MESSAGE_FAIL_PARSE_DATE, args));
+            throw new ParseException(String.format(MESSAGE_FAIL_PARSE_DATE, args));
         }
     }
 

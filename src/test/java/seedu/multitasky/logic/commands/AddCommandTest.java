@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Set;
 
@@ -35,7 +36,7 @@ public class AddCommandTest {
     @Test
     public void constructor_nullEntry_throwsNullPointerException() throws Exception {
         thrown.expect(NullPointerException.class);
-        Command command = new AddCommand(null);
+        new AddCommand(null);
     }
 
     // @@author A0140633R
@@ -157,12 +158,27 @@ public class AddCommandTest {
         }
 
         @Override
+        public void updateFilteredEventList(Calendar startDate, Calendar endDate, Entry.State state) {
+            fail("This method should not be called.");
+        }
+
+        @Override
         public void updateFilteredDeadlineList(Set<String> keywords, Entry.State state) {
             fail("This method should not be called.");
         }
 
         @Override
+        public void updateFilteredDeadlineList(Calendar startDate, Calendar endDate, Entry.State state) {
+            fail("This method should not be called.");
+        }
+
+        @Override
         public void updateFilteredFloatingTaskList(Set<String> keywords, Entry.State state) {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void updateFilteredFloatingTaskList(Calendar startDate, Calendar endDate, Entry.State state) {
             fail("This method should not be called.");
         }
 

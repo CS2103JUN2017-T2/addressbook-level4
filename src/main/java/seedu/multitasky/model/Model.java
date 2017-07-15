@@ -1,5 +1,6 @@
 package seedu.multitasky.model;
 
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Set;
 
@@ -81,11 +82,20 @@ public interface Model {
     /** Updates the filter of the filtered event list to filter by the given keywords and state */
     void updateFilteredEventList(Set<String> keywords, Entry.State state);
 
+    /** Updates the filter of the filtered event list to filter by the given date range and state */
+    void updateFilteredEventList(Calendar startDate, Calendar endDate, Entry.State state);
+
     /** Updates the filter of the filtered deadline list to filter by the given keywords and state */
     void updateFilteredDeadlineList(Set<String> keywords, Entry.State state);
 
+    /** Updates the filter of the filtered deadline list to filter by the given date range and state */
+    void updateFilteredDeadlineList(Calendar startDate, Calendar endDate, Entry.State state);
+
     /** Updates the filter of the filtered floating task list to filter by the given keywords and state */
     void updateFilteredFloatingTaskList(Set<String> keywords, Entry.State state);
+
+    /** Updates the filter of the filtered floating task list to filter by the given date range and state */
+    void updateFilteredFloatingTaskList(Calendar startDate, Calendar endDate, Entry.State state);
 
     /** Updates the sorting comparators used. */
     void updateSortingComparators(Comparator<ReadOnlyEntry> eventComparator,

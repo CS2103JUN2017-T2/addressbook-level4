@@ -298,7 +298,8 @@ public class LogicManagerTest {
         List<Entry> threeEntrys = helper.generateEntryList(3);
 
         Model expectedModel = new ModelManager(helper.generateEntryBook(threeEntrys), new UserPrefs());
-        expectedModel.deleteEntry(threeEntrys.get(1));
+        expectedModel.changeEntryState(threeEntrys.get(1), Entry.State.DELETED);
+        expectedModel.updateAllFilteredListToShowAllActiveEntries();
         helper.addToModel(model, threeEntrys);
 
         assertCommandSuccess(DeleteCommand.COMMAND_WORD + " float 2",
