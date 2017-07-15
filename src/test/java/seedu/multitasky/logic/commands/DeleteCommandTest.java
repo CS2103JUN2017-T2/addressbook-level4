@@ -39,6 +39,7 @@ public class DeleteCommandTest {
 
         ModelManager expectedModel = new ModelManager(model.getEntryBook(), new UserPrefs());
         expectedModel.changeEntryState(entryToDelete, Entry.State.DELETED);
+        expectedModel.updateAllFilteredListToShowAllActiveEntries();
 
         CommandTestUtil.assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
     }
