@@ -38,6 +38,9 @@ public class CommandBoxTest extends EntryBookGuiTest {
         errorStyleOfCommandBox.add(CommandBox.ERROR_STYLE_CLASS);
     }
 
+    /**********************
+     * Command box styles *
+     *********************/
     @Test
     public void commandBox_successfulThenFailedCommand_errorStyle() {
         // Reset style
@@ -63,6 +66,9 @@ public class CommandBoxTest extends EntryBookGuiTest {
         assertBehaviorForSuccessfulCommand();
     }
 
+    /****************************************
+     * Command history using up/down arrows *
+     ***************************************/
     /**
      * Using dummy command names as this test is only concerned with the
      * proper retrieval of previously entered commands.
@@ -93,6 +99,9 @@ public class CommandBoxTest extends EntryBookGuiTest {
         assertCommandBox(DUMMY_COMMANDS[1]);
     }
 
+    /************************
+     * Command autocomplete *
+     ***********************/
     @Test
     public void commandbox_nonMatchingKeyword_noAutocompleteChange() {
         commandBox.enterCommand(COMMAND_THAT_CANNOT_AUTOCOMPLETE);

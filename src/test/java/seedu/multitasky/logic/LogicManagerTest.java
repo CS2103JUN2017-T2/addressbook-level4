@@ -190,15 +190,16 @@ public class LogicManagerTest {
     }
 
     // TODO revive when entrybook is fixed.
-    /*@Test
-    public void execute_clear_success() throws Exception {
-        TestDataHelper helper = new TestDataHelper();
-        model.addEntry(helper.generateEntry(1));
-        model.addEntry(helper.generateEntry(2));
-        model.addEntry(helper.generateEntry(3));
-
-        assertCommandSuccess(ClearCommand.COMMAND_WORD, ClearCommand.MESSAGE_SUCCESS, new ModelManager());
-    }*/
+    /*
+     * @Test
+     * public void execute_clear_success() throws Exception {
+     * TestDataHelper helper = new TestDataHelper();
+     * model.addEntry(helper.generateEntry(1));
+     * model.addEntry(helper.generateEntry(2));
+     * model.addEntry(helper.generateEntry(3));
+     * assertCommandSuccess(ClearCommand.COMMAND_WORD, ClearCommand.MESSAGE_SUCCESS, new ModelManager());
+     * }
+     */
 
     @Test
     public void execute_addInvalidArgsFormat_parseException() {
@@ -249,7 +250,8 @@ public class LogicManagerTest {
      *        based on visible index.
      */
     private void assertIncorrectIndexFormatBehaviorForCommand(String commandWord,
-                                                              String expectedMessage) throws Exception {
+                                                              String expectedMessage)
+            throws Exception {
         assertParseException(commandWord, expectedMessage); // index missing
         assertParseException(commandWord + " +1", expectedMessage); // index should be unsigned
         assertParseException(commandWord + " -1", expectedMessage); // index should be unsigned
@@ -319,7 +321,8 @@ public class LogicManagerTest {
 
         List<Entry> fourEntrys = helper.generateEntryList(p1, pTarget1, p2, pTarget2);
         Model expectedModel = new ModelManager(helper.generateEntryBook(fourEntrys), new UserPrefs());
-        expectedModel.updateFilteredFloatingTaskList(new HashSet<>(Collections.singletonList("KEY")));
+        expectedModel.updateFilteredFloatingTaskList(new HashSet<>(Collections.singletonList("KEY")),
+                                                     Entry.State.ACTIVE);
         helper.addToModel(model, fourEntrys);
         assertCommandSuccess(FindCommand.COMMAND_WORD + " KEY",
                              Command.getMessageForEntryListShownSummary(expectedModel.getFilteredFloatingTaskList()
@@ -355,7 +358,8 @@ public class LogicManagerTest {
 
         List<Entry> fourEntrys = helper.generateEntryList(pTarget1, p1, pTarget2, pTarget3);
         Model expectedModel = new ModelManager(helper.generateEntryBook(fourEntrys), new UserPrefs());
-        expectedModel.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList("key", "rAnDoM")));
+        expectedModel.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList("key", "rAnDoM")),
+                                                     Entry.State.ACTIVE);
         helper.addToModel(model, fourEntrys);
 
         assertCommandSuccess(FindCommand.COMMAND_WORD + " key rAnDoM",
@@ -412,8 +416,8 @@ public class LogicManagerTest {
          */
         Entry generateEntry(int seed) throws Exception {
             return new FloatingTask(
-                             new Name("Entry " + seed),
-                             getTagSet("tag" + Math.abs(seed), "tag" + Math.abs(seed + 1)));
+                                    new Name("Entry " + seed),
+                                    getTagSet("tag" + Math.abs(seed), "tag" + Math.abs(seed + 1)));
         }
 
         /** Generates the correct add command based on the entry given */

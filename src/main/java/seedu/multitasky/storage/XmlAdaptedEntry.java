@@ -28,6 +28,8 @@ public class XmlAdaptedEntry {
     @XmlElement
     private String endDateAndTime;
     @XmlElement
+    private String state;
+    @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
 
     /** To convert Date to String to store in XML file and String back to Date to return to Model */
@@ -54,6 +56,8 @@ public class XmlAdaptedEntry {
         if (source.getEndDateAndTime() != null) {
             endDateAndTime = converter.convertDateToString(source.getEndDateAndTime());
         }
+
+        state = source.getState().toString();
 
         tagged = new ArrayList<>();
         for (Tag tag : source.getTags()) {
@@ -95,6 +99,24 @@ public class XmlAdaptedEntry {
 
         final Set<Tag> tags = new HashSet<>(entryTags);
         Entry entry = EntryBuilder.build(newName, startDateAndTimeToUse, endDateAndTimeToUse, tags);
+
+        setEntryState(entry);
+
         return entry;
+    }
+
+    private void setEntryState(Entry entry) {
+        switch (state) {
+        case "ACTIVE":
+            return;
+        case "ARCHIVED":
+            entry.setState(Entry.State.ARCHIVED);
+            return;
+        case "DELETED":
+            entry.setState(Entry.State.DELETED);
+            return;
+        default:
+            throw new AssertionError(state);
+        }
     }
 }

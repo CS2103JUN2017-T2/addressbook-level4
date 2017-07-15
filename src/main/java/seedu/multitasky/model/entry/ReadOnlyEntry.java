@@ -17,6 +17,8 @@ public interface ReadOnlyEntry {
 
     Calendar getEndDateAndTime();
 
+    Entry.State getState();
+
     Set<Tag> getTags();
 
     /**

@@ -50,8 +50,7 @@ public class TestUtil {
                                            actualException.getClass().getName());
             throw new AssertionFailedError(message);
         }
-        throw new AssertionFailedError(
-                                       String.format("Expected %s to be thrown, but nothing was thrown.",
+        throw new AssertionFailedError(String.format("Expected %s to be thrown, but nothing was thrown.",
                                                      expected.getName()));
     }
 

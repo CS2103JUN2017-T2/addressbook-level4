@@ -3,6 +3,7 @@ package seedu.multitasky.model;
 import static seedu.multitasky.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -13,6 +14,7 @@ import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
 import seedu.multitasky.commons.events.model.EntryBookToRedoEvent;
 import seedu.multitasky.commons.events.model.EntryBookToUndoEvent;
+import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
@@ -36,6 +38,8 @@ public class ModelManager extends ComponentManager implements Model {
     // @@author A0126623L
     /**
      * Initializes a ModelManager with the given entryBook and userPrefs.
+     * Note that the reference of the entries in the given {@code entryBook}
+     * will be copied. Entries themselves will not be copied.
      */
     public ModelManager(ReadOnlyEntryBook entryBook, UserPrefs userPrefs) {
         super();
@@ -120,6 +124,14 @@ public class ModelManager extends ComponentManager implements Model {
     }
     // @@author
 
+    // @@author A0126623L
+    @Override
+    public void changeEntryState(ReadOnlyEntry entryToChange, Entry.State newState)
+            throws DuplicateEntryException, EntryNotFoundException {
+        _entryBook.changeEntryState(entryToChange, newState);
+        indicateEntryBookChanged();
+    }
+
     @Override
     public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws DuplicateEntryException,
             EntryNotFoundException {
@@ -169,18 +181,6 @@ public class ModelManager extends ComponentManager implements Model {
 
     // @@author A0126623L
     @Override
-    public UnmodifiableObservableList<ReadOnlyEntry> getArchive() {
-        return new UnmodifiableObservableList<>(_entryBook.getArchive());
-    }
-
-    // @@author A0126623L
-    @Override
-    public UnmodifiableObservableList<ReadOnlyEntry> getBin() {
-        return new UnmodifiableObservableList<>(_entryBook.getBin());
-    }
-
-    // @@author A0126623L
-    @Override
     public void updateFilteredEventListToShowAll() {
         _filteredEventList.setPredicate(null);
     }
@@ -196,7 +196,9 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateFilteredFloatingTaskListToShowAll() {
         _filteredFloatingTaskList.setPredicate(null);
     }
+    // @@author
 
+    // @@author A0126623L
     /**
      * Updates all filtered list to show all entries.
      */
@@ -210,9 +212,37 @@ public class ModelManager extends ComponentManager implements Model {
 
     // @@author A0126623L
     @Override
-    public void updateFilteredEventList(Set<String> keywords) {
-        updateFilteredEventList(new PredicateExpression(new NameQualifier(keywords)));
+    public void updateAllFilteredListToShowAllActiveEntries() {
+        this.updateFilteredEventList(new HashSet<String>(), Entry.State.ACTIVE);
+        this.updateFilteredDeadlineList(new HashSet<String>(), Entry.State.ACTIVE);
+        this.updateFilteredFloatingTaskList(new HashSet<String>(), Entry.State.ACTIVE);
     }
+    // @@author
+
+    // @@author A0126623L
+    @Override
+    public void updateAllFilteredListToShowAllArchivedEntries() {
+        this.updateFilteredEventList(new HashSet<String>(), Entry.State.ARCHIVED);
+        this.updateFilteredDeadlineList(new HashSet<String>(), Entry.State.ARCHIVED);
+        this.updateFilteredFloatingTaskList(new HashSet<String>(), Entry.State.ARCHIVED);
+    }
+    // @@author
+
+    // @@author A0126623L
+    @Override
+    public void updateAllFilteredListToShowAllDeletedEntries() {
+        this.updateFilteredEventList(new HashSet<String>(), Entry.State.DELETED);
+        this.updateFilteredDeadlineList(new HashSet<String>(), Entry.State.DELETED);
+        this.updateFilteredFloatingTaskList(new HashSet<String>(), Entry.State.DELETED);
+    }
+    // @@author
+
+    // @@author A0126623L
+    @Override
+    public void updateFilteredEventList(Set<String> keywords, Entry.State state) {
+        updateFilteredEventList(new PredicateExpression(new NameAndStatusQualifier(keywords, state)));
+    }
+    // @@author
 
     private void updateFilteredEventList(Expression expression) {
         _filteredEventList.setPredicate(expression::satisfies);
@@ -220,8 +250,8 @@ public class ModelManager extends ComponentManager implements Model {
 
     // @@author A0126623L
     @Override
-    public void updateFilteredDeadlineList(Set<String> keywords) {
-        updateFilteredDeadlineList(new PredicateExpression(new NameQualifier(keywords)));
+    public void updateFilteredDeadlineList(Set<String> keywords, Entry.State state) {
+        updateFilteredDeadlineList(new PredicateExpression(new NameAndStatusQualifier(keywords, state)));
     }
 
     private void updateFilteredDeadlineList(Expression expression) {
@@ -230,8 +260,8 @@ public class ModelManager extends ComponentManager implements Model {
 
     // @@author A0126623L
     @Override
-    public void updateFilteredFloatingTaskList(Set<String> keywords) {
-        updateFilteredFloatingTaskList(new PredicateExpression(new NameQualifier(keywords)));
+    public void updateFilteredFloatingTaskList(Set<String> keywords, Entry.State state) {
+        updateFilteredFloatingTaskList(new PredicateExpression(new NameAndStatusQualifier(keywords, state)));
     }
 
     private void updateFilteredFloatingTaskList(Expression expression) {
@@ -241,6 +271,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     // @@author A0125586X
     /** Updates the sorting comparators used. */
+    @Override
     public void updateSortingComparators(Comparator<ReadOnlyEntry> eventComparator,
                                          Comparator<ReadOnlyEntry> deadlineComparator,
                                          Comparator<ReadOnlyEntry> floatingTaskComparator) {
@@ -312,14 +343,16 @@ public class ModelManager extends ComponentManager implements Model {
      * Represents a qualifier can check the presence of all keywords in the name
      * and tags of a ReadOnlyEntry.
      */
-    private class NameQualifier implements Qualifier {
+    private class NameAndStatusQualifier implements Qualifier {
 
         // TODO:
         // change variable name to 'nameAndTagKeyWords'.
         private Set<String> nameAndTagKeywords;
+        private Entry.State state;
 
-        NameQualifier(Set<String> nameKeywords) {
+        NameAndStatusQualifier(Set<String> nameKeywords, Entry.State state) {
             this.nameAndTagKeywords = nameKeywords;
+            this.state = state;
         }
 
         // @@author A0126623L
@@ -332,6 +365,10 @@ public class ModelManager extends ComponentManager implements Model {
          */
         @Override
         public boolean run(ReadOnlyEntry entry) {
+            if (!entry.getState().equals(state)) {
+                return false;
+            }
+
             String wordsInNameAndTags = parseWordsInNameAndTags(entry);
 
             for (String keyword : nameAndTagKeywords) {
@@ -341,6 +378,7 @@ public class ModelManager extends ComponentManager implements Model {
             }
             return true;
         }
+        // @@author A0126623L
 
         // @@author A0126623L
         /**

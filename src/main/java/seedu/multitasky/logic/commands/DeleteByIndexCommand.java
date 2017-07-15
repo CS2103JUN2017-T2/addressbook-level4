@@ -6,6 +6,7 @@ import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.logic.parser.ParserUtil;
 import seedu.multitasky.logic.parser.Prefix;
+import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
@@ -36,7 +37,7 @@ public class DeleteByIndexCommand extends DeleteCommand {
 
         entryToDelete = listToDeleteFrom.get(targetIndex.getZeroBased());
         try {
-            model.deleteEntry(entryToDelete);
+            model.changeEntryState(entryToDelete, Entry.State.DELETED);;
         } catch (EntryNotFoundException enfe) {
             assert false : "The target entry cannot be missing";
         }

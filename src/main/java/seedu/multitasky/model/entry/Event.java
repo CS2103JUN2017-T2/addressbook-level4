@@ -15,17 +15,23 @@ public class Event extends Entry {
 
     /**
      * Every field must be present and not null.
+     * Events are instantiated to be active events by default.
+     * @param name
+     * @param startDateAndTime
+     * @param endDateAndTime
+     * @param state
+     * @param tags
      */
     public Event(Name name, Calendar startDateAndTime, Calendar endDateAndTime, Set<Tag> tags) {
         super(name, tags);
         requireAllNonNull(startDateAndTime, endDateAndTime);
-        _startDateAndTime = startDateAndTime;
-        _endDateAndTime = endDateAndTime;
+        this.setStartDateAndTime(startDateAndTime);
+        this.setEndDateAndTime(endDateAndTime);
     }
 
     /**
      * Creates a copy of the given ReadOnlyEntry.
-     * Pre-condition: ReadOnlyEntry must be of type Event.
+     * @param source must be of type Event.
      */
     public Event(ReadOnlyEntry source) {
         super(source.getName(), source.getTags());
@@ -52,6 +58,10 @@ public class Event extends Entry {
 
     private void setStartDateAndTime(Calendar startDateAndTime) {
         _startDateAndTime = startDateAndTime;
+
+        // Ignore difference in millisecond and seconds
+        _startDateAndTime.set(Calendar.MILLISECOND, 0);
+        _startDateAndTime.set(Calendar.SECOND, 0);
     }
 
     public String getStartDateAndTimeString() {
@@ -65,6 +75,10 @@ public class Event extends Entry {
 
     public void setEndDateAndTime(Calendar endDateAndTime) {
         _endDateAndTime = endDateAndTime;
+
+        // Ignore difference in millisecond and seconds
+        _endDateAndTime.set(Calendar.MILLISECOND, 0);
+        _endDateAndTime.set(Calendar.SECOND, 0);
     }
 
     public String getEndDateAndTimeString() {
@@ -87,19 +101,21 @@ public class Event extends Entry {
         return (other instanceof Event && this.getName().equals(other.getName()) // instanceof handles nulls
                 && this.getStartDateAndTime().equals(other.getStartDateAndTime())
                 && this.getEndDateAndTime().equals(other.getEndDateAndTime())
+                && this.getState().equals(other.getState())
                 && this.getTags().equals(other.getTags()));
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(getName(), getStartDateAndTime(), getEndDateAndTime(), getTags());
+        return Objects.hash(getName(), getStartDateAndTime(), getEndDateAndTime(), getState(), getTags());
     }
 
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
 
+        // TODO: Include state in string?
         builder.append(getName())
                .append(" Start: ")
                .append(dateFormatter.format(getStartDateAndTime().getTime()))

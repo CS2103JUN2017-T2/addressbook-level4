@@ -18,8 +18,10 @@ import seedu.multitasky.logic.CommandHistory;
 import seedu.multitasky.model.Model;
 import seedu.multitasky.model.ReadOnlyEntryBook;
 import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.model.entry.Entry.State;
 import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 import seedu.multitasky.model.util.EntryBuilder;
 import seedu.multitasky.storage.exception.NothingToRedoException;
@@ -112,18 +114,6 @@ public class AddCommandTest {
         }
 
         @Override
-        public UnmodifiableObservableList<ReadOnlyEntry> getArchive() {
-            fail("This method should not be called.");
-            return null;
-        }
-
-        @Override
-        public UnmodifiableObservableList<ReadOnlyEntry> getBin() {
-            fail("This method should not be called.");
-            return null;
-        }
-
-        @Override
         public void updateFilteredEventListToShowAll() {
             fail("This method should not be called.");
         }
@@ -144,17 +134,17 @@ public class AddCommandTest {
         }
 
         @Override
-        public void updateFilteredEventList(Set<String> keywords) {
+        public void updateFilteredEventList(Set<String> keywords, Entry.State state) {
             fail("This method should not be called.");
         }
 
         @Override
-        public void updateFilteredDeadlineList(Set<String> keywords) {
+        public void updateFilteredDeadlineList(Set<String> keywords, Entry.State state) {
             fail("This method should not be called.");
         }
 
         @Override
-        public void updateFilteredFloatingTaskList(Set<String> keywords) {
+        public void updateFilteredFloatingTaskList(Set<String> keywords, Entry.State state) {
             fail("This method should not be called.");
         }
 
@@ -172,6 +162,27 @@ public class AddCommandTest {
         public void updateSortingComparators(Comparator<ReadOnlyEntry> eventComparator,
                                              Comparator<ReadOnlyEntry> deadlineComparator,
                                              Comparator<ReadOnlyEntry> floatingTaskComparator) {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void updateAllFilteredListToShowAllActiveEntries() {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void updateAllFilteredListToShowAllArchivedEntries() {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void updateAllFilteredListToShowAllDeletedEntries() {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void changeEntryState(ReadOnlyEntry entryToChange, State newState)
+                throws DuplicateEntryException, EntryNotFoundException {
             fail("This method should not be called.");
         }
 

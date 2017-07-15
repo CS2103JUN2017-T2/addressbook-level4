@@ -1,7 +1,5 @@
 package seedu.multitasky.logic.commands;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 import seedu.multitasky.commons.core.Messages;
@@ -26,7 +24,8 @@ public class EditByIndexCommand extends EditCommand {
      * @param index of the entry in the filtered entry list to edit
      * @param editEntryDescriptor details to edit the entry with
      */
-    public EditByIndexCommand(Index index, Prefix listIndicatorPrefix, EditEntryDescriptor editEntryDescriptor) {
+    public EditByIndexCommand(Index index, Prefix listIndicatorPrefix,
+            EditEntryDescriptor editEntryDescriptor) {
         super(editEntryDescriptor);
         this.index = index;
         this.listIndicatorPrefix = listIndicatorPrefix;
@@ -50,13 +49,14 @@ public class EditByIndexCommand extends EditCommand {
 
         try {
             model.updateEntry(entryToEdit, editedEntry);
-            // either underlying FilteredList in ModelManager is not updating properly unless we update
-            // predicates. to find a neater way to reflect the change to ui
-            // and without needing to call a FilteredListshowAll
-            model.updateFilteredEventList(new HashSet<>(Arrays.asList("change filter")));
-            model.updateFilteredDeadlineList(new HashSet<>(Arrays.asList("change filter")));
-            model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList("change filter")));
-            model.updateAllFilteredListToShowAll();
+            // TODO remove once confirmed we really dont need this any more.
+            /*model.updateFilteredEventList(new HashSet<>(Arrays.asList("change filter")),
+                                          Entry.State.ACTIVE);
+            model.updateFilteredDeadlineList(new HashSet<>(Arrays.asList("change filter")),
+                                             Entry.State.ACTIVE);
+            model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList("change filter")),
+                                                 Entry.State.ACTIVE);
+            model.updateAllFilteredListToShowAllActiveEntries(); */
         } catch (EntryNotFoundException pnfe) {
             throw new AssertionError("The target entry cannot be missing");
         }
