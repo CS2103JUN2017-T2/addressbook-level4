@@ -33,7 +33,7 @@ public class CompleteCommandParser {
      *
      * @throws ParseException if the user input does not conform the expected format
      */
-    // @@author A0140633R - reused
+    // @@author A0132788U-reused
     public CompleteCommand parse(String args) throws ParseException {
         argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_FLOATINGTASK, PREFIX_DEADLINE,
                 PREFIX_EVENT, PREFIX_TAG);

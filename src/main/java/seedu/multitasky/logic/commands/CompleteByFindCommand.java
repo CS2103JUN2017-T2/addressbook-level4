@@ -12,7 +12,7 @@ import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 
-// @@author A0140633R - reused
+// @@author A0132788U-reused
 /*
  * Finds entries from given keywords and completes the entry if it is the only one found and moves it to archive.
  */

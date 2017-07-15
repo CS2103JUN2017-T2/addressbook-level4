@@ -11,7 +11,7 @@ import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 
-// @@author A0140633R - reused
+// @@author A0132788U-reused
 /*
  * Completes an entry identified using the type of entry followed by displayed index.
  */

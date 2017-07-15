@@ -14,10 +14,9 @@ public abstract class CompleteCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
                                                + " : Completes the entry identified by keywords in the active list"
-                                               + " if it is the only entry found,"
-                                               + " or completes the entry identified and moves it to archive"
-                                               + " by the index number of the last"
-                                               + " entry listing.\n"
+                                               + " if it is the only entry found, or completes the entry identified"
+                                               + " by the index number of the last entry listing"
+                                               + " and moves it to archive.\n"
                                                + "Format: " + COMMAND_WORD + " [" + "[" + "KEYWORDS" + "]" + " |"
                                                + " [" + String.join(" | ", CliSyntax.PREFIX_EVENT.toString(),
                                                        CliSyntax.PREFIX_DEADLINE.toString(),
