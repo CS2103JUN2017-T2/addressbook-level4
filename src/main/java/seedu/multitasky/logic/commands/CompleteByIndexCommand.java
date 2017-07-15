@@ -38,10 +38,10 @@ public class CompleteByIndexCommand extends CompleteCommand {
         entryToComplete = listToCompleteFrom.get(targetIndex.getZeroBased());
         try {
             model.changeEntryState(entryToComplete, Entry.State.ARCHIVED);
-            ;
         } catch (EntryNotFoundException enfe) {
             assert false : "The target entry cannot be missing";
         }
+        model.updateAllFilteredListToShowAllActiveEntries();
         return new CommandResult(String.format(MESSAGE_SUCCESS, entryToComplete));
     }
 

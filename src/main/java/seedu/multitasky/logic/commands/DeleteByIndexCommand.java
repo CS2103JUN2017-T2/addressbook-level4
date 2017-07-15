@@ -37,7 +37,7 @@ public class DeleteByIndexCommand extends DeleteCommand {
 
         entryToDelete = listToDeleteFrom.get(targetIndex.getZeroBased());
         try {
-            model.changeEntryState(entryToDelete, Entry.State.DELETED);;
+            model.changeEntryState(entryToDelete, Entry.State.DELETED);
         } catch (EntryNotFoundException enfe) {
             assert false : "The target entry cannot be missing";
         }
