@@ -1,7 +1,11 @@
 package seedu.multitasky.logic.commands;
 
+import static java.util.Objects.requireNonNull;
+
 import seedu.multitasky.commons.core.Messages;
+import seedu.multitasky.logic.CommandHistory;
 import seedu.multitasky.logic.parser.CliSyntax;
+import seedu.multitasky.model.Model;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 
 // @@author A0140633R
@@ -28,5 +32,13 @@ public abstract class DeleteCommand extends Command {
                                                    CliSyntax.PREFIX_FLOATINGTASK.toString()};
 
     protected ReadOnlyEntry entryToDelete;
+
+    @Override
+    public void setData(Model model, CommandHistory history) {
+        requireNonNull(history);
+        requireNonNull(model);
+        this.model = model;
+        this.history = history;
+    }
 
 }

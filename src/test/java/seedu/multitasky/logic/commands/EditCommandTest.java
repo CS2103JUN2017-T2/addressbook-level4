@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
 import static seedu.multitasky.testutil.EditCommandTestUtil.DESC_AMY;
 import static seedu.multitasky.testutil.EditCommandTestUtil.DESC_BOB;
-import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_NAME_BOB;
+import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_NAME_MEETING;
 import static seedu.multitasky.testutil.SampleEntries.INDEX_FIRST_ENTRY;
 import static seedu.multitasky.testutil.SampleEntries.INDEX_SECOND_ENTRY;
 
@@ -96,7 +96,7 @@ public class EditCommandTest {
     @Test
     public void execute_invalidEntryIndexUnfilteredList_failure() throws Exception {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredFloatingTaskList().size() + 1);
-        EditEntryDescriptor descriptor = new EditEntryDescriptorBuilder().withName(VALID_NAME_BOB).build();
+        EditEntryDescriptor descriptor = new EditEntryDescriptorBuilder().withName(VALID_NAME_MEETING).build();
         EditCommand editCommand = prepareCommand(outOfBoundIndex, descriptor);
 
         CommandTestUtil.assertCommandFailure(editCommand, model,
@@ -115,7 +115,7 @@ public class EditCommandTest {
         assertTrue(outOfBoundIndex.getZeroBased() < model.getEntryBook().getFloatingTaskList().size());
 
         EditCommand editCommand = prepareCommand(outOfBoundIndex,
-                                                 new EditEntryDescriptorBuilder().withName(VALID_NAME_BOB)
+                                                 new EditEntryDescriptorBuilder().withName(VALID_NAME_MEETING)
                                                                                  .build());
 
         CommandTestUtil.assertCommandFailure(editCommand, model,
