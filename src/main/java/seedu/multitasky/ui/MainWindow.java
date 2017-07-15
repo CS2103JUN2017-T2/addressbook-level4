@@ -87,6 +87,8 @@ public class MainWindow extends UiPart<Region> {
         primaryStage.setScene(scene);
 
         setAccelerators();
+
+        registerAsAnEventHandler(this);
     }
 
     public Stage getPrimaryStage() {

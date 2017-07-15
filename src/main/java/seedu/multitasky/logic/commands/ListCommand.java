@@ -3,6 +3,8 @@ package seedu.multitasky.logic.commands;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import seedu.multitasky.commons.core.EventsCenter;
+import seedu.multitasky.commons.events.BaseEvent;
 import seedu.multitasky.commons.events.ui.ListTypeUpdateEvent;
 import seedu.multitasky.logic.parser.CliSyntax;
 import seedu.multitasky.logic.parser.Prefix;
@@ -101,18 +103,21 @@ public class ListCommand extends Command {
             model.updateFilteredEventList(startDate, endDate, Entry.State.ARCHIVED);
             model.updateFilteredDeadlineList(startDate, endDate, Entry.State.ARCHIVED);
             model.updateFilteredFloatingTaskList(startDate, endDate, Entry.State.ARCHIVED);
+            raise(new ListTypeUpdateEvent(Entry.State.ARCHIVED));
             break;
         case BIN:
             commandResultBuilder.append(MESSAGE_BIN_SUCCESS);
             model.updateFilteredEventList(startDate, endDate, Entry.State.DELETED);
             model.updateFilteredDeadlineList(startDate, endDate, Entry.State.DELETED);
             model.updateFilteredFloatingTaskList(startDate, endDate, Entry.State.DELETED);
+            raise(new ListTypeUpdateEvent(Entry.State.DELETED));
             break;
         case ACTIVE:
             commandResultBuilder.append(MESSAGE_ACTIVE_SUCCESS);
             model.updateFilteredEventList(startDate, endDate, Entry.State.ACTIVE);
             model.updateFilteredDeadlineList(startDate, endDate, Entry.State.ACTIVE);
             model.updateFilteredFloatingTaskList(startDate, endDate, Entry.State.ACTIVE);
+            raise(new ListTypeUpdateEvent(Entry.State.ACTIVE));
             break;
         default:
             throw new AssertionError("Unknown list show type");
@@ -136,6 +141,10 @@ public class ListCommand extends Command {
         default:
             throw new AssertionError("Unknown list command ordering type");
         }
+    }
+
+    private void raise(BaseEvent event) {
+        EventsCenter.getInstance().post(event);
     }
 
 }
