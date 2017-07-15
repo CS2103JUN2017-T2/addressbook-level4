@@ -6,9 +6,11 @@ import java.util.Optional;
 import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.logic.commands.EditCommand.EditEntryDescriptor;
 import seedu.multitasky.logic.parser.ParserUtil;
+import seedu.multitasky.model.entry.Deadline;
+import seedu.multitasky.model.entry.Event;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 
-//@@author A0126623L
+// @@author A0126623L
 /**
  * A utility class to help with building EditEntryDescriptor objects.
  */
@@ -24,6 +26,7 @@ public class EditEntryDescriptorBuilder {
         this.descriptor = new EditEntryDescriptor(descriptor);
     }
 
+    // @@author A0140633R
     /**
      * Returns an {@code EditEntryDescriptor} with fields containing {@code entry}'s details
      */
@@ -31,8 +34,25 @@ public class EditEntryDescriptorBuilder {
         descriptor = new EditEntryDescriptor();
         descriptor.setName(entry.getName());
         descriptor.setTags(entry.getTags());
+        if (entry instanceof Deadline) {
+            descriptor.setEndDate(entry.getEndDateAndTime());
+        } else if (entry instanceof Event) {
+            descriptor.setStartDate(entry.getStartDateAndTime());
+            descriptor.setEndDate(entry.getEndDateAndTime());
+        }
     }
 
+    public EditEntryDescriptorBuilder withStartDate(String startDate) throws IllegalValueException {
+        ParserUtil.parseDate(Optional.of(startDate)).ifPresent(descriptor::setStartDate);
+        return this;
+    }
+
+    public EditEntryDescriptorBuilder withEndDate(String endDate) throws IllegalValueException {
+        ParserUtil.parseDate(Optional.of(endDate)).ifPresent(descriptor::setEndDate);
+        return this;
+    }
+
+    // @@author A0126623L
     public EditEntryDescriptorBuilder withName(String name) throws IllegalValueException {
         ParserUtil.parseName(Optional.of(name)).ifPresent(descriptor::setName);
         return this;

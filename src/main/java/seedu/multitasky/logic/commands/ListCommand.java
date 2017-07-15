@@ -1,12 +1,18 @@
 package seedu.multitasky.logic.commands;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 
 import seedu.multitasky.commons.core.EventsCenter;
 import seedu.multitasky.commons.events.BaseEvent;
 import seedu.multitasky.commons.events.ui.ListTypeUpdateEvent;
+import seedu.multitasky.logic.CommandHistory;
 import seedu.multitasky.logic.parser.CliSyntax;
+import seedu.multitasky.logic.parser.Prefix;
+import seedu.multitasky.model.Model;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.util.Comparators;
 
@@ -88,6 +94,7 @@ public class ListCommand extends Command {
     @Override
     public CommandResult execute() {
         StringBuilder commandResultBuilder = new StringBuilder();
+
         switch (showType) {
         case ARCHIVE:
             commandResultBuilder.append(MESSAGE_ARCHIVE_SUCCESS);
@@ -95,6 +102,7 @@ public class ListCommand extends Command {
             model.updateFilteredDeadlineList(startDate, endDate, Entry.State.ARCHIVED);
             model.updateFilteredFloatingTaskList(startDate, endDate, Entry.State.ARCHIVED);
             raise(new ListTypeUpdateEvent(Entry.State.ARCHIVED));
+            history.setPrevSearch(new HashSet<String>(), Entry.State.ARCHIVED);
             break;
         case BIN:
             commandResultBuilder.append(MESSAGE_BIN_SUCCESS);
@@ -102,6 +110,7 @@ public class ListCommand extends Command {
             model.updateFilteredDeadlineList(startDate, endDate, Entry.State.DELETED);
             model.updateFilteredFloatingTaskList(startDate, endDate, Entry.State.DELETED);
             raise(new ListTypeUpdateEvent(Entry.State.DELETED));
+            history.setPrevSearch(new HashSet<String>(), Entry.State.DELETED);
             break;
         case ACTIVE:
             commandResultBuilder.append(MESSAGE_ACTIVE_SUCCESS);
@@ -109,6 +118,7 @@ public class ListCommand extends Command {
             model.updateFilteredDeadlineList(startDate, endDate, Entry.State.ACTIVE);
             model.updateFilteredFloatingTaskList(startDate, endDate, Entry.State.ACTIVE);
             raise(new ListTypeUpdateEvent(Entry.State.ACTIVE));
+            history.setPrevSearch(new HashSet<String>(), Entry.State.ACTIVE);
             break;
         default:
             throw new AssertionError("Unknown list show type");
@@ -136,6 +146,14 @@ public class ListCommand extends Command {
 
     private void raise(BaseEvent event) {
         EventsCenter.getInstance().post(event);
+    }
+
+    @Override
+    public void setData(Model model, CommandHistory history) {
+        requireNonNull(model);
+        requireNonNull(history);
+        this.model = model;
+        this.history = history;
     }
 
 }
