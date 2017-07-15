@@ -3,8 +3,8 @@ package seedu.multitasky.logic.commands;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
-import static seedu.multitasky.testutil.EditCommandTestUtil.DESC_AMY;
-import static seedu.multitasky.testutil.EditCommandTestUtil.DESC_BOB;
+import static seedu.multitasky.testutil.EditCommandTestUtil.DESC_CLEAN;
+import static seedu.multitasky.testutil.EditCommandTestUtil.DESC_MEETING;
 import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_NAME_MEETING;
 import static seedu.multitasky.testutil.SampleEntries.INDEX_FIRST_ENTRY;
 import static seedu.multitasky.testutil.SampleEntries.INDEX_SECOND_ENTRY;
@@ -125,10 +125,10 @@ public class EditCommandTest {
     @Test
     public void equals() {
         final EditCommand standardCommand = new EditByIndexCommand(INDEX_FIRST_ENTRY, PREFIX_FLOATINGTASK,
-                                                                   DESC_AMY);
+                                                                   DESC_CLEAN);
 
         // same values -> returns true
-        EditEntryDescriptor copyDescriptor = new EditEntryDescriptor(DESC_AMY);
+        EditEntryDescriptor copyDescriptor = new EditEntryDescriptor(DESC_CLEAN);
         EditCommand commandWithSameValues = new EditByIndexCommand(INDEX_FIRST_ENTRY, PREFIX_FLOATINGTASK,
                                                                    copyDescriptor);
         assertTrue(standardCommand.equals(commandWithSameValues));
@@ -144,11 +144,11 @@ public class EditCommandTest {
 
         // different index -> returns false
         assertFalse(standardCommand.equals(new EditByIndexCommand(INDEX_SECOND_ENTRY, PREFIX_FLOATINGTASK,
-                                                                  DESC_AMY)));
+                                                                  DESC_CLEAN)));
 
         // different descriptor -> returns false
         assertFalse(standardCommand.equals(new EditByIndexCommand(INDEX_FIRST_ENTRY, PREFIX_FLOATINGTASK,
-                                                                  DESC_BOB)));
+                                                                  DESC_MEETING)));
     }
 
     /**
