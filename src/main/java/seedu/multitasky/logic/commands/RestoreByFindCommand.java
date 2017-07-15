@@ -57,6 +57,11 @@ public class RestoreByFindCommand extends RestoreCommand {
                 assert false : "The target entry cannot be missing";
             }
 
+            /**
+             * TODO: Possible refactoring of the following 4 lines of code to a utility
+             * method since it's done by DeleteCommand, EditCommand, CompleteCommand,
+             * and RestoreCommand.
+             */
             // refresh list view after updating.
             model.updateFilteredDeadlineList(history.getPrevSearch(), history.getPrevState());
             model.updateFilteredEventList(history.getPrevSearch(), history.getPrevState());
