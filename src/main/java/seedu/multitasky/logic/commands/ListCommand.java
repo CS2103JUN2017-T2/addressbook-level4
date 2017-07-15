@@ -11,7 +11,6 @@ import seedu.multitasky.commons.events.BaseEvent;
 import seedu.multitasky.commons.events.ui.ListTypeUpdateEvent;
 import seedu.multitasky.logic.CommandHistory;
 import seedu.multitasky.logic.parser.CliSyntax;
-import seedu.multitasky.logic.parser.Prefix;
 import seedu.multitasky.model.Model;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.util.Comparators;
@@ -44,12 +43,12 @@ public class ListCommand extends Command {
 
     public static final String MESSAGE_UPCOMING_ORDER = "in upcoming order";
 
-    public static final String[] VALID_PREFIXES = {CliSyntax.PREFIX_ARCHIVE.toString(),
-                                                   CliSyntax.PREFIX_BIN.toString(),
-                                                   CliSyntax.PREFIX_UPCOMING.toString(),
-                                                   CliSyntax.PREFIX_REVERSE.toString(),
-                                                   CliSyntax.PREFIX_FROM.toString(),
-                                                   CliSyntax.PREFIX_TO.toString()};
+    public static final String[] VALID_PREFIXES = { CliSyntax.PREFIX_ARCHIVE.toString(),
+                                                    CliSyntax.PREFIX_BIN.toString(),
+                                                    CliSyntax.PREFIX_UPCOMING.toString(),
+                                                    CliSyntax.PREFIX_REVERSE.toString(),
+                                                    CliSyntax.PREFIX_FROM.toString(),
+                                                    CliSyntax.PREFIX_TO.toString() };
 
     public enum ShowType {
         ACTIVE, ARCHIVE, BIN
@@ -127,17 +126,17 @@ public class ListCommand extends Command {
         switch (ordering) {
         case REVERSE:
             model.updateSortingComparators(Comparators.EVENT_REVERSE, Comparators.DEADLINE_REVERSE,
-                                           Comparators.FLOATING_TASK_REVERSE);
+                    Comparators.FLOATING_TASK_REVERSE);
             commandResultBuilder.append(" ").append(MESSAGE_REVERSE_ORDER);
             return new CommandResult(commandResultBuilder.toString());
         case UPCOMING:
             model.updateSortingComparators(Comparators.EVENT_UPCOMING, Comparators.DEADLINE_UPCOMING,
-                                           Comparators.FLOATING_TASK_UPCOMING);
+                    Comparators.FLOATING_TASK_UPCOMING);
             commandResultBuilder.append(" ").append(MESSAGE_UPCOMING_ORDER);
             return new CommandResult(commandResultBuilder.toString());
         case DEFAULT:
             model.updateSortingComparators(Comparators.EVENT_DEFAULT, Comparators.DEADLINE_DEFAULT,
-                                           Comparators.FLOATING_TASK_DEFAULT);
+                    Comparators.FLOATING_TASK_DEFAULT);
             return new CommandResult(commandResultBuilder.toString());
         default:
             throw new AssertionError("Unknown list command ordering type");

@@ -41,7 +41,11 @@ public class CompleteByIndexCommand extends CompleteCommand {
         } catch (EntryNotFoundException enfe) {
             assert false : "The target entry cannot be missing";
         }
-        model.updateAllFilteredListToShowAllActiveEntries();
+        // refresh list view after updating.
+        model.updateFilteredDeadlineList(history.getPrevSearch(), Entry.State.ACTIVE);
+        model.updateFilteredEventList(history.getPrevSearch(), Entry.State.ACTIVE);
+        model.updateFilteredFloatingTaskList(history.getPrevSearch(), Entry.State.ACTIVE);
+
         return new CommandResult(String.format(MESSAGE_SUCCESS, entryToComplete));
     }
 

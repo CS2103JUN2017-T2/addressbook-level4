@@ -1,10 +1,14 @@
 package seedu.multitasky.logic.commands;
 
+import static java.util.Objects.requireNonNull;
+
 import seedu.multitasky.commons.core.Messages;
+import seedu.multitasky.logic.CommandHistory;
 import seedu.multitasky.logic.parser.CliSyntax;
+import seedu.multitasky.model.Model;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 
-// @@author A0132788U
+// @@author A0132788U-reused
 /*
  * Abstract class that represents a complete command. It contains the command keyword, usage instructions,
  * prefixes and the success message.
@@ -32,5 +36,13 @@ public abstract class CompleteCommand extends Command {
                                                     CliSyntax.PREFIX_FLOATINGTASK.toString() };
 
     protected ReadOnlyEntry entryToComplete;
+
+    @Override
+    public void setData(Model model, CommandHistory history) {
+        requireNonNull(history);
+        requireNonNull(model);
+        this.model = model;
+        this.history = history;
+    }
 
 }

@@ -38,6 +38,10 @@ public class CompleteByFindCommand extends CompleteCommand {
         this.keywords = keywords;
     }
 
+    public Set<String> getKeywords() {
+        return keywords;
+    }
+
     @Override
     public CommandResult execute() throws CommandException, DuplicateEntryException {
 
@@ -59,9 +63,13 @@ public class CompleteByFindCommand extends CompleteCommand {
             } catch (EntryNotFoundException e) {
                 assert false : "The target entry cannot be missing";
             }
-            model.updateAllFilteredListToShowAllActiveEntries();
+            // refresh list view after updating.
+            model.updateFilteredDeadlineList(history.getPrevSearch(), history.getPrevState());
+            model.updateFilteredEventList(history.getPrevSearch(), history.getPrevState());
+            model.updateFilteredFloatingTaskList(history.getPrevSearch(), history.getPrevState());
             return new CommandResult(String.format(MESSAGE_SUCCESS, entryToComplete));
         } else {
+            history.setPrevSearch(keywords, Entry.State.ACTIVE);
             if (allList.size() >= 2) { // multiple entries found
                 return new CommandResult(MESSAGE_MULTIPLE_ENTRIES);
             } else {
