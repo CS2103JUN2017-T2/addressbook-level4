@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import seedu.multitasky.TestApp;
@@ -75,20 +76,20 @@ public class GuiHandle {
         guiRobot.type(KeyCode.UP).sleep(250);
     }
 
-    public void pressKeypadUpKey() {
-        guiRobot.type(KeyCode.KP_UP).sleep(250);
-    }
-
     public void pressDownKey() {
         guiRobot.type(KeyCode.DOWN).sleep(250);
     }
 
-    public void pressKeypadDownKey() {
-        guiRobot.type(KeyCode.KP_DOWN).sleep(250);
-    }
-
     public void pressTabKey() {
         guiRobot.type(KeyCode.TAB).sleep(250);
+    }
+
+    public void pressKey(KeyCode keycode) {
+        guiRobot.type(keycode).sleep(250);
+    }
+
+    public void pressKeyCombination(KeyCodeCombination keyCodeCombination) {
+        guiRobot.push(keyCodeCombination).sleep(250);
     }
     //@@author
 

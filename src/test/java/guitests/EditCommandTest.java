@@ -8,7 +8,9 @@ import java.util.Collections;
 
 import org.junit.Test;
 
+import javafx.scene.input.KeyCode;
 import seedu.multitasky.commons.core.index.Index;
+import seedu.multitasky.logic.commands.EditCommand;
 import seedu.multitasky.logic.commands.ListCommand;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.util.Comparators;
@@ -58,6 +60,14 @@ public class EditCommandTest extends EntryBookGuiTest {
         assertEditDeadlineByKeywordSuccess("tax", currentList, SampleEntries.TAX, SampleEntries.UPGRADE);
     }
 
+    /*******************************
+     * Mixed-case and autocomplete *
+     ******************************/
+    @Test
+    public void edit_keyboardShortcut_success() {
+        commandBox.pressKey(KeyCode.F2);
+        assertTrue(commandBox.getCommandInput().equals(EditCommand.COMMAND_WORD + " "));
+    }
 
     /*******************
      * Utility methods *
