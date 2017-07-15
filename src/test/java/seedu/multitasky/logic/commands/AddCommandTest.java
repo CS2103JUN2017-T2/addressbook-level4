@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Set;
 
@@ -17,14 +16,16 @@ import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.logic.CommandHistory;
 import seedu.multitasky.model.Model;
 import seedu.multitasky.model.ReadOnlyEntryBook;
+import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.Entry.State;
+import seedu.multitasky.model.entry.Event;
 import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
-import seedu.multitasky.model.util.EntryBuilder;
 import seedu.multitasky.storage.exception.NothingToRedoException;
+import seedu.multitasky.testutil.SampleEntries;
 
 public class AddCommandTest {
 
@@ -37,16 +38,33 @@ public class AddCommandTest {
         Command command = new AddCommand(null);
     }
 
+    // @@author A0140633R
     @Test
     public void execute_entryAcceptedByModel_addSuccessful() throws Exception {
         ModelStubAcceptingEntryAdded modelStub = new ModelStubAcceptingEntryAdded();
-        Entry validEntry = EntryBuilder.build();
-
+        ArrayList<Entry> expectedEntryList = new ArrayList<>();
+        // Floating task
+        Entry validEntry = SampleEntries.COOK;
+        expectedEntryList.add(validEntry);
         CommandResult commandResult = getAddCommandForEntry(validEntry, modelStub).execute();
-
         assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, validEntry), commandResult.feedbackToUser);
-        assertEquals(Arrays.asList(validEntry), modelStub.entrysAdded);
+        assertEquals(expectedEntryList, modelStub.entrysAdded);
+
+        // Deadline
+        validEntry = SampleEntries.TAX;
+        expectedEntryList.add(validEntry);
+        commandResult = getAddCommandForEntry(validEntry, modelStub).execute();
+        assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, validEntry), commandResult.feedbackToUser);
+        assertEquals(expectedEntryList, modelStub.entrysAdded);
+
+        // Event
+        validEntry = SampleEntries.TAX;
+        expectedEntryList.add(validEntry);
+        commandResult = getAddCommandForEntry(validEntry, modelStub).execute();
+        assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, validEntry), commandResult.feedbackToUser);
+        assertEquals(expectedEntryList, modelStub.entrysAdded);
     }
+    // @@author A0140633R
 
     /**
      * Generates a new AddCommand with the details of the given entry.
@@ -196,7 +214,15 @@ public class AddCommandTest {
 
         @Override
         public void addEntry(ReadOnlyEntry entry) {
-            entrysAdded.add(new FloatingTask(entry));
+            if (entry instanceof FloatingTask) {
+                entrysAdded.add(new FloatingTask(entry));
+            } else if (entry instanceof Deadline) {
+                entrysAdded.add(new Deadline(entry));
+            } else if (entry instanceof Event) {
+                entrysAdded.add(new Event(entry));
+            } else {
+                throw new AssertionError("can only add float,deadline or event");
+            }
         }
     }
 

@@ -23,7 +23,6 @@ public class AddCommandIntegrationTest {
 
     @Before
     public void setUp() {
-        //TODO fix typical entries
         model = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
     }
 
