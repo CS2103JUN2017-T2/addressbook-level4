@@ -12,7 +12,6 @@ import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 
-//@@author A0126623L-reused
 /*
 * Finds entries from given keywords and restores entry if it is the only one found.
 */
@@ -39,6 +38,7 @@ public class RestoreByFindCommand extends RestoreCommand {
         this.keywords = keywords;
     }
 
+    // @@author A0126623L-reused
     @Override
     public CommandResult execute() throws CommandException, DuplicateEntryException {
 
@@ -76,9 +76,11 @@ public class RestoreByFindCommand extends RestoreCommand {
             }
         }
     }
+    // @@author
 
+    // @@author A0126623L
     /**
-     * Collects all archived and deleted entries that matches search keywords.
+     * Collates all archived and deleted entries that matches search keywords.
      * @return List of matched entries
      */
     private List<ReadOnlyEntry> collateArchivedAndDeletedEntries() {
@@ -102,5 +104,6 @@ public class RestoreByFindCommand extends RestoreCommand {
 
         return allList;
     }
+    // @@author
 
 }
