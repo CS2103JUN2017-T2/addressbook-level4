@@ -120,7 +120,7 @@ Examples:
 === Listing all entries : `list`
 
 Displays a list of entries sorted by datetime. +
-Format: `list [from START_DATE_TIME] [to END_DATE_TIME] [archive | bin] [reverse | upcoming]`
+Format: `list [archive | bin | all] [reverse | upcoming] [from START_DATE_TIME] [to END_DATE_TIME]`
 
 ****
 * By default the active entries will be listed.
@@ -134,6 +134,7 @@ Examples:
 * `list`
 * `list to 10pm today`
 * `list upcoming`
+* `list from tomorrow 8am to tomorrow 5pm`
 
 //<!-- @@author A0125586X -->
 === Editing an entry : `edit`
@@ -272,11 +273,27 @@ Here are some examples you can try:
 ** Type `e` and press `tab`. Notice how nothing has changed as there are two possibilities for this input: `edit` and `exit`. Now add an `x` behind `e` to get `ex` and now it completes to `exit` when you press `tab`.
 * Autocomplete is able to figure out what you want not just from the beginnings of words, but also from the middle.
 ** Notice that typing just `x` and pressing `tab` gives you `exit` as well.
-* Don't worry if you sometimes make mistakes when typing. Autocomplete is able to compensate for the occasional typo, so you don't have to spend time going back to change a small typo.
+* Autocomplete is able to compensate for the occasional typo, so you don't have to spend time going back to change a small typo.
 ** Try typing `lisft` and pressing `tab`. This autocorrects to `list`.
 * For certain commands Autocomplete can even work on every word you've typed, not just the actual command word.
 ** If you want to delete the first deadline in the list, you can type `d d` and press `tab`, and it completes to `delete deadline`. Now all you need is to enter `1` and press `enter` to execute your command.
-** This goes beyond just two words. Try typing in `l a r` which completes to `list archive reverse`.
+** This goes beyond just two words in some special cases. Try typing in `l u f` which completes to `list upcoming from`, and you can continue on to type your desired starting date.
+
+=== Keyboard Shortcuts
+
+There are several keyboard shortcuts that allow you to bring up or even execute commands immediately. +
+Shortcuts that execute commands:
+
+* `F1` executes the `help` command
+* `ctrl` + `z` executes `undo`
+* `ctrl` + `r` executes `redo`
+
+Shortcuts that bring up commands:
+
+* `F2` types `edit` into the command box
+* `F3` types `find` into the command box
+* `F4` types `exit` into the command box
+* `F5` types `list` into the command box
 //<!-- @@author -->
 
 == FAQ
@@ -368,7 +385,7 @@ ____
 ** e.g. `add dinner with parents /from friday 6pm /to friday 9pm /tag family`
 * *Complete* `complete [KEYWORD_1 KEYWORD_2...] | [/event | /deadline | /float INDEX]`
 ** e,g, `complete clean up room` or `complete /event | /deadline | /float 3`
-* *List* : `list [from START_DATE_TIME] [to END_DATE_TIME] [archive | bin] [reverse | upcoming]`
+* *List* : `list [archive | bin | all] [reverse | upcoming] [from START_DATE_TIME] [to END_DATE_TIME]`
 ** e.g. `list archive from yesterday 5pm`
 * *Edit* : `edit [KEYWORD_1 KEYWORD_2...] | [/event | /deadline | /float INDEX] [/name NEW_ENTRY_NAME] [/on | /at | /from DATE_TIME_A] [/to | /by DATE_TIME_B] [/every day | week | month | year [NUM_TIMES | /until STOP_DATE] [/tag TAG_1 TAG_2...]`
 ** e.g. `edit zoo outing /on 200917 1200`

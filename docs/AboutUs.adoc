@@ -15,6 +15,7 @@ image::mattheuslee.jpg[width="150", align="left"]
 * Features implemented:
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#listing-all-entries-code-list-code[List entries]
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#autocomplete[Command Autocomplete] using https://github.com/CS2103JUN2017-T2/main/blob/master/docs/DeveloperGuide.adoc#261-powermatch[PowerMatch]
+** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#keyboard-shortcuts[Keyboard Shortcuts]
 * Code written: https://github.com/CS2103JUN2017-T2/main/blob/master/collated/main/A0125586X.md[functional code], https://github.com/CS2103JUN2017-T2/main/blob/master/collated/test/A0125586X.md[test code] and https://github.com/CS2103JUN2017-T2/main/blob/master/collated/docs/A0125586X.md[documentation]
 * Other major contributions:
 ** Set up Travis, AppVeyor and Coveralls
