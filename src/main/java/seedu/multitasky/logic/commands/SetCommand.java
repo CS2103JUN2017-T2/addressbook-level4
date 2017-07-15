@@ -1,7 +1,5 @@
 package seedu.multitasky.logic.commands;
 
-import java.io.File;
-
 // @@author A0132788U
 /**
  * Sets the file path to store/load entrybook data.
@@ -28,12 +26,12 @@ public class SetCommand extends Command {
             model.changeFilePath(newFilePath);
             return new CommandResult(MESSAGE_SUCCESS);
         } else {
+            System.out.println("Invalid file path");
             return new CommandResult(MESSAGE_FAILURE);
         }
     }
 
     private boolean isValidPath(String newFilePath) {
-        File file = new File(newFilePath);
-        return ((file.canWrite()) && (newFilePath.endsWith(".xml")));
+        return newFilePath.endsWith(".xml");
     }
 }
