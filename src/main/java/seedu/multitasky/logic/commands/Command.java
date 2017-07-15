@@ -10,6 +10,7 @@ import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
  * Represents a command with hidden internal logic and the ability to be executed.
  */
 public abstract class Command {
+
     protected Model model;
     protected CommandHistory history;
 
