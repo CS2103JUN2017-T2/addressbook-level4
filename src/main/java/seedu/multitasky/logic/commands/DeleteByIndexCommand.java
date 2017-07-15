@@ -41,6 +41,7 @@ public class DeleteByIndexCommand extends DeleteCommand {
         } catch (EntryNotFoundException enfe) {
             assert false : "The target entry cannot be missing";
         }
+        model.updateAllFilteredListToShowAllActiveEntries();
         return new CommandResult(String.format(MESSAGE_SUCCESS, entryToDelete));
     }
 

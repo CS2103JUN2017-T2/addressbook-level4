@@ -462,15 +462,10 @@ public class ModelManager extends ComponentManager implements Model {
             }
             if (entry instanceof FloatingTask) {
                 return true;
-            } else if (entry instanceof Deadline) {
-                if (isWithinRange(entry.getEndDateAndTime())) {
-                    return true;
-                }
-            } else if (entry instanceof Event) {
-                // For now, event is shown as long as the starting date is within the range
-                if (isWithinRange(entry.getStartDateAndTime())) {
-                    return true;
-                }
+            } else if (entry instanceof Deadline && isWithinRange(entry.getEndDateAndTime())) {
+                return true;
+            } else if (entry instanceof Event && isWithinRange(entry.getStartDateAndTime())) {
+                return true;
             } else {
                 assert false : "DateAndStatusQualifier::run received entry of unknown Entry subclass type";
             }
