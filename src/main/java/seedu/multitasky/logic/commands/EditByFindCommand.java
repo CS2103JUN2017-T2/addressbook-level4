@@ -69,8 +69,6 @@ public class EditByFindCommand extends EditCommand {
             model.updateFilteredDeadlineList(history.getPrevSearch(), history.getPrevState());
             model.updateFilteredEventList(history.getPrevSearch(), history.getPrevState());
             model.updateFilteredFloatingTaskList(history.getPrevSearch(), history.getPrevState());
-            // set search terms to what i searched with in this rendition
-            history.setPrevSearch(keywords, Entry.State.ACTIVE);
 
             return new CommandResult(String.format(MESSAGE_SUCCESS, entryToEdit));
         } else {
