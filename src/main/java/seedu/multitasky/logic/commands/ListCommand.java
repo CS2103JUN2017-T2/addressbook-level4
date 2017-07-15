@@ -3,6 +3,7 @@ package seedu.multitasky.logic.commands;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import seedu.multitasky.commons.events.ui.ListTypeUpdateEvent;
 import seedu.multitasky.logic.parser.CliSyntax;
 import seedu.multitasky.model.entry.util.Comparators;
 
