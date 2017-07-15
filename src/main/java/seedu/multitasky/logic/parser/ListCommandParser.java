@@ -3,9 +3,6 @@ package seedu.multitasky.logic.parser;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
-
-import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.logic.commands.ListCommand;
@@ -58,9 +55,12 @@ public class ListCommandParser {
         if (rawDate.isEmpty()) {
             return null;
         }
-        GregorianCalendar date = new GregorianCalendar();
-        date.setTime(((new PrettyTimeParser().parse(rawDate)).get(0)));
-        return date;
+        try {
+            Calendar date = ParserUtil.parseDate(rawDate);
+            return date;
+        } catch (ParseException e) {
+            return null;
+        }
     }
 
     private ArrayList<String> getPresentPrefixes(ArgumentMultimap argumentMultimap, String... prefixes) {
