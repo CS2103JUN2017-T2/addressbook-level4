@@ -46,14 +46,6 @@ public class ListCommand extends Command {
                                                    CliSyntax.PREFIX_FROM.toString(),
                                                    CliSyntax.PREFIX_TO.toString()};
 
-    public static final Prefix[] VALID_PREFIXES_ARRAY = {CliSyntax.PREFIX_ARCHIVE,
-                                                         CliSyntax.PREFIX_BIN,
-                                                         CliSyntax.PREFIX_UPCOMING,
-                                                         CliSyntax.PREFIX_REVERSE,
-                                                         CliSyntax.PREFIX_FROM,
-                                                         CliSyntax.PREFIX_TO};
-
-
     public enum ShowType {
         ACTIVE, ARCHIVE, BIN
     }
