@@ -44,7 +44,7 @@ public class FindCommand extends Command {
         int floatingSize = model.getFilteredFloatingTaskList().size();
 
         // save keywords of the search
-        history.setNextSearch(keywords, Entry.State.ACTIVE);
+        history.setPrevSearch(keywords, Entry.State.ACTIVE);
         return new CommandResult(getMessageForEntryListShownSummary(deadlineSize + eventSize + floatingSize));
     }
 

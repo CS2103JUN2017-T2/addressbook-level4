@@ -110,7 +110,7 @@ public class ListCommand extends Command {
             model.updateFilteredDeadlineList(startDate, endDate, Entry.State.ARCHIVED);
             model.updateFilteredFloatingTaskList(startDate, endDate, Entry.State.ARCHIVED);
             raise(new ListTypeUpdateEvent(Entry.State.ARCHIVED));
-            history.setNextSearch(new HashSet<String>(), Entry.State.ARCHIVED);
+            history.setPrevSearch(new HashSet<String>(), Entry.State.ARCHIVED);
             break;
         case BIN:
             commandResultBuilder.append(MESSAGE_BIN_SUCCESS);
@@ -118,7 +118,7 @@ public class ListCommand extends Command {
             model.updateFilteredDeadlineList(startDate, endDate, Entry.State.DELETED);
             model.updateFilteredFloatingTaskList(startDate, endDate, Entry.State.DELETED);
             raise(new ListTypeUpdateEvent(Entry.State.DELETED));
-            history.setNextSearch(new HashSet<String>(), Entry.State.DELETED);
+            history.setPrevSearch(new HashSet<String>(), Entry.State.DELETED);
             break;
         case ACTIVE:
             commandResultBuilder.append(MESSAGE_ACTIVE_SUCCESS);
@@ -126,7 +126,7 @@ public class ListCommand extends Command {
             model.updateFilteredDeadlineList(startDate, endDate, Entry.State.ACTIVE);
             model.updateFilteredFloatingTaskList(startDate, endDate, Entry.State.ACTIVE);
             raise(new ListTypeUpdateEvent(Entry.State.ACTIVE));
-            history.setNextSearch(new HashSet<String>(), Entry.State.ACTIVE);
+            history.setPrevSearch(new HashSet<String>(), Entry.State.ACTIVE);
             break;
         default:
             throw new AssertionError("Unknown list show type");

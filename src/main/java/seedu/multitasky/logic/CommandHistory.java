@@ -15,12 +15,12 @@ import seedu.multitasky.model.entry.Entry.State;
  */
 public class CommandHistory {
     private ArrayList<String> userInputHistory;
-    private Set<String> previousSearch;
+    private Set<String> previousSearchKeywords;
     private State previousState;
 
     public CommandHistory() {
         userInputHistory = new ArrayList<>();
-        previousSearch = new HashSet<String>();
+        previousSearchKeywords = new HashSet<String>();
         previousState = Entry.State.ACTIVE;
     }
 
@@ -41,15 +41,15 @@ public class CommandHistory {
 
     // @@author A0140633R
     public Set<String> getPrevSearch() {
-        return previousSearch;
+        return previousSearchKeywords;
     }
 
     public State getPrevState() {
         return previousState;
     }
 
-    public void setNextSearch(Set<String> nextSearch, State nextState) {
-        previousSearch = nextSearch;
+    public void setPrevSearch(Set<String> nextSearch, State nextState) {
+        previousSearchKeywords = nextSearch;
         previousState = nextState;
     }
 

@@ -70,11 +70,11 @@ public class EditByFindCommand extends EditCommand {
             model.updateFilteredEventList(history.getPrevSearch(), history.getPrevState());
             model.updateFilteredFloatingTaskList(history.getPrevSearch(), history.getPrevState());
             // set search terms to what i searched with in this rendition
-            history.setNextSearch(keywords, Entry.State.ACTIVE);
+            history.setPrevSearch(keywords, Entry.State.ACTIVE);
 
             return new CommandResult(String.format(MESSAGE_SUCCESS, entryToEdit));
         } else {
-            history.setNextSearch(keywords, Entry.State.ACTIVE);
+            history.setPrevSearch(keywords, Entry.State.ACTIVE);
             if (allList.size() >= 2) {
                 return new CommandResult(MESSAGE_MULTIPLE_ENTRIES);
             } else {
