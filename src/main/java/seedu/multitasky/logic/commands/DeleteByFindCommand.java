@@ -63,9 +63,17 @@ public class DeleteByFindCommand extends DeleteCommand {
             } catch (EntryNotFoundException e) {
                 assert false : "The target entry cannot be missing";
             }
-            model.updateAllFilteredListToShowAllActiveEntries();
+            // refresh list view after updating.
+            model.updateFilteredDeadlineList(history.getPrevSearch(), history.getPrevState());
+            model.updateFilteredEventList(history.getPrevSearch(), history.getPrevState());
+            model.updateFilteredFloatingTaskList(history.getPrevSearch(), history.getPrevState());
+            // set search terms to what i searched with in this rendition
+            history.setNextSearch(keywords, Entry.State.ACTIVE);
+
             return new CommandResult(String.format(MESSAGE_SUCCESS, entryToDelete));
         } else {
+            // save what search i did
+            history.setNextSearch(keywords, Entry.State.ACTIVE);
             if (allList.size() >= 2) { // multiple entries found
                 return new CommandResult(MESSAGE_MULTIPLE_ENTRIES);
             } else {

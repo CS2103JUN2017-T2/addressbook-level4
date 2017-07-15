@@ -8,8 +8,10 @@ import java.util.Set;
 
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.commons.util.CollectionUtil;
+import seedu.multitasky.logic.CommandHistory;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.logic.parser.CliSyntax;
+import seedu.multitasky.model.Model;
 import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.Event;
@@ -217,6 +219,14 @@ public abstract class EditCommand extends Command {
             return getName().equals(e.getName()) && getTags().equals(e.getTags())
                    && getStartDate().equals(e.getStartDate()) && getEndDate().equals(e.getEndDate());
         }
+    }
+
+    @Override
+    public void setData(Model model, CommandHistory history) {
+        requireNonNull(model);
+        requireNonNull(history);
+        this.model = model;
+        this.history = history;
     }
 
 }

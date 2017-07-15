@@ -65,14 +65,22 @@ public class EditByFindCommand extends EditCommand {
             } catch (EntryNotFoundException pnfe) {
                 assert false : "The target entry cannot be missing";
             }
-            model.updateAllFilteredListToShowAllActiveEntries();
+            // refresh list view after updating.
+            model.updateFilteredDeadlineList(history.getPrevSearch(), history.getPrevState());
+            model.updateFilteredEventList(history.getPrevSearch(), history.getPrevState());
+            model.updateFilteredFloatingTaskList(history.getPrevSearch(), history.getPrevState());
+            // set search terms to what i searched with in this rendition
+            history.setNextSearch(keywords, Entry.State.ACTIVE);
+
             return new CommandResult(String.format(MESSAGE_SUCCESS, entryToEdit));
-        }
-        if (allList.size() >= 2) {
-            return new CommandResult(MESSAGE_MULTIPLE_ENTRIES);
         } else {
-            return new CommandResult(MESSAGE_NO_ENTRIES);
+            history.setNextSearch(keywords, Entry.State.ACTIVE);
+            if (allList.size() >= 2) {
+                return new CommandResult(MESSAGE_MULTIPLE_ENTRIES);
+            } else {
+                assert allList.size() == 0;
+                return new CommandResult(MESSAGE_NO_ENTRIES);
+            }
         }
     }
-
 }
