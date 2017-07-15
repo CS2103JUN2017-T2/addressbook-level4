@@ -23,7 +23,6 @@ public class XmlEntryBookStorage implements EntryBookStorage {
     private String filePath;
     private String snapshotPath;
     private String previousSnapshotPath;
-    private String filePathforDeletion;
 
     public XmlEntryBookStorage(String filePath) {
         this.filePath = filePath;
@@ -89,11 +88,6 @@ public class XmlEntryBookStorage implements EntryBookStorage {
         File file = new File(filePath);
         FileUtil.createIfMissing(file);
         XmlFileStorage.saveDataToFile(file, new XmlSerializableEntryBook(entryBook));
-    }
-
-    @Override
-    public String getFilePathForDeletion() {
-        return filePathforDeletion;
     }
 
 }

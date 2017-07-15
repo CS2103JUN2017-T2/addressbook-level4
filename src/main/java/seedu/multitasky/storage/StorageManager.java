@@ -23,8 +23,6 @@ import seedu.multitasky.model.UserPrefs;
  */
 public class StorageManager extends ComponentManager implements Storage {
 
-    /** Variable to store number of snapshots for deletion during exit */
-    private static int numSnapshots = 0;
     private static final Logger logger = LogsCenter.getLogger(StorageManager.class);
     private EntryBookStorage entryBookStorage;
     private UserPrefsStorage userPrefsStorage;
@@ -35,18 +33,6 @@ public class StorageManager extends ComponentManager implements Storage {
         this.userPrefsStorage = userPrefsStorage;
     }
 
-    public static int getNumSnapshots() {
-        return numSnapshots;
-    }
-
-    public static void setNumSnapshots(int numSnapshots) {
-        StorageManager.numSnapshots = numSnapshots;
-    }
-
-    /** Method to decrement snapshot index for deletion during app exit */
-    public static void decrementNumSnapshots() {
-        numSnapshots--;
-    }
     // ================ UserPrefs methods ==============================
 
     @Override
@@ -78,14 +64,6 @@ public class StorageManager extends ComponentManager implements Storage {
     @Override
     public String getEntryBookSnapshotPath() {
         return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
-    }
-
-    /**
-     * Gets the filepath for deletion during exitApp event
-     */
-    @Override
-    public String getFilePathForDeletion() {
-        return UserPrefs.getEntryBookSnapshotPath() + numSnapshots + ".xml";
     }
 
     // @@author
@@ -164,7 +142,6 @@ public class StorageManager extends ComponentManager implements Storage {
      */
     public String setEntryBookSnapshotPathAndUpdateIndex() {
         UserPrefs.incrementIndexByOne();
-        numSnapshots++;
         String snapshotPath = getEntryBookSnapshotPath();
         return snapshotPath;
     }
@@ -236,4 +213,5 @@ public class StorageManager extends ComponentManager implements Storage {
             UserPrefs.decrementIndexByOne();
         }
     }
+
 }

@@ -16,7 +16,6 @@ import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.tag.Tag;
 
-// @@author A0132788U
 /**
  * An Immutable EntryBook that is serializable to XML format
  */
@@ -59,11 +58,11 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
         this();
         events.addAll(src.getEventList().stream().map(XmlAdaptedEntry::new).collect(Collectors.toList()));
         deadlines.addAll(src.getDeadlineList().stream().map(XmlAdaptedEntry::new)
-                            .collect(Collectors.toList()));
+                .collect(Collectors.toList()));
         floatingTasks.addAll(src.getFloatingTaskList().stream().map(XmlAdaptedEntry::new)
-                                .collect(Collectors.toList()));
+                .collect(Collectors.toList()));
         active.addAll(src.getActiveList().stream().map(XmlAdaptedEntry::new)
-                         .collect(Collectors.toList()));
+                .collect(Collectors.toList()));
         tags.addAll(src.getTagList().stream().map(XmlAdaptedTag::new).collect(Collectors.toList()));
     }
 
