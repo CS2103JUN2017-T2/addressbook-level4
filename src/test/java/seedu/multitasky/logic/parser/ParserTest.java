@@ -7,7 +7,10 @@ import static seedu.multitasky.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 
 import org.junit.Test;
 
+import seedu.multitasky.logic.commands.ClearCommand;
 import seedu.multitasky.logic.commands.HistoryCommand;
+import seedu.multitasky.logic.commands.RedoCommand;
+import seedu.multitasky.logic.commands.UndoCommand;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
 
 public class ParserTest {
@@ -24,5 +27,21 @@ public class ParserTest {
         } catch (ParseException pe) {
             assertEquals(MESSAGE_UNKNOWN_COMMAND, pe.getMessage());
         }
+    }
+
+    // @@author A0140633R
+    @Test
+    public void parseCommand_clear_success() throws Exception {
+        assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD) instanceof ClearCommand);
+    }
+
+    @Test
+    public void parseCommand_undo_success() throws Exception {
+        assertTrue(parser.parseCommand(UndoCommand.COMMAND_WORD) instanceof UndoCommand);
+    }
+
+    @Test
+    public void parseCommand_redo_success() throws Exception {
+        assertTrue(parser.parseCommand(RedoCommand.COMMAND_WORD) instanceof RedoCommand);
     }
 }

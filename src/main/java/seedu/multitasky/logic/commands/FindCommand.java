@@ -1,8 +1,12 @@
 package seedu.multitasky.logic.commands;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Set;
 
+import seedu.multitasky.logic.CommandHistory;
 import seedu.multitasky.logic.parser.CliSyntax;
+import seedu.multitasky.model.Model;
 import seedu.multitasky.model.entry.Entry;
 
 /**
@@ -38,11 +42,22 @@ public class FindCommand extends Command {
         int deadlineSize = model.getFilteredDeadlineList().size();
         int eventSize = model.getFilteredEventList().size();
         int floatingSize = model.getFilteredFloatingTaskList().size();
+
+        // save keywords of the search
+        history.setPrevSearch(keywords, Entry.State.ACTIVE);
         return new CommandResult(getMessageForEntryListShownSummary(deadlineSize + eventSize + floatingSize));
     }
 
     public Set<String> getKeywords() {
         return keywords;
+    }
+
+    @Override
+    public void setData(Model model, CommandHistory history) {
+        requireNonNull(model);
+        requireNonNull(history);
+        this.model = model;
+        this.history = history;
     }
 
 }
