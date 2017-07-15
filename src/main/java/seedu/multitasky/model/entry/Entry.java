@@ -123,4 +123,19 @@ public abstract class Entry implements ReadOnlyEntry {
         this.setState(replacement.getState());
     }
 
+    @Override
+    public boolean isActive() {
+        return this.getState().equals(Entry.State.ACTIVE);
+    }
+
+    @Override
+    public boolean isArchived() {
+        return this.getState().equals(Entry.State.ARCHIVED);
+    }
+
+    @Override
+    public boolean isDeleted() {
+        return this.getState().equals(Entry.State.DELETED);
+    }
+
 }

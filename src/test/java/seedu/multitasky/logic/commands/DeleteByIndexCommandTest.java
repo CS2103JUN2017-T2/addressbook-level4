@@ -36,7 +36,7 @@ public class DeleteByIndexCommandTest {
 
         String expectedMessage = String.format(DeleteCommand.MESSAGE_SUCCESS, entryToDelete);
 
-        ModelManager expectedModel = new ModelManager(model.getEntryBook(), new UserPrefs());
+        ModelManager expectedModel = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
         expectedModel.changeEntryState(entryToDelete, Entry.State.DELETED);
         expectedModel.updateAllFilteredListToShowAllActiveEntries();
 
