@@ -8,7 +8,7 @@ import java.util.List;
  * e.g. {@code some preamble text from 11.00 to 12.00 July tag} where prefixes are {@code from to }.<br>
  * 1. An argument's value can be an empty string e.g. the value of {@code tag} in the above example.<br>
  * 2. Leading and trailing whitespaces of an argument value will be discarded.<br>
- * 3. An argument may be repeated and all its values will be accumulated e.g. the value of {@code t/}
+ * 3. An argument may be repeated and all its values will be accumulated e.g. the value of {@code tag}
  * in the above example.<br>
  */
 public class ArgumentTokenizer {
