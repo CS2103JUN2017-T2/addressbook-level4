@@ -2,6 +2,8 @@ package seedu.multitasky.model;
 
 import static seedu.multitasky.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,7 +16,10 @@ import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
 import seedu.multitasky.commons.events.model.EntryBookToRedoEvent;
 import seedu.multitasky.commons.events.model.EntryBookToUndoEvent;
+import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.model.entry.Event;
+import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
@@ -244,6 +249,14 @@ public class ModelManager extends ComponentManager implements Model {
     }
     // @@author
 
+    // @@author A0125586X
+    @Override
+    public void updateFilteredEventList(Calendar startDate, Calendar endDate, Entry.State state) {
+        updateFilteredEventList(new PredicateExpression(new DateAndStatusQualifier(startDate, endDate,
+                                                                                   state)));
+    }
+
+    // @@author A0126623L
     private void updateFilteredEventList(Expression expression) {
         _filteredEventList.setPredicate(expression::satisfies);
     }
@@ -254,6 +267,14 @@ public class ModelManager extends ComponentManager implements Model {
         updateFilteredDeadlineList(new PredicateExpression(new NameAndStatusQualifier(keywords, state)));
     }
 
+    // @@author A0125586X
+    @Override
+    public void updateFilteredDeadlineList(Calendar startDate, Calendar endDate, Entry.State state) {
+        updateFilteredDeadlineList(new PredicateExpression(new DateAndStatusQualifier(startDate, endDate,
+                                                                                      state)));
+    }
+
+    // @@author A0126623L
     private void updateFilteredDeadlineList(Expression expression) {
         _filteredDeadlineList.setPredicate(expression::satisfies);
     }
@@ -264,6 +285,14 @@ public class ModelManager extends ComponentManager implements Model {
         updateFilteredFloatingTaskList(new PredicateExpression(new NameAndStatusQualifier(keywords, state)));
     }
 
+    // @@author A0125586X
+    @Override
+    public void updateFilteredFloatingTaskList(Calendar startDate, Calendar endDate, Entry.State state) {
+        updateFilteredFloatingTaskList(new PredicateExpression(new DateAndStatusQualifier(startDate, endDate,
+                                                                                          state)));
+    }
+
+    // @@author A0126623L
     private void updateFilteredFloatingTaskList(Expression expression) {
         _filteredFloatingTaskList.setPredicate(expression::satisfies);
     }
@@ -403,4 +432,78 @@ public class ModelManager extends ComponentManager implements Model {
         }
     }
     // @@author
+
+    // @@author A0125586X
+    /**
+     * Represents a qualifier can check if a ReadOnlyEntry falls within a given date range.
+     */
+    private class DateAndStatusQualifier implements Qualifier {
+
+        private Calendar startDate;
+        private Calendar endDate;
+        private Entry.State state;
+
+        private DateFormat dateFormat;
+
+        DateAndStatusQualifier(Calendar startDate, Calendar endDate, Entry.State state) {
+            assert state != null : "state for DateAndStatusQualifier cannot be null";
+
+            this.startDate = startDate;
+            this.endDate = endDate;
+            this.state = state;
+
+            dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT);
+        }
+
+        @Override
+        public boolean run(ReadOnlyEntry entry) {
+            if (!entry.getState().equals(state)) {
+                return false;
+            }
+            if (entry instanceof FloatingTask) {
+                return true;
+            } else if (entry instanceof Deadline && isWithinRange(entry.getEndDateAndTime())) {
+                return true;
+            } else if (entry instanceof Event && isWithinRange(entry.getStartDateAndTime())) {
+                return true;
+            } else {
+                assert false : "DateAndStatusQualifier::run received entry of unknown Entry subclass type";
+            }
+            return false;
+        }
+
+        private boolean isWithinRange(Calendar checkDate) {
+            if (startDate == null) {
+                if (endDate == null) {
+                    return true;
+                } else {
+                    return checkDate.compareTo(endDate) <= 0;
+                }
+            } else if (endDate == null) {
+                return checkDate.compareTo(startDate) >= 0;
+            } else {
+                return (checkDate.compareTo(startDate) <= 0) && (checkDate.compareTo(endDate) >= 0);
+            }
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder builder = new StringBuilder();
+            builder.append("startDate = ");
+            if (startDate == null) {
+                builder.append("null");
+            } else {
+                builder.append(dateFormat.format(startDate));
+            }
+            builder.append(", endDate = ");
+            if (endDate == null) {
+                builder.append("null");
+            } else {
+                builder.append(dateFormat.format(endDate));
+            }
+            builder.append(", state = ").append(state.toString());
+            return builder.toString();
+        }
+    }
+
 }

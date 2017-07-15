@@ -237,7 +237,7 @@ public class PowerMatch {
                     }
                     chars.set(i, iTemp);
                     chars.set(j, jTemp);
-                    chars.set(k, jTemp);
+                    chars.set(k, kTemp);
                 }
             }
         }
