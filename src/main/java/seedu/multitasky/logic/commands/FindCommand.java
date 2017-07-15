@@ -34,17 +34,27 @@ public class FindCommand extends Command {
     public CommandResult execute() {
 
         // update all 3 lists with new keywords.
-        model.updateFilteredDeadlineList(keywords, Entry.State.ACTIVE);
-        model.updateFilteredEventList(keywords, Entry.State.ACTIVE);
-        model.updateFilteredFloatingTaskList(keywords, Entry.State.ACTIVE);
+        model.updateFilteredDeadlineList(keywords, null, null, Entry.State.ACTIVE);
+        model.updateFilteredEventList(keywords, null, null, Entry.State.ACTIVE);
+        model.updateFilteredFloatingTaskList(keywords, null, null, Entry.State.ACTIVE);
 
-        // get size of each lists for printing.
+        // save keywords of the search
+        history.setPrevSearch(keywords, null, null, Entry.State.ACTIVE);
+
         int deadlineSize = model.getFilteredDeadlineList().size();
         int eventSize = model.getFilteredEventList().size();
         int floatingSize = model.getFilteredFloatingTaskList().size();
 
-        // save keywords of the search
-        history.setPrevSearch(keywords, Entry.State.ACTIVE);
+        // No results, use PowerSearch instead
+        if (deadlineSize + eventSize + floatingSize == 0) {
+            model.updatePowerSearchFilteredDeadlineList(keywords, null, null, Entry.State.ACTIVE);
+            model.updatePowerSearchFilteredEventList(keywords, null, null, Entry.State.ACTIVE);
+            model.updatePowerSearchFilteredFloatingTaskList(keywords, null, null, Entry.State.ACTIVE);
+        }
+        deadlineSize = model.getFilteredDeadlineList().size();
+        eventSize = model.getFilteredEventList().size();
+        floatingSize = model.getFilteredFloatingTaskList().size();
+
         return new CommandResult(getMessageForEntryListShownSummary(deadlineSize + eventSize + floatingSize));
     }
 

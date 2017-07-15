@@ -46,9 +46,9 @@ public class DeleteByFindCommand extends DeleteCommand {
     public CommandResult execute() throws CommandException, DuplicateEntryException {
 
         // update all 3 lists with new keywords.
-        model.updateFilteredDeadlineList(keywords, Entry.State.ACTIVE);
-        model.updateFilteredEventList(keywords, Entry.State.ACTIVE);
-        model.updateFilteredFloatingTaskList(keywords, Entry.State.ACTIVE);
+        model.updateFilteredDeadlineList(keywords, null, null, Entry.State.ACTIVE);
+        model.updateFilteredEventList(keywords, null, null, Entry.State.ACTIVE);
+        model.updateFilteredFloatingTaskList(keywords, null, null, Entry.State.ACTIVE);
 
         // collate a combined list to measure how many entries are found.
         List<ReadOnlyEntry> allList = new ArrayList<>();
@@ -64,16 +64,16 @@ public class DeleteByFindCommand extends DeleteCommand {
                 assert false : "The target entry cannot be missing";
             }
             // refresh list view after updating.
-            model.updateFilteredDeadlineList(history.getPrevSearch(), history.getPrevState());
-            model.updateFilteredEventList(history.getPrevSearch(), history.getPrevState());
-            model.updateFilteredFloatingTaskList(history.getPrevSearch(), history.getPrevState());
+            model.updateFilteredDeadlineList(history.getPrevSearch(), null, null, history.getPrevState());
+            model.updateFilteredEventList(history.getPrevSearch(), null, null, history.getPrevState());
+            model.updateFilteredFloatingTaskList(history.getPrevSearch(), null, null, history.getPrevState());
             // set search terms to what i searched with in this rendition
-            history.setPrevSearch(keywords, Entry.State.ACTIVE);
+            history.setPrevSearch(keywords, null, null, Entry.State.ACTIVE);
 
             return new CommandResult(String.format(MESSAGE_SUCCESS, entryToDelete));
         } else {
             // save what search i did
-            history.setPrevSearch(keywords, Entry.State.ACTIVE);
+            history.setPrevSearch(keywords, null, null, Entry.State.ACTIVE);
             if (allList.size() >= 2) { // multiple entries found
                 return new CommandResult(MESSAGE_MULTIPLE_ENTRIES);
             } else {

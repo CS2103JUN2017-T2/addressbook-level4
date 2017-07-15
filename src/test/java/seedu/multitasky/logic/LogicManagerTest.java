@@ -322,7 +322,7 @@ public class LogicManagerTest {
 
         List<Entry> fourEntrys = helper.generateEntryList(p1, pTarget1, p2, pTarget2);
         Model expectedModel = new ModelManager(helper.generateEntryBook(fourEntrys), new UserPrefs());
-        expectedModel.updateFilteredFloatingTaskList(new HashSet<>(Collections.singletonList("KEY")),
+        expectedModel.updateFilteredFloatingTaskList(new HashSet<>(Collections.singletonList("KEY")), null, null,
                                                      Entry.State.ACTIVE);
         helper.addToModel(model, fourEntrys);
         assertCommandSuccess(FindCommand.COMMAND_WORD + " KEY",
@@ -359,7 +359,7 @@ public class LogicManagerTest {
 
         List<Entry> fourEntrys = helper.generateEntryList(pTarget1, p1, pTarget2, pTarget3);
         Model expectedModel = new ModelManager(helper.generateEntryBook(fourEntrys), new UserPrefs());
-        expectedModel.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList("key", "rAnDoM")),
+        expectedModel.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList("key", "rAnDoM")), null, null,
                                                      Entry.State.ACTIVE);
         helper.addToModel(model, fourEntrys);
 

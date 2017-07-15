@@ -79,23 +79,36 @@ public interface Model {
     /** Updates the filter of all filtered lists to show all deleted entries */
     public void updateAllFilteredListToShowAllDeletedEntries();
 
-    /** Updates the filter of the filtered event list to filter by the given keywords and state */
-    void updateFilteredEventList(Set<String> keywords, Entry.State state);
+    /* Updates the filter of the filtered event list to filter by the given keywords,
+     * date range and state. */
+    void updateFilteredEventList(Set<String> keywords, Calendar startDate, Calendar endDate,
+                                 Entry.State state);
 
-    /** Updates the filter of the filtered event list to filter by the given date range and state */
-    void updateFilteredEventList(Calendar startDate, Calendar endDate, Entry.State state);
+    /* Updates the filter of the filtered event list to filter by the given keywords,
+     * date range and state using PowerSearch */
+    void updatePowerSearchFilteredEventList(Set<String> keywords, Calendar startDate, Calendar endDate,
+                                            Entry.State state);
 
-    /** Updates the filter of the filtered deadline list to filter by the given keywords and state */
-    void updateFilteredDeadlineList(Set<String> keywords, Entry.State state);
+    /* Updates the filter of the filtered deadline list to filter by the given keywords,
+     * date range and state. */
+    void updateFilteredDeadlineList(Set<String> keywords, Calendar startDate, Calendar endDate,
+                                    Entry.State state);
 
-    /** Updates the filter of the filtered deadline list to filter by the given date range and state */
-    void updateFilteredDeadlineList(Calendar startDate, Calendar endDate, Entry.State state);
+    /* Updates the filter of the filtered deadline list to filter by the given keywords,
+     * date range and state using PowerSearch */
+    void updatePowerSearchFilteredDeadlineList(Set<String> keywords, Calendar startDate, Calendar endDate,
+                                               Entry.State state);
 
-    /** Updates the filter of the filtered floating task list to filter by the given keywords and state */
-    void updateFilteredFloatingTaskList(Set<String> keywords, Entry.State state);
+    /* Updates the filter of the filtered floating task list to filter by the given keywords,
+     * date range and state. */
+    void updateFilteredFloatingTaskList(Set<String> keywords, Calendar startDate, Calendar endDate,
+                                        Entry.State state);
 
-    /** Updates the filter of the filtered floating task list to filter by the given date range and state */
-    void updateFilteredFloatingTaskList(Calendar startDate, Calendar endDate, Entry.State state);
+    /* Updates the filter of the filtered floating task list to filter by the given keywords,
+     * date range and state using PowerSearch */
+    void updatePowerSearchFilteredFloatingTaskList(Set<String> keywords, Calendar startDate, Calendar endDate,
+                                                   Entry.State state);
+
 
     /** Updates the sorting comparators used. */
     void updateSortingComparators(Comparator<ReadOnlyEntry> eventComparator,
