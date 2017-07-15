@@ -4,9 +4,9 @@ import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.logic.parser.CliSyntax;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 
-//@@author A0126623L reused
+//@@author A0126623L-reused
 /*
-* Abstract class that represents a restore command. Holds command_word and confirmation messages a delete
+* Abstract class that represents a restore command. Holds command_word and confirmation messages a restore
 * command will be using.
 */
 public abstract class RestoreCommand extends Command {

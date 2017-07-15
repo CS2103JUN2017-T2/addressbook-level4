@@ -23,7 +23,7 @@ import seedu.multitasky.testutil.SampleEntries;
 
 //TODO implement restore by find tests and separate out restore by index / abstract class restore tests from here.
 
-//@@author A0126623L reused
+//@@author A0126623L-reused
 /**
 * Contains integration tests (interaction with the Model) and unit tests for {@code RestoreCommand}.
 */

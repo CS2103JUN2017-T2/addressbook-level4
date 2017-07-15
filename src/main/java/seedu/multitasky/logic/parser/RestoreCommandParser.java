@@ -29,7 +29,7 @@ public class RestoreCommandParser {
         return argMultimap;
     }
 
-    // @@author A0126623L reused
+    // @@author A0126623L-reused
     /**
      * Parses the given {@code String} of arguments in the context of the RestoreCommand and returns a
      * RestoreCommand object for execution.
@@ -60,7 +60,7 @@ public class RestoreCommandParser {
                 throw new ParseException(ive.getMessage(), ive);
             }
 
-        } else { // process to delete by find.
+        } else { // process to restore by find.
             String searchString = argMultimap.getPreamble().get()
                                              .replaceAll("\\" + CliSyntax.PREFIX_ESCAPE, "");
             final String[] keywords = searchString.split("\\s+");

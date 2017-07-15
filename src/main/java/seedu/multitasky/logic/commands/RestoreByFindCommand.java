@@ -12,9 +12,9 @@ import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 
-//@@author A0126623L reused
+//@@author A0126623L-reused
 /*
-* Finds entries from given keywords and deletes entry if it is the only one found.
+* Finds entries from given keywords and restores entry if it is the only one found.
 */
 public class RestoreByFindCommand extends RestoreCommand {
 
@@ -53,7 +53,7 @@ public class RestoreByFindCommand extends RestoreCommand {
         allList.addAll(model.getFilteredEventList());
         allList.addAll(model.getFilteredFloatingTaskList());
 
-        if (allList.size() == 1) { // proceed to delete
+        if (allList.size() == 1) { // proceed to restore
             entryToRestore = allList.get(0);
 
             if (entryToRestore.isActive()) {
