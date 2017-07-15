@@ -32,10 +32,13 @@ public class CompleteCommandTest {
     public void execute_validIndexUnfilteredList_success() throws Exception {
         ReadOnlyEntry entryToComplete = model.getFilteredFloatingTaskList()
                 .get(INDEX_FIRST_ENTRY.getZeroBased());
+
         CompleteCommand completeCommand = prepareCommand(INDEX_FIRST_ENTRY);
+
         String expectedMessage = String.format(CompleteCommand.MESSAGE_SUCCESS, entryToComplete);
+
         ModelManager expectedModel = new ModelManager(model.getEntryBook(), new UserPrefs());
-        expectedModel.changeEntryState(entryToComplete, Entry.State.ARCHIVED);
+        model.changeEntryState(entryToComplete, Entry.State.ARCHIVED);
         expectedModel.updateAllFilteredListToShowAllActiveEntries();
         CommandTestUtil.assertCommandSuccess(completeCommand, model, expectedMessage, expectedModel);
     }
