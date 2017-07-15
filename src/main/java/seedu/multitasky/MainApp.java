@@ -83,7 +83,6 @@ public class MainApp extends Application {
     private Model initModelManager(Storage storage, UserPrefs userPrefs) {
         Optional<ReadOnlyEntryBook> entryBookOptional;
         ReadOnlyEntryBook initialData;
-        ModelManager modelManager;
         // @@author A0132788U
         /**
          * Deletes snapshot files from previous run., then loads the EntryBook/creates a new EntryBook if it doesn't
@@ -111,10 +110,7 @@ public class MainApp extends Application {
             initialData = new EntryBook();
         }
 
-        modelManager = new ModelManager(initialData, userPrefs);
-        modelManager.updateAllFilteredListToShowAllActiveEntries();
-
-        return modelManager;
+        return new ModelManager(initialData, userPrefs);
     }
 
     private void initLogging(Config config) {
