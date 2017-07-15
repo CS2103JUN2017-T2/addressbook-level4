@@ -91,6 +91,7 @@ public class ModelManager extends ComponentManager implements Model {
         }
     }
 
+    /** Raises an event when redo is entered */
     private void indicateRedoAction() throws NothingToRedoException {
         EntryBookToRedoEvent redoEvent;
         raise(redoEvent = new EntryBookToRedoEvent(_entryBook, ""));
@@ -111,6 +112,11 @@ public class ModelManager extends ComponentManager implements Model {
         indicateRedoAction();
     }
 
+    /** Change file path when entered by user */
+    @Override
+    public void changeFilePath(String newFilePath) {
+        UserPrefs.setEntryBookFilePath(newFilePath);
+    }
     // @@author
 
     @Override
@@ -252,8 +258,7 @@ public class ModelManager extends ComponentManager implements Model {
     // @@author A0125586X
     @Override
     public void updateFilteredEventList(Calendar startDate, Calendar endDate, Entry.State state) {
-        updateFilteredEventList(new PredicateExpression(new DateAndStatusQualifier(startDate, endDate,
-                                                                                   state)));
+        updateFilteredEventList(new PredicateExpression(new DateAndStatusQualifier(startDate, endDate, state)));
     }
 
     // @@author A0126623L
@@ -270,8 +275,7 @@ public class ModelManager extends ComponentManager implements Model {
     // @@author A0125586X
     @Override
     public void updateFilteredDeadlineList(Calendar startDate, Calendar endDate, Entry.State state) {
-        updateFilteredDeadlineList(new PredicateExpression(new DateAndStatusQualifier(startDate, endDate,
-                                                                                      state)));
+        updateFilteredDeadlineList(new PredicateExpression(new DateAndStatusQualifier(startDate, endDate, state)));
     }
 
     // @@author A0126623L
@@ -289,7 +293,7 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void updateFilteredFloatingTaskList(Calendar startDate, Calendar endDate, Entry.State state) {
         updateFilteredFloatingTaskList(new PredicateExpression(new DateAndStatusQualifier(startDate, endDate,
-                                                                                          state)));
+                state)));
     }
 
     // @@author A0126623L
