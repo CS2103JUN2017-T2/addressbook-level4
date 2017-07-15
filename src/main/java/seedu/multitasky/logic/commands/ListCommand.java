@@ -7,7 +7,6 @@ import seedu.multitasky.commons.core.EventsCenter;
 import seedu.multitasky.commons.events.BaseEvent;
 import seedu.multitasky.commons.events.ui.ListTypeUpdateEvent;
 import seedu.multitasky.logic.parser.CliSyntax;
-import seedu.multitasky.logic.parser.Prefix;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.util.Comparators;
 
