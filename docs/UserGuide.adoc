@@ -223,6 +223,14 @@ Format: `restore [KEYWORD_1 KEYWORD_2...] | [/event | /deadline | /float INDEX]`
 * Restoring an entry moves it from the `archive` or `bin` to the `active` list.
 * If multiple entries are found using the keywords, all found entries will be listed, and the user will be prompted to specify the index of the entry to be restored.
 
+Examples:
+
+* `list /archive` +
+`restore /float 2` +
+Restores the 2nd entry in the archive.
+* `restore feed dog` +
+Restores the only entry in the `archive` or `bin` that matches "feed" and "dog" in the name or tag.
+
 === Listing entered commands : `history`
 
 Lists all the commands that you have entered in chronological order. +
