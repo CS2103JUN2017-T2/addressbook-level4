@@ -69,8 +69,6 @@ public class ArgumentMultimap {
         for (String prefix : prefixes) {
             if (getAllValues(new Prefix(prefix)).size() != 0) {
                 presentPrefixes.add(prefix);
-            } else {
-                // continue
             }
         }
         return presentPrefixes;
