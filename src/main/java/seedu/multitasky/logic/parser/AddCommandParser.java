@@ -9,8 +9,6 @@ import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_ON;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_TO;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Set;
 
@@ -167,17 +165,6 @@ public class AddCommandParser {
         assert argMultimap != null;
         return ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_BY)
                && (!ParserUtil.arePrefixesPresent(argMultimap, PREFIX_AT, PREFIX_ON, PREFIX_FROM, PREFIX_TO));
-    }
-
-    /**
-     * A method that returns false if flags are given in an illogical manner for add commands.
-     */
-    private boolean hasValidPrefixCombination(ArrayList<String> prefixes) {
-        // Cannot have any unknown prefixes
-        if (!Arrays.asList(AddCommand.VALID_PREFIXES).containsAll(prefixes)) {
-            return false;
-        }
-        return true;
     }
 
     private Prefix[] toPrefixArray(String... stringPrefixes) {
