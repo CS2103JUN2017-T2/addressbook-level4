@@ -45,7 +45,7 @@ public abstract class EditCommand extends Command {
 
 
     public static final String MESSAGE_SUCCESS = "Target entry: " + Messages.MESSAGE_ENTRY_DESCRIPTION
-            + "%1$s\n" + "Entry edited:" + Messages.MESSAGE_ENTRY_DESCRIPTION + "%2$s";
+            + "%1$s\n" + "Entry edited: " + Messages.MESSAGE_ENTRY_DESCRIPTION + "%2$s";
     public static final String MESSAGE_SUCCESS_WITH_OVERLAP_ALERT = "Entry edited:" + "\n"
             + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
             + "Alert: Edited entry %1$s overlaps with existing event(s).";
