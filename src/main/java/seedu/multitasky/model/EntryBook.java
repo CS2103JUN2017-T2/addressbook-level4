@@ -25,6 +25,7 @@ import seedu.multitasky.model.entry.MiscEntryList;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 import seedu.multitasky.model.tag.Tag;
 import seedu.multitasky.model.tag.UniqueTagList;
 
@@ -33,34 +34,19 @@ import seedu.multitasky.model.tag.UniqueTagList;
  */
 public class EntryBook implements ReadOnlyEntryBook {
 
+    // TODO: Decide later if it's useful to keep an internal active list
     private final MiscEntryList _activeList;
-    private final MiscEntryList _archive;
-    private final MiscEntryList _bin;
     private final EventList _eventList;
     private final DeadlineList _deadlineList;
     private final FloatingTaskList _floatingTaskList;
     private final UniqueTagList _tags;
 
-    /*
-     * The 'unusual' code block below is an non-static initialization block, sometimes used to avoid
-     * duplication
-     * between constructors. See https://docs.oracle.com/javase/tutorial/java/javaOO/initial.html
-     * TODO: Improve this section.
-     * Note that non-static init blocks are not recommended to use. There are other ways to avoid duplication
-     * among constructors.
-     */
-    {
+    public EntryBook() {
         _activeList = new MiscEntryList();
-        _archive = new MiscEntryList();
-        _bin = new MiscEntryList();
         _eventList = new EventList();
         _deadlineList = new DeadlineList();
         _floatingTaskList = new FloatingTaskList();
         _tags = new UniqueTagList();
-    }
-
-    // TODO: This may later be removed.
-    public EntryBook() {
     }
 
     /**
@@ -74,8 +60,11 @@ public class EntryBook implements ReadOnlyEntryBook {
     //// list overwrite operations
 
     // @@author A0126623L
-    // TODO: Revert this to the original form after model architecture is revamped for V0.4.
     private void setActiveList() throws DuplicateEntryException {
+        /*
+         * The reset of active list is different from the others because here we want to add the references to
+         * existing entries, not making new copies.
+         */
         this._activeList.setEntries(new MiscEntryList());
         for (ReadOnlyEntry entry : _eventList) {
             this._activeList.add(entry);
@@ -86,14 +75,6 @@ public class EntryBook implements ReadOnlyEntryBook {
         for (ReadOnlyEntry entry : _floatingTaskList) {
             this._activeList.add(entry);
         }
-    }
-
-    public void setArchive(List<? extends ReadOnlyEntry> entries) throws DuplicateEntryException {
-        this._archive.setEntries(entries);
-    }
-
-    public void setBin(List<? extends ReadOnlyEntry> entries) throws DuplicateEntryException {
-        this._bin.setEntries(entries);
     }
 
     public void setEventList(List<? extends ReadOnlyEntry> entries) throws DuplicateEntryException {
@@ -117,12 +98,11 @@ public class EntryBook implements ReadOnlyEntryBook {
         requireNonNull(newData);
 
         try {
-            setArchive(newData.getArchive());
-            setBin(newData.getBin());
             setEventList(newData.getEventList());
             setDeadlineList(newData.getDeadlineList());
             setFloatingTaskList(newData.getFloatingTaskList());
-            setActiveList(); // TODO: Update this in V0.4.
+
+            setActiveList();
         } catch (DuplicateEntryException e) {
             assert false : "EntryBooks should not have duplicate entries";
         }
@@ -156,17 +136,17 @@ public class EntryBook implements ReadOnlyEntryBook {
      * Also checks the new entry's tags and updates {@link #tags} with any new tags found,
      * and updates the Tag objects in the entry to point to those in {@link #tags}.
      */
-    public void addEntry(ReadOnlyEntry e) throws DuplicateEntryException {
-        /**
-         * TODO: Duplicate entries are temporarily allowed in bin and archive in V0.3. This should be
-         * changed for V0.4.
-         */
+    public void addEntry(ReadOnlyEntry e) throws DuplicateEntryException, OverlappingEventException {
+        try {
+            addToEntrySubtypeList(e);
+        } finally {
 
-        addToEntrySubTypeList(e);
+            Entry newEntry = convertToEntry(e);
+            syncMasterTagListWith(newEntry);
 
-        Entry newEntry = convertToEntrySubType(e);
-        syncMasterTagListWith(newEntry);
-        _activeList.add(newEntry); // Adds reference of newEntry to activeList, not creating a copy.
+            // TODO: Decide later if it's still necessary to keep an internal active list
+            _activeList.add(newEntry); // Adds reference of newEntry to activeList, not creating a copy.
+        }
     }
     // @@author
 
@@ -174,9 +154,14 @@ public class EntryBook implements ReadOnlyEntryBook {
     /**
      * Add a given ReadOnlyEntry to one of either active, deadline or floating task list.
      */
-    private void addToEntrySubTypeList(ReadOnlyEntry newEntry) throws DuplicateEntryException {
+    private void addToEntrySubtypeList(ReadOnlyEntry newEntry)
+            throws DuplicateEntryException, OverlappingEventException {
         if (newEntry instanceof Event) {
+            boolean overlappingEventPresent = _eventList.hasOverlappingEvent(newEntry);
             _eventList.add(newEntry);
+            if (overlappingEventPresent) {
+                throw new OverlappingEventException();
+            }
         } else if (newEntry instanceof Deadline) {
             _deadlineList.add(newEntry);
         } else {
@@ -191,29 +176,54 @@ public class EntryBook implements ReadOnlyEntryBook {
      * Replaces the given entry {@code target} in the list with {@code editedReadOnlyEntry}.
      * {@code EntryBook}'s tag list will be updated with the tags of {@code editedReadOnlyEntry}.
      *
+     * {@code editedReadOnlyEntry} must be of the same entry sub-type as {@code target}.
+     *
      * @throws EntryNotFoundException if {@code target} could not be found in the list.
      * @see #syncMasterTagListWith(Entry)
      */
     public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedReadOnlyEntry)
             throws DuplicateEntryException, EntryNotFoundException {
+        requireNonNull(target);
         requireNonNull(editedReadOnlyEntry);
 
-        _activeList.updateEntry(target, editedReadOnlyEntry);
+        updateEntryInSubtypeList(target, editedReadOnlyEntry);
 
-        Entry editedEntry = convertToEntrySubType(editedReadOnlyEntry);
+        /*
+         * Active list does not need updating because it's pointing to the same entries contained in the
+         * appropriate sub-type lists.
+         */
+
+        Entry editedEntry = convertToEntry(editedReadOnlyEntry);
         syncMasterTagListWith(editedEntry);
-        // TODO: the tags master list will be updated even though the below line fails.
-        // This can cause the tags master list to have additional tags that are not tagged to any entry
-        // in the entry list.
     }
     // @@author
 
     // @@author A0126623L
     /**
-     * Converts a given ReadOnlyEntry object to an editable Entry object (i.e. event, deadline or floating
+     * Replaces the given entry {@code target} in the appropriate sub-type list with {@code editedReadOnlyEntry}.
+     *
+     * @throws EntryNotFoundException if {@code target} could not be found in the list.
+     * @see #syncMasterTagListWith(Entry)
+     */
+    private void updateEntryInSubtypeList(ReadOnlyEntry target, ReadOnlyEntry editedReadOnlyEntry)
+            throws DuplicateEntryException, EntryNotFoundException {
+        if (target instanceof Event) {
+            _eventList.updateEntry(target, editedReadOnlyEntry);
+        } else if (target instanceof Deadline) {
+            _deadlineList.updateEntry(target, editedReadOnlyEntry);
+        } else {
+            assert (target instanceof FloatingTask);
+            _floatingTaskList.updateEntry(target, editedReadOnlyEntry);
+        }
+    }
+    // @@author
+
+    // @@author A0126623L
+    /**
+     * Type-cast a given ReadOnlyEntry object to an editable Entry object (i.e. event, deadline or floating
      * task).
      */
-    private Entry convertToEntrySubType(ReadOnlyEntry editedReadOnlyEntry) {
+    private Entry convertToEntry(ReadOnlyEntry editedReadOnlyEntry) {
         Entry newEntry;
         if (editedReadOnlyEntry instanceof Event) {
             newEntry = (Event) editedReadOnlyEntry;
@@ -259,28 +269,14 @@ public class EntryBook implements ReadOnlyEntryBook {
     }
 
     /**
-     * Removes entry from the appropriate lists (i.e. active, event, deadline, floating task lists) and add it
-     * to the bin.
+     * Removes entry from the appropriate lists (i.e. active, event, deadline, floating task lists).
      *
      * @param entryToRemove
      * @return boolean
      * @throws DuplicateEntryException, EntryNotFoundException
      */
     public boolean removeEntry(ReadOnlyEntry entryToRemove) throws EntryNotFoundException {
-        if (_activeList.remove(entryToRemove) && removeFromEntrySubTypeList(entryToRemove)) {
-            try {
-                _bin.add(entryToRemove);
-            } catch (DuplicateEntryException e) {
-                /**
-                 * TODO: Bin temporarily allows duplicates in V0.3 because users don't know the existence of a
-                 * bin behind the scenes. The handling of bin duplicates should be changed in V0.4.
-                 */
-                // Ignore duplicates.
-            }
-            return true;
-        } else {
-            throw new EntryNotFoundException();
-        }
+        return (_activeList.remove(entryToRemove) && removeFromEntrySubtypeList(entryToRemove));
     }
 
     /**
@@ -289,7 +285,7 @@ public class EntryBook implements ReadOnlyEntryBook {
      * @param entryToRemove is of type Event, Deadline or FloatingTask
      * @return boolean
      */
-    private boolean removeFromEntrySubTypeList(ReadOnlyEntry entryToRemove) throws EntryNotFoundException {
+    private boolean removeFromEntrySubtypeList(ReadOnlyEntry entryToRemove) throws EntryNotFoundException {
         if (entryToRemove instanceof Event) {
             return _eventList.remove(entryToRemove);
         } else if (entryToRemove instanceof Deadline) {
@@ -297,6 +293,27 @@ public class EntryBook implements ReadOnlyEntryBook {
         } else {
             assert (entryToRemove instanceof FloatingTask);
             return _floatingTaskList.remove(entryToRemove);
+        }
+    }
+
+    /**
+     * Marks an entry from the appropriate lists (i.e. active, event, deadline, floating task lists) as deleted.
+     * Pre-condition: After the entry state is updated, it cannot be an exact match to an existing entry.
+     *
+     * @param entryToMark
+     * @param newState      cannot be null
+     * @return boolean
+     * @throws DuplicateEntryException, EntryNotFoundException
+     */
+    public void changeEntryState(ReadOnlyEntry entryToChange, Entry.State newState)
+            throws DuplicateEntryException, EntryNotFoundException {
+        if (entryToChange instanceof Event) {
+            _eventList.changeEntryState(entryToChange, newState);
+        } else if (entryToChange instanceof Deadline) {
+            _deadlineList.changeEntryState(entryToChange, newState);
+        } else {
+            assert (entryToChange instanceof FloatingTask);
+            _floatingTaskList.changeEntryState(entryToChange, newState);
         }
     }
 
@@ -315,22 +332,11 @@ public class EntryBook implements ReadOnlyEntryBook {
     public String toString() {
         return _activeList.asObservableList().size() + " active entries, " + _tags.asObservableList().size()
                + " tags";
-        // TODO: refine later
     }
 
     @Override
     public ObservableList<ReadOnlyEntry> getActiveList() {
         return new UnmodifiableObservableList<>(_activeList.asObservableList());
-    }
-
-    @Override
-    public ObservableList<ReadOnlyEntry> getArchive() {
-        return new UnmodifiableObservableList<>(_archive.asObservableList());
-    }
-
-    @Override
-    public ObservableList<ReadOnlyEntry> getBin() {
-        return new UnmodifiableObservableList<>(_bin.asObservableList());
     }
 
     @Override
@@ -358,8 +364,6 @@ public class EntryBook implements ReadOnlyEntryBook {
         return other == this // short circuit if same object
                || (other instanceof EntryBook // instanceof handles nulls
                    && this.getActiveList().equals(((EntryBook) other).getActiveList())
-                   && this.getArchive().equals(((EntryBook) other).getArchive())
-                   && this.getBin().equals(((EntryBook) other).getBin())
                    && this.getEventList().equals(((EntryBook) other).getEventList())
                    && this.getDeadlineList().equals(((EntryBook) other).getDeadlineList())
                    && this.getFloatingTaskList().equals(((EntryBook) other).getFloatingTaskList())
@@ -369,8 +373,7 @@ public class EntryBook implements ReadOnlyEntryBook {
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(getActiveList(), getArchive(), getBin(),
-                            getEventList(), getDeadlineList(), getFloatingTaskList(),
-                            getTagList());
+        return Objects.hash(getActiveList(), getEventList(), getDeadlineList(),
+                            getFloatingTaskList(), getTagList());
     }
 }

@@ -7,6 +7,7 @@ import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.logic.parser.CliSyntax;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
+import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 
 /**
  * Adds an entry to the entry book.
@@ -26,10 +27,14 @@ public class AddCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "New entry added:" + "\n"
                                                  + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s";
+    public static final String MESSAGE_SUCCESS_WITH_OVERLAP_ALERT = "New entry added:" + "\n"
+            + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
+            + "Alert: New entry %1$s overlaps with existing entry.";
 
     public static final String[] VALID_PREFIXES = {CliSyntax.PREFIX_FROM.toString(),
                                                    CliSyntax.PREFIX_BY.toString(),
                                                    CliSyntax.PREFIX_AT.toString(),
+                                                   CliSyntax.PREFIX_ON.toString(),
                                                    CliSyntax.PREFIX_TO.toString(),
                                                    CliSyntax.PREFIX_TAG.toString()};
 
@@ -47,8 +52,12 @@ public class AddCommand extends Command {
     public CommandResult execute() throws CommandException, DuplicateEntryException {
         requireNonNull(model);
 
-        model.addEntry(toAdd);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
+        try {
+            model.addEntry(toAdd);
+            return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
+        } catch (OverlappingEventException oee) {
+            return new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERLAP_ALERT, toAdd.getName()));
+        }
     }
 
 }

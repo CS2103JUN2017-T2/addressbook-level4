@@ -105,6 +105,22 @@ public class Event extends Entry {
                 && this.getTags().equals(other.getTags()));
     }
 
+    // @@author A0126623L
+    /**
+     * Checks whether a given {@code event}'s time overlaps with this {@code event}'s.
+     * @param {@code entry} must be an event.
+     * @return boolean
+     */
+    public boolean hasOverlappingTime(ReadOnlyEntry other) {
+        if (!(other instanceof Event)) {
+            throw new AssertionError("Non-event object is given to Event.hasOverlappingTime().");
+        }
+
+        return !(other.getEndDateAndTime().compareTo(this.getStartDateAndTime()) < 0
+                 || other.getStartDateAndTime().compareTo(this.getEndDateAndTime()) > 0);
+    }
+    // @@author
+
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own

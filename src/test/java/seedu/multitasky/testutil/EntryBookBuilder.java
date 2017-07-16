@@ -4,6 +4,7 @@ import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
+import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 import seedu.multitasky.model.tag.Tag;
 
 /**
@@ -22,7 +23,11 @@ public class EntryBookBuilder {
     }
 
     public EntryBookBuilder withEntry(Entry entry) throws DuplicateEntryException {
-        entryBook.addEntry(entry);
+        try {
+            entryBook.addEntry(entry);
+        } catch (OverlappingEventException oee) {
+            // Ignore overlapping events in building entrybook for testing.
+        }
         return this;
     }
 

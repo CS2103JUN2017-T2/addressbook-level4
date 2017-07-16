@@ -46,10 +46,8 @@ public class EditByFindCommand extends EditCommand {
     @Override
     public CommandResult execute() throws CommandException, DuplicateEntryException {
 
-        // update all 3 lists with new keywords.
-        model.updateFilteredDeadlineList(keywords, Entry.State.ACTIVE);
-        model.updateFilteredEventList(keywords, Entry.State.ACTIVE);
-        model.updateFilteredFloatingTaskList(keywords, Entry.State.ACTIVE);
+        // Update all 3 lists with new search parameters until at least 1 result is found.
+        model.updateAllFilteredLists(keywords, null, null, Entry.State.ACTIVE);
 
         // collate a combined list to measure how many entries are found.
         List<ReadOnlyEntry> allList = new ArrayList<>();
@@ -65,14 +63,18 @@ public class EditByFindCommand extends EditCommand {
             } catch (EntryNotFoundException pnfe) {
                 assert false : "The target entry cannot be missing";
             }
-            model.updateAllFilteredListToShowAll();
+            // refresh list view after updating.
+            model.updateAllFilteredLists(history.getPrevSearch(), null, null, history.getPrevState());
+
             return new CommandResult(String.format(MESSAGE_SUCCESS, entryToEdit));
-        }
-        if (allList.size() >= 2) {
-            return new CommandResult(MESSAGE_MULTIPLE_ENTRIES);
         } else {
-            return new CommandResult(MESSAGE_NO_ENTRIES);
+            history.setPrevSearch(keywords, null, null, Entry.State.ACTIVE);
+            if (allList.size() >= 2) {
+                return new CommandResult(MESSAGE_MULTIPLE_ENTRIES);
+            } else {
+                assert allList.size() == 0;
+                return new CommandResult(MESSAGE_NO_ENTRIES);
+            }
         }
     }
-
 }

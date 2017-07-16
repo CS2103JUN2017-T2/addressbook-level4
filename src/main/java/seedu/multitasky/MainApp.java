@@ -15,7 +15,7 @@ import seedu.multitasky.commons.core.EventsCenter;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.core.Version;
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
-import seedu.multitasky.commons.events.ui.EntryAppRequestEvent;
+import seedu.multitasky.commons.events.ui.DeleteAllSnapshotsOnStartup;
 import seedu.multitasky.commons.events.ui.ExitAppRequestEvent;
 import seedu.multitasky.commons.exceptions.DataConversionException;
 import seedu.multitasky.commons.util.ConfigUtil;
@@ -62,7 +62,7 @@ public class MainApp extends Application {
         UserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(config.getUserPrefsFilePath());
         userPrefs = initPrefs(userPrefsStorage);
         EntryBookStorage entryBookStorage = new XmlEntryBookStorage(userPrefs.getEntryBookFilePath());
-        storage = new StorageManager(entryBookStorage, userPrefsStorage);
+        storage = new StorageManager(entryBookStorage, userPrefsStorage, userPrefs);
 
         initLogging(config);
 
@@ -85,9 +85,9 @@ public class MainApp extends Application {
         ReadOnlyEntryBook initialData;
         // @@author A0132788U
         /**
-         * Deletes snapshot files from previous run.
+         * Deletes snapshot files from previous run, then either loads an existing EntryBook or creates a new one.
          */
-        EntryAppRequestEvent event = new EntryAppRequestEvent();
+        DeleteAllSnapshotsOnStartup event = new DeleteAllSnapshotsOnStartup();
         try {
             entryBookOptional = storage.readEntryBook();
             if (!entryBookOptional.isPresent()) {

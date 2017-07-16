@@ -1,8 +1,12 @@
 package seedu.multitasky.logic.commands;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Set;
 
+import seedu.multitasky.logic.CommandHistory;
 import seedu.multitasky.logic.parser.CliSyntax;
+import seedu.multitasky.model.Model;
 import seedu.multitasky.model.entry.Entry;
 
 /**
@@ -29,20 +33,33 @@ public class FindCommand extends Command {
     @Override
     public CommandResult execute() {
 
-        // update all 3 lists with new keywords.
-        model.updateFilteredDeadlineList(keywords, Entry.State.ACTIVE);
-        model.updateFilteredEventList(keywords, Entry.State.ACTIVE);
-        model.updateFilteredFloatingTaskList(keywords, Entry.State.ACTIVE);
+        // Update all 3 lists with new search parameters until at least 1 result is found.
+        model.updateAllFilteredLists(keywords, null, null, Entry.State.ACTIVE);
 
-        // get size of each lists for printing.
+        // save keywords of the search
+        history.setPrevSearch(keywords, null, null, Entry.State.ACTIVE);
+
         int deadlineSize = model.getFilteredDeadlineList().size();
         int eventSize = model.getFilteredEventList().size();
         int floatingSize = model.getFilteredFloatingTaskList().size();
+
+        deadlineSize = model.getFilteredDeadlineList().size();
+        eventSize = model.getFilteredEventList().size();
+        floatingSize = model.getFilteredFloatingTaskList().size();
+
         return new CommandResult(getMessageForEntryListShownSummary(deadlineSize + eventSize + floatingSize));
     }
 
     public Set<String> getKeywords() {
         return keywords;
+    }
+
+    @Override
+    public void setData(Model model, CommandHistory history) {
+        requireNonNull(model);
+        requireNonNull(history);
+        this.model = model;
+        this.history = history;
     }
 
 }

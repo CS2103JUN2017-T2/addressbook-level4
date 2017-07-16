@@ -21,7 +21,7 @@ public class EventList extends EntryList {
 
     // @@author A0126623L
     /**
-     * Adds an event to the list.
+     * Adds an event's reference to the list.
      *
      * @param toAdd is of type Event and must not be null.
      * @throws DuplicateEntryException if {@code toAdd} already exists in the list.
@@ -29,12 +29,31 @@ public class EventList extends EntryList {
     @Override
     public void add(ReadOnlyEntry toAdd) throws DuplicateEntryException {
         super.add(toAdd);
-        assert (toAdd instanceof Event);
+
+        if (!(toAdd instanceof Event)) {
+            throw new AssertionError("Non-Event type cannot be added to an EventList.");
+        }
 
         internalList.add((Event) toAdd);
         sortInternalList();
     }
     // @@author
+
+    // @@author A0126623L
+    /**
+     * Checks if a given event has overlapping time with any existing event in the event list.
+     */
+    public boolean hasOverlappingEvent(ReadOnlyEntry other) {
+        for (Entry existingEntry : internalList) {
+            assert (existingEntry instanceof Event) : "Non-event should not exist in an event list.";
+            Event existingEvent = (Event) existingEntry;
+
+            if (existingEvent.hasOverlappingTime(other)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     // @@author A0125586X
     /**
@@ -61,7 +80,7 @@ public class EventList extends EntryList {
     public void setEntries(List<? extends ReadOnlyEntry> entries) throws DuplicateEntryException {
         final EventList replacement = new EventList();
         for (final ReadOnlyEntry entry : entries) {
-            replacement.add(new Event(entry));
+            replacement.add(entry);     // Type check is done within add().
         }
         super.setEntries(replacement);
     }

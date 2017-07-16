@@ -1,6 +1,5 @@
 package seedu.multitasky.ui.util;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -37,7 +36,7 @@ public class CommandAutocomplete {
     private static final int COMMAND_WORD_IDX = 0;
     private static final int LAST_WORD_IDX = 1;
 
-    private static final ArrayList<String> commandWords = new ArrayList<String>(Arrays.asList(new String[] {
+    private static final String[] commandWords = new String[] {
         AddCommand.COMMAND_WORD,
         ClearCommand.COMMAND_WORD,
         DeleteCommand.COMMAND_WORD,
@@ -49,7 +48,7 @@ public class CommandAutocomplete {
         ListCommand.COMMAND_WORD,
         RedoCommand.COMMAND_WORD,
         UndoCommand.COMMAND_WORD,
-    }));
+    };
 
     private static final HashMap<String, String[]> commandKeywords;
 
@@ -110,22 +109,27 @@ public class CommandAutocomplete {
         commandResult.append(commandMatch).append(" ");
 
         // Managed to autocomplete to a valid command word
-        if (commandWords.contains(commandMatch)) {
-            if (splitCommand[1].length() == 0) {
-                // No other words to autocomplete, do nothing
-            } else if (prefixOnlyCommands.contains(commandMatch)) {
-                // We can attempt to autocomplete each of the words into prefixes
-                String[] matches = matchPrefixes(commandMatch, separateWords(splitCommand[1]));
-                for (String match : matches) {
-                    commandResult.append(match).append(" ");
+        if (Arrays.asList(commandWords).contains(commandMatch)) {
+            // We have other words to autocomplete
+            if (splitCommand[1].length() > 0) {
+                if (prefixOnlyCommands.contains(commandMatch)) {
+                    // We can attempt to autocomplete each of the words into prefixes
+                    String[] matches = matchPrefixes(commandMatch, separateWords(splitCommand[1]));
+                    for (String match : matches) {
+                        commandResult.append(match).append(" ");
+                    }
                 }
             } else {
                 // We can only attempt to autocomplete the last word into a prefix
                 splitCommand = extractLastWord(splitCommand[1]);
-                // The middle portion of the input remains unchanged
-                commandResult.append(splitCommand[0]).append(" ");
-                commandResult.append(autocompletePrefix(splitCommand[LAST_WORD_IDX], commandMatch))
-                             .append(" ");
+                // The middle portion of the input remains unchanged, append if present
+                if (splitCommand[0].trim().length() > 0) {
+                    commandResult.append(splitCommand[0]).append(" ");
+                }
+                String autoCompletedPrefix = autocompletePrefix(splitCommand[LAST_WORD_IDX], commandMatch);
+                if (autoCompletedPrefix.length() > 0) {
+                    commandResult.append(autoCompletedPrefix).append(" ");
+                }
             }
         } else {
             // No information to go on to autocomplete anything else
@@ -153,8 +157,7 @@ public class CommandAutocomplete {
     }
 
     private String autocompletePrefix(String keyword, String commandWord) {
-        String match = PowerMatch.match(keyword, new ArrayList<String>(
-                                                        Arrays.asList(commandKeywords.get(commandWord))));
+        String match = PowerMatch.match(keyword, commandKeywords.get(commandWord));
         if (match != null) {
             return match;
         } else {
@@ -172,7 +175,7 @@ public class CommandAutocomplete {
         String[] words = input.split("\\s+");
         if (words.length > 0) {
             return new String[] {
-                words[COMMAND_WORD_IDX],
+                words[COMMAND_WORD_IDX].trim(),
                 input.substring(words[COMMAND_WORD_IDX].length()).trim()
             };
         }
@@ -190,7 +193,7 @@ public class CommandAutocomplete {
         if (words.length > 0) {
             return new String[] {
                 input.substring(0, input.length() - words[words.length - 1].length()).trim(),
-                words[words.length - 1]
+                words[words.length - 1].trim()
             };
         }
         return new String[] { "", "" };

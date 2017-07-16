@@ -22,9 +22,9 @@ public class DeleteByFindCommand extends DeleteCommand {
     public static final String MESSAGE_MULTIPLE_ENTRIES = "More than one entry found! \n"
                                                           + "Use " + COMMAND_WORD + " ["
                                                           + String.join(" | ",
-                                                                        CliSyntax.PREFIX_EVENT.toString(),
-                                                                        CliSyntax.PREFIX_DEADLINE.toString(),
-                                                                        CliSyntax.PREFIX_FLOATINGTASK.toString())
+                                                                  CliSyntax.PREFIX_EVENT.toString(),
+                                                                  CliSyntax.PREFIX_DEADLINE.toString(),
+                                                                  CliSyntax.PREFIX_FLOATINGTASK.toString())
                                                           + "]"
                                                           + " INDEX to specify which entry to delete.";
 
@@ -38,13 +38,15 @@ public class DeleteByFindCommand extends DeleteCommand {
         this.keywords = keywords;
     }
 
+    public Set<String> getKeywords() {
+        return keywords;
+    }
+
     @Override
     public CommandResult execute() throws CommandException, DuplicateEntryException {
 
-        // update all 3 lists with new keywords.
-        model.updateFilteredDeadlineList(keywords, Entry.State.ACTIVE);
-        model.updateFilteredEventList(keywords, Entry.State.ACTIVE);
-        model.updateFilteredFloatingTaskList(keywords, Entry.State.ACTIVE);
+        // Update all 3 lists with new search parameters until at least 1 result is found.
+        model.updateAllFilteredLists(keywords, null, null, Entry.State.ACTIVE);
 
         // collate a combined list to measure how many entries are found.
         List<ReadOnlyEntry> allList = new ArrayList<>();
@@ -55,13 +57,17 @@ public class DeleteByFindCommand extends DeleteCommand {
         if (allList.size() == 1) { // proceed to delete
             entryToDelete = allList.get(0);
             try {
-                model.deleteEntry(entryToDelete);
+                model.changeEntryState(entryToDelete, Entry.State.DELETED);
             } catch (EntryNotFoundException e) {
                 assert false : "The target entry cannot be missing";
             }
-            model.updateAllFilteredListToShowAll();
+            // refresh list view after updating.
+            model.updateAllFilteredLists(history.getPrevSearch(), null, null, history.getPrevState());
+
             return new CommandResult(String.format(MESSAGE_SUCCESS, entryToDelete));
         } else {
+            // save what search i did
+            history.setPrevSearch(keywords, null, null, Entry.State.ACTIVE);
             if (allList.size() >= 2) { // multiple entries found
                 return new CommandResult(MESSAGE_MULTIPLE_ENTRIES);
             } else {

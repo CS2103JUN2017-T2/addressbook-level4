@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
 import static seedu.multitasky.testutil.EditCommandTestUtil.DESC_AMY;
 import static seedu.multitasky.testutil.EditCommandTestUtil.DESC_BOB;
-import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_NAME_BOB;
+import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_NAME_MEETING;
 import static seedu.multitasky.testutil.SampleEntries.INDEX_FIRST_ENTRY;
 import static seedu.multitasky.testutil.SampleEntries.INDEX_SECOND_ENTRY;
 
@@ -18,7 +18,6 @@ import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.logic.CommandHistory;
 import seedu.multitasky.logic.commands.EditCommand.EditEntryDescriptor;
-import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.Model;
 import seedu.multitasky.model.ModelManager;
 import seedu.multitasky.model.UserPrefs;
@@ -41,7 +40,7 @@ public class EditCommandTest {
         EditEntryDescriptor descriptor = new EditEntryDescriptorBuilder(editedEntry).build();
         EditCommand editCommand = prepareCommand(INDEX_FIRST_ENTRY, descriptor);
         String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, editedEntry);
-        Model expectedModel = new ModelManager(new EntryBook(model.getEntryBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
         expectedModel.updateEntry(model.getFilteredFloatingTaskList().get(INDEX_FIRST_ENTRY.getZeroBased()),
                                   editedEntry);
         CommandTestUtil.assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
@@ -97,7 +96,7 @@ public class EditCommandTest {
     @Test
     public void execute_invalidEntryIndexUnfilteredList_failure() throws Exception {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredFloatingTaskList().size() + 1);
-        EditEntryDescriptor descriptor = new EditEntryDescriptorBuilder().withName(VALID_NAME_BOB).build();
+        EditEntryDescriptor descriptor = new EditEntryDescriptorBuilder().withName(VALID_NAME_MEETING).build();
         EditCommand editCommand = prepareCommand(outOfBoundIndex, descriptor);
 
         CommandTestUtil.assertCommandFailure(editCommand, model,
@@ -116,7 +115,7 @@ public class EditCommandTest {
         assertTrue(outOfBoundIndex.getZeroBased() < model.getEntryBook().getFloatingTaskList().size());
 
         EditCommand editCommand = prepareCommand(outOfBoundIndex,
-                                                 new EditEntryDescriptorBuilder().withName(VALID_NAME_BOB)
+                                                 new EditEntryDescriptorBuilder().withName(VALID_NAME_MEETING)
                                                                                  .build());
 
         CommandTestUtil.assertCommandFailure(editCommand, model,
@@ -167,7 +166,8 @@ public class EditCommandTest {
     private void showFirstEntryOnly() {
         ReadOnlyEntry entry = model.getEntryBook().getFloatingTaskList().get(0);
         final String[] splitName = entry.getName().fullName.split("\\s+");
-        model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList(splitName)), Entry.State.ACTIVE);
+        model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList(splitName)), null, null, Entry.State.ACTIVE,
+                                             Model.Search.AND);
 
         assertTrue(model.getFilteredFloatingTaskList().size() == 1);
     }

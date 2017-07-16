@@ -182,5 +182,38 @@ public class FloatingTaskListTest {
         floatingTaskListToTest.setEntries(floatingTaskList1);
         assertTrue(floatingTaskListToTest.equals(floatingTaskList1));
     }
+    // @@author
 
+    // @@author A0126623L
+    @Test
+    public void shouldAllowDuplicateNonActiveFloatingTask() {
+        FloatingTaskList floatingTaskListUnderTest = this.copyFloatingTaskList(floatingTaskList1);
+        assertTrue(floatingTaskListUnderTest.contains(sampleFloatingTaskArray[0]));
+
+        try {
+            floatingTaskListUnderTest.add(sampleFloatingTaskArray[0]);
+            fail("Should not reach this step as a duplicate active floating task is added.");
+        } catch (DuplicateEntryException e) {
+            // Do nothing. DuplicateEntryException is as expected.
+        }
+
+        FloatingTask entryToUpdate = (FloatingTask) EntryBuilder.build(sampleFloatingTaskArray[0]);
+        FloatingTask editedEntry = (FloatingTask) EntryBuilder.build(sampleFloatingTaskArray[0]);
+        editedEntry.setState(Entry.State.DELETED);
+
+        try {
+            floatingTaskListUnderTest.updateEntry(entryToUpdate, editedEntry);
+        } catch (Exception e) {
+            fail("Error in FloatingTaskListTest.shouldAllowDuplicateNonActiveFloatingTask() test method.");
+        }
+        assertFalse(floatingTaskListUnderTest.contains(sampleFloatingTaskArray[0]));
+
+        try {
+            floatingTaskListUnderTest.add(EntryBuilder.build(sampleFloatingTaskArray[0]));
+        } catch (DuplicateEntryException e) {
+            fail("Faulty EntryList.add() method - disallows duplicate non-active floating tasks.");
+        }
+        assertTrue(floatingTaskListUnderTest.contains(sampleFloatingTaskArray[0]));
+    }
+    // @@author
 }

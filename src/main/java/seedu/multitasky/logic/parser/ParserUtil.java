@@ -35,6 +35,7 @@ public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
     public static final String MESSAGE_INSUFFICIENT_PARTS = "Number of parts must be more than 1.";
+    public static final String MESSAGE_FAIL_PARSE_DATE = "Unable to parse date: %1$s";
 
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces
@@ -65,28 +66,32 @@ public class ParserUtil {
     /**
      * Parses a {@code Optional<String> name} into an {@code Optional<Calendar>} if {@code name} is present.
      */
+
     public static Optional<Calendar> parseDate(Optional<String> inputArgs) throws IllegalValueException {
         requireNonNull(inputArgs);
-        return inputArgs.isPresent() ? Optional.of(parseDate(inputArgs.get()))
+        return inputArgs.isPresent() ? Optional.of(parseDate(inputArgs.get())) // overload old method
                                      : Optional.empty();
     }
 
     /**
      * Converts input string to Calendar if format conforms to standard format and returns the Calendar.
      *
-     * @throws ParseException if input args String cannot be parsed into a Date.
+     * @throws IllegalValueException if input args String cannot be parsed into a Date.
      */
     public static Calendar parseDate(String args) throws ParseException {
         PrettyTimeParser ptp = new PrettyTimeParser();
         Calendar calendar = new GregorianCalendar();
         try {
             List<Date> dates = ptp.parse(args);
-            assert (!dates.isEmpty()) : "parse date error not caught";
+            if (dates.size() != 1) {
+                throw new ParseException(String.format(MESSAGE_FAIL_PARSE_DATE, args));
+            }
             Date date = dates.get(0);
             calendar.setTime(date);
             return calendar;
         } catch (Exception e) {
-            throw new ParseException(String.format("Unable to parse date: %1$s", args));
+            // double exception catching as a fail-safe
+            throw new ParseException(String.format(MESSAGE_FAIL_PARSE_DATE, args));
         }
     }
 
@@ -97,30 +102,28 @@ public class ParserUtil {
         requireNonNull(tags);
         final Set<Tag> tagSet = new HashSet<>();
         for (String tagString : tags) {
-            // @@author A0140633R
             for (String tagName : tagString.split("\\s+")) {
                 tagSet.add(new Tag(tagName));
             }
-            // @@author
         }
         return tagSet;
     }
 
-    /**
-     * Returns true if none of the prefixes contains empty {@code Optional} values in the given
-     * {@code ArgumentMultimap}.
-     */
-    public static boolean areAllPrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
-        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
-    }
-
-    // @@author A0140633R
     /**
      * Returns true if any of the prefixes contain non-empty values in the given
      * {@code ArgumentMultimap}.
      */
     public static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
         return Stream.of(prefixes).anyMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
+    }
+
+    // @@author A0140633R
+    /**
+     * Returns true if none of the prefixes contains empty {@code Optional} values in the given
+     * {@code ArgumentMultimap}.
+     */
+    public static boolean areAllPrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
+        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 
     /**
@@ -157,6 +160,26 @@ public class ParserUtil {
             assert false : "Indexes should only be indicated by float, deadline or event";
         }
         return indicatedList;
+    }
+
+    /**
+     * searches through the input string for for prefixes and returns the prefix that has the
+     * last occurence
+     * returns null if not found
+     */
+    public static Prefix getLastPrefix(String stringToSearch, Prefix...prefixes) {
+        // to deal with cases with prefix right at end or start
+        String extendedSearchString = " " + stringToSearch + " ";
+        Prefix foundPrefix = null;
+        int maxIndex = 0;
+        for (Prefix prefix : prefixes) {
+            Integer lastOccurence = extendedSearchString.lastIndexOf(" " + prefix + " ");
+            if (lastOccurence > maxIndex) {
+                maxIndex = lastOccurence;
+                foundPrefix = prefix;
+            }
+        }
+        return foundPrefix;
     }
 
 }

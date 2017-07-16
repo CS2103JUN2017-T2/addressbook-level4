@@ -4,9 +4,9 @@ import java.io.File;
 
 // @@author A0132788U
 /**
- * Deletes all the snapshot files created from previous program run during start.
+ * Event that deletes all the snapshot files created from previous program run on startup.
  */
-public class EntryAppRequestEvent {
+public class DeleteAllSnapshotsOnStartup {
 
     private static final String FILE_PATH = "data/snapshots/entrybook";
     private String newFilePath;

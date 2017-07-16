@@ -2,6 +2,7 @@ package seedu.multitasky.logic.parser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.logic.commands.ListCommand;
@@ -25,28 +26,73 @@ public class ListCommandParser {
         if (trimmedArgs.isEmpty()) {
             return new ListCommand();
         }
-
-        // Flags are delimited by whitespace
-        final String[] flags = trimmedArgs.split("\\s+");
-        if (!hasValidFlagCombination(flags)) {
+        // Preamble is necessary due to how ArgumentTokenizer works
+        // TODO modify ArgumentTokenizer to be able to detect without preamble
+        ArgumentMultimap argumentMultimap = ArgumentTokenizer.tokenize("preamble " + trimmedArgs,
+                                                                       toPrefixArray(ListCommand.VALID_PREFIXES));
+        ArrayList<String> prefixesPresent = argumentMultimap.getPresentPrefixes(ListCommand.VALID_PREFIXES);
+        if (!hasValidPrefixCombination(prefixesPresent)) {
             throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
                                                    ListCommand.MESSAGE_USAGE));
         }
+        Calendar startDate = getStartDate(argumentMultimap);
+        Calendar endDate = getEndDate(argumentMultimap);
 
-        return new ListCommand(flags);
+        return new ListCommand(startDate, endDate, prefixesPresent);
     }
 
-    private boolean hasValidFlagCombination(String... flags) {
-        ArrayList<String> flagList = new ArrayList<String>(Arrays.asList(flags));
-        // Cannot have any unknown flags
-        if (!Arrays.asList(ListCommand.VALID_PREFIXES).containsAll(flagList)) {
+    private Calendar getStartDate(ArgumentMultimap argumentMultimap) {
+        ArrayList<String> dateArgs = (ArrayList<String>) argumentMultimap.getAllValues(CliSyntax.PREFIX_FROM);
+        return getDate(getString(dateArgs).trim());
+    }
+
+    private Calendar getEndDate(ArgumentMultimap argumentMultimap) {
+        ArrayList<String> dateArgs = (ArrayList<String>) argumentMultimap.getAllValues(CliSyntax.PREFIX_TO);
+        return getDate(getString(dateArgs).trim());
+    }
+
+    private Calendar getDate(String rawDate) {
+        if (rawDate.isEmpty()) {
+            return null;
+        }
+        try {
+            Calendar date = ParserUtil.parseDate(rawDate);
+            return date;
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
+    private boolean hasValidPrefixCombination(ArrayList<String> prefixes) {
+        // Cannot have any unknown prefixes
+        if (!Arrays.asList(ListCommand.VALID_PREFIXES).containsAll(prefixes)) {
             return false;
         }
         // Check for invalid flag combinations
-        if (flagList.contains(CliSyntax.PREFIX_ARCHIVE.toString())
-            && flagList.contains(CliSyntax.PREFIX_BIN.toString())) {
+        if (prefixes.contains(CliSyntax.PREFIX_ARCHIVE.toString())
+            && prefixes.contains(CliSyntax.PREFIX_BIN.toString())) {
+            return false;
+        } else if (prefixes.contains(CliSyntax.PREFIX_UPCOMING.toString())
+                   && prefixes.contains(CliSyntax.PREFIX_REVERSE.toString())) {
             return false;
         }
         return true;
     }
+
+    private Prefix[] toPrefixArray(String... stringPrefixes) {
+        Prefix[] prefixes = new Prefix[stringPrefixes.length];
+        for (int i = 0; i < stringPrefixes.length; ++i) {
+            prefixes[i] = new Prefix(stringPrefixes[i]);
+        }
+        return prefixes;
+    }
+
+    private String getString(ArrayList<String> parts) {
+        StringBuilder builder = new StringBuilder();
+        for (String part : parts) {
+            builder.append(part);
+        }
+        return builder.toString();
+    }
+
 }

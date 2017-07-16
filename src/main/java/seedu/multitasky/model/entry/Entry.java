@@ -22,7 +22,24 @@ public abstract class Entry implements ReadOnlyEntry {
      * The three possible states are: ACTIVE, ARCHIVED, DELETED
      */
     public enum State {
-        ACTIVE, ARCHIVED, DELETED
+        ACTIVE {
+            @Override
+            public String toString() {
+                return "ACTIVE";
+            }
+        },
+        ARCHIVED {
+            @Override
+            public String toString() {
+                return "ARCHIVED";
+            }
+        },
+        DELETED {
+            @Override
+            public String toString() {
+                return "DELETED";
+            }
+        };
     };
     // @@author
 
@@ -66,6 +83,9 @@ public abstract class Entry implements ReadOnlyEntry {
         return _name;
     }
 
+    /**
+     * @param state cannot be null
+     */
     public void setState(State state) {
         this._state = requireNonNull(state);
     }
@@ -101,6 +121,21 @@ public abstract class Entry implements ReadOnlyEntry {
         this.setName(replacement.getName());
         this.setTags(replacement.getTags());
         this.setState(replacement.getState());
+    }
+
+    @Override
+    public boolean isActive() {
+        return this.getState().equals(Entry.State.ACTIVE);
+    }
+
+    @Override
+    public boolean isArchived() {
+        return this.getState().equals(Entry.State.ARCHIVED);
+    }
+
+    @Override
+    public boolean isDeleted() {
+        return this.getState().equals(Entry.State.DELETED);
     }
 
 }
