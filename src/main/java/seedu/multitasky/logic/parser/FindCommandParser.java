@@ -28,8 +28,9 @@ public class FindCommandParser {
                                                    FindCommand.MESSAGE_USAGE));
         }
 
+        String searchString = trimmedArgs.replaceAll("\\" + CliSyntax.PREFIX_ESCAPE, "");
         // keywords delimited by whitespace
-        final String[] keywords = trimmedArgs.split("\\s+");
+        final String[] keywords = searchString.split("\\s+");
         final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
         return new FindCommand(keywordSet);
     }

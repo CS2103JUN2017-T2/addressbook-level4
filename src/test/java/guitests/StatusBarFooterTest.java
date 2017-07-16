@@ -14,7 +14,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import seedu.multitasky.logic.commands.ListCommand;
-import seedu.multitasky.testutil.EntryUtil;
+import seedu.multitasky.testutil.CommandUtil;
+import seedu.multitasky.testutil.SampleEntries;
 import seedu.multitasky.ui.StatusBarFooter;
 
 public class StatusBarFooterTest extends EntryBookGuiTest {
@@ -39,15 +40,21 @@ public class StatusBarFooterTest extends EntryBookGuiTest {
         assertEquals(StatusBarFooter.SYNC_STATUS_INITIAL, statusBarFooter.getSyncStatus());
     }
 
+    /*****************
+     * Model mutated *
+     ****************/
     @Test
     public void syncStatus_mutatingCommandSucceeds_syncStatusUpdated() {
         String timestamp = new Date(injectedClock.millis()).toString();
         String expected = String.format(StatusBarFooter.SYNC_STATUS_UPDATED, timestamp);
         // Mutating command succeeds
-        assertTrue(commandBox.runCommand(EntryUtil.getFloatingTaskAddCommand(typicalEntries.spectacles)));
+        assertTrue(commandBox.runCommand(CommandUtil.getAddFloatingTaskCommand(SampleEntries.SPECTACLES)));
         assertEquals(expected, statusBarFooter.getSyncStatus());
     }
 
+    /*********************
+     * Model not mutated *
+     ********************/
     @Test
     public void syncStatus_nonMutatingCommandSucceeds_syncStatusRemainsUnchanged() {
         assertTrue(commandBox.runCommand(ListCommand.COMMAND_WORD)); // non-mutating command succeeds

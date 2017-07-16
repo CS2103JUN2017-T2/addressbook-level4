@@ -4,10 +4,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.multitasky.logic.parser.ParserUtil.MESSAGE_INVALID_INDEX;
-import static seedu.multitasky.testutil.TypicalEntries.INDEX_FIRST_ENTRY;
+import static seedu.multitasky.testutil.SampleEntries.INDEX_FIRST_ENTRY;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -20,14 +24,20 @@ import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.tag.Tag;
 
+// @@author A0140633R
+/**
+ * Contains tests for ParserUtil methods used by the parser classes.
+ */
+// @@author
 public class ParserUtilTest {
     private static final String INVALID_TAG = "#friend";
 
-    private static final String VALID_NAME = "Rachel Walker";
-    private static final String VALID_TAG_1 = "friend";
-    private static final String VALID_TAG_2 = "neighbour";
-    private static final Prefix VALID_PREFIX_TAG = new Prefix("/tag");
-    private static final Prefix VALID_PREFIX_FLOAT = new Prefix("/float");
+    private static final String VALID_NAME = "Walk the dog";
+    private static final String VALID_TAG_1 = "with_friends";
+    private static final String VALID_TAG_2 = "priority";
+    private static final String VALID_DATE = "12/1/17 18:30:00";
+    private static final Prefix VALID_PREFIX_TAG = CliSyntax.PREFIX_TAG;
+    private static final Prefix VALID_PREFIX_FLOAT = CliSyntax.PREFIX_FLOATINGTASK;
 
     @Rule
     public final ExpectedException thrown = ExpectedException.none();
@@ -98,7 +108,7 @@ public class ParserUtilTest {
         assertEquals(expectedTagSet, actualTagSet);
     }
 
-    //@@author A0140633R
+    // @@author A0140633R
     @Test
     public void arePrefixesPresent_emptyArgMap_throwsNullPointerException() throws Exception {
         thrown.expect(NullPointerException.class);
@@ -109,15 +119,88 @@ public class ParserUtilTest {
     @Test
     public void arePrefixesPresent_noPrefixFound_returnFalse() {
         String argString = " typical argument string without flags";
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(argString, VALID_PREFIX_TAG, VALID_PREFIX_FLOAT);
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(argString, VALID_PREFIX_TAG,
+                                                                  VALID_PREFIX_FLOAT);
         assertFalse(ParserUtil.arePrefixesPresent(argMultimap, VALID_PREFIX_TAG, VALID_PREFIX_FLOAT));
     }
 
     @Test
     public void arePrefixesPresent_prefixFound_returnTrue() {
-        String argString = " typical argument string with flags /float 1 /tag flagged tagged";
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(argString, VALID_PREFIX_TAG, VALID_PREFIX_FLOAT);
+        String argString = " typical argument string with flags float 1 tag flagged tagged";
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(argString, VALID_PREFIX_TAG,
+                                                                  VALID_PREFIX_FLOAT);
         assertTrue(ParserUtil.arePrefixesPresent(argMultimap, VALID_PREFIX_TAG, VALID_PREFIX_FLOAT));
+    }
+
+    public void areAllPrefixesPresent_emptyArgMap_throwsNullPointerException() throws Exception {
+        thrown.expect(NullPointerException.class);
+        ArgumentMultimap argMultimap = null;
+        ParserUtil.areAllPrefixesPresent(argMultimap, VALID_PREFIX_FLOAT, VALID_PREFIX_TAG);
+    }
+
+    @Test
+    public void areAllPrefixesPresent_allPrefixFound_returnTrue() {
+        String argString = " typical argument string with flags float 1 tag flagged tagged";
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(argString, VALID_PREFIX_TAG,
+                                                                  VALID_PREFIX_FLOAT);
+        assertTrue(ParserUtil.areAllPrefixesPresent(argMultimap, VALID_PREFIX_TAG, VALID_PREFIX_FLOAT));
+    }
+
+    @Test
+    public void areAllPrefixesPresent_notAllPrefixFound_returnFalse() {
+        // only 1 prefix in arg
+        String argString = " typical argument string with flags tag flagged tagged";
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(argString, VALID_PREFIX_TAG,
+                                                                  VALID_PREFIX_FLOAT);
+        assertFalse(ParserUtil.areAllPrefixesPresent(argMultimap, VALID_PREFIX_TAG, VALID_PREFIX_FLOAT));
+
+        // no prefixes in arg
+        argString = " typical argument string without flags";
+        argMultimap = ArgumentTokenizer.tokenize(argString, VALID_PREFIX_TAG, VALID_PREFIX_FLOAT);
+        assertFalse(ParserUtil.areAllPrefixesPresent(argMultimap, VALID_PREFIX_TAG, VALID_PREFIX_FLOAT));
+    }
+
+    @Test
+    public void parseDate_emptyString_throwsIllegalValueException() throws Exception {
+        thrown.expect(IllegalValueException.class);
+        ParserUtil.parseDate("");
+    }
+
+    @Test
+    public void parseDate_optionalEmpty_returnsOptionalEmpty() throws Exception {
+        assertFalse(ParserUtil.parseDate(Optional.empty()).isPresent());
+    }
+
+    @Test
+    public void parseDate_validValue_returnsCalendar() throws Exception {
+        Calendar expectedCalendar = new GregorianCalendar();
+        // following MM/dd/yy format of prettyTime dependency.
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy HH:mm:ss");
+        sdf.setLenient(false);
+        Date expectedDate = sdf.parse(VALID_DATE);
+        expectedCalendar.setTime(expectedDate);
+        Optional<Calendar> actualCalendar = ParserUtil.parseDate(Optional.of(VALID_DATE));
+
+        assertTrue(expectedCalendar.compareTo(actualCalendar.get()) == 0);
+    }
+
+    @Test
+    public void getMainPrefix_preconditionFailed_throwsAssertionError() throws Exception {
+        String argString = " typical argument string with flags flags float 1 tag flagged tagged";
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(argString, VALID_PREFIX_TAG,
+                                                                  VALID_PREFIX_FLOAT);
+        thrown.expect(AssertionError.class);
+        ParserUtil.getMainPrefix(argMultimap, VALID_PREFIX_TAG, VALID_PREFIX_FLOAT);
+    }
+
+    @Test
+    public void getMainPrefix_validInput_success() throws Exception {
+        String argString = " typical argument string with flag tag flagged tagged";
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(argString, VALID_PREFIX_TAG,
+                                                                  VALID_PREFIX_FLOAT);
+        Prefix expectedPrefix = VALID_PREFIX_TAG;
+        Prefix actualPrefix = ParserUtil.getMainPrefix(argMultimap, VALID_PREFIX_TAG, VALID_PREFIX_FLOAT);
+        assertEquals(expectedPrefix, actualPrefix);
     }
 
 }

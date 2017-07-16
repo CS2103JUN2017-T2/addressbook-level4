@@ -1,17 +1,27 @@
 package seedu.multitasky.model;
 
+import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Set;
 
 import seedu.multitasky.commons.core.UnmodifiableObservableList;
+import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
+import seedu.multitasky.storage.exception.NothingToRedoException;
 import seedu.multitasky.storage.exception.NothingToUndoException;
 
 /**
  * The API of the Model component.
  */
 public interface Model {
+
+    public enum Search {
+        AND, OR, POWER_AND, POWER_OR
+    };
+
     /** Clears existing backing model and replaces with the provided new data. */
     void resetData(ReadOnlyEntryBook newData);
 
@@ -22,18 +32,28 @@ public interface Model {
     void deleteEntry(ReadOnlyEntry target) throws DuplicateEntryException, EntryNotFoundException;
 
     /** Adds the given entry */
-    void addEntry(ReadOnlyEntry entry) throws DuplicateEntryException;
+    void addEntry(ReadOnlyEntry entry) throws DuplicateEntryException, OverlappingEventException;
+
+    /** Updates the state of a given entry. */
+    void changeEntryState(ReadOnlyEntry entryToChange, Entry.State newState)
+            throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException;
 
     /** Undo the previous data-changing action */
     void undoPreviousAction() throws NothingToUndoException;
+
+    /** Redo the previous undo action */
+    void redoPreviousAction() throws NothingToRedoException;
+
+    /** Change the file path for storage */
+    void changeFilePath(String newFilePath);
 
     /**
      * Replaces the given entry {@code target} with {@code editedEntry}.
      *
      * @throws EntryNotFoundException if {@code target} could not be found in the list.
      */
-    void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws DuplicateEntryException,
-            EntryNotFoundException;
+    void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
+            throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException;
 
     /** Returns the filtered event list as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
     UnmodifiableObservableList<ReadOnlyEntry> getFilteredEventList();
@@ -47,12 +67,6 @@ public interface Model {
     /** Returns the active entry list as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
     UnmodifiableObservableList<ReadOnlyEntry> getActiveList();
 
-    /** Returns the entry archive as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
-    UnmodifiableObservableList<ReadOnlyEntry> getArchive();
-
-    /** Returns the entry bin as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
-    UnmodifiableObservableList<ReadOnlyEntry> getBin();
-
     /** Updates the filter of the filtered event list to show all entries */
     void updateFilteredEventListToShowAll();
 
@@ -65,13 +79,46 @@ public interface Model {
     /** Updates the filter of all filtered lists to show all entries */
     public void updateAllFilteredListToShowAll();
 
-    /** Updates the filter of the filtered event list to filter by the given keywords */
-    void updateFilteredEventList(Set<String> keywords);
+    /** Updates the filter of all filtered lists to show all active entries */
+    public void updateAllFilteredListToShowAllActiveEntries();
 
-    /** Updates the filter of the filtered deadline list to filter by the given keywords */
-    void updateFilteredDeadlineList(Set<String> keywords);
+    /** Updates the filter of all filtered lists to show all archived entries */
+    public void updateAllFilteredListToShowAllArchivedEntries();
 
-    /** Updates the filter of the filtered floating task list to filter by the given keywords */
-    void updateFilteredFloatingTaskList(Set<String> keywords);
+    /** Updates the filter of all filtered lists to show all deleted entries */
+    public void updateAllFilteredListToShowAllDeletedEntries();
+
+    /**
+     * Updates the filter of all entry lists to filter by the given keywords,
+     * date range and state. Attempts all the different searches in order until it has at least 1 result.
+     */
+    void updateAllFilteredLists(Set<String> keywords, Calendar startDate, Calendar endDate,
+                                Entry.State state);
+
+    /*
+     * Updates the filter of the filtered event list to filter by the given keywords,
+     * date range and state using the specified search type.
+     */
+    void updateFilteredEventList(Set<String> keywords, Calendar startDate, Calendar endDate,
+                                 Entry.State state, Search search);
+
+    /*
+     * Updates the filter of the filtered deadline list to filter by the given keywords,
+     * date range and state using the specified search type.
+     */
+    void updateFilteredDeadlineList(Set<String> keywords, Calendar startDate, Calendar endDate,
+                                    Entry.State state, Search search);
+
+    /*
+     * Updates the filter of the filtered floating task list to filter by the given keywords,
+     * date range and state using the specified search type.
+     */
+    void updateFilteredFloatingTaskList(Set<String> keywords, Calendar startDate, Calendar endDate,
+                                        Entry.State state, Search search);
+
+    /** Updates the sorting comparators used. */
+    void updateSortingComparators(Comparator<ReadOnlyEntry> eventComparator,
+                                  Comparator<ReadOnlyEntry> deadlineComparator,
+                                  Comparator<ReadOnlyEntry> floatingTaskComparator);
 
 }

@@ -4,44 +4,104 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import javafx.scene.input.KeyCode;
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.logic.commands.ClearCommand;
-import seedu.multitasky.logic.commands.DeleteCommand;
 import seedu.multitasky.logic.commands.FindCommand;
-import seedu.multitasky.logic.parser.CliSyntax;
 import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.testutil.SampleEntries;
 
-//@@author A0125586X
+// @@author A0125586X
 public class FindCommandTest extends EntryBookGuiTest {
 
+    /**************
+     * No matches *
+     *************/
     @Test
-    public void find_nonmatchingKeyword_noResult() {
-        assertFindFloatingTaskResult("making", 0);
-    }
-
-    @Test
-    public void find_matchingKeyword_singleResult() {
-        assertFindFloatingTaskResult("programming", 1, typicalEntries.programming);
-    }
-
-    @Test
-    public void find_matchingKeyword_multipleResults() {
-        assertFindFloatingTaskResult("learn", 2, typicalEntries.cook, typicalEntries.programming);
-    }
-
-    @Test
-    public void find_matchingKeywordAfterDeleting_singleResult() {
-        assertFindFloatingTaskResult("learn", 2, typicalEntries.cook, typicalEntries.programming);
-        commandBox.runCommand(DeleteCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_FLOATINGTASK + " 1");
-        assertFindFloatingTaskResult("learn", 1, typicalEntries.programming);
+    public void find_nonMatchingKeyword_noResult() {
+        commandBox.runCommand(FindCommand.COMMAND_WORD + " " + "arstatrs");
+        assertFindEventListMessage(0);
+        assertFindDeadlineListMessage(0);
+        assertFindFloatingTaskListMessage(0);
     }
 
     @Test
     public void find_emptyList_noResult() {
         commandBox.runCommand(ClearCommand.COMMAND_WORD);
-        assertFindFloatingTaskResult("learn", 0);
+        commandBox.runCommand(FindCommand.COMMAND_WORD + " " + "e");
+        assertFindEventListMessage(0);
+        assertFindDeadlineListMessage(0);
+        assertFindFloatingTaskListMessage(0);
     }
 
+    /*******************************
+     * Single result for each type *
+     ******************************/
+    @Test
+    public void find_matchingPartialKeyword_singleEventResult() {
+        assertFindEventResult("nne", 1, SampleEntries.DINNER);
+    }
+
+    @Test
+    public void find_matchingFullKeyword_singleEventResult() {
+        assertFindEventResult("dinner", 1, SampleEntries.DINNER);
+    }
+
+    @Test
+    public void find_matchingPartialKeyword_singleDeadlineResult() {
+        assertFindDeadlineResult("rms", 1, SampleEntries.TAX);
+    }
+
+    @Test
+    public void find_matchingFullKeyword_singleDeadlineResult() {
+        assertFindDeadlineResult("forms", 1, SampleEntries.TAX);
+    }
+
+    @Test
+    public void find_matchingPartialKeyword_singleFloatingTaskResult() {
+        assertFindFloatingTaskResult("gra", 1, SampleEntries.PROGRAMMING);
+    }
+
+    @Test
+    public void find_matchingFullKeyword_singleFloatingTaskResult() {
+        assertFindFloatingTaskResult("programming", 1, SampleEntries.PROGRAMMING);
+    }
+
+    /**********************************
+     * Multiple results for each type *
+     *********************************/
+    @Test
+    public void find_matchingPartialKeyword_multipleDeadlineResults() {
+        assertFindDeadlineResult("s", 4, SampleEntries.TAX, SampleEntries.PAPER);
+    }
+
+    @Test
+    public void find_matchingFullKeyword_multipleFloatingTaskResults() {
+        assertFindFloatingTaskResult("learn", 2, SampleEntries.COOK, SampleEntries.PROGRAMMING);
+    }
+
+    /**************************************
+     * Different types of invalid wording *
+     **************************************/
+    @Test
+    public void find_unknownCommandName_errorMessage() {
+        commandBox.runCommand(FindCommand.COMMAND_WORD.substring(0, FindCommand.COMMAND_WORD.length() - 1));
+        assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
+
+        commandBox.runCommand(FindCommand.COMMAND_WORD + "a");
+        assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
+    }
+
+    @Test
+    public void find_invalidCommandFormat_errorMessage() {
+        commandBox.runCommand(FindCommand.COMMAND_WORD);
+        assertResultMessage(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                                          FindCommand.MESSAGE_USAGE));
+    }
+
+    /*******************************
+     * Mixed-case and autocomplete *
+     ******************************/
     /**
      * For all mixed-case tests only floating task entries are tested,
      * which should be suitable to test for all types since the type of task
@@ -75,38 +135,23 @@ public class FindCommandTest extends EntryBookGuiTest {
     }
 
     @Test
-    public void find_unknownCommandName_errorMessage() {
-        commandBox.runCommand("f");
-        assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
-
-        commandBox.runCommand("fin");
-        assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
-
-        commandBox.runCommand("findd");
-        assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
+    public void find_tabAutocomplete_success() {
+        for (int i = 1; i < FindCommand.COMMAND_WORD.length(); ++i) {
+            assertFindTabAutocomplete(FindCommand.COMMAND_WORD.substring(0, i));
+        }
+        assertFindTabAutocomplete(FindCommand.COMMAND_WORD + "a");
+        assertFindTabAutocomplete(FindCommand.COMMAND_WORD + "aa");
     }
 
     @Test
-    public void find_invalidCommandFormat_errorMessage() {
-        commandBox.runCommand("find");
-        assertResultMessage(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                                          FindCommand.MESSAGE_USAGE));
-
-        commandBox.runCommand("find ");
-        assertResultMessage(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                                          FindCommand.MESSAGE_USAGE));
+    public void find_keyboardShortcut_success() {
+        commandBox.pressKey(KeyCode.F3);
+        assertTrue(commandBox.getCommandInput().equals(FindCommand.COMMAND_WORD + " "));
     }
 
-    @Test
-    public void find_tabAutocompleteFromOneChar_success() {
-        assertFindTabAutocomplete(FindCommand.COMMAND_WORD.substring(0, 1));
-    }
-
-    @Test
-    public void find_tabAutocompleteFromTwoCharr_success() {
-        assertFindTabAutocomplete(FindCommand.COMMAND_WORD.substring(0, 2));
-    }
-
+    /*******************
+     * Utility methods *
+     ******************/
     /**
      * Confirms that the given input string will autocomplete to the correct find command word.
      */
@@ -118,13 +163,38 @@ public class FindCommandTest extends EntryBookGuiTest {
 
     private void assertFindWithCommandWord(String commandWord) {
         commandBox.runCommand(commandWord + " programming");
-        assertFindFloatingTaskListMessage(1, typicalEntries.programming);
+        assertFindFloatingTaskListMessage(1, SampleEntries.PROGRAMMING);
+    }
+
+    private void assertFindEventResult(String keywords, int numExpectedTotalResults,
+                                       Entry... expectedEventResults) {
+        commandBox.runCommand(FindCommand.COMMAND_WORD + " " + keywords);
+        assertFindEventListMessage(numExpectedTotalResults, expectedEventResults);
+    }
+
+    private void assertFindDeadlineResult(String keywords, int numExpectedTotalResults,
+                                           Entry... expectedDeadlineResults) {
+        commandBox.runCommand(FindCommand.COMMAND_WORD + " " + keywords);
+        assertFindDeadlineListMessage(numExpectedTotalResults, expectedDeadlineResults);
     }
 
     private void assertFindFloatingTaskResult(String keywords, int numExpectedTotalResults,
                                               Entry... expectedFloatingTaskResults) {
         commandBox.runCommand(FindCommand.COMMAND_WORD + " " + keywords);
         assertFindFloatingTaskListMessage(numExpectedTotalResults, expectedFloatingTaskResults);
+    }
+
+    private void assertFindEventListMessage(int numExpectedTotalResults, Entry... expectedEventResults) {
+        assertEventListSize(expectedEventResults.length);
+        assertResultMessage(numExpectedTotalResults + " entries listed!");
+        assertTrue(eventListPanel.isListMatching(expectedEventResults));
+    }
+
+    private void assertFindDeadlineListMessage(int numExpectedTotalResults,
+                                               Entry... expectedDeadlineResults) {
+        assertDeadlineListSize(expectedDeadlineResults.length);
+        assertResultMessage(numExpectedTotalResults + " entries listed!");
+        assertTrue(deadlineListPanel.isListMatching(expectedDeadlineResults));
     }
 
     private void assertFindFloatingTaskListMessage(int numExpectedTotalResults,

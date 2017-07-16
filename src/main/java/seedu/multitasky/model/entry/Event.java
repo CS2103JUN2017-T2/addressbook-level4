@@ -15,17 +15,23 @@ public class Event extends Entry {
 
     /**
      * Every field must be present and not null.
+     * Events are instantiated to be active events by default.
+     * @param name
+     * @param startDateAndTime
+     * @param endDateAndTime
+     * @param state
+     * @param tags
      */
     public Event(Name name, Calendar startDateAndTime, Calendar endDateAndTime, Set<Tag> tags) {
         super(name, tags);
         requireAllNonNull(startDateAndTime, endDateAndTime);
-        _startDateAndTime = startDateAndTime;
-        _endDateAndTime = endDateAndTime;
+        this.setStartDateAndTime(startDateAndTime);
+        this.setEndDateAndTime(endDateAndTime);
     }
 
     /**
      * Creates a copy of the given ReadOnlyEntry.
-     * Pre-condition: ReadOnlyEntry must be of type Event.
+     * @param source must be of type Event.
      */
     public Event(ReadOnlyEntry source) {
         super(source.getName(), source.getTags());
@@ -52,6 +58,10 @@ public class Event extends Entry {
 
     private void setStartDateAndTime(Calendar startDateAndTime) {
         _startDateAndTime = startDateAndTime;
+
+        // Ignore difference in millisecond and seconds
+        _startDateAndTime.set(Calendar.MILLISECOND, 0);
+        _startDateAndTime.set(Calendar.SECOND, 0);
     }
 
     public String getStartDateAndTimeString() {
@@ -65,6 +75,10 @@ public class Event extends Entry {
 
     public void setEndDateAndTime(Calendar endDateAndTime) {
         _endDateAndTime = endDateAndTime;
+
+        // Ignore difference in millisecond and seconds
+        _endDateAndTime.set(Calendar.MILLISECOND, 0);
+        _endDateAndTime.set(Calendar.SECOND, 0);
     }
 
     public String getEndDateAndTimeString() {
@@ -82,37 +96,42 @@ public class Event extends Entry {
                || this.isSameStateAs((ReadOnlyEntry) other);
     }
 
-    // @@author A0125586X
-    /**
-     * Compares this to another event for sorting by starting date.
-     *
-     * @return <0 if this event is sooner, 0 if they're the same, and >0 if this event is later
-     */
-    @Override
-    public int compareTo(ReadOnlyEntry other) throws NullPointerException, ClassCastException {
-        assert other instanceof Event : "Event::compareTo must receive Event object as argument";
-        return this.getStartDateAndTime().compareTo(other.getStartDateAndTime());
-    }
-    // @@author
-
     @Override
     public boolean isSameStateAs(ReadOnlyEntry other) {
         return (other instanceof Event && this.getName().equals(other.getName()) // instanceof handles nulls
                 && this.getStartDateAndTime().equals(other.getStartDateAndTime())
                 && this.getEndDateAndTime().equals(other.getEndDateAndTime())
+                && this.getState().equals(other.getState())
                 && this.getTags().equals(other.getTags()));
     }
+
+    // @@author A0126623L
+    /**
+     * Checks whether a given {@code event}'s time overlaps with this {@code event}'s.
+     * @param {@code entry} must be an event.
+     * @return boolean
+     */
+    public boolean hasOverlappingTime(ReadOnlyEntry other) {
+        if (!(other instanceof Event)) {
+            throw new AssertionError("Non-event object is given to Event.hasOverlappingTime().");
+        }
+
+        return !(other.getEndDateAndTime().compareTo(this.getStartDateAndTime()) < 0
+                 || other.getStartDateAndTime().compareTo(this.getEndDateAndTime()) > 0);
+    }
+    // @@author
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(getName(), getStartDateAndTime(), getEndDateAndTime(), getTags());
+        return Objects.hash(getName(), getStartDateAndTime(), getEndDateAndTime(), getState(), getTags());
     }
 
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
 
+        // TODO: Include state in string?
         builder.append(getName())
                .append(" Start: ")
                .append(dateFormatter.format(getStartDateAndTime().getTime()))

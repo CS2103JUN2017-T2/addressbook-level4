@@ -5,63 +5,67 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.List;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
-import seedu.multitasky.model.tag.Tag;
+import seedu.multitasky.model.util.EntryBuilder;
+import seedu.multitasky.model.util.TagSetBuilder;
 
 public class FloatingTaskTest {
 
-    private static Set<Tag> tagSet1;
-    private static Set<Tag> tagSet2;
-
-    private static Name name1;
-    private static Name name2;
-
-    private static FloatingTask floatingTask1;
-    private static FloatingTask floatingTask2;
-    private static FloatingTask floatingTask3;
-    private static FloatingTask floatingTask4;
-
-    // @@author A0126623L
-    @BeforeClass
-    public static void setUp() throws Exception {
-        try {
-            tagSet1 = new HashSet<>();
-            tagSet1.add(new Tag("tag1set1"));
-
-            tagSet2 = new HashSet<>();
-            tagSet2.add(new Tag("tag1set2"));
-        } catch (Exception e) {
-            fail("Tags initialisation failed.");
-        }
-
-        try {
-            name1 = new Name("SampleName1");
-            name2 = new Name("SampleName2");
-        } catch (Exception e) {
-            fail("Floating task name initialisation failed.");
-        }
-
-        // First tester, used for reference
-        floatingTask1 = new FloatingTask(name1, tagSet1);
-        // Same fields as tester1
-        floatingTask2 = new FloatingTask(name1, tagSet1);
-        // Only name is different from tester1
-        floatingTask3 = new FloatingTask(name2, tagSet1);
-        // Only tags are different from tester1
-        floatingTask4 = new FloatingTask(name1, tagSet2);
-    }
+    private FloatingTask floatingTask1, floatingTask2, floatingTask3, floatingTask4;
 
     // @@author A0126623L
     /**
-     * Creates a sample FloatingTask object.
+     * Gets an array of 4 sample floatingTasks.
+     * The first two floatingTasks are meaningfully equivalent, the remaining are unique.
+     * @return FloatingTask[] of 4 sample floatingTasks.
      */
-    public static FloatingTask createFloatingTask() {
-        return floatingTask1;
+    public static FloatingTask[] getSampleFloatingTaskArray() {
+
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.set(2017, 6, 7, 18, 30); // 7th July 2017, 6:30pm
+        Calendar calendar2 = Calendar.getInstance();
+        calendar2.set(2017, 6, 8, 18, 30); // 8th July 2017, 6:30pm
+        Calendar calendar3 = Calendar.getInstance();
+        calendar3.set(2017, 6, 9, 18, 30); // 9th July 2017, 6:30pm
+
+        try {
+            return new FloatingTask[] {
+                new FloatingTask(new Name("SampleName1"), TagSetBuilder.getTagSet("tag1")),
+                new FloatingTask(new Name("SampleName1"), TagSetBuilder.getTagSet("tag1")),
+                new FloatingTask(new Name("SampleName2"), TagSetBuilder.getTagSet("tag1")),
+                new FloatingTask(new Name("SampleName1"), TagSetBuilder.getTagSet("tag2"))
+            };
+        } catch (Exception e) {
+            fail("FloatingTask array initialisation failed.");
+            return null;
+        }
+    }
+    // @@author
+
+    // @@author A0126623L
+    /**
+     * Returns list of FloatingTasks of 4 sample elements.
+     */
+    public static List<FloatingTask> getSampleFloatingTaskList() {
+        return Arrays.asList(FloatingTaskTest.getSampleFloatingTaskArray());
+    }
+    // @@author
+
+    // @@author A0126623L
+    @Before
+    public void setUp() {
+        FloatingTask[] sampleFloatingTaskArrayData = getSampleFloatingTaskArray();
+
+        floatingTask1 = sampleFloatingTaskArrayData[0];
+        floatingTask2 = sampleFloatingTaskArrayData[1];
+        floatingTask3 = sampleFloatingTaskArrayData[2];
+        floatingTask4 = sampleFloatingTaskArrayData[3];
     }
 
     // @@author A0126623L
@@ -83,7 +87,7 @@ public class FloatingTaskTest {
     // @@author A0126623L
     @Test
     public void resetDataTest() {
-        FloatingTask tester999 = new FloatingTask(name1, tagSet1);
+        FloatingTask tester999 = (FloatingTask) EntryBuilder.build(floatingTask1);
         assertFalse(tester999.equals(floatingTask3));
 
         tester999.resetData(floatingTask3);
@@ -94,7 +98,7 @@ public class FloatingTaskTest {
     @Test
     public void toStringTest() {
         assertEquals("FloatingTask formatting is wrong",
-                     "SampleName1 Tags: [tag1set1]",
+                     "SampleName1 Tags: [tag1]",
                      floatingTask1.toString());
     }
 

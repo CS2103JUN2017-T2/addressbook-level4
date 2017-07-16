@@ -8,12 +8,11 @@ import static seedu.multitasky.commons.core.Messages.MESSAGE_INVALID_ENTRY_DISPL
 import static seedu.multitasky.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_TAG;
-import static seedu.multitasky.model.util.SampleDataUtil.getTagSet;
-import static seedu.multitasky.testutil.TypicalEntries.INDEX_THIRD_ENTRY;
+import static seedu.multitasky.model.util.TagSetBuilder.getTagSet;
+import static seedu.multitasky.testutil.SampleEntries.INDEX_THIRD_ENTRY;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -190,15 +189,16 @@ public class LogicManagerTest {
     }
 
     // TODO revive when entrybook is fixed.
-    /*@Test
-    public void execute_clear_success() throws Exception {
-        TestDataHelper helper = new TestDataHelper();
-        model.addEntry(helper.generateEntry(1));
-        model.addEntry(helper.generateEntry(2));
-        model.addEntry(helper.generateEntry(3));
-
-        assertCommandSuccess(ClearCommand.COMMAND_WORD, ClearCommand.MESSAGE_SUCCESS, new ModelManager());
-    }*/
+    /*
+     * @Test
+     * public void execute_clear_success() throws Exception {
+     * TestDataHelper helper = new TestDataHelper();
+     * model.addEntry(helper.generateEntry(1));
+     * model.addEntry(helper.generateEntry(2));
+     * model.addEntry(helper.generateEntry(3));
+     * assertCommandSuccess(ClearCommand.COMMAND_WORD, ClearCommand.MESSAGE_SUCCESS, new ModelManager());
+     * }
+     */
 
     @Test
     public void execute_addInvalidArgsFormat_parseException() {
@@ -238,7 +238,7 @@ public class LogicManagerTest {
         // prepare entry book state
         helper.addToModel(model, 2);
 
-        assertCommandSuccess(ListCommand.COMMAND_WORD, ListCommand.MESSAGE_SUCCESS, expectedModel);
+        assertCommandSuccess(ListCommand.COMMAND_WORD, ListCommand.MESSAGE_ACTIVE_SUCCESS, expectedModel);
     }
 
     /**
@@ -249,7 +249,8 @@ public class LogicManagerTest {
      *        based on visible index.
      */
     private void assertIncorrectIndexFormatBehaviorForCommand(String commandWord,
-                                                              String expectedMessage) throws Exception {
+                                                              String expectedMessage)
+            throws Exception {
         assertParseException(commandWord, expectedMessage); // index missing
         assertParseException(commandWord + " +1", expectedMessage); // index should be unsigned
         assertParseException(commandWord + " -1", expectedMessage); // index should be unsigned
@@ -275,7 +276,7 @@ public class LogicManagerTest {
             model.addEntry(p);
         }
 
-        assertCommandException(commandWord + " " + PREFIX_FLOATINGTASK
+        assertCommandException(commandWord + " " + PREFIX_FLOATINGTASK + " "
                                + INDEX_THIRD_ENTRY.getOneBased(), expectedMessage);
     }
 
@@ -296,10 +297,11 @@ public class LogicManagerTest {
         List<Entry> threeEntrys = helper.generateEntryList(3);
 
         Model expectedModel = new ModelManager(helper.generateEntryBook(threeEntrys), new UserPrefs());
-        expectedModel.deleteEntry(threeEntrys.get(1));
+        expectedModel.changeEntryState(threeEntrys.get(1), Entry.State.DELETED);
+        expectedModel.updateAllFilteredListToShowAllActiveEntries();
         helper.addToModel(model, threeEntrys);
 
-        assertCommandSuccess(DeleteCommand.COMMAND_WORD + " /float 2",
+        assertCommandSuccess(DeleteCommand.COMMAND_WORD + " float 2",
                              String.format(DeleteCommand.MESSAGE_SUCCESS, threeEntrys.get(1)), expectedModel);
     }
 
@@ -309,31 +311,34 @@ public class LogicManagerTest {
         assertParseException(FindCommand.COMMAND_WORD + " ", expectedMessage);
     }
 
+    /*
+     * TODO modify this test as now we can match across words as well
     @Test
     public void execute_find_onlyMatchesFullWordsInNames() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        Entry pTarget1 = new EntryBuilder().withName("bla bla KEY bla").build();
-        Entry pTarget2 = new EntryBuilder().withName("bla KEY bla bceofeia").build();
-        Entry p1 = new EntryBuilder().withName("KE Y").build();
-        Entry p2 = new EntryBuilder().withName("KEYKEYKEY sduauo").build();
+        Entry pTarget1 = EntryBuilder.build("bla bla KEY bla");
+        Entry pTarget2 = EntryBuilder.build("bla KEY bla bceofeia");
+        Entry p1 = EntryBuilder.build("KE Y");
+        Entry p2 = EntryBuilder.build("KEYKEYKEY sduauo");
 
         List<Entry> fourEntrys = helper.generateEntryList(p1, pTarget1, p2, pTarget2);
         Model expectedModel = new ModelManager(helper.generateEntryBook(fourEntrys), new UserPrefs());
-        expectedModel.updateFilteredFloatingTaskList(new HashSet<>(Collections.singletonList("KEY")));
+        expectedModel.updateFilteredFloatingTaskList(new HashSet<>(Collections.singletonList("KEY")), null, null,
+                                                     Entry.State.ACTIVE);
         helper.addToModel(model, fourEntrys);
         assertCommandSuccess(FindCommand.COMMAND_WORD + " KEY",
                              Command.getMessageForEntryListShownSummary(expectedModel.getFilteredFloatingTaskList()
                                                                                      .size()),
                              expectedModel);
-    }
+    }*/
 
     @Test
     public void execute_find_isNotCaseSensitive() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        Entry p1 = new EntryBuilder().withName("bla bla KEY bla").build();
-        Entry p2 = new EntryBuilder().withName("bla KEY bla bceofeia").build();
-        Entry p3 = new EntryBuilder().withName("key key").build();
-        Entry p4 = new EntryBuilder().withName("KEy sduauo").build();
+        Entry p1 = EntryBuilder.build("bla bla KEY bla");
+        Entry p2 = EntryBuilder.build("bla KEY bla bceofeia");
+        Entry p3 = EntryBuilder.build("key key");
+        Entry p4 = EntryBuilder.build("KEy sduauo");
 
         List<Entry> fourEntrys = helper.generateEntryList(p3, p1, p4, p2);
         Model expectedModel = new ModelManager(helper.generateEntryBook(fourEntrys), new UserPrefs());
@@ -348,14 +353,16 @@ public class LogicManagerTest {
     @Test
     public void execute_find_matchesIfAnyKeywordPresent() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        Entry pTarget1 = new EntryBuilder().withName("bla bla KEY bla").build();
-        Entry pTarget2 = new EntryBuilder().withName("bla rAnDoM bla bceofeia").build();
-        Entry pTarget3 = new EntryBuilder().withName("key key").build();
-        Entry p1 = new EntryBuilder().withName("sduauo").build();
+        Entry pTarget1 = EntryBuilder.build("bla bla KEY bla");
+        Entry pTarget2 = EntryBuilder.build("bla rAnDoM bla bceofeia");
+        Entry pTarget3 = EntryBuilder.build("key key");
+        Entry p1 = EntryBuilder.build("sduauo");
 
         List<Entry> fourEntrys = helper.generateEntryList(pTarget1, p1, pTarget2, pTarget3);
         Model expectedModel = new ModelManager(helper.generateEntryBook(fourEntrys), new UserPrefs());
-        expectedModel.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList("key", "rAnDoM")));
+        expectedModel.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList("key", "rAnDoM")),
+                                                     null, null,
+                                                     Entry.State.ACTIVE, Model.Search.OR);
         helper.addToModel(model, fourEntrys);
 
         assertCommandSuccess(FindCommand.COMMAND_WORD + " key rAnDoM",
@@ -377,7 +384,7 @@ public class LogicManagerTest {
             assertEquals(MESSAGE_UNKNOWN_COMMAND, pe.getMessage());
         }
 
-        String invalidCommandExecute = "delete /float 1"; // entry book is of size 0; index out of bounds
+        String invalidCommandExecute = "delete float 1"; // entry book is of size 0; index out of bounds
         try {
             logic.execute(invalidCommandExecute);
             fail("The expected CommandException was not thrown.");
@@ -412,8 +419,8 @@ public class LogicManagerTest {
          */
         Entry generateEntry(int seed) throws Exception {
             return new FloatingTask(
-                             new Name("Entry " + seed),
-                             getTagSet("tag" + Math.abs(seed), "tag" + Math.abs(seed + 1)));
+                                    new Name("Entry " + seed),
+                                    getTagSet("tag" + Math.abs(seed), "tag" + Math.abs(seed + 1)));
         }
 
         /** Generates the correct add command based on the entry given */
@@ -426,7 +433,7 @@ public class LogicManagerTest {
 
             Set<Tag> tags = p.getTags();
             for (Tag t : tags) {
-                cmd.append(" " + PREFIX_TAG.getPrefix()).append(t.tagName);
+                cmd.append(" " + PREFIX_TAG.getPrefix()).append(" ").append(t.tagName);
             }
 
             return cmd.toString();

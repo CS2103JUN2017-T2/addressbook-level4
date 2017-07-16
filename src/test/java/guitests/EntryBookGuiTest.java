@@ -29,10 +29,10 @@ import seedu.multitasky.commons.core.EventsCenter;
 import seedu.multitasky.commons.events.BaseEvent;
 import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
+import seedu.multitasky.testutil.SampleEntries;
 import seedu.multitasky.testutil.TestUtil;
-import seedu.multitasky.testutil.TypicalEntries;
 
-//@@author A0125586X
+// @@author A0125586X
 /**
  * A GUI Test class for EntryBook.
  */
@@ -41,8 +41,6 @@ public abstract class EntryBookGuiTest {
     /* The TestName Rule makes the current test name available inside test methods */
     @Rule
     public TestName name = new TestName();
-
-    protected TypicalEntries typicalEntries = new TypicalEntries();
 
     /*
      *   Handles to GUI elements present at the start up are created in advance
@@ -94,9 +92,7 @@ public abstract class EntryBookGuiTest {
      * Return null to use the data in the file specified in {@link #getDataFileLocation()}
      */
     protected EntryBook getInitialData() {
-        EntryBook entryBook = new EntryBook();
-        TypicalEntries.loadEntryBookWithSampleData(entryBook);
-        return entryBook;
+        return SampleEntries.getSampleEntryBook();
     }
 
     /**

@@ -12,7 +12,7 @@ import seedu.multitasky.model.UserPrefs;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.util.EntryBuilder;
-import seedu.multitasky.testutil.TypicalEntries;
+import seedu.multitasky.testutil.SampleEntries;
 
 /**
  * Contains integration tests (interaction with the Model) for {@code AddCommand}.
@@ -23,13 +23,12 @@ public class AddCommandIntegrationTest {
 
     @Before
     public void setUp() {
-        //TODO fix typical entries
-        model = new ModelManager(new TypicalEntries().getTypicalEntryBook(), new UserPrefs());
+        model = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
     }
 
     @Test
     public void execute_newEntry_success() throws Exception, DuplicateEntryException {
-        Entry validEntry = new EntryBuilder().build();
+        Entry validEntry = EntryBuilder.build();
 
         Model expectedModel = new ModelManager(model.getEntryBook(), new UserPrefs());
         expectedModel.addEntry(validEntry);

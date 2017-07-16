@@ -15,6 +15,7 @@ import seedu.multitasky.commons.core.EventsCenter;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.core.Version;
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
+import seedu.multitasky.commons.events.ui.DeleteAllSnapshotsOnStartup;
 import seedu.multitasky.commons.events.ui.ExitAppRequestEvent;
 import seedu.multitasky.commons.exceptions.DataConversionException;
 import seedu.multitasky.commons.util.ConfigUtil;
@@ -26,7 +27,6 @@ import seedu.multitasky.model.Model;
 import seedu.multitasky.model.ModelManager;
 import seedu.multitasky.model.ReadOnlyEntryBook;
 import seedu.multitasky.model.UserPrefs;
-import seedu.multitasky.model.util.SampleDataUtil;
 import seedu.multitasky.storage.EntryBookStorage;
 import seedu.multitasky.storage.JsonUserPrefsStorage;
 import seedu.multitasky.storage.Storage;
@@ -62,7 +62,7 @@ public class MainApp extends Application {
         UserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(config.getUserPrefsFilePath());
         userPrefs = initPrefs(userPrefsStorage);
         EntryBookStorage entryBookStorage = new XmlEntryBookStorage(userPrefs.getEntryBookFilePath());
-        storage = new StorageManager(entryBookStorage, userPrefsStorage);
+        storage = new StorageManager(entryBookStorage, userPrefsStorage, userPrefs);
 
         initLogging(config);
 
@@ -83,15 +83,24 @@ public class MainApp extends Application {
     private Model initModelManager(Storage storage, UserPrefs userPrefs) {
         Optional<ReadOnlyEntryBook> entryBookOptional;
         ReadOnlyEntryBook initialData;
+        // @@author A0132788U
+        /**
+         * Deletes snapshot files from previous run, then either loads an existing EntryBook or creates a new one.
+         */
+        DeleteAllSnapshotsOnStartup event = new DeleteAllSnapshotsOnStartup();
         try {
             entryBookOptional = storage.readEntryBook();
             if (!entryBookOptional.isPresent()) {
-                logger.info("Data file not found. Will be using sample data");
-                initialData = SampleDataUtil.getSampleEntryBook();
+                event.deleteAllSnapshotFiles();
+                logger.info("Data file not found. Will be starting with an empty EntryBook");
+                initialData = new EntryBook();
+                storage.handleEntryBookChangedEvent(new EntryBookChangedEvent(initialData));
             } else {
+                event.deleteAllSnapshotFiles();
                 initialData = entryBookOptional.get();
                 storage.handleEntryBookChangedEvent(new EntryBookChangedEvent(initialData));
             }
+            // @@author
         } catch (DataConversionException e) {
             logger.warning("Data file not in the correct format. Will be starting with an empty EntryBook");
             initialData = new EntryBook();
@@ -188,17 +197,11 @@ public class MainApp extends Application {
         System.exit(0);
     }
 
-    // @@author A0132788U
-    /**
-     * Logs the info, deletes snapshot files, and then exits the app.
-     */
     @Subscribe
     public void handleExitAppRequestEvent(ExitAppRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        event.deleteAllSnapshotFiles(storage);
         this.stop();
     }
-    // @@author
 
     public static void main(String[] args) {
         launch(args);

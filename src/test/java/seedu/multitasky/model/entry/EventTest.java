@@ -2,6 +2,7 @@ package seedu.multitasky.model.entry;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -9,9 +10,10 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
 
+import seedu.multitasky.model.util.EntryBuilder;
 import seedu.multitasky.model.util.TagSetBuilder;
 
 // @@author A0126623L
@@ -20,23 +22,15 @@ import seedu.multitasky.model.util.TagSetBuilder;
  */
 public class EventTest {
 
-    public static final Event[] SAMPLE_EVENTS_ARRAY_DATA = getSampleEventArrayData();
-
-    private Event event1 = SAMPLE_EVENTS_ARRAY_DATA[0];
-    private Event event2 = SAMPLE_EVENTS_ARRAY_DATA[1];
-    private Event event3 = SAMPLE_EVENTS_ARRAY_DATA[2];
-    private Event event4 = SAMPLE_EVENTS_ARRAY_DATA[3];
-    private Event event5 = SAMPLE_EVENTS_ARRAY_DATA[4];
-    private Event event6 = SAMPLE_EVENTS_ARRAY_DATA[5];
+    private Event event1, event2, event3, event4, event5, event6;
 
     // @@author A0126623L
     /**
      * Gets an array of 6 sample events.
      * The first two events are meaningfully equivalent, the remaining are unique.
-     *
      * @return Event[] of 6 sample events.
      */
-    public static Event[] getSampleEventArrayData() {
+    public static Event[] getSampleEventArray() {
 
         Calendar calendar1 = Calendar.getInstance();
         calendar1.set(2017, 6, 7, 18, 30); // 7th July 2017, 6:30pm
@@ -48,17 +42,17 @@ public class EventTest {
         try {
             return new Event[] {
                 new Event(new Name("SampleName1"), calendar1, calendar2,
-                          TagSetBuilder.generateTagSet("tag1")),
+                          TagSetBuilder.getTagSet("tag1")),
                 new Event(new Name("SampleName1"), calendar1, calendar2,
-                          TagSetBuilder.generateTagSet("tag1")),
+                          TagSetBuilder.getTagSet("tag1")),
                 new Event(new Name("SampleName2"), calendar1, calendar2,
-                          TagSetBuilder.generateTagSet("tag1")),
+                          TagSetBuilder.getTagSet("tag1")),
                 new Event(new Name("SampleName1"), calendar2, calendar3,
-                          TagSetBuilder.generateTagSet("tag1")),
+                          TagSetBuilder.getTagSet("tag1")),
                 new Event(new Name("SampleName1"), calendar1, calendar3,
-                          TagSetBuilder.generateTagSet("tag1")),
+                          TagSetBuilder.getTagSet("tag1")),
                 new Event(new Name("SampleName1"), calendar1, calendar2,
-                          TagSetBuilder.generateTagSet("tag2"))
+                          TagSetBuilder.getTagSet("tag2"))
             };
         } catch (Exception e) {
             fail("Event array initialisation failed.");
@@ -69,10 +63,23 @@ public class EventTest {
 
     // @@author A0126623L
     /**
-     * method that returns list of Events of 10 sample elements.
+     * method that returns list of Events of 6 sample elements.
      */
-    public static List<Event> getSampleEventListData() {
-        return Arrays.asList(SAMPLE_EVENTS_ARRAY_DATA);
+    public static List<Event> getSampleEventList() {
+        return Arrays.asList(EventTest.getSampleEventArray());
+    }
+    // @@author
+
+    @Before
+    public void setUp() {
+        Event[] sampleEventArrayData = getSampleEventArray();
+
+        event1 = (Event) EntryBuilder.build(sampleEventArrayData[0]);
+        event2 = (Event) EntryBuilder.build(sampleEventArrayData[1]);
+        event3 = (Event) EntryBuilder.build(sampleEventArrayData[2]);
+        event4 = (Event) EntryBuilder.build(sampleEventArrayData[3]);
+        event5 = (Event) EntryBuilder.build(sampleEventArrayData[4]);
+        event6 = (Event) EntryBuilder.build(sampleEventArrayData[5]);
     }
 
     // @@author A0126623L
@@ -92,10 +99,9 @@ public class EventTest {
     }
 
     // @@author A0126623L
-    @Ignore
     @Test
     public void resetDataTest() {
-        Event tester999 = new Event(event1);
+        Event tester999 = (Event) EntryBuilder.build(event1);
         assertFalse(tester999.equals(event3));
 
         tester999.resetData(event3);
@@ -103,7 +109,6 @@ public class EventTest {
     }
 
     // @@author A0126623L
-    @Ignore
     @Test
     public void toStringTest() {
         assertEquals("Event formatting is wrong",
@@ -112,17 +117,32 @@ public class EventTest {
     }
 
     // @@author A0126623L
-    @Ignore
     @Test
     public void equalsTest() {
+        Event dummyEvent = (Event) EntryBuilder.build(event2);
+
         // Equal
         assertTrue(event1.equals(event2));
+        assertTrue(dummyEvent.equals(event1));
+
+        dummyEvent.setState(Entry.State.ARCHIVED);
 
         // Not equal
+        assertFalse(dummyEvent.equals(event1));
         assertFalse(event1.equals(event3));
         assertFalse(event1.equals(event4));
         assertFalse(event1.equals(event5));
         assertFalse(event1.equals(event6));
+
+        dummyEvent.setState(Entry.State.ACTIVE);
+        assertTrue(dummyEvent.equals(event1));
+
+        // Test EventTest.getSampleEventArray()
+        Event[] array1 = EventTest.getSampleEventArray();
+        Event[] array2 = EventTest.getSampleEventArray();
+        assertFalse(array1[0] == array2[0]);
+        assertNotSame(array1[0], array2[0]);
+        assertTrue(array1[0].equals(array2[0]));
     }
 
 }

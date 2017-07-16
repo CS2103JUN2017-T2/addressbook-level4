@@ -10,8 +10,10 @@ import com.google.common.eventbus.Subscribe;
 import seedu.multitasky.commons.core.ComponentManager;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
-import seedu.multitasky.commons.events.model.EntryBookToUndoEvent;
+import seedu.multitasky.commons.events.model.FilePathChangedEvent;
 import seedu.multitasky.commons.events.storage.DataSavingExceptionEvent;
+import seedu.multitasky.commons.events.storage.EntryBookToRedoEvent;
+import seedu.multitasky.commons.events.storage.EntryBookToUndoEvent;
 import seedu.multitasky.commons.exceptions.DataConversionException;
 import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.ReadOnlyEntryBook;
@@ -22,15 +24,16 @@ import seedu.multitasky.model.UserPrefs;
  */
 public class StorageManager extends ComponentManager implements Storage {
 
-    private static int numSnapshots = 0;
     private static final Logger logger = LogsCenter.getLogger(StorageManager.class);
     private EntryBookStorage entryBookStorage;
     private UserPrefsStorage userPrefsStorage;
+    private UserPrefs userPrefs;
 
-    public StorageManager(EntryBookStorage entryBookStorage, UserPrefsStorage userPrefsStorage) {
+    public StorageManager(EntryBookStorage entryBookStorage, UserPrefsStorage userPrefsStorage, UserPrefs userPrefs) {
         super();
         this.entryBookStorage = entryBookStorage;
         this.userPrefsStorage = userPrefsStorage;
+        this.userPrefs = userPrefs;
     }
 
     // ================ UserPrefs methods ==============================
@@ -66,20 +69,10 @@ public class StorageManager extends ComponentManager implements Storage {
         return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
     }
 
-    /**
-     * Gets the filepath for deletion during exitApp event
-     */
+    /** Sets the entryBookFilePath for */
     @Override
-    public String getFilePathForDeletion() {
-        return UserPrefs.getEntryBookSnapshotPath() + numSnapshots + ".xml";
-    }
-
-    /**
-     * Gets the proper filepath of the previous snapshot needed for undo
-     */
-    public static String getPreviousEntryBookSnapshotPath() {
-        UserPrefs.decrementIndexByOne();
-        return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
+    public void setEntryBookFilePath(String newFilePath) {
+        entryBookStorage.setEntryBookFilePath(newFilePath);
     }
 
     // @@author
@@ -106,8 +99,25 @@ public class StorageManager extends ComponentManager implements Storage {
     }
 
     // @@author A0132788U
+    // ================ StorageManager methods ==============================
     /**
-     * Loads data from previousSnapshotPath for undoAction.
+     * Gets the proper filepath of the previous snapshot needed for undo
+     */
+    public static String getPreviousEntryBookSnapshotPath() {
+        UserPrefs.decrementIndexByOne();
+        return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
+    }
+
+    /**
+     * Gets the proper filepath of the next snapshot needed for redo
+     */
+    public static String getNextEntryBookSnapshotPath() {
+        UserPrefs.incrementIndexByOne();
+        return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
+    }
+
+    /**
+     * Loads data from the previous SnapshotPath for Undo action.
      *
      * @throws Exception
      */
@@ -122,11 +132,25 @@ public class StorageManager extends ComponentManager implements Storage {
     }
 
     /**
+     * Loads data from the next SnapshotPath for Redo action.
+     *
+     * @throws Exception
+     */
+    public EntryBook loadRedoData() throws Exception {
+        try {
+            ReadOnlyEntryBook redoData = XmlFileStorage
+                    .loadDataFromSaveFile(new File(getNextEntryBookSnapshotPath()));
+            return new EntryBook(redoData);
+        } catch (Exception e) {
+            throw new Exception("Nothing to Redo!");
+        }
+    }
+
+    /**
      * Gets the filepath of the most current snapshot xml file and increments index by one.
      */
     public String setEntryBookSnapshotPathAndUpdateIndex() {
         UserPrefs.incrementIndexByOne();
-        numSnapshots++;
         String snapshotPath = getEntryBookSnapshotPath();
         return snapshotPath;
     }
@@ -136,18 +160,6 @@ public class StorageManager extends ComponentManager implements Storage {
      */
     public void saveEntryBookSnapshot(ReadOnlyEntryBook entryBook) throws IOException {
         saveEntryBook(entryBook, setEntryBookSnapshotPathAndUpdateIndex());
-    }
-
-    public static int getNumSnapshots() {
-        return numSnapshots;
-    }
-
-    public static void setNumSnapshots(int numSnapshots) {
-        StorageManager.numSnapshots = numSnapshots;
-    }
-
-    public static void decrementNumSnapshots() {
-        numSnapshots--;
     }
 
     /**
@@ -187,4 +199,43 @@ public class StorageManager extends ComponentManager implements Storage {
             UserPrefs.incrementIndexByOne();
         }
     }
+
+    /**
+     * Saves data from the next snapshot to the current entrybook and passes back
+     * the event data to ModelManager to reset and update the display.
+     *
+     * @throws Exception
+     */
+    @Override
+    @Subscribe
+    public void handleEntryBookToRedoEvent(EntryBookToRedoEvent event) throws Exception {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Load next snapshot"));
+        try {
+            EntryBook entry = loadRedoData();
+            saveEntryBook(entry);
+            event.setData(entry);
+            event.setMessage("redo successful");
+        } catch (IOException e) {
+            raise(new DataSavingExceptionEvent(e));
+        } catch (Exception e) {
+            event.setMessage(e.getMessage());
+            UserPrefs.decrementIndexByOne();
+        }
+    }
+
+    /**
+     * Saves data of the entrybook at the filepath specified.
+     */
+    @Subscribe
+    public void handleFilePathChangedEvent(FilePathChangedEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event, "File path changed, saving to file"));
+        try {
+            entryBookStorage.setEntryBookFilePath(event.getNewFilePath());
+            userPrefs.setEntryBookFilePath(event.getNewFilePath());
+            saveEntryBook(event.data, event.getNewFilePath());
+        } catch (IOException e) {
+            raise(new DataSavingExceptionEvent(e));
+        }
+    }
+
 }

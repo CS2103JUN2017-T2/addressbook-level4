@@ -4,6 +4,7 @@ import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
+import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 import seedu.multitasky.model.util.EntryBuilder;
 
 //@@author A0132788U
@@ -17,20 +18,26 @@ public class TypicalEntriesForStorage {
 
     public TypicalEntriesForStorage() {
         try {
-            eat = new EntryBuilder().withName("Eat flaxseed").withTags("health").build();
-            journal = new EntryBuilder().withName("Write experiences in diary").withTags("writing").build();
-            decorate = new EntryBuilder().withName("Decorate new room").withTags("organize").build();
-            // Manually added
-            project = new EntryBuilder().withName("Finish 2103 project").withTags("important").build();
+            eat = EntryBuilder.build("Eat flaxseed",
+                                     "health");
+            journal = EntryBuilder.build("Write experiences in diary",
+                                         "writing");
+            decorate = EntryBuilder.build("Decorate new room",
+                                          "organize");
+            project = EntryBuilder.build("Finish 2103 project",
+                                         "important");
         } catch (Exception e) {
             throw new AssertionError("Sample data cannot be invalid", e);
         }
     }
 
     public static void loadEntryBookWithSampleData(EntryBook entryBook) throws DuplicateEntryException {
-        for (Entry entry : new TypicalEntries().getTypicalFloatingTasks()) {
-            entryBook.addEntry(new FloatingTask(entry));
-
+        for (Entry entry : SampleEntries.getSampleFloatingTasks()) {
+            try {
+                entryBook.addEntry(new FloatingTask(entry));
+            } catch (OverlappingEventException oee) {
+                // Ignore overlapping events when loading entry book for testing.
+            }
         }
     }
 

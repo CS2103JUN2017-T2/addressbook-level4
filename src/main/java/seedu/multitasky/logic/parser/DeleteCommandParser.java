@@ -4,7 +4,6 @@ import static seedu.multitasky.commons.core.Messages.MESSAGE_INVALID_COMMAND_FOR
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_DEADLINE;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_EVENT;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
-import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -35,12 +34,10 @@ public class DeleteCommandParser {
      */
     // @@author A0140633R
     public DeleteCommand parse(String args) throws ParseException {
-        argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_FLOATINGTASK, PREFIX_DEADLINE,
-                                                 PREFIX_EVENT, PREFIX_TAG);
+        argMultimap = ArgumentTokenizer.tokenize(args, ParserUtil.toPrefixArray(DeleteCommand.VALID_PREFIXES));
 
         if (args.trim().isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                                                   DeleteCommand.MESSAGE_USAGE));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
         }
 
         if (hasIndexFlag(argMultimap)) { // process to delete by indexes
@@ -50,7 +47,7 @@ public class DeleteCommandParser {
             }
 
             try {
-                Prefix listIndicatorPrefix = ParserUtil.getDatePrefix(argMultimap, PREFIX_FLOATINGTASK,
+                Prefix listIndicatorPrefix = ParserUtil.getMainPrefix(argMultimap, PREFIX_FLOATINGTASK,
                                                                       PREFIX_DEADLINE, PREFIX_EVENT);
                 Index index = ParserUtil.parseIndex(argMultimap.getValue(listIndicatorPrefix).get());
                 return new DeleteByIndexCommand(index, listIndicatorPrefix);
@@ -59,9 +56,9 @@ public class DeleteCommandParser {
             }
 
         } else { // process to delete by find.
-            String trimmedArgs = argMultimap.getPreamble().get();
-
-            final String[] keywords = trimmedArgs.split("\\s+");
+            String searchString = argMultimap.getPreamble().get()
+                                             .replaceAll("\\" + CliSyntax.PREFIX_ESCAPE, "");
+            final String[] keywords = searchString.split("\\s+");
             final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
 
             return new DeleteByFindCommand(keywordSet);

@@ -20,12 +20,18 @@ public class XmlAdaptedTagTest {
         tag = new XmlAdaptedTag(new Tag(tagName));
     }
 
+    /***************************
+     * Illegal tag test *
+     **************************/
     @Test
     public void testXmlAdaptedTag_nameEquality() throws IllegalValueException {
         XmlAdaptedTag newTag = new XmlAdaptedTag(new Tag("CS2103"));
         assertFalse(tag.equals(newTag));
     }
 
+    /***************************
+     * Illegal toModelType test *
+     **************************/
     @Test
     public void testXmlAdaptedTag_notEqualToTag() throws IllegalValueException {
         assertFalse(tag.equals(tag.toModelType()));

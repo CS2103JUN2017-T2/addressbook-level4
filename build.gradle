@@ -65,6 +65,7 @@ allprojects {
         compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonDataTypeVersion"
         compile "com.google.guava:guava:$guavaVersion"
         compile files('./lib/prettytime-4.0.1.Final.jar')
+        compile files('./lib/prettytime-nlp-4.0.1.Final.jar')
 
         testCompile "junit:junit:$junitVersion"
         testCompile "org.testfx:testfx-core:$testFxVersion"
@@ -128,15 +129,15 @@ class EntryBookTest extends Test {
         systemProperty 'testfx.setup.timeout', '60000'
 
         /*
-         * Prints the currently running test's name in the CI's build log,
-         * so that we can check if tests are being silently skipped or
-         * stalling the build.
+         * Prints the currently running test's name so that we can check if
+         * tests are being silently skipped or stalling the build.
+         * Modified to always print to give feedback even when running on
+         * the desktop command line compared to just in CI.
          */
-        if (System.env.'CI') {
-            beforeTest { descriptor ->
-                logger.lifecycle('Running test: ' + descriptor)
-            }
+        beforeTest { descriptor ->
+            logger.lifecycle('Running test: ' + descriptor)
         }
+
     }
 
     public void setHeadless() {
@@ -158,7 +159,7 @@ task guiTests(type: EntryBookTest) {
 
 
 task nonGuiTests(type: EntryBookTest) {
-    include 'seedu/address/**'
+    include 'seedu/multitasky/**'
 
     jacoco {
         destinationFile = new File("${buildDir}/jacoco/test.exec")

@@ -4,8 +4,9 @@ import java.io.IOException;
 import java.util.Optional;
 
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
-import seedu.multitasky.commons.events.model.EntryBookToUndoEvent;
 import seedu.multitasky.commons.events.storage.DataSavingExceptionEvent;
+import seedu.multitasky.commons.events.storage.EntryBookToRedoEvent;
+import seedu.multitasky.commons.events.storage.EntryBookToUndoEvent;
 import seedu.multitasky.commons.exceptions.DataConversionException;
 import seedu.multitasky.model.ReadOnlyEntryBook;
 import seedu.multitasky.model.UserPrefs;
@@ -34,14 +35,21 @@ public interface Storage extends EntryBookStorage, UserPrefsStorage {
      * Saves the current version of the Entry Book to the hard disk.
      * Creates the data file if it is missing.
      */
-    void handleEntryBookChangedEvent(EntryBookChangedEvent abce);
+    void handleEntryBookChangedEvent(EntryBookChangedEvent e);
 
     /**
      * Changes the current version of the Entry Book to the previous one on the hard disk.
      * Raises {@link DataSavingExceptionEvent} if there was an error during saving.
      *
-     * @throws DataConversionException
      * @throws Exception
      */
-    void handleEntryBookToUndoEvent(EntryBookToUndoEvent defg) throws DataConversionException, Exception;
+    void handleEntryBookToUndoEvent(EntryBookToUndoEvent e) throws Exception;
+
+    /**
+     * Changes the current version of the Entry Book to the next one (saved as a snapshot) on the hard disk.
+     * Raises {@link DataSavingExceptionEvent} if there was an error during saving.
+     *
+     * @throws Exception
+     */
+    void handleEntryBookToRedoEvent(EntryBookToRedoEvent e) throws Exception;
 }

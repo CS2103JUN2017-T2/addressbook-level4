@@ -1,15 +1,15 @@
 package guitests;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.logic.commands.ClearCommand;
-import seedu.multitasky.testutil.EntryUtil;
+import seedu.multitasky.testutil.CommandUtil;
+import seedu.multitasky.testutil.SampleEntries;
 
-//@@author A0125586X
+// @@author A0125586X
 public class ClearCommandTest extends EntryBookGuiTest {
 
     /*********************
@@ -21,36 +21,28 @@ public class ClearCommandTest extends EntryBookGuiTest {
         assertClearCommandSuccess();
     }
 
-    @Test
-    public void clear_nonEmptyList_success() {
-        assertFalse(eventListPanel.isEmpty());
-        assertFalse(deadlineListPanel.isEmpty());
-        assertFalse(floatingTaskListPanel.isEmpty());
-        assertClearCommandSuccess();
-    }
-
     /**********************************
      * Adding after clearing the list *
      *********************************/
     @Test
     public void clear_addEventAfterClear_success() {
         assertClearCommandSuccess();
-        commandBox.runCommand(EntryUtil.getEventAddCommand(typicalEntries.cat));
-        assertTrue(eventListPanel.isListMatching(typicalEntries.cat));
+        commandBox.runCommand(CommandUtil.getAddEventCommand(SampleEntries.CAT));
+        assertTrue(eventListPanel.isListMatching(SampleEntries.CAT));
     }
 
     @Test
     public void clear_addDeadlineAfterClear_success() {
         assertClearCommandSuccess();
-        commandBox.runCommand(EntryUtil.getDeadlineAddCommand(typicalEntries.submission));
-        assertTrue(deadlineListPanel.isListMatching(typicalEntries.submission));
+        commandBox.runCommand(CommandUtil.getAddDeadlineCommand(SampleEntries.SUBMISSION));
+        assertTrue(deadlineListPanel.isListMatching(SampleEntries.SUBMISSION));
     }
 
     @Test
     public void clear_addFloatingTaskAfterClear_success() {
         assertClearCommandSuccess();
-        commandBox.runCommand(EntryUtil.getFloatingTaskAddCommand(typicalEntries.clean));
-        assertTrue(floatingTaskListPanel.isListMatching(typicalEntries.clean));
+        commandBox.runCommand(CommandUtil.getAddFloatingTaskCommand(SampleEntries.CLEAN));
+        assertTrue(floatingTaskListPanel.isListMatching(SampleEntries.CLEAN));
     }
 
     /**************************************
@@ -58,13 +50,12 @@ public class ClearCommandTest extends EntryBookGuiTest {
      **************************************/
     @Test
     public void clear_unknownCommandName_errorMessage() {
-        commandBox.runCommand("clea");
+        commandBox.runCommand(ClearCommand.COMMAND_WORD.substring(0, ClearCommand.COMMAND_WORD.length() - 1));
         assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
 
-        commandBox.runCommand("clearr");
+        commandBox.runCommand(ClearCommand.COMMAND_WORD + "a");
         assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
     }
-
 
     /*******************************
      * Mixed-case and autocomplete *
@@ -105,6 +96,7 @@ public class ClearCommandTest extends EntryBookGuiTest {
         for (int i = 1; i < ClearCommand.COMMAND_WORD.length(); ++i) {
             assertClearTabAutocomplete(ClearCommand.COMMAND_WORD.substring(0, i));
         }
+        assertClearTabAutocomplete(ClearCommand.COMMAND_WORD + "a");
     }
 
     /**

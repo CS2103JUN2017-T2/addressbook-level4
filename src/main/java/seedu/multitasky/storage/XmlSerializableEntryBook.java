@@ -16,7 +16,6 @@ import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.tag.Tag;
 
-// @@author A0132788U
 /**
  * An Immutable EntryBook that is serializable to XML format
  */
@@ -30,7 +29,7 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
     @XmlElement
     private List<XmlAdaptedEntry> deadlines;
     @XmlElement
-    private List<XmlAdaptedEntry> archived;
+    private List<XmlAdaptedEntry> archive;
     @XmlElement
     private List<XmlAdaptedEntry> bin;
     @XmlElement
@@ -46,7 +45,7 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
         events = new ArrayList<>();
         floatingTasks = new ArrayList<>();
         deadlines = new ArrayList<>();
-        archived = new ArrayList<>();
+        archive = new ArrayList<>();
         bin = new ArrayList<>();
         active = new ArrayList<>();
         tags = new ArrayList<>();
@@ -59,9 +58,9 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
         this();
         events.addAll(src.getEventList().stream().map(XmlAdaptedEntry::new).collect(Collectors.toList()));
         deadlines.addAll(src.getDeadlineList().stream().map(XmlAdaptedEntry::new)
-                            .collect(Collectors.toList()));
+                .collect(Collectors.toList()));
         floatingTasks.addAll(src.getFloatingTaskList().stream().map(XmlAdaptedEntry::new)
-                                .collect(Collectors.toList()));
+                .collect(Collectors.toList()));
         tags.addAll(src.getTagList().stream().map(XmlAdaptedTag::new).collect(Collectors.toList()));
     }
 
@@ -109,7 +108,7 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
 
     @Override
     public ObservableList<ReadOnlyEntry> getActiveList() {
-        final ObservableList<Entry> actives = this.active.stream().map(p -> {
+        final ObservableList<Entry> active = this.active.stream().map(p -> {
             try {
                 return p.toModelType();
             } catch (Exception e) {
@@ -118,35 +117,7 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
                 return null;
             }
         }).collect(Collectors.toCollection(FXCollections::observableArrayList));
-        return new UnmodifiableObservableList<>(actives);
-    }
-
-    @Override
-    public ObservableList<ReadOnlyEntry> getArchive() {
-        final ObservableList<Entry> archives = this.archived.stream().map(p -> {
-            try {
-                return p.toModelType();
-            } catch (Exception e) {
-                e.printStackTrace();
-                // TODO: better error handling
-                return null;
-            }
-        }).collect(Collectors.toCollection(FXCollections::observableArrayList));
-        return new UnmodifiableObservableList<>(archives);
-    }
-
-    @Override
-    public ObservableList<ReadOnlyEntry> getBin() {
-        final ObservableList<Entry> bins = this.bin.stream().map(p -> {
-            try {
-                return p.toModelType();
-            } catch (Exception e) {
-                e.printStackTrace();
-                // TODO: better error handling
-                return null;
-            }
-        }).collect(Collectors.toCollection(FXCollections::observableArrayList));
-        return new UnmodifiableObservableList<>(bins);
+        return new UnmodifiableObservableList<>(active);
     }
 
     @Override

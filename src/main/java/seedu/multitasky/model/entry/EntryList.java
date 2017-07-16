@@ -3,7 +3,9 @@ package seedu.multitasky.model.entry;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.Objects;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,6 +13,8 @@ import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.commons.util.CollectionUtil;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.util.Comparators;
+import seedu.multitasky.model.util.EntryBuilder;
 
 /**
  * A list of entries that does not allow nulls.
@@ -23,6 +27,8 @@ public abstract class EntryList implements Iterable<Entry> {
 
     protected final ObservableList<Entry> internalList = FXCollections.observableArrayList();
 
+    protected Comparator<ReadOnlyEntry> comparator = Comparators.ENTRY_DEFAULT;
+
     // @@author A0126623L
     /**
      * Adds an entry to the list.
@@ -32,7 +38,9 @@ public abstract class EntryList implements Iterable<Entry> {
     public void add(ReadOnlyEntry toAdd) throws DuplicateEntryException {
         requireNonNull(toAdd);
         if (contains(toAdd)) {
-            throw new DuplicateEntryException();
+            if (!isArchivedOrDeletedFloatingTask(toAdd)) {
+                throw new DuplicateEntryException();
+            }
         }
     };
     // @@author
@@ -84,9 +92,23 @@ public abstract class EntryList implements Iterable<Entry> {
         return entryFoundAndDeleted;
     }
 
+    // @@author A0126623L
+    /**
+     * Changes the state (i.e. ACTIVE, ARCHIVED, DELETED) of an existing entry to {@code newState}.
+     * @param entryToChange
+     * @param newState
+     * @throws DuplicateEntryException, EntryNotFoundException
+     */
+    public void changeEntryState(ReadOnlyEntry entryToChange, Entry.State newState)
+            throws DuplicateEntryException, EntryNotFoundException {
+        Entry editedEntry = EntryBuilder.build(entryToChange);
+        editedEntry.setState(newState);
+        this.updateEntry(entryToChange, editedEntry);
+    }
+
     /**
      * Clears the current list of entries and add all elements from replacement.
-     *
+     * The updated list of entries will contain the references to the elements in {@code replacement}.
      * @param replacement
      */
     public void setEntries(EntryList replacement) {
@@ -99,8 +121,8 @@ public abstract class EntryList implements Iterable<Entry> {
      * @throws EntryNotFoundException if {@code target} could not be found in the list.
      * @throws DuplicateEntryException if {@code editedEntry} already exists in the list.
      */
-    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws DuplicateEntryException,
-            EntryNotFoundException {
+    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
+            throws DuplicateEntryException, EntryNotFoundException {
         requireNonNull(editedEntry);
 
         int index = internalList.indexOf(target);
@@ -111,7 +133,9 @@ public abstract class EntryList implements Iterable<Entry> {
         Entry entryToUpdate = internalList.get(index);
 
         if (internalList.contains(editedEntry)) {
-            throw new DuplicateEntryException();
+            if (!isArchivedOrDeletedFloatingTask(editedEntry)) {
+                throw new DuplicateEntryException();
+            }
         }
 
         entryToUpdate.resetData(editedEntry);
@@ -122,13 +146,35 @@ public abstract class EntryList implements Iterable<Entry> {
         internalList.set(index, entryToUpdate);
     }
 
+    // @@author A0126623L
+    /**
+     * Checks if the given entry is a floating task with the "archived" or "deleted" status, which is allowed in model.
+     *
+     * @param entry must not be null.
+     * @return boolean
+     */
+    public static boolean isArchivedOrDeletedFloatingTask(ReadOnlyEntry entry) {
+        Objects.requireNonNull(entry);
+        return (entry instanceof FloatingTask
+                && (entry.getState().equals(Entry.State.ARCHIVED)
+                    || entry.getState().equals(Entry.State.DELETED)));
+    }
+    // @@author A0126623L
+
     // @@author A0125586X
     /**
-     * Sorts the internal list by the Comparable interface already implemented for the various
-     * Entry subclasses
+     * Sorts the internal list using the comparator stored inside the class
      */
     protected void sortInternalList() {
-        Collections.sort(internalList);
+        Collections.sort(internalList, comparator);
+    }
+
+    /**
+     * Sets the comparator for this list, and sorts it using the comparator.
+     */
+    public void setComparator(Comparator<ReadOnlyEntry> comparator) {
+        this.comparator = comparator;
+        sortInternalList();
     }
     // @@author
 }
