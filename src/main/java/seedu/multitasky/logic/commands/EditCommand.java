@@ -100,19 +100,51 @@ public abstract class EditCommand extends Command {
         Calendar updatedEndDate = editEntryDescriptor.getEndDate()
                                                      .orElse(entryToEdit.getEndDateAndTime());
 
-        if (updatedStartDate == null && updatedEndDate == null) {
+        if (editToFloating(updatedStartDate, updatedEndDate) // floating task cases
+            // deadline but reset end date
+            || editToDeadline(updatedStartDate, updatedEndDate) && editEntryDescriptor.hasResetEndDate()
+            // event but reset both start, end date
+            || editToEvent(updatedStartDate, updatedEndDate) && editEntryDescriptor.hasResetEndDate()
+               && editEntryDescriptor.hasResetStartDate()) {
             return new FloatingTask(updatedName, updatedTags);
-        } else if (updatedStartDate == null && updatedEndDate != null) {
+
+        } else if (editToDeadline(updatedStartDate, updatedEndDate) // deadline cases
+                   // event with start date removed
+                   || (editToEvent(updatedStartDate, updatedEndDate))
+                      && editEntryDescriptor.hasResetStartDate()
+                   // event with startdate == enddate
+                   || (editToEvent(updatedStartDate, updatedEndDate))
+                      && updatedEndDate.compareTo(updatedStartDate) == 0
+                   || editToEvent(updatedStartDate, updatedEndDate)
+                      && editEntryDescriptor.hasResetStartDate()) {
+            updatedEndDate = updatedEndDate == null ? updatedStartDate : updatedEndDate;
             return new Deadline(updatedName, updatedEndDate, updatedTags);
-        } else if (updatedStartDate != null && updatedEndDate != null) {
-            if (updatedEndDate.compareTo(updatedStartDate) < 0) {
+
+        } else if (editToEvent(updatedStartDate, updatedEndDate)
+                   && editEntryDescriptor.hasResetStartDate()) {
+            return new Deadline(updatedName, updatedStartDate, updatedTags);
+
+        } else if (editToEvent(updatedStartDate, updatedEndDate)) { //events cases
+            if (updatedEndDate.compareTo(updatedStartDate) < 0) { // edited to invalid end date
                 throw new CommandException(MESSAGE_ENDDATE_AFTER_STARTDATE);
             }
             return new Event(updatedName, updatedStartDate, updatedEndDate, updatedTags);
         } else {
-            assert false : "Cannot edit to entry that is not float, deadline or event.";
-            return null;
+            throw new AssertionError("can only have event, deadline or floating task");
         }
+    }
+
+    private static boolean editToEvent(Calendar updatedStartDate, Calendar updatedEndDate) {
+        return updatedStartDate != null && updatedEndDate != null;
+    }
+
+    private static boolean editToDeadline(Calendar updatedStartDate, Calendar updatedEndDate) {
+        return updatedStartDate == null && updatedEndDate != null
+                || updatedStartDate != null && updatedEndDate == null;
+    }
+
+    private static boolean editToFloating(Calendar updatedStartDate, Calendar updatedEndDate) {
+        return updatedStartDate == null && updatedEndDate == null;
     }
 
     @Override
@@ -135,18 +167,23 @@ public abstract class EditCommand extends Command {
     /**
      * Stores the details to edit the entry with. Each non-empty field value
      * will replace the corresponding field value of the entry.
+     *
      */
     public static class EditEntryDescriptor {
         private Name name;
         private Set<Tag> tags;
         private Calendar startDate;
         private Calendar endDate;
+        private boolean resetStartDate;
+        private boolean resetEndDate;
 
         public EditEntryDescriptor() {
             name = null;
             tags = null;
             startDate = null;
             endDate = null;
+            resetStartDate = false;
+            resetEndDate = false;
         }
 
         public EditEntryDescriptor(EditEntryDescriptor toCopy) {
@@ -162,13 +199,16 @@ public abstract class EditCommand extends Command {
             if (toCopy.getEndDate().isPresent()) {
                 this.endDate = toCopy.getEndDate().get();
             }
+            resetStartDate = toCopy.hasResetStartDate();
+            resetEndDate = toCopy.hasResetEndDate();
         }
 
         /**
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(this.name, this.tags, this.startDate, this.endDate);
+            return CollectionUtil.isAnyNonNull(this.name, this.tags, this.startDate, this.endDate)
+                    || resetStartDate || resetEndDate;
         }
 
         public Optional<Calendar> getStartDate() {
@@ -187,6 +227,14 @@ public abstract class EditCommand extends Command {
             return Optional.ofNullable(tags);
         }
 
+        public boolean hasResetStartDate() {
+            return resetStartDate;
+        }
+
+        public boolean hasResetEndDate() {
+            return resetEndDate;
+        }
+
         public void setTags(Set<Tag> tags) {
             this.tags = tags;
         }
@@ -201,6 +249,14 @@ public abstract class EditCommand extends Command {
 
         public void setEndDate(Calendar endDate) {
             this.endDate = endDate;
+        }
+
+        public void setResetStartDate(boolean value) {
+            this.resetStartDate = value;
+        }
+
+        public void setResetEndDate(boolean value) {
+            this.resetEndDate = value;
         }
 
         @Override
@@ -218,7 +274,8 @@ public abstract class EditCommand extends Command {
             // state check
             EditEntryDescriptor e = (EditEntryDescriptor) other;
             return getName().equals(e.getName()) && getTags().equals(e.getTags())
-                   && getStartDate().equals(e.getStartDate()) && getEndDate().equals(e.getEndDate());
+                   && getStartDate().equals(e.getStartDate()) && getEndDate().equals(e.getEndDate())
+                   && (hasResetStartDate() == e.hasResetStartDate()) && (hasResetEndDate() == e.hasResetEndDate());
         }
     }
 

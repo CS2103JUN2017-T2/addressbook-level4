@@ -88,19 +88,22 @@ public class AddCommandParser {
             try {
                 Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
                 // only reads using flag indicated by the last occurrence of prefix.
-                Prefix startDatePrefix = requireNonNull(
-                        ParserUtil.getLastPrefix(args, PREFIX_FROM, PREFIX_ON, PREFIX_AT));
-                Prefix endDatePrefix = requireNonNull(
-                        ParserUtil.getLastPrefix(args, PREFIX_TO, PREFIX_BY));
+                Prefix startDatePrefix = requireNonNull(ParserUtil.getLastPrefix(
+                        args, PREFIX_FROM, PREFIX_ON, PREFIX_AT));
+                Prefix endDatePrefix = requireNonNull(ParserUtil.getLastPrefix(args, PREFIX_TO, PREFIX_BY));
                 endDate = ParserUtil.parseDate(argMultimap.getValue(endDatePrefix).get());
                 startDate = ParserUtil.parseDate(argMultimap.getValue(startDatePrefix).get());
+                Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
                 if (endDate.compareTo(startDate) < 0) {
                     throw new ParseException("End date should not be before start date!");
+                } else if (endDate.compareTo(startDate) == 0) {
+                    // convert automatically to deadline
+                    ReadOnlyEntry entry = new Deadline(name, endDate, tagList);
+                    return new AddCommand(entry);
+                } else { // end date is later than start date as it should be
+                    ReadOnlyEntry entry = new Event(name, startDate, endDate, tagList);
+                    return new AddCommand(entry);
                 }
-                Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
-                ReadOnlyEntry entry = new Event(name, startDate, endDate, tagList);
-
-                return new AddCommand(entry);
 
             } catch (IllegalValueException ive) {
                 throw new ParseException(ive.getMessage(), ive);

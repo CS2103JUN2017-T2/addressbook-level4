@@ -9,6 +9,7 @@ import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_EVENT;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FROM;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_ON;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_TO;
 
@@ -50,19 +51,34 @@ public class EditCommandParser {
             throw new ParseException(EditCommand.MESSAGE_USAGE);
         }
 
+        // initialise edit descriptor
+        Prefix startDatePrefix = null;
+        Prefix endDatePrefix = null;
+        if (hasStartDatePrefix()) {
+            startDatePrefix = ParserUtil.getLastPrefix(args, PREFIX_FROM, PREFIX_AT, PREFIX_ON);
+            if (argMultimap.getValue(startDatePrefix).get().equals("")) { //indicates reset
+                editEntryDescriptor.setResetStartDate(true);
+                startDatePrefix = null; // prevent parsing of date since it will throw exception there
+            }
+        }
+        if (hasEndDatePrefix()) {
+            endDatePrefix = ParserUtil.getLastPrefix(args, PREFIX_BY, PREFIX_TO);
+            if (argMultimap.getValue(endDatePrefix).get().equals("")) { //indicates reset
+                editEntryDescriptor.setResetEndDate(true);
+                endDatePrefix = null; // prevent parsing of date since it will throw exception there
+            }
+        }
+        initEntryEditor(argMultimap, editEntryDescriptor, startDatePrefix, endDatePrefix);
+
         if (hasIndexFlag(argMultimap)) { // edit by index
             if (hasInvalidFlagCombination(argMultimap)) {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                                                        EditCommand.MESSAGE_USAGE));
             }
-
-            Index index;
-            initEntryEditor(argMultimap, editEntryDescriptor);
-
             try {
                 Prefix listIndicatorPrefix = ParserUtil.getMainPrefix(argMultimap, PREFIX_FLOATINGTASK,
                                                                       PREFIX_DEADLINE, PREFIX_EVENT);
-                index = ParserUtil.parseIndex(argMultimap.getValue(listIndicatorPrefix).get());
+                Index index = ParserUtil.parseIndex(argMultimap.getValue(listIndicatorPrefix).get());
                 return new EditByIndexCommand(index, listIndicatorPrefix, editEntryDescriptor);
             } catch (IllegalValueException ive) {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
@@ -71,7 +87,6 @@ public class EditCommandParser {
 
         } else { // search by find
 
-            initEntryEditor(argMultimap, editEntryDescriptor);
             String searchString = argMultimap.getPreamble().get()
                                              .replaceAll("\\" + CliSyntax.PREFIX_ESCAPE, "");
             final String[] keywords = searchString.split("\\s+");
@@ -86,20 +101,19 @@ public class EditCommandParser {
      * entry
      * data are of wrong format or no fields are edited.
      */
-    private void initEntryEditor(ArgumentMultimap argMultimap,
-                                 EditEntryDescriptor editEntryDescriptor)
-            throws ParseException {
+    private void initEntryEditor(ArgumentMultimap argMultimap, EditEntryDescriptor editEntryDescriptor,
+                                 Prefix startDatePrefix, Prefix endDatePrefix) throws ParseException {
         try {
             ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME))
                       .ifPresent(editEntryDescriptor::setName);
-            ParserUtil.parseDate(argMultimap.getValue(PREFIX_FROM))
-                      .ifPresent(editEntryDescriptor::setStartDate);
-            ParserUtil.parseDate(argMultimap.getValue(PREFIX_AT))
-                      .ifPresent(editEntryDescriptor::setStartDate);
-            ParserUtil.parseDate(argMultimap.getValue(PREFIX_TO))
-                      .ifPresent(editEntryDescriptor::setEndDate);
-            ParserUtil.parseDate(argMultimap.getValue(PREFIX_BY))
-                      .ifPresent(editEntryDescriptor::setEndDate);
+            if (startDatePrefix != null) {
+                ParserUtil.parseDate(argMultimap.getValue(startDatePrefix))
+                          .ifPresent(editEntryDescriptor::setStartDate);
+            }
+            if (endDatePrefix != null) {
+                ParserUtil.parseDate(argMultimap.getValue(endDatePrefix))
+                          .ifPresent(editEntryDescriptor::setEndDate);
+            }
             parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG))
                       .ifPresent(editEntryDescriptor::setTags);
         } catch (IllegalValueException ive) {
@@ -146,6 +160,24 @@ public class EditCommandParser {
         assert argMultimap != null;
         return ParserUtil.arePrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_DEADLINE,
                                              PREFIX_EVENT);
+    }
+
+    /**
+     * Returns true if flags present in argMultimap indicate start date arguments.
+     * Precondition : argumentMultimap within parser has been properly initialised beforehand.
+     */
+    private boolean hasStartDatePrefix() {
+        assert argMultimap != null;
+        return ParserUtil.arePrefixesPresent(argMultimap, PREFIX_FROM, PREFIX_AT, PREFIX_ON);
+    }
+
+    /**
+     * Returns true if flags present in argMultimap indicate end date arguments.
+     * Precondition : argumentMultimap within parser has been properly initialised beforehand.
+     */
+    private boolean hasEndDatePrefix() {
+        assert argMultimap != null;
+        return ParserUtil.arePrefixesPresent(argMultimap, PREFIX_BY, PREFIX_TO);
     }
 
 }
