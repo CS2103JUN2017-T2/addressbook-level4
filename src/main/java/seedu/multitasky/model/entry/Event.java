@@ -105,6 +105,7 @@ public class Event extends Entry {
                 && this.getTags().equals(other.getTags()));
     }
 
+    // @@author A0126623L
     /**
      * Checks whether a given {@code event}'s time overlaps with this {@code event}'s.
      * @param {@code entry} must be an event.
@@ -116,8 +117,9 @@ public class Event extends Entry {
         }
 
         return !(other.getEndDateAndTime().compareTo(this.getStartDateAndTime()) < 0
-                 && other.getStartDateAndTime().compareTo(this.getEndDateAndTime()) > 0);
+                 || other.getStartDateAndTime().compareTo(this.getEndDateAndTime()) > 0);
     }
+    // @@author
 
     @Override
     public int hashCode() {
