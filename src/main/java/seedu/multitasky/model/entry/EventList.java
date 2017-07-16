@@ -59,7 +59,8 @@ public class EventList extends EntryList {
 
     // @@author A0126623L
     /**
-     * Checks if a given event has overlapping time with any existing active events in the event list.
+     * Checks if a given event will have overlapping time with any existing active events in the
+     * event list after being updated.
      */
     public boolean hasOverlappingEventAfterUpdate(ReadOnlyEntry target, ReadOnlyEntry prospectiveEntry) {
         for (Entry existingEntry : internalList) {
