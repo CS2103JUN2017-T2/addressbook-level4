@@ -667,13 +667,6 @@ ____
 Windows, Linux, Unix, OS-X
 ____
 
-//<!-- @@author A0140633R -->
-[[ddmmyy-hhmm]]
-dd/mm/yy hh:mm format
-____
-Refers to Date,Month,Year and Hour, Minute in 24H clock format.
-____
-
 [appendix]
 == Product Survey
 //<!-- @@author A0132788U -->

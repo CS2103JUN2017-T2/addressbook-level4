@@ -38,9 +38,17 @@ image::chuapingchan.png[width="150", align="left"]
 '''
 == http://github.com/kevinLamKB[Kevin Lam]
 image::kevinlamkb.png[width="150", align="left"]
-
-Role: Developer +
-Responsibilities: Documentation, Eclipse expert, Logic(component)
+* Role: Developer
+* Components in charge of: https://github.com/CS2103JUN2017-T2/main/blob/master/docs/DeveloperGuide.adoc#logic-component[Logic]
+* Aspects/tools in charge of: Documentation, Eclipse, User Feedback Messages
+* Features implemented:
+** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#adding-an-entry-code-add-code[Adding entries]
+** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#editing-an-entry-code-edit-code[Editing entries]
+** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#deleting-an-entry-code-delete-code[Deleting entries]
+* Code written: https://github.com/CS2103JUN2017-T2/main/blob/master/collated/main/A0140633R.md[functional code], https://github.com/CS2103JUN2017-T2/main/blob/master/collated/test/A0140633R.md[test code] and https://github.com/CS2103JUN2017-T2/main/blob/master/collated/docs/A0140633R.md[documentation]
+* Other major contributions:
+** Implement support for natural language parsing
+** Implement workaround for FilteredList refresh issues.
 
 '''
 == http://github.com/akd13[Akankshita Dash]
