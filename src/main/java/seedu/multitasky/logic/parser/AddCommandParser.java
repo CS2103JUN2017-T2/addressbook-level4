@@ -52,12 +52,6 @@ public class AddCommandParser {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
 
-        // TODO check whether i need this or not. not really apt anymore for smart command parsing
-        ArrayList<String> prefixesPresent = argMultimap.getPresentPrefixes(AddCommand.VALID_PREFIXES);
-        if (!hasValidPrefixCombination(prefixesPresent)) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
-        }
-
         if (isFloatingTask()) {
             try {
                 Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
@@ -95,7 +89,7 @@ public class AddCommandParser {
                 endDate = ParserUtil.parseDate(argMultimap.getValue(endDatePrefix).get());
                 startDate = ParserUtil.parseDate(argMultimap.getValue(startDatePrefix).get());
                 if (endDate.compareTo(startDate) < 0) {
-                    throw new ParseException("End date should not be before start date!");
+                    throw new ParseException(AddCommand.MESSAGE_ENDDATE_BEFORE_STARTDATE);
                 }
                 Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
                 ReadOnlyEntry entry = new Event(name, startDate, endDate, tagList);
@@ -116,7 +110,7 @@ public class AddCommandParser {
                 // TODO implement import from config
                 endDate.add(Calendar.HOUR, 1);
                 if (endDate.compareTo(startDate) < 0) {
-                    throw new ParseException("End date should not be before start date!");
+                    throw new ParseException(AddCommand.MESSAGE_ENDDATE_BEFORE_STARTDATE);
                 }
                 Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
                 ReadOnlyEntry entry = new Event(name, startDate, endDate, tagList);

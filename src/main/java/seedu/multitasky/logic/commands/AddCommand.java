@@ -34,6 +34,8 @@ public class AddCommand extends Command {
                                                    CliSyntax.PREFIX_TO.toString(),
                                                    CliSyntax.PREFIX_TAG.toString()};
 
+    public static final String MESSAGE_ENDDATE_BEFORE_STARTDATE = "Can not have end date before start date!";
+
     private final ReadOnlyEntry toAdd;
 
     /**
