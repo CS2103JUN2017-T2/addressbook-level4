@@ -62,7 +62,7 @@ public class EditByFindCommand extends EditCommand {
                 assert editedEntry != null;
 
                 model.updateEntry(entryToEdit, editedEntry);
-                commandResult = new CommandResult(String.format(MESSAGE_SUCCESS, entryToEdit));
+                commandResult = new CommandResult(String.format(MESSAGE_SUCCESS, targetEntryString, entryToEdit));
             } catch (EntryNotFoundException pnfe) {
                 assert false : "The target entry cannot be missing";
             } catch (OverlappingEventException oee) {
@@ -74,7 +74,7 @@ public class EditByFindCommand extends EditCommand {
 
             assert commandResult != null : "commandResult in EditByFindCommand shouldn't be null here.";
             return commandResult;
-          
+
         } else {
             history.setPrevSearch(keywords, null, null, Entry.State.ACTIVE);
             if (allList.size() >= 2) {
