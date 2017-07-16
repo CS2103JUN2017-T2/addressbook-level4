@@ -31,6 +31,8 @@ public class ListCommand extends Command {
                                                + " [" + CliSyntax.PREFIX_REVERSE + "]" + "\n"
                                                + "Example: " + COMMAND_WORD + " " + CliSyntax.PREFIX_UPCOMING;
 
+    public static final String MESSAGE_ALL_SUCCESS = "Listed all entries";
+
     public static final String MESSAGE_ACTIVE_SUCCESS = "Listed all active entries";
 
     public static final String MESSAGE_ARCHIVE_SUCCESS = "Listed all entries in the archive";
@@ -45,24 +47,28 @@ public class ListCommand extends Command {
 
     public static final String[] VALID_PREFIXES = { CliSyntax.PREFIX_ARCHIVE.toString(),
                                                     CliSyntax.PREFIX_BIN.toString(),
+                                                    CliSyntax.PREFIX_ALL.toString(),
                                                     CliSyntax.PREFIX_UPCOMING.toString(),
                                                     CliSyntax.PREFIX_REVERSE.toString(),
                                                     CliSyntax.PREFIX_FROM.toString(),
                                                     CliSyntax.PREFIX_TO.toString() };
 
-    public enum ShowType {
-        ACTIVE, ARCHIVE, BIN
-    }
+    public enum ShowType { ACTIVE, ARCHIVE, BIN, ALL }
 
-    public enum Ordering {
-        DEFAULT, REVERSE, UPCOMING
-    }
+    public enum Ordering { DEFAULT, REVERSE, UPCOMING }
+
+    private static final HashSet<String> MATCH_ALL_KEYWORDS;
 
     private ShowType showType;
     private Ordering ordering;
 
     private Calendar startDate;
     private Calendar endDate;
+
+    static {
+        MATCH_ALL_KEYWORDS = new HashSet<>();
+        MATCH_ALL_KEYWORDS.add("");
+    }
 
     public ListCommand() {
         showType = ShowType.ACTIVE;
@@ -77,6 +83,8 @@ public class ListCommand extends Command {
             showType = ShowType.ARCHIVE;
         } else if (prefixes.contains(CliSyntax.PREFIX_BIN.toString())) {
             showType = ShowType.BIN;
+        } else if (prefixes.contains(CliSyntax.PREFIX_ALL.toString())) {
+            showType = ShowType.ALL;
         } else {
             showType = ShowType.ACTIVE;
         }
@@ -97,27 +105,27 @@ public class ListCommand extends Command {
         switch (showType) {
         case ARCHIVE:
             commandResultBuilder.append(MESSAGE_ARCHIVE_SUCCESS);
-            model.updateFilteredEventList(startDate, endDate, Entry.State.ARCHIVED);
-            model.updateFilteredDeadlineList(startDate, endDate, Entry.State.ARCHIVED);
-            model.updateFilteredFloatingTaskList(startDate, endDate, Entry.State.ARCHIVED);
+            model.updateAllFilteredLists(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.ARCHIVED);
             raise(new ListTypeUpdateEvent(Entry.State.ARCHIVED));
-            history.setPrevSearch(new HashSet<String>(), Entry.State.ARCHIVED);
+            history.setPrevSearch(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.ARCHIVED);
             break;
         case BIN:
             commandResultBuilder.append(MESSAGE_BIN_SUCCESS);
-            model.updateFilteredEventList(startDate, endDate, Entry.State.DELETED);
-            model.updateFilteredDeadlineList(startDate, endDate, Entry.State.DELETED);
-            model.updateFilteredFloatingTaskList(startDate, endDate, Entry.State.DELETED);
+            model.updateAllFilteredLists(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.DELETED);
             raise(new ListTypeUpdateEvent(Entry.State.DELETED));
-            history.setPrevSearch(new HashSet<String>(), Entry.State.DELETED);
+            history.setPrevSearch(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.DELETED);
             break;
         case ACTIVE:
             commandResultBuilder.append(MESSAGE_ACTIVE_SUCCESS);
-            model.updateFilteredEventList(startDate, endDate, Entry.State.ACTIVE);
-            model.updateFilteredDeadlineList(startDate, endDate, Entry.State.ACTIVE);
-            model.updateFilteredFloatingTaskList(startDate, endDate, Entry.State.ACTIVE);
+            model.updateAllFilteredLists(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.ACTIVE);
             raise(new ListTypeUpdateEvent(Entry.State.ACTIVE));
-            history.setPrevSearch(new HashSet<String>(), Entry.State.ACTIVE);
+            history.setPrevSearch(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.ACTIVE);
+            break;
+        case ALL:
+            commandResultBuilder.append(MESSAGE_ALL_SUCCESS);
+            model.updateAllFilteredLists(MATCH_ALL_KEYWORDS, startDate, endDate, null);
+            raise(new ListTypeUpdateEvent(null));
+            history.setPrevSearch(MATCH_ALL_KEYWORDS, startDate, endDate, null);
             break;
         default:
             throw new AssertionError("Unknown list show type");

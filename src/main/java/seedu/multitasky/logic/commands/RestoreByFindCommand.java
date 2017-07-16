@@ -57,21 +57,13 @@ public class RestoreByFindCommand extends RestoreCommand {
                 assert false : "The target entry cannot be missing";
             }
 
-            /**
-             * TODO: Possible refactoring of the following 4 lines of code to a utility
-             * method since it's done by DeleteCommand, EditCommand, CompleteCommand,
-             * and RestoreCommand.
-             */
             // refresh list view after updating.
-            model.updateFilteredDeadlineList(history.getPrevSearch(), history.getPrevState());
-            model.updateFilteredEventList(history.getPrevSearch(), history.getPrevState());
-            model.updateFilteredFloatingTaskList(history.getPrevSearch(), history.getPrevState());
-
-            history.setPrevSearch(keywords, history.getPrevState());
+            model.updateAllFilteredLists(history.getPrevSearch(), null, null, history.getPrevState());
+            history.setPrevSearch(keywords, null, null, history.getPrevState());
 
             return new CommandResult(String.format(MESSAGE_SUCCESS, entryToRestore));
         } else {
-            history.setPrevSearch(keywords, history.getPrevState());
+            history.setPrevSearch(keywords, null, null, history.getPrevState());
 
             if (allList.size() >= 2) { // multiple entries found
                 return new CommandResult(MESSAGE_MULTIPLE_ENTRIES);
@@ -92,17 +84,13 @@ public class RestoreByFindCommand extends RestoreCommand {
 
         List<ReadOnlyEntry> allList = new ArrayList<>();
         // Filter and collate archived entries that matches keywords
-        model.updateFilteredDeadlineList(keywords, Entry.State.ARCHIVED);
-        model.updateFilteredEventList(keywords, Entry.State.ARCHIVED);
-        model.updateFilteredFloatingTaskList(keywords, Entry.State.ARCHIVED);
+        model.updateAllFilteredLists(keywords, null, null, Entry.State.ARCHIVED);
         allList.addAll(model.getFilteredDeadlineList());
         allList.addAll(model.getFilteredEventList());
         allList.addAll(model.getFilteredFloatingTaskList());
 
         // Filter and collate deleted entries that matches keywords
-        model.updateFilteredDeadlineList(keywords, Entry.State.DELETED);
-        model.updateFilteredEventList(keywords, Entry.State.DELETED);
-        model.updateFilteredFloatingTaskList(keywords, Entry.State.DELETED);
+        model.updateAllFilteredLists(keywords, null, null, Entry.State.DELETED);
         allList.addAll(model.getFilteredDeadlineList());
         allList.addAll(model.getFilteredEventList());
         allList.addAll(model.getFilteredFloatingTaskList());

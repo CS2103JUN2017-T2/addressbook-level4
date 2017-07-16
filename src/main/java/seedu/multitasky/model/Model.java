@@ -16,6 +16,9 @@ import seedu.multitasky.storage.exception.NothingToUndoException;
  * The API of the Model component.
  */
 public interface Model {
+
+    public enum Search { AND, OR, POWER_AND, POWER_OR };
+
     /** Clears existing backing model and replaces with the provided new data. */
     void resetData(ReadOnlyEntryBook newData);
 
@@ -79,23 +82,28 @@ public interface Model {
     /** Updates the filter of all filtered lists to show all deleted entries */
     public void updateAllFilteredListToShowAllDeletedEntries();
 
-    /** Updates the filter of the filtered event list to filter by the given keywords and state */
-    void updateFilteredEventList(Set<String> keywords, Entry.State state);
+    /**
+     * Updates the filter of all entry lists to filter by the given keywords,
+     * date range and state. Attempts all the different searches in order until it has at least 1 result.
+     */
+    void updateAllFilteredLists(Set<String> keywords, Calendar startDate, Calendar endDate,
+                                Entry.State state);
 
-    /** Updates the filter of the filtered event list to filter by the given date range and state */
-    void updateFilteredEventList(Calendar startDate, Calendar endDate, Entry.State state);
+    /* Updates the filter of the filtered event list to filter by the given keywords,
+     * date range and state using the specified search type. */
+    void updateFilteredEventList(Set<String> keywords, Calendar startDate, Calendar endDate,
+                                 Entry.State state, Search search);
 
-    /** Updates the filter of the filtered deadline list to filter by the given keywords and state */
-    void updateFilteredDeadlineList(Set<String> keywords, Entry.State state);
+    /* Updates the filter of the filtered deadline list to filter by the given keywords,
+     * date range and state using the specified search type. */
+    void updateFilteredDeadlineList(Set<String> keywords, Calendar startDate, Calendar endDate,
+                                    Entry.State state, Search search);
 
-    /** Updates the filter of the filtered deadline list to filter by the given date range and state */
-    void updateFilteredDeadlineList(Calendar startDate, Calendar endDate, Entry.State state);
+    /* Updates the filter of the filtered floating task list to filter by the given keywords,
+     * date range and state using the specified search type. */
+    void updateFilteredFloatingTaskList(Set<String> keywords, Calendar startDate, Calendar endDate,
+                                        Entry.State state, Search search);
 
-    /** Updates the filter of the filtered floating task list to filter by the given keywords and state */
-    void updateFilteredFloatingTaskList(Set<String> keywords, Entry.State state);
-
-    /** Updates the filter of the filtered floating task list to filter by the given date range and state */
-    void updateFilteredFloatingTaskList(Calendar startDate, Calendar endDate, Entry.State state);
 
     /** Updates the sorting comparators used. */
     void updateSortingComparators(Comparator<ReadOnlyEntry> eventComparator,

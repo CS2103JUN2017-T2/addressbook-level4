@@ -50,9 +50,7 @@ public class RestoreByIndexCommand extends RestoreCommand {
         }
 
         // refresh list view after updating.
-        model.updateFilteredDeadlineList(history.getPrevSearch(), history.getPrevState());
-        model.updateFilteredEventList(history.getPrevSearch(), history.getPrevState());
-        model.updateFilteredFloatingTaskList(history.getPrevSearch(), history.getPrevState());
+        model.updateAllFilteredLists(history.getPrevSearch(), null, null, history.getPrevState());
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, entryToRestore));
     }
