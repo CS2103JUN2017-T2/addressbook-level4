@@ -11,6 +11,7 @@ import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 
 // @@author A0140633R
 /**
@@ -55,6 +56,9 @@ public class EditByIndexCommand extends EditCommand {
 
         } catch (EntryNotFoundException pnfe) {
             throw new AssertionError("The target entry cannot be missing");
+        } catch (OverlappingEventException oee) {
+            return new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERLAP_ALERT,
+                                                   entryToEdit.getName()));
         }
         return new CommandResult(String.format(MESSAGE_SUCCESS, entryToEdit));
     }

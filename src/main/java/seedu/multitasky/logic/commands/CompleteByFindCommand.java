@@ -11,6 +11,7 @@ import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 
 // @@author A0132788U-reused
 /*
@@ -60,6 +61,8 @@ public class CompleteByFindCommand extends CompleteCommand {
                 model.changeEntryState(entryToComplete, Entry.State.ARCHIVED);
             } catch (EntryNotFoundException e) {
                 assert false : "The target entry cannot be missing";
+            } catch (OverlappingEventException oee) {
+                assert false : "This should not happen for complete command.";
             }
             // refresh list view after updating.
             model.updateAllFilteredLists(history.getPrevSearch(), null, null, history.getPrevState());

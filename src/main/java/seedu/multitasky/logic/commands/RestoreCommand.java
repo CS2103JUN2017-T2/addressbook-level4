@@ -27,6 +27,9 @@ public abstract class RestoreCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "Entry restored:" + "\n"
                                                  + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s";
+    public static final String MESSAGE_SUCCESS_WITH_OVERLAP_ALERT = "Entry restored:" + "\n"
+            + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
+            + "Alert: Restored entry %1$s overlaps with existing event(s).";
 
     public static final String MESSAGE_ENTRY_ALREADY_ACTIVE = "The provided entry is already active.";
 

@@ -138,18 +138,24 @@ public class ModelManager extends ComponentManager implements Model {
     // @@author A0126623L
     @Override
     public void changeEntryState(ReadOnlyEntry entryToChange, Entry.State newState)
-            throws DuplicateEntryException, EntryNotFoundException {
-        _entryBook.changeEntryState(entryToChange, newState);
-        indicateEntryBookChanged();
+            throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException {
+        try {
+            _entryBook.changeEntryState(entryToChange, newState);
+        } finally {
+            indicateEntryBookChanged();
+        }
     }
 
     @Override
-    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws DuplicateEntryException,
-            EntryNotFoundException {
+    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
+            throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException {
         requireAllNonNull(target, editedEntry);
 
-        _entryBook.updateEntry(target, editedEntry);
-        indicateEntryBookChanged();
+        try {
+            _entryBook.updateEntry(target, editedEntry);
+        } finally {
+            indicateEntryBookChanged();
+        }
     }
 
     // =========== Filtered Entry List Accessors ===========
