@@ -35,6 +35,10 @@ public class SetCommand extends Command {
 
     private boolean isValidPath(String newFilePath) {
         File parent = (new File(newFilePath)).getParentFile();
-        return newFilePath.endsWith(".xml") && parent.canWrite() && parent != null;
+        if (parent != null) {
+            return (newFilePath.endsWith(".xml") && parent.canWrite());
+        } else {
+            return false;
+        }
     }
 }
