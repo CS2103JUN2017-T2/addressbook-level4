@@ -224,6 +224,17 @@ The `Storage` component,
 
 Classes used by multiple components are in the `seedu.multitasky.commons` package.
 
+//<!-- @@author A0125586X -->
+==== PowerMatch
+
+PowerMatch is the algorithm that powers the command autocomplete as well as PowerFind. When checking if a given input matches a potential match, it performs the following checks:
+
+* Substring check - if the input is a substring of the potential match
+* Permutation check - if the input characters permutated in a different way produce a match
+* Missing characters check - if the input with additional characters added in produces a match
+* Additional/wrong characters check - if the input with characters changed/removed produces a match
+//<!-- @@author -->
+
 == Implementation
 
 === Logging
@@ -418,6 +429,8 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 |`* *` |user |have an option in my commands to accept any confirmation messages automatically (/force) |can save time
 
 |`* *` |user |be able to search for task entries using partial words | find entries easily without remembering exact words
+
+|`* *` |user |be notified when my input commands result in overlapping events | make changes if overlapping of events is undesirable.
 
 |`*` |user with many projects |tag entries by assignment |distinguish tasks for similar assignments
 
@@ -654,13 +667,6 @@ _____
 Mainstream OS
 ____
 Windows, Linux, Unix, OS-X
-____
-
-//<!-- @@author A0140633R -->
-[[ddmmyy-hhmm]]
-dd/mm/yy hh:mm format
-____
-Refers to Date,Month,Year and Hour, Minute in 24H clock format.
 ____
 
 [appendix]
