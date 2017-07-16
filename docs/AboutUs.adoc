@@ -29,9 +29,8 @@ image::chuapingchan.png[width="150", align="left"]
 * Components in charge of: https://github.com/CS2103JUN2017-T2/main/blob/master/docs/DeveloperGuide.adoc#model-component[Model]
 * Aspects/tools in charge of: Code Quality, Testing
 * Features implemented:
-** Archive and Bin feature
-** Restore command
-** Find command -- AND-search on names and tags
+** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/DeveloperGuide.adoc#model-component[Entry States] -- archive and bin concept
+** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#restoring-an-entry-code-restore-code[Restore command]
 * Code written: https://github.com/CS2103JUN2017-T2/main/blob/master/collated/main/A0126623L.md[functional code], https://github.com/CS2103JUN2017-T2/main/blob/master/collated/test/A0126623L.md[test code] and https://github.com/CS2103JUN2017-T2/main/blob/master/collated/docs/A0126623L.md[documentation]
 * Other major contributions:
 ** Maintain meeting minutes
