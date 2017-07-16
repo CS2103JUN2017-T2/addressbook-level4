@@ -25,7 +25,8 @@ public abstract class DeleteCommand extends Command {
             + "All possible flags for Delete : 'event', 'deadline', 'float'";
 
     public static final String MESSAGE_SUCCESS = "Entry deleted:" + "\n"
-                                                 + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s";
+                                                 + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
+                                                 + "Entry has been moved to bin";
 
     public static final String[] VALID_PREFIXES = {CliSyntax.PREFIX_EVENT.toString(),
                                                    CliSyntax.PREFIX_DEADLINE.toString(),

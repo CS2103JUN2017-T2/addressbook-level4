@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.logic.parser.CliSyntax;
 import seedu.multitasky.model.entry.Entry;
@@ -27,10 +26,6 @@ public class EditByFindCommand extends EditCommand {
                                                                         CliSyntax.PREFIX_FLOATINGTASK.toString())
                                                           + "]"
                                                           + " INDEX to specify which entry to edit.";
-
-    public static final String MESSAGE_SUCCESS = "Entry edited:" + "\n"
-                                                 + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
-                                                 + "One entry found and edited! Listing all entries now.";
 
     private Set<String> keywords;
 
@@ -61,15 +56,22 @@ public class EditByFindCommand extends EditCommand {
             ReadOnlyEntry entryToEdit = allList.get(0);
             Entry editedEntry = createEditedEntry(entryToEdit, editEntryDescriptor);
             try {
-                model.updateEntry(entryToEdit, editedEntry);
+                assert entryToEdit != null;
+                assert editedEntry != null;
+                if (entryToEdit.getClass().equals(editedEntry.getClass())) {
+                    // editing within same type of entry
+                    model.updateEntry(entryToEdit, editedEntry);
+                } else { // moving entry from one list to another
+                    model.deleteEntry(entryToEdit);
+                    model.addEntry(editedEntry);
+                }
+                // refresh list view after updating
+                model.updateFilteredDeadlineList(history.getPrevSearch(), history.getPrevState());
+                model.updateFilteredEventList(history.getPrevSearch(), history.getPrevState());
+                model.updateFilteredFloatingTaskList(history.getPrevSearch(), history.getPrevState());
             } catch (EntryNotFoundException pnfe) {
-                assert false : "The target entry cannot be missing";
+                throw new AssertionError("The target entry cannot be missing");
             }
-            // refresh list view after updating.
-            model.updateFilteredDeadlineList(history.getPrevSearch(), history.getPrevState());
-            model.updateFilteredEventList(history.getPrevSearch(), history.getPrevState());
-            model.updateFilteredFloatingTaskList(history.getPrevSearch(), history.getPrevState());
-
             return new CommandResult(String.format(MESSAGE_SUCCESS, entryToEdit));
         } else {
             history.setPrevSearch(keywords, Entry.State.ACTIVE);

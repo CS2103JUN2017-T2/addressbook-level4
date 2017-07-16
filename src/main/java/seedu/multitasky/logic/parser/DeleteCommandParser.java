@@ -4,7 +4,6 @@ import static seedu.multitasky.commons.core.Messages.MESSAGE_INVALID_COMMAND_FOR
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_DEADLINE;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_EVENT;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
-import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -35,12 +34,10 @@ public class DeleteCommandParser {
      */
     // @@author A0140633R
     public DeleteCommand parse(String args) throws ParseException {
-        argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_FLOATINGTASK, PREFIX_DEADLINE,
-                                                 PREFIX_EVENT, PREFIX_TAG);
+        argMultimap = ArgumentTokenizer.tokenize(args, ParserUtil.toPrefixArray(DeleteCommand.VALID_PREFIXES));
 
         if (args.trim().isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                                                   DeleteCommand.MESSAGE_USAGE));
+            throw new ParseException(DeleteCommand.MESSAGE_USAGE);
         }
 
         if (hasIndexFlag(argMultimap)) { // process to delete by indexes

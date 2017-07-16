@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.logic.parser.CliSyntax;
 import seedu.multitasky.model.entry.Entry;
@@ -27,10 +26,6 @@ public class DeleteByFindCommand extends DeleteCommand {
                                                                   CliSyntax.PREFIX_FLOATINGTASK.toString())
                                                           + "]"
                                                           + " INDEX to specify which entry to delete.";
-
-    public static final String MESSAGE_SUCCESS = "Entry deleted:" + "\n"
-                                                 + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
-                                                 + "One entry found and deleted! Listing all entries now.";
 
     private Set<String> keywords;
 

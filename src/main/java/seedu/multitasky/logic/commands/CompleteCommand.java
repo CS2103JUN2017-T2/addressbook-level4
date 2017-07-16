@@ -29,7 +29,8 @@ public abstract class CompleteCommand extends Command {
                                                + "All possible flags for Complete : 'event', 'deadline', 'float'";
 
     public static final String MESSAGE_SUCCESS = "Entry completed:" + "\n"
-                                                 + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s";
+                                                 + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
+                                                 + "Entry has been moved to archive";
 
     public static final String[] VALID_PREFIXES = { CliSyntax.PREFIX_EVENT.toString(),
                                                     CliSyntax.PREFIX_DEADLINE.toString(),

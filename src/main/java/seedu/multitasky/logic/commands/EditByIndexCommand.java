@@ -48,8 +48,15 @@ public class EditByIndexCommand extends EditCommand {
         Entry editedEntry = createEditedEntry(entryToEdit, editEntryDescriptor);
 
         try {
-            model.updateEntry(entryToEdit, editedEntry);
-
+            assert entryToEdit != null;
+            assert editedEntry != null;
+            if (entryToEdit.getClass().equals(editedEntry.getClass())) {
+                // editing within same type of entry
+                model.updateEntry(entryToEdit, editedEntry);
+            } else { // moving entry from one list to another
+                model.deleteEntry(entryToEdit);
+                model.addEntry(editedEntry);
+            }
             // refresh list view after updating
             model.updateFilteredDeadlineList(history.getPrevSearch(), history.getPrevState());
             model.updateFilteredEventList(history.getPrevSearch(), history.getPrevState());

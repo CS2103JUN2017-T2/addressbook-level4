@@ -37,13 +37,13 @@ public class AddCommandParser {
      * throws ParseException if the user input does not conform the expected format.
      */
     public AddCommand parse(String args) throws ParseException {
-        argMultimap = ArgumentTokenizer.tokenize(args, toPrefixArray(AddCommand.VALID_PREFIXES));
+        argMultimap = ArgumentTokenizer.tokenize(args, ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES));
         Calendar startDate = null;
         Calendar endDate = null;
 
         // check for no args input
         if (args.trim().isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+            throw new ParseException(AddCommand.MESSAGE_USAGE);
         }
 
         // TODO check whether need this or not
@@ -184,14 +184,6 @@ public class AddCommandParser {
             return false;
         }
         return true;
-    }
-
-    private Prefix[] toPrefixArray(String... stringPrefixes) {
-        Prefix[] prefixes = new Prefix[stringPrefixes.length];
-        for (int i = 0; i < stringPrefixes.length; ++i) {
-            prefixes[i] = new Prefix(stringPrefixes[i]);
-        }
-        return prefixes;
     }
 
 }

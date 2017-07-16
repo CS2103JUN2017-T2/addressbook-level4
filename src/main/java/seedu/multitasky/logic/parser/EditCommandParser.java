@@ -43,14 +43,11 @@ public class EditCommandParser {
      */
     public EditCommand parse(String args) throws ParseException {
         requireNonNull(args);
-        argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_FLOATINGTASK, PREFIX_DEADLINE, PREFIX_EVENT,
-                                                 PREFIX_NAME, PREFIX_FROM, PREFIX_BY, PREFIX_AT, PREFIX_TO,
-                                                 PREFIX_TAG);
+        argMultimap = ArgumentTokenizer.tokenize(args, ParserUtil.toPrefixArray(EditCommand.VALID_PREFIXES));
         EditEntryDescriptor editEntryDescriptor = new EditEntryDescriptor();
 
         if (args.trim().isEmpty()) { // print help message if command word used without args
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                                                   EditCommand.MESSAGE_USAGE));
+            throw new ParseException(EditCommand.MESSAGE_USAGE);
         }
 
         if (hasIndexFlag(argMultimap)) { // edit by index

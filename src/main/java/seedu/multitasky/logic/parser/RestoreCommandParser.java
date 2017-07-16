@@ -4,7 +4,6 @@ import static seedu.multitasky.commons.core.Messages.MESSAGE_INVALID_COMMAND_FOR
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_DEADLINE;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_EVENT;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
-import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -37,12 +36,10 @@ public class RestoreCommandParser {
      * @throws ParseException if the user input does not conform the expected format
      */
     public RestoreCommand parse(String args) throws ParseException {
-        argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_FLOATINGTASK, PREFIX_DEADLINE,
-                                                 PREFIX_EVENT, PREFIX_TAG);
+        argMultimap = ArgumentTokenizer.tokenize(args, ParserUtil.toPrefixArray(RestoreCommand.VALID_PREFIXES));
 
         if (args.trim().isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                                                   RestoreCommand.MESSAGE_USAGE));
+            throw new ParseException(String.format(RestoreCommand.MESSAGE_USAGE));
         }
 
         if (hasIndexFlag(argMultimap)) { // process to restore by indexes
