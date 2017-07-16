@@ -221,7 +221,7 @@ public class StorageManager extends ComponentManager implements Storage {
     }
 
     /**
-     * Saves the data to the entrybook at the filepath specified and also creates a snapshot in data/snapshots.
+     * Saves data of the entrybook at the filepath specified.
      */
     @Subscribe
     public void handleFilePathChangedEvent(FilePathChangedEvent event) {
