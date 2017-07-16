@@ -60,7 +60,7 @@ image::akd13.png[width="150", align="left"]
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#undo-changes-code-undo-code[Undo]
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#redo-changes-code-redo-code[Redo]
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#completing-a-task-code-complete-code[Complete a task]
-** https://github.com/CS2103JUN2017-T2/main/blob/V0.4-setpathstorage/docs/UserGuide.adoc#set-storage-path-code-set-code[Set Storage path]
+** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#set-storage-path-code-set-code[Set Storage path]
 * Code written: https://github.com/CS2103JUN2017-T2/main/blob/master/collated/main/A0132788U.md[functional code], https://github.com/CS2103JUN2017-T2/main/blob/master/collated/test/A0132788U.md[test code] and https://github.com/CS2103JUN2017-T2/main/blob/master/collated/docs/A0132788U.md[documentation]
 * Other major contributions:
 ** Make initial UI mockup.
