@@ -161,9 +161,10 @@ public class ModelManager extends ComponentManager implements Model {
         try {
             if (target.getClass().equals(editedEntry.getClass())) { // updating to same instance of entry
                 _entryBook.updateEntry(target, editedEntry);
-        } else { // updating entry between lists
-            _entryBook.removeEntry(target);
-            _entryBook.addEntry(editedEntry);
+            } else { // updating entry between lists
+                _entryBook.removeEntry(target);
+                _entryBook.addEntry(editedEntry);
+            }
         } finally {
             indicateEntryBookChanged();
         }
