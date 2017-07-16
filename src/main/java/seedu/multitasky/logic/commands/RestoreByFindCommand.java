@@ -61,7 +61,6 @@ public class RestoreByFindCommand extends RestoreCommand {
             // refresh list view after updating.
             model.updateAllFilteredLists(history.getPrevSearch(), history.getPrevStartDate(),
                                          history.getPrevEndDate(), history.getPrevState());
-            history.setPrevSearch(keywords, null, null, history.getPrevState());
             if (commandResult == null) {
                 throw new AssertionError("commandResult in RestoreByFindCommand shouldn't be null here.");
             }
