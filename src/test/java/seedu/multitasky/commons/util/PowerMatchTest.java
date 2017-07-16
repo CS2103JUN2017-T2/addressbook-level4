@@ -29,6 +29,16 @@ public class PowerMatchTest {
     }
 
     @Test
+    public void powerMatch_acronym_match() {
+        assertTrue(PowerMatch.match("abc", new String[] {"axyzbxyzcxyz"}).equals("axyzbxyzcxyz"));
+    }
+
+    @Test
+    public void powerMatch_acronym_ismatch() {
+        assertTrue(PowerMatch.isMatch("abc", "axyzbxyzcxyz"));
+    }
+
+    @Test
     public void powerMatch_permutation_match() {
         assertTrue(PowerMatch.match("cba", new String[] {"xyzabcxyz"}).equals("xyzabcxyz"));
     }
