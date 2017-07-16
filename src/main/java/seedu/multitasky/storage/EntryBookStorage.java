@@ -36,6 +36,11 @@ public interface EntryBookStorage {
     Optional<ReadOnlyEntryBook> readEntryBook(String filePath) throws DataConversionException, IOException;
 
     /**
+     * Sets the file path of the new entrybook.
+     */
+    void setEntryBookFilePath(String newFilePath);
+
+    /**
      * Saves the given {@link ReadOnlyEntryBook} to the storage.
      *
      * @param entryBook cannot be null.

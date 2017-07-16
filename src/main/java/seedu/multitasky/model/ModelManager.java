@@ -14,6 +14,7 @@ import seedu.multitasky.commons.core.ComponentManager;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
+import seedu.multitasky.commons.events.model.FilePathChangedEvent;
 import seedu.multitasky.commons.events.storage.EntryBookToRedoEvent;
 import seedu.multitasky.commons.events.storage.EntryBookToUndoEvent;
 import seedu.multitasky.model.entry.Deadline;
@@ -113,9 +114,12 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     /** Change file path when entered by user */
+    // TODO for Dash
     @Override
     public void changeFilePath(String newFilePath) {
-        UserPrefs.setEntryBookFilePath(newFilePath);
+        // userPrefs.setEntryBookFilePath(newFilePath);
+        // raise new Event for filePathChange
+        raise(new FilePathChangedEvent(_entryBook, newFilePath));
     }
     // @@author
 

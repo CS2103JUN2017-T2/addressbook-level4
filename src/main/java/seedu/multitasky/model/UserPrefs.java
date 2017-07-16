@@ -13,10 +13,10 @@ public class UserPrefs {
     private static int index = 0;
     /** Snapshot file path without index and xml */
     private static String entryBookSnapshotPath = "data/snapshots/entrybook";
-    private static String entryBookFilePath = "data/entrybook.xml";
     // @@author
     private GuiSettings guiSettings;
     private String entryBookName = "MyEntryBook";
+    private String entryBookFilePath = "data/entrybook.xml";
 
     public UserPrefs() {
         this.setGuiSettings(500, 500, 0, 0);
@@ -38,8 +38,8 @@ public class UserPrefs {
         return entryBookFilePath;
     }
 
-    public static void setEntryBookFilePath(String entryBookFilePath) {
-        UserPrefs.entryBookFilePath = entryBookFilePath;
+    public void setEntryBookFilePath(String entryBookFilePath) {
+        this.entryBookFilePath = entryBookFilePath;
     }
 
     /**

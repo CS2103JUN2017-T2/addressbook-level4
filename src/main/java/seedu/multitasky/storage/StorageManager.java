@@ -10,6 +10,7 @@ import com.google.common.eventbus.Subscribe;
 import seedu.multitasky.commons.core.ComponentManager;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
+import seedu.multitasky.commons.events.model.FilePathChangedEvent;
 import seedu.multitasky.commons.events.storage.DataSavingExceptionEvent;
 import seedu.multitasky.commons.events.storage.EntryBookToRedoEvent;
 import seedu.multitasky.commons.events.storage.EntryBookToUndoEvent;
@@ -64,6 +65,11 @@ public class StorageManager extends ComponentManager implements Storage {
     @Override
     public String getEntryBookSnapshotPath() {
         return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
+    }
+
+    @Override
+    public void setEntryBookFilePath(String newFilePath) {
+        entryBookStorage.setEntryBookFilePath(newFilePath);
     }
 
     // @@author
@@ -211,6 +217,20 @@ public class StorageManager extends ComponentManager implements Storage {
         } catch (Exception e) {
             event.setMessage(e.getMessage());
             UserPrefs.decrementIndexByOne();
+        }
+    }
+
+    /**
+     * Saves the data to the entrybook at the filepath specified and also creates a snapshot in data/snapshots.
+     */
+    @Subscribe
+    public void handleFilePathChangedEvent(FilePathChangedEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event, "File path changed, saving to file"));
+        try {
+            entryBookStorage.setEntryBookFilePath(event.getNewFilePath());
+            saveEntryBook(event.data, event.getNewFilePath());
+        } catch (IOException e) {
+            raise(new DataSavingExceptionEvent(e));
         }
     }
 

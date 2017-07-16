@@ -34,6 +34,11 @@ public class XmlEntryBookStorage implements EntryBookStorage {
     }
 
     @Override
+    public void setEntryBookFilePath(String newFilePath) {
+        filePath = newFilePath;
+    }
+
+    @Override
     public String getEntryBookSnapshotPath() {
         return snapshotPath;
     }
