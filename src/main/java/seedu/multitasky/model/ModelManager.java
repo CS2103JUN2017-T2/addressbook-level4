@@ -146,6 +146,7 @@ public class ModelManager extends ComponentManager implements Model {
         }
     }
 
+    // @@author A0126623L
     @Override
     public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
             throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException {
@@ -157,6 +158,7 @@ public class ModelManager extends ComponentManager implements Model {
             indicateEntryBookChanged();
         }
     }
+    // @@author
 
     // =========== Filtered Entry List Accessors ===========
 

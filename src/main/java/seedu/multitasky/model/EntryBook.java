@@ -308,6 +308,7 @@ public class EntryBook implements ReadOnlyEntryBook {
         }
     }
 
+    // @@author A0126623L
     /**
      * Marks an entry from the appropriate lists (i.e. active, event, deadline, floating task lists) as deleted.
      * Pre-condition: After the entry state is updated, it cannot be an exact match to an existing entry.
@@ -341,6 +342,7 @@ public class EntryBook implements ReadOnlyEntryBook {
             _floatingTaskList.changeEntryState(entryToChange, newState);
         }
     }
+    // @@author
 
     //// tag-level operations
 
