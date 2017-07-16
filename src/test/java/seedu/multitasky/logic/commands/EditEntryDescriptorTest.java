@@ -24,7 +24,7 @@ public class EditEntryDescriptorTest {
         assertTrue(DESC_CLEAN.equals(DESC_CLEAN));
 
         // null -> returns false
-        assertFalse(DESC_CLEAN.equals(null));
+        assertFalse(DESC_CLEAN == null);
 
         // different types -> returns false
         assertFalse(DESC_CLEAN.equals(5));

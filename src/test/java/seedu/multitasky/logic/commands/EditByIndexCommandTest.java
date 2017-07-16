@@ -86,8 +86,10 @@ public class EditByIndexCommandTest {
         Model expectedModel = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
         expectedModel.updateEntry(expectedModel.getFilteredDeadlineList().get(INDEX_FIRST_ENTRY.getZeroBased()),
                                   editedEntry);
+        CommandResult result = editCommand.execute();
 
-        CommandTestUtil.assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+        assertEquals(expectedMessage, result.feedbackToUser);
+        assertEquals(expectedModel, model);
     }
 
     @Test
@@ -153,7 +155,7 @@ public class EditByIndexCommandTest {
         assertTrue(standardCommand.equals(standardCommand));
 
         // null -> returns false
-        assertFalse(standardCommand.equals(null));
+        assertFalse(standardCommand == null);
 
         // different types -> returns false
         assertFalse(standardCommand.equals(new ClearCommand()));

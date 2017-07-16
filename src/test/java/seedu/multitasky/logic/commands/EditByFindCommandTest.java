@@ -88,7 +88,10 @@ public class EditByFindCommandTest {
         expectedModel.updateEntry(expectedModel.getFilteredDeadlineList().get(INDEX_FIRST_ENTRY.getZeroBased()),
                                   editedEntry);
 
-        CommandTestUtil.assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+        CommandResult result = editCommand.execute();
+
+        assertEquals(expectedMessage, result.feedbackToUser);
+        assertEquals(expectedModel, model);
     }
 
     @Test
@@ -156,7 +159,7 @@ public class EditByFindCommandTest {
         assertTrue(standardCommand.equals(standardCommand));
 
         // null -> returns false
-        assertFalse(standardCommand.equals(null));
+        assertFalse(standardCommand == null);
 
         // different types -> returns false
         assertFalse(standardCommand.equals(new ClearCommand()));
