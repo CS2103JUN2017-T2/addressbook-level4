@@ -25,6 +25,7 @@ import seedu.multitasky.model.entry.MiscEntryList;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 import seedu.multitasky.model.tag.Tag;
 import seedu.multitasky.model.tag.UniqueTagList;
 
@@ -135,14 +136,17 @@ public class EntryBook implements ReadOnlyEntryBook {
      * Also checks the new entry's tags and updates {@link #tags} with any new tags found,
      * and updates the Tag objects in the entry to point to those in {@link #tags}.
      */
-    public void addEntry(ReadOnlyEntry e) throws DuplicateEntryException {
-        addToEntrySubtypeList(e);
+    public void addEntry(ReadOnlyEntry e) throws DuplicateEntryException, OverlappingEventException {
+        try {
+            addToEntrySubtypeList(e);
+        } finally {
 
-        Entry newEntry = convertToEntry(e);
-        syncMasterTagListWith(newEntry);
+            Entry newEntry = convertToEntry(e);
+            syncMasterTagListWith(newEntry);
 
-        // TODO: Decide later if it's still necessary to keep an internal active list
-        _activeList.add(newEntry); // Adds reference of newEntry to activeList, not creating a copy.
+            // TODO: Decide later if it's still necessary to keep an internal active list
+            _activeList.add(newEntry); // Adds reference of newEntry to activeList, not creating a copy.
+        }
     }
     // @@author
 
@@ -150,9 +154,14 @@ public class EntryBook implements ReadOnlyEntryBook {
     /**
      * Add a given ReadOnlyEntry to one of either active, deadline or floating task list.
      */
-    private void addToEntrySubtypeList(ReadOnlyEntry newEntry) throws DuplicateEntryException {
+    private void addToEntrySubtypeList(ReadOnlyEntry newEntry)
+            throws DuplicateEntryException, OverlappingEventException {
         if (newEntry instanceof Event) {
+            boolean overlappingEventPresent = _eventList.hasOverlappingEvent(newEntry);
             _eventList.add(newEntry);
+            if (overlappingEventPresent) {
+                throw new OverlappingEventException();
+            }
         } else if (newEntry instanceof Deadline) {
             _deadlineList.add(newEntry);
         } else {
