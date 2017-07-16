@@ -23,7 +23,7 @@ public class PowerMatch {
 
     /**
      * Attempts to find a match between the input and a single entry in {@code potentialMatches}.
-     * Types of matches attempted are substring, prefix, permutation, missing inner characters,
+     * Types of matches attempted are substring, prefix, acronym, permutation, missing inner characters,
      * wrong/extra inner characters.
      *
      * @param input            the input to attempt to find a match for
@@ -45,6 +45,11 @@ public class PowerMatch {
         }
 
         match = getPrefixMatch(keyword, potentialMatches);
+        if (match != null) {
+            return match;
+        }
+
+        match = getAcronymMatch(keyword, potentialMatches);
         if (match != null) {
             return match;
         }
@@ -75,7 +80,7 @@ public class PowerMatch {
 
     /**
      * Attempts to match the input with the potential match.
-     * Types of matches attempted are substring, prefix, permutation, missing inner characters,
+     * Types of matches attempted are substring, prefix, acronym, permutation, missing inner characters,
      * wrong/extra inner characters.
      *
      * @param input          the input to attempt to find a match for
@@ -93,6 +98,7 @@ public class PowerMatch {
 
         return getSubstringMatch(keyword, potentialMatch) != null
                || getPrefixMatch(keyword, potentialMatch) != null
+               || getAcronymMatch(keyword, potentialMatch) != null
                || (input.length() < PERMUTATION_MATCH_MAX_ALLOWED_LENGTH
                     && getPermutationMatch(keyword, potentialMatch) != null)
                || (input.length() < MISSING_INNER_MATCH_MAX_ALLOWED_LENGTH
@@ -132,6 +138,11 @@ public class PowerMatch {
         return filterMatches(matches);
     }
 
+    private static String getAcronymMatch(final String keyword, final String... potentialMatches) {
+        String regex = getAcronymRegex(keyword);
+        return getRegexMatch(regex, potentialMatches);
+    }
+
     private static String getPermutationMatch(final String keyword,
                                               final String... potentialMatches) {
         final ArrayList<String> permutations = getPermutations(keyword);
@@ -164,7 +175,7 @@ public class PowerMatch {
     }
 
     /**
-     * Currently only accounts for a single wrong character (can be either mistyped or extra)
+     * Accounts for up to 3 wrong/extra characters
      */
     private static String getWrongInnerMatch(final String keyword,
                                              final String... potentialMatches) {
@@ -178,6 +189,18 @@ public class PowerMatch {
             }
         }
         return null;
+    }
+
+    private static String getAcronymRegex(String keyword) {
+        final ArrayList<String> chars = new ArrayList<>(Arrays.asList(keyword.split("")));
+        final StringBuilder regex = new StringBuilder();
+        // Alternate keyword characters and any non whitespace
+        regex.append(REGEX_ANY_NON_WHITESPACE);
+        for (String singleChar : chars) {
+            regex.append(singleChar);
+            regex.append(REGEX_ANY_NON_WHITESPACE);
+        }
+        return regex.toString();
     }
 
     private static ArrayList<String> getPermutations(final String keyword) {

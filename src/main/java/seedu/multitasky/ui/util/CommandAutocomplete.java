@@ -110,13 +110,14 @@ public class CommandAutocomplete {
 
         // Managed to autocomplete to a valid command word
         if (Arrays.asList(commandWords).contains(commandMatch)) {
-            if (splitCommand[1].length() == 0) {
-                // No other words to autocomplete, do nothing
-            } else if (prefixOnlyCommands.contains(commandMatch)) {
-                // We can attempt to autocomplete each of the words into prefixes
-                String[] matches = matchPrefixes(commandMatch, separateWords(splitCommand[1]));
-                for (String match : matches) {
-                    commandResult.append(match).append(" ");
+            // We have other words to autocomplete
+            if (splitCommand[1].length() > 0) {
+                if (prefixOnlyCommands.contains(commandMatch)) {
+                    // We can attempt to autocomplete each of the words into prefixes
+                    String[] matches = matchPrefixes(commandMatch, separateWords(splitCommand[1]));
+                    for (String match : matches) {
+                        commandResult.append(match).append(" ");
+                    }
                 }
             } else {
                 // We can only attempt to autocomplete the last word into a prefix
@@ -125,8 +126,10 @@ public class CommandAutocomplete {
                 if (splitCommand[0].trim().length() > 0) {
                     commandResult.append(splitCommand[0]).append(" ");
                 }
-                commandResult.append(autocompletePrefix(splitCommand[LAST_WORD_IDX], commandMatch))
-                             .append(" ");
+                String autoCompletedPrefix = autocompletePrefix(splitCommand[LAST_WORD_IDX], commandMatch);
+                if (autoCompletedPrefix.length() > 0) {
+                    commandResult.append(autoCompletedPrefix).append(" ");
+                }
             }
         } else {
             // No information to go on to autocomplete anything else
