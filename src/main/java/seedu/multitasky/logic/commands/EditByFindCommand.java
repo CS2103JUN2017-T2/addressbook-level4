@@ -62,7 +62,7 @@ public class EditByFindCommand extends EditCommand {
                 assert editedEntry != null;
 
                 model.updateEntry(entryToEdit, editedEntry);
-                commandResult = new CommandResult(String.format(MESSAGE_SUCCESS, targetEntryString, entryToEdit));
+                commandResult = new CommandResult(String.format(MESSAGE_SUCCESS, targetEntryString, editedEntry));
             } catch (EntryNotFoundException pnfe) {
                 assert false : "The target entry cannot be missing";
             } catch (OverlappingEventException oee) {
