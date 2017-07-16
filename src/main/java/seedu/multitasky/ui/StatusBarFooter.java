@@ -12,6 +12,8 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.Region;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
+import seedu.multitasky.commons.events.model.FilePathChangedEvent;
+import seedu.multitasky.commons.events.storage.EntryBookToRedoEvent;
 import seedu.multitasky.commons.events.storage.EntryBookToUndoEvent;
 
 /**
@@ -36,7 +38,7 @@ public class StatusBarFooter extends UiPart<Region> {
     public StatusBarFooter(String saveLocation) {
         super(FXML);
         setSyncStatus(SYNC_STATUS_INITIAL);
-        setSaveLocation("./" + saveLocation);
+        setSaveLocation(saveLocation);
         registerAsAnEventHandler(this);
     }
 
@@ -76,11 +78,35 @@ public class StatusBarFooter extends UiPart<Region> {
         setSyncStatus(String.format(SYNC_STATUS_UPDATED, lastUpdated));
     }
 
+    // @@author A0132788U
+    /**
+     * Change the status bar for Undo event
+     */
     @Subscribe
     public void handleEntryBookToUndoEvent(EntryBookToUndoEvent event) {
         long now = clock.millis();
         String lastUpdated = new Date(now).toString();
-        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Setting last updated status to " + lastUpdated));
+        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Undo " + lastUpdated));
         setSyncStatus(String.format(SYNC_STATUS_UPDATED, lastUpdated));
+    }
+
+    /**
+     * Change the status bar for Redo event
+     */
+    @Subscribe
+    public void handleEntryBookToRedoEvent(EntryBookToRedoEvent event) {
+        long now = clock.millis();
+        String lastUpdated = new Date(now).toString();
+        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Redo " + lastUpdated));
+        setSyncStatus(String.format(SYNC_STATUS_UPDATED, lastUpdated));
+    }
+
+    /**
+     * Change the status bar for filepath change
+     */
+    @Subscribe
+    public void handleFilePathChangedEvent(FilePathChangedEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Updating status bar with new filepath "));
+        setSaveLocation(event.getNewFilePath());
     }
 }
