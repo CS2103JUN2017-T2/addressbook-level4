@@ -430,6 +430,8 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |user |be able to search for task entries using partial words | find entries easily without remembering exact words
 
+|`* *` |user |be notified when my input commands result in overlapping events | make changes if overlapping of events is undesirable.
+
 |`*` |user with many projects |tag entries by assignment |distinguish tasks for similar assignments
 
 |`*` |user with many projects |view entries by assignment |distinguish different assignments
