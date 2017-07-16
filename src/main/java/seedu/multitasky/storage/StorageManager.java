@@ -27,11 +27,13 @@ public class StorageManager extends ComponentManager implements Storage {
     private static final Logger logger = LogsCenter.getLogger(StorageManager.class);
     private EntryBookStorage entryBookStorage;
     private UserPrefsStorage userPrefsStorage;
+    private UserPrefs userPrefs;
 
-    public StorageManager(EntryBookStorage entryBookStorage, UserPrefsStorage userPrefsStorage) {
+    public StorageManager(EntryBookStorage entryBookStorage, UserPrefsStorage userPrefsStorage, UserPrefs userPrefs) {
         super();
         this.entryBookStorage = entryBookStorage;
         this.userPrefsStorage = userPrefsStorage;
+        this.userPrefs = userPrefs;
     }
 
     // ================ UserPrefs methods ==============================
@@ -228,6 +230,7 @@ public class StorageManager extends ComponentManager implements Storage {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "File path changed, saving to file"));
         try {
             entryBookStorage.setEntryBookFilePath(event.getNewFilePath());
+            userPrefs.setEntryBookFilePath(event.getNewFilePath());
             saveEntryBook(event.data, event.getNewFilePath());
         } catch (IOException e) {
             raise(new DataSavingExceptionEvent(e));
