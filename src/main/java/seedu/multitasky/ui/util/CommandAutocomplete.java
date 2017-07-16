@@ -14,6 +14,7 @@ import javafx.scene.layout.Region;
 import seedu.multitasky.commons.util.PowerMatch;
 import seedu.multitasky.logic.commands.AddCommand;
 import seedu.multitasky.logic.commands.ClearCommand;
+import seedu.multitasky.logic.commands.CompleteCommand;
 import seedu.multitasky.logic.commands.DeleteCommand;
 import seedu.multitasky.logic.commands.EditCommand;
 import seedu.multitasky.logic.commands.ExitCommand;
@@ -22,6 +23,7 @@ import seedu.multitasky.logic.commands.HelpCommand;
 import seedu.multitasky.logic.commands.HistoryCommand;
 import seedu.multitasky.logic.commands.ListCommand;
 import seedu.multitasky.logic.commands.RedoCommand;
+import seedu.multitasky.logic.commands.RestoreCommand;
 import seedu.multitasky.logic.commands.UndoCommand;
 
 // @@author A0125586X
@@ -39,6 +41,7 @@ public class CommandAutocomplete {
     private static final String[] commandWords = new String[] {
         AddCommand.COMMAND_WORD,
         ClearCommand.COMMAND_WORD,
+        CompleteCommand.COMMAND_WORD,
         DeleteCommand.COMMAND_WORD,
         EditCommand.COMMAND_WORD,
         ExitCommand.COMMAND_WORD,
@@ -47,6 +50,7 @@ public class CommandAutocomplete {
         HistoryCommand.COMMAND_WORD,
         ListCommand.COMMAND_WORD,
         RedoCommand.COMMAND_WORD,
+        RestoreCommand.COMMAND_WORD,
         UndoCommand.COMMAND_WORD,
     };
 
@@ -58,6 +62,7 @@ public class CommandAutocomplete {
         commandKeywords = new HashMap<>();
         commandKeywords.put(AddCommand.COMMAND_WORD, AddCommand.VALID_PREFIXES);
         commandKeywords.put(ClearCommand.COMMAND_WORD, ClearCommand.VALID_PREFIXES);
+        commandKeywords.put(CompleteCommand.COMMAND_WORD, CompleteCommand.VALID_PREFIXES);
         commandKeywords.put(DeleteCommand.COMMAND_WORD, DeleteCommand.VALID_PREFIXES);
         commandKeywords.put(EditCommand.COMMAND_WORD, EditCommand.VALID_PREFIXES);
         commandKeywords.put(ExitCommand.COMMAND_WORD, ExitCommand.VALID_PREFIXES);
@@ -66,6 +71,7 @@ public class CommandAutocomplete {
         commandKeywords.put(HistoryCommand.COMMAND_WORD, HistoryCommand.VALID_PREFIXES);
         commandKeywords.put(ListCommand.COMMAND_WORD, ListCommand.VALID_PREFIXES);
         commandKeywords.put(RedoCommand.COMMAND_WORD, RedoCommand.VALID_PREFIXES);
+        commandKeywords.put(RestoreCommand.COMMAND_WORD, RestoreCommand.VALID_PREFIXES);
         commandKeywords.put(UndoCommand.COMMAND_WORD, UndoCommand.VALID_PREFIXES);
 
         prefixOnlyCommands = new HashSet<>();
