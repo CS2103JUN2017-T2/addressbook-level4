@@ -42,7 +42,8 @@ public class CompleteByIndexCommand extends CompleteCommand {
             assert false : "The target entry cannot be missing";
         }
         // refresh list view after updating.
-        model.updateAllFilteredLists(history.getPrevSearch(), null, null, history.getPrevState());
+        model.updateAllFilteredLists(history.getPrevSearch(), history.getPrevStartDate(),
+                                     history.getPrevEndDate(), history.getPrevState());
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, entryToComplete));
     }
