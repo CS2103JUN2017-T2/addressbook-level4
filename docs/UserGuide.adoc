@@ -267,9 +267,9 @@ Format: `set ./filepath.xml`
 
 Examples:
 
-* `set /Users/usernamehere/Desktop/entrybook.xml`+
+* `set /Users/usernamehere/Desktop/entrybook.xml` +
 Creates a file entrybook.xml on the Desktop and saves data there. +
-* `set ./entrybook.xml`+
+* `set ./entrybook.xml` +
 Creates file in the same directory as the JAR file. +
 
 //<!-- @@author A0140633R -->
