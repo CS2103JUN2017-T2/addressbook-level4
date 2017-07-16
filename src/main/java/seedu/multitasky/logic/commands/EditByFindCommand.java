@@ -70,7 +70,8 @@ public class EditByFindCommand extends EditCommand {
                                                                 entryToEdit.getName()));
             }
             // refresh list view after updating.
-            model.updateAllFilteredLists(history.getPrevSearch(), null, null, history.getPrevState());
+            model.updateAllFilteredLists(history.getPrevSearch(), history.getPrevStartDate(),
+                                         history.getPrevEndDate(), history.getPrevState());
 
             assert commandResult != null : "commandResult in EditByFindCommand shouldn't be null here.";
             return commandResult;

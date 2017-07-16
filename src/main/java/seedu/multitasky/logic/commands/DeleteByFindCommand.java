@@ -60,7 +60,8 @@ public class DeleteByFindCommand extends DeleteCommand {
                 assert false : "This should not happen for deletion.";
             }
             // refresh list view after updating.
-            model.updateAllFilteredLists(history.getPrevSearch(), null, null, history.getPrevState());
+            model.updateAllFilteredLists(history.getPrevSearch(), history.getPrevStartDate(),
+                                         history.getPrevEndDate(), history.getPrevState());
 
             return new CommandResult(String.format(MESSAGE_SUCCESS, entryToDelete));
         } else {
