@@ -17,16 +17,18 @@ public abstract class RestoreCommand extends Command {
 
     public static final String COMMAND_WORD = "restore";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + " : Restores an archived or deleted entry identified"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + " : Restores an archived/deleted entry identified"
             + " by keywords if it is the only entry found, or restores the entry identified by the index number of"
-            + " the last archived or deleted entry listing.\n"
+            + " the last archived/deleted entry listing.\n"
             + "Format: " + COMMAND_WORD + " [" + "[" + "KEYWORDS" + "]" + " |"
             + " [" + String.join(" | ", CliSyntax.PREFIX_EVENT.toString(), CliSyntax.PREFIX_DEADLINE.toString(),
             CliSyntax.PREFIX_FLOATINGTASK.toString()) + "]" + " INDEX" + "]" + "\n"
-            + "All possible flags for Delete : 'event', 'deadline', 'float'";
+            + "All possible flags for Restore : 'event', 'deadline', 'float'";
 
     public static final String MESSAGE_SUCCESS = "Entry restored:" + "\n"
-                                                 + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s";
+                                                 + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
+                                                 + "Entry has been restored to active list";
+
     public static final String MESSAGE_SUCCESS_WITH_OVERLAP_ALERT = "Entry restored:" + "\n"
             + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
             + "Alert: Restored entry %1$s overlaps with existing event(s).";

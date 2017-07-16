@@ -2,8 +2,8 @@ package seedu.multitasky.logic.commands;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static seedu.multitasky.testutil.EditCommandTestUtil.DESC_AMY;
-import static seedu.multitasky.testutil.EditCommandTestUtil.DESC_BOB;
+import static seedu.multitasky.testutil.EditCommandTestUtil.DESC_CLEAN;
+import static seedu.multitasky.testutil.EditCommandTestUtil.DESC_MEETING;
 import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_NAME_MEETING;
 import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_TAG_URGENT;
 
@@ -17,27 +17,27 @@ public class EditEntryDescriptorTest {
     @Test
     public void equals() throws Exception {
         // same values -> returns true
-        EditEntryDescriptor descriptorWithSameValues = new EditEntryDescriptor(DESC_AMY);
-        assertTrue(DESC_AMY.equals(descriptorWithSameValues));
+        EditEntryDescriptor descriptorWithSameValues = new EditEntryDescriptor(DESC_CLEAN);
+        assertTrue(DESC_CLEAN.equals(descriptorWithSameValues));
 
         // same object -> returns true
-        assertTrue(DESC_AMY.equals(DESC_AMY));
+        assertTrue(DESC_CLEAN.equals(DESC_CLEAN));
 
         // null -> returns false
-        assertFalse(DESC_AMY.equals(null));
+        assertFalse(DESC_CLEAN == null);
 
         // different types -> returns false
-        assertFalse(DESC_AMY.equals(5));
+        assertFalse(DESC_CLEAN.equals(5));
 
         // different values -> returns false
-        assertFalse(DESC_AMY.equals(DESC_BOB));
+        assertFalse(DESC_CLEAN.equals(DESC_MEETING));
 
         // different name -> returns false
-        EditEntryDescriptor editedAmy = new EditEntryDescriptorBuilder(DESC_AMY).withName(VALID_NAME_MEETING).build();
-        assertFalse(DESC_AMY.equals(editedAmy));
+        EditEntryDescriptor editedAmy = new EditEntryDescriptorBuilder(DESC_CLEAN).withName(VALID_NAME_MEETING).build();
+        assertFalse(DESC_CLEAN.equals(editedAmy));
 
         // different tags -> returns false
-        editedAmy = new EditEntryDescriptorBuilder(DESC_AMY).withTags(VALID_TAG_URGENT).build();
-        assertFalse(DESC_AMY.equals(editedAmy));
+        editedAmy = new EditEntryDescriptorBuilder(DESC_CLEAN).withTags(VALID_TAG_URGENT).build();
+        assertFalse(DESC_CLEAN.equals(editedAmy));
     }
 }

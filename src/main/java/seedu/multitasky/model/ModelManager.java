@@ -158,9 +158,12 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
             throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException {
         requireAllNonNull(target, editedEntry);
-
         try {
-            _entryBook.updateEntry(target, editedEntry);
+            if (target.getClass().equals(editedEntry.getClass())) { // updating to same instance of entry
+                _entryBook.updateEntry(target, editedEntry);
+        } else { // updating entry between lists
+            _entryBook.removeEntry(target);
+            _entryBook.addEntry(editedEntry);
         } finally {
             indicateEntryBookChanged();
         }

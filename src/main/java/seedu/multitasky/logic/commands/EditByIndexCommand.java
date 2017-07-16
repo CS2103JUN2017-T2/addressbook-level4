@@ -46,9 +46,13 @@ public class EditByIndexCommand extends EditCommand {
         }
 
         ReadOnlyEntry entryToEdit = listToEditFrom.get(index.getZeroBased());
+        String targetEntryString = entryToEdit.toString();
         Entry editedEntry = createEditedEntry(entryToEdit, editEntryDescriptor);
 
         try {
+            assert entryToEdit != null;
+            assert editedEntry != null;
+
             model.updateEntry(entryToEdit, editedEntry);
 
             // refresh list view after updating
@@ -60,7 +64,7 @@ public class EditByIndexCommand extends EditCommand {
             return new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERLAP_ALERT,
                                                    entryToEdit.getName()));
         }
-        return new CommandResult(String.format(MESSAGE_SUCCESS, entryToEdit));
+        return new CommandResult(String.format(MESSAGE_SUCCESS, targetEntryString, editedEntry));
     }
 
     @Override

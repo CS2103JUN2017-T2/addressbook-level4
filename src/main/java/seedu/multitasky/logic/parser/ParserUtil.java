@@ -63,6 +63,7 @@ public class ParserUtil {
         }
     }
 
+    // @@author A0140633R
     /**
      * Parses a {@code Optional<String> name} into an {@code Optional<Calendar>} if {@code name} is present.
      */
@@ -94,6 +95,7 @@ public class ParserUtil {
             throw new ParseException(String.format(MESSAGE_FAIL_PARSE_DATE, args));
         }
     }
+    // @@author
 
     /**
      * Parses {@code Collection<String> tags} into a {@code Set<Tag>}.
@@ -125,6 +127,7 @@ public class ParserUtil {
     public static boolean areAllPrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
         return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
+    // @@author
 
     /**
      * Filters out Prefix's not mapped to anything in ArgumentMultimap parameter, and returns prefix that has
@@ -180,6 +183,18 @@ public class ParserUtil {
             }
         }
         return foundPrefix;
+    }
+
+    // @@author A0125586X
+    /**
+     * converts a String array of prefixes into a Prefix array
+     */
+    public static Prefix[] toPrefixArray(String... stringPrefixes) {
+        Prefix[] prefixes = new Prefix[stringPrefixes.length];
+        for (int i = 0; i < stringPrefixes.length; ++i) {
+            prefixes[i] = new Prefix(stringPrefixes[i]);
+        }
+        return prefixes;
     }
 
 }

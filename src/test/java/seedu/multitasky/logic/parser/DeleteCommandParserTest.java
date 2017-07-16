@@ -1,7 +1,6 @@
 package seedu.multitasky.logic.parser;
 
 import static org.junit.Assert.assertTrue;
-import static seedu.multitasky.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -31,7 +30,7 @@ public class DeleteCommandParserTest {
     @Test
     public void parse_emptyArgs_throwsParseException() throws Exception {
         thrown.expect(ParseException.class);
-        thrown.expectMessage(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+        thrown.expectMessage(String.format(DeleteCommand.MESSAGE_USAGE));
         parser.parse("");
     }
 

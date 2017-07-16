@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.logic.parser.CliSyntax;
 import seedu.multitasky.model.entry.Entry;
@@ -28,10 +27,6 @@ public class EditByFindCommand extends EditCommand {
                                                                         CliSyntax.PREFIX_FLOATINGTASK.toString())
                                                           + "]"
                                                           + " INDEX to specify which entry to edit.";
-
-    public static final String MESSAGE_SUCCESS = "Entry edited:" + "\n"
-                                                 + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
-                                                 + "One entry found and edited! Listing all entries now.";
 
     private Set<String> keywords;
 
@@ -58,10 +53,14 @@ public class EditByFindCommand extends EditCommand {
 
         if (allList.size() == 1) { // proceed to edit
             ReadOnlyEntry entryToEdit = allList.get(0);
+            String targetEntryString = entryToEdit.toString();
             Entry editedEntry = createEditedEntry(entryToEdit, editEntryDescriptor);
 
             CommandResult commandResult = null;
             try {
+                assert entryToEdit != null;
+                assert editedEntry != null;
+
                 model.updateEntry(entryToEdit, editedEntry);
                 commandResult = new CommandResult(String.format(MESSAGE_SUCCESS, entryToEdit));
             } catch (EntryNotFoundException pnfe) {
@@ -75,7 +74,7 @@ public class EditByFindCommand extends EditCommand {
 
             assert commandResult != null : "commandResult in EditByFindCommand shouldn't be null here.";
             return commandResult;
-
+          
         } else {
             history.setPrevSearch(keywords, null, null, Entry.State.ACTIVE);
             if (allList.size() >= 2) {
