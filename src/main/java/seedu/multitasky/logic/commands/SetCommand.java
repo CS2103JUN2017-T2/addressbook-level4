@@ -4,7 +4,7 @@ import java.io.File;
 
 // @@author A0132788U
 /**
- * Sets the file path to store/load entrybook data.
+ * Checks validify of entered filepath and sets the filepath to store entrybook data in a user-defined location.
  */
 public class SetCommand extends Command {
 
@@ -33,6 +33,13 @@ public class SetCommand extends Command {
         }
     }
 
+    /**
+     * Method to check whether given file path is valid.
+     * A file path is valid if :
+     * 1. It has a non-null parent directory.
+     * 2. It ends with xml.
+     * 3. The parent directory can be written to.
+     */
     private boolean isValidPath(String newFilePath) {
         File parent = (new File(newFilePath)).getParentFile();
         if (parent != null) {

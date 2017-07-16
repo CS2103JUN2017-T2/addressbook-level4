@@ -53,7 +53,6 @@ public class UserPrefs {
         UserPrefs.entryBookSnapshotPath = entryBookSnapshotPath;
     }
 
-    // @@author A0132788U
     /**
      * Methods to update the indices when files are created during mutation/deleted during exit
      */
@@ -65,7 +64,6 @@ public class UserPrefs {
         index--;
     }
 
-    // @@author
     public static int getIndex() {
         return index;
     }

@@ -4,7 +4,9 @@ import seedu.multitasky.commons.events.BaseEvent;
 import seedu.multitasky.model.EntryBook;
 
 //@@author A0132788U
-/** Indicates the EntryBook in the model has changed */
+/**
+ * Indicates the EntryBook in the model has changed due to Undo action.
+ */
 public class EntryBookToUndoEvent extends BaseEvent {
 
     private EntryBook data;

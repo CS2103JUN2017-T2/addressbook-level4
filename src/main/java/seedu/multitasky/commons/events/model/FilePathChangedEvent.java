@@ -4,7 +4,10 @@ import seedu.multitasky.commons.events.BaseEvent;
 import seedu.multitasky.model.ReadOnlyEntryBook;
 
 //@@author A0132788U
-/** Event indicates the file path has changed */
+
+/**
+ * Event indicating the file path for storage has changed.
+ */
 public class FilePathChangedEvent extends BaseEvent {
 
     public final ReadOnlyEntryBook data;

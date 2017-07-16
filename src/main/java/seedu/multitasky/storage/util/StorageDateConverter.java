@@ -1,4 +1,4 @@
-package seedu.multitasky.storage;
+package seedu.multitasky.storage.util;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -10,7 +10,7 @@ import java.util.Date;
 /**
  * Class that implements methods to convert Date to String to enable Storage to store dates in a human-editable form in
  * the XML file.
- * Parses String back to Date and returns to Model.
+ * Parses String and converts it back to Date to return to Model.
  */
 public class StorageDateConverter {
 

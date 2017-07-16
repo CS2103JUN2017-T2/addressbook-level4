@@ -8,6 +8,9 @@ import seedu.multitasky.logic.commands.SetCommand;
 import seedu.multitasky.testutil.TestUtil;
 
 //@@author A0132788U
+/**
+ * Tests for Set Command. Include valid path tests, non XML test, non-writable file and invalid parent.
+ */
 public class SetCommandTest extends EntryBookGuiTest {
     /***************************
      * Set to a valid file path *

@@ -5,6 +5,9 @@ import seedu.multitasky.logic.commands.SetCommand;
 
 //@@author A0132788U
 
+/**
+ * Parses the input entered for Set Command and returns a new SetCommand object.
+ */
 public class SetCommandParser {
 
     public Command parse(String arguments) {

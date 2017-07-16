@@ -69,6 +69,7 @@ public class StorageManager extends ComponentManager implements Storage {
         return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
     }
 
+    /** Sets the entryBookFilePath for */
     @Override
     public void setEntryBookFilePath(String newFilePath) {
         entryBookStorage.setEntryBookFilePath(newFilePath);
@@ -116,7 +117,7 @@ public class StorageManager extends ComponentManager implements Storage {
     }
 
     /**
-     * Loads data from the previous SnapshotPath for undo.
+     * Loads data from the previous SnapshotPath for Undo action.
      *
      * @throws Exception
      */
@@ -131,7 +132,7 @@ public class StorageManager extends ComponentManager implements Storage {
     }
 
     /**
-     * Loads data from the next SnapshotPath for redo.
+     * Loads data from the next SnapshotPath for Redo action.
      *
      * @throws Exception
      */
@@ -141,7 +142,7 @@ public class StorageManager extends ComponentManager implements Storage {
                     .loadDataFromSaveFile(new File(getNextEntryBookSnapshotPath()));
             return new EntryBook(redoData);
         } catch (Exception e) {
-            throw new Exception("Nothing to Undo!");
+            throw new Exception("Nothing to Redo!");
         }
     }
 
