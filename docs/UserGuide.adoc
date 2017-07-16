@@ -103,7 +103,7 @@ Examples:
 === Completing a task : `complete`
 
 Finds and checkmarks a task as completed and moves it to archive. +
-Format: `complete [KEYWORD_1 KEYWORD_2...] | [/event | /deadline | /float INDEX]`
+Format: `complete [KEYWORD_1 KEYWORD_2...] | [event | deadline | float INDEX]`
 
 * There are two ways to select an entry to complete: searching by `KEYWORD`, or specifying the `INDEX`.
 ** The keyword searches both the entry name and tags, and a found entry must match all keywords.
@@ -114,7 +114,7 @@ Format: `complete [KEYWORD_1 KEYWORD_2...] | [/event | /deadline | /float INDEX]
 Examples:
 
 * `complete clean up room`
-* `complete /deadline 3`
+* `complete deadline 3`
 
 //<!-- @@author A0126623L -->
 === Listing all entries : `list`
@@ -219,8 +219,17 @@ Format: `restore [KEYWORD_1 KEYWORD_2...] | [/event | /deadline | /float INDEX]`
 ** The keyword searches both the entry name and tags, and a found entry must match all keywords.
 ** The search must only produce one entry to modify. If multiple entries are found to match the keyword no entries will be modified.
 ** The search will be done on `archive` and `bin`
-** The index refers to the index number shown in the last active entry listing. The index *must be a positive integer* 1, 2, 3, ...
+** The index refers to the index number shown in either the last archived or deleted entry listing (whichever was displayed last). The index *must be a positive integer* 1, 2, 3, ...
+* Restoring an entry moves it from the `archive` or `bin` to the `active` list.
+* If multiple entries are found using the keywords, all found entries will be listed, and the user will be prompted to specify the index of the entry to be restored.
 
+Examples:
+
+* `list /archive` +
+`restore /float 2` +
+Restores the 2nd entry in the archive.
+* `restore feed dog` +
+Restores the only entry in the `archive` or `bin` that matches "feed" and "dog" in the name or tag.
 
 === Listing entered commands : `history`
 

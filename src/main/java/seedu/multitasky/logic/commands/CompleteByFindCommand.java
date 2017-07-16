@@ -12,11 +12,11 @@ import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 
-// @@author A0140633R
+// @@author A0132788U-reused
 /*
- * Finds entries from given keywords and deletes entry if it is the only one found.
+ * Finds entries from given keywords and completes the entry if it is the only one found and moves it to archive.
  */
-public class DeleteByFindCommand extends DeleteCommand {
+public class CompleteByFindCommand extends CompleteCommand {
     public static final String MESSAGE_NO_ENTRIES = "No entries found! Please try again with different keywords";
 
     public static final String MESSAGE_MULTIPLE_ENTRIES = "More than one entry found! \n"
@@ -26,15 +26,15 @@ public class DeleteByFindCommand extends DeleteCommand {
                                                                   CliSyntax.PREFIX_DEADLINE.toString(),
                                                                   CliSyntax.PREFIX_FLOATINGTASK.toString())
                                                           + "]"
-                                                          + " INDEX to specify which entry to delete.";
+                                                          + " INDEX to specify which entry to complete.";
 
-    public static final String MESSAGE_SUCCESS = "Entry deleted:" + "\n"
+    public static final String MESSAGE_SUCCESS = "Entry completed:" + "\n"
                                                  + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
-                                                 + "One entry found and deleted! Listing all entries now.";
+                                                 + "One entry found and completed! Listing all entries now.";
 
     private Set<String> keywords;
 
-    public DeleteByFindCommand(Set<String> keywords) {
+    public CompleteByFindCommand(Set<String> keywords) {
         this.keywords = keywords;
     }
 
@@ -56,22 +56,24 @@ public class DeleteByFindCommand extends DeleteCommand {
         allList.addAll(model.getFilteredEventList());
         allList.addAll(model.getFilteredFloatingTaskList());
 
-        if (allList.size() == 1) { // proceed to delete
-            entryToDelete = allList.get(0);
+        if (allList.size() == 1) { // proceed to complete
+            entryToComplete = allList.get(0);
             try {
-                model.changeEntryState(entryToDelete, Entry.State.DELETED);
+                model.changeEntryState(entryToComplete, Entry.State.ARCHIVED);
             } catch (EntryNotFoundException e) {
                 assert false : "The target entry cannot be missing";
             }
             // refresh list view after updating.
-            model.updateFilteredDeadlineList(history.getPrevSearch(), null, null, history.getPrevState());
-            model.updateFilteredEventList(history.getPrevSearch(), null, null, history.getPrevState());
-            model.updateFilteredFloatingTaskList(history.getPrevSearch(), null, null, history.getPrevState());
+            model.updateFilteredDeadlineList(history.getPrevSearch(), null,
+                                             null, history.getPrevState());
+            model.updateFilteredEventList(history.getPrevSearch(), null,
+                                          null, history.getPrevState());
+            model.updateFilteredFloatingTaskList(history.getPrevSearch(), null,
+                                                 null, history.getPrevState());
 
-            return new CommandResult(String.format(MESSAGE_SUCCESS, entryToDelete));
+            return new CommandResult(String.format(MESSAGE_SUCCESS, entryToComplete));
         } else {
-            // save what search i did
-            history.setPrevSearch(keywords, null, null, Entry.State.ACTIVE);
+            history.setPrevSearch(keywords, Entry.State.ACTIVE);
             if (allList.size() >= 2) { // multiple entries found
                 return new CommandResult(MESSAGE_MULTIPLE_ENTRIES);
             } else {

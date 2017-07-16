@@ -21,6 +21,12 @@ public interface ReadOnlyEntry {
 
     Set<Tag> getTags();
 
+    boolean isActive();
+
+    boolean isArchived();
+
+    boolean isDeleted();
+
     /**
      * Returns true if both have the same state. (interfaces cannot override .equals)
      */

@@ -66,14 +66,12 @@ public class EditByFindCommand extends EditCommand {
                 assert false : "The target entry cannot be missing";
             }
             // refresh list view after updating.
-            model.updateFilteredDeadlineList(history.getPrevSearch(), history.getPrevStartDate(),
-                                             history.getPrevEndDate(), history.getPrevState());
-            model.updateFilteredEventList(history.getPrevSearch(), history.getPrevStartDate(),
-                                          history.getPrevEndDate(), history.getPrevState());
-            model.updateFilteredFloatingTaskList(history.getPrevSearch(), history.getPrevStartDate(),
-                                                 history.getPrevEndDate(), history.getPrevState());
-            // set search terms to what i searched with in this rendition
-            history.setPrevSearch(keywords, null, null, Entry.State.ACTIVE);
+            model.updateFilteredDeadlineList(history.getPrevSearch(), null,
+                                             null, history.getPrevState());
+            model.updateFilteredEventList(history.getPrevSearch(), null,
+                                          null, history.getPrevState());
+            model.updateFilteredFloatingTaskList(history.getPrevSearch(), null,
+                                                 null, history.getPrevState());
 
             return new CommandResult(String.format(MESSAGE_SUCCESS, entryToEdit));
         } else {

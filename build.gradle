@@ -159,7 +159,7 @@ task guiTests(type: EntryBookTest) {
 
 
 task nonGuiTests(type: EntryBookTest) {
-    include 'seedu/address/**'
+    include 'seedu/multitasky/**'
 
     jacoco {
         destinationFile = new File("${buildDir}/jacoco/test.exec")
