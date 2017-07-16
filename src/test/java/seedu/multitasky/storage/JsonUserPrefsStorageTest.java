@@ -17,8 +17,6 @@ import seedu.multitasky.commons.exceptions.DataConversionException;
 import seedu.multitasky.commons.util.FileUtil;
 import seedu.multitasky.model.UserPrefs;
 
-// @@author A0132788U
-
 public class JsonUserPrefsStorageTest {
 
     private static final String TEST_DATA_FOLDER = FileUtil.getPath("./src/test/data/JsonUserPrefsStorageTest/");
@@ -50,6 +48,7 @@ public class JsonUserPrefsStorageTest {
         assertTrue(readUserPrefs("TypicalUserPref.json").isPresent());
     }
 
+    // @@author
     // Throws an exception because the file is not json formatted
     @Test
     public void readUserPrefs_notJsonFormat_exceptionThrown() throws DataConversionException {
