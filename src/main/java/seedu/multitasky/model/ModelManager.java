@@ -138,14 +138,21 @@ public class ModelManager extends ComponentManager implements Model {
         indicateEntryBookChanged();
     }
 
+    // @@author A0140633R
     @Override
     public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws DuplicateEntryException,
             EntryNotFoundException {
         requireAllNonNull(target, editedEntry);
-
-        _entryBook.updateEntry(target, editedEntry);
-        indicateEntryBookChanged();
+        if (target.getClass().equals(editedEntry.getClass())) { // updating to same instance of entry
+            _entryBook.updateEntry(target, editedEntry);
+            indicateEntryBookChanged();
+        } else { // updating entry between lists
+            _entryBook.removeEntry(target);
+            _entryBook.addEntry(editedEntry);
+            indicateEntryBookChanged();
+        }
     }
+    // @@author
 
     // =========== Filtered Entry List Accessors ===========
 

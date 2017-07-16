@@ -50,20 +50,16 @@ public class EditByIndexCommand extends EditCommand {
         try {
             assert entryToEdit != null;
             assert editedEntry != null;
-            if (entryToEdit.getClass().equals(editedEntry.getClass())) {
-                // editing within same type of entry
-                model.updateEntry(entryToEdit, editedEntry);
-            } else { // moving entry from one list to another
-                model.deleteEntry(entryToEdit);
-                model.addEntry(editedEntry);
-            }
+
+            model.updateEntry(entryToEdit, editedEntry);
+
             // refresh list view after updating
             model.updateAllFilteredLists(history.getPrevSearch(), null, null, history.getPrevState());
 
         } catch (EntryNotFoundException pnfe) {
             throw new AssertionError("The target entry cannot be missing");
         }
-        return new CommandResult(String.format(MESSAGE_SUCCESS, entryToEdit));
+        return new CommandResult(String.format(MESSAGE_SUCCESS, entryToEdit, editedEntry));
     }
 
     @Override

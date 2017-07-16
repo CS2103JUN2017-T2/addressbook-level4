@@ -43,8 +43,8 @@ public abstract class EditCommand extends Command {
             + " 'deadline', 'float'" + "\n"
             + "Note: Existing values will be overwritten by the input values.";
 
-    public static final String MESSAGE_SUCCESS = "Entry edited:" + "\n"
-                                                 + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s";
+    public static final String MESSAGE_SUCCESS = "Target entry: " + Messages.MESSAGE_ENTRY_DESCRIPTION
+            + "%1$s\n " + "Entry edited:" + Messages.MESSAGE_ENTRY_DESCRIPTION + "%2$s";
 
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.\n"
             + "Format: " + COMMAND_WORD + " [" + "[" + "KEYWORDS" + "]" + " |"
@@ -116,7 +116,9 @@ public abstract class EditCommand extends Command {
                    || (editToEvent(updatedStartDate, updatedEndDate))
                       && updatedEndDate.compareTo(updatedStartDate) == 0
                    || editToEvent(updatedStartDate, updatedEndDate)
-                      && editEntryDescriptor.hasResetStartDate()) {
+                      && editEntryDescriptor.hasResetStartDate()
+                   || editToEvent(updatedStartDate, updatedEndDate)
+                      && editEntryDescriptor.hasResetEndDate()) {
             updatedEndDate = updatedEndDate == null ? updatedStartDate : updatedEndDate;
             return new Deadline(updatedName, updatedEndDate, updatedTags);
 
