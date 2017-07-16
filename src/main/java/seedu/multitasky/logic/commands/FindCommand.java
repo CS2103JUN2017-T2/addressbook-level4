@@ -33,10 +33,8 @@ public class FindCommand extends Command {
     @Override
     public CommandResult execute() {
 
-        // update all 3 lists with new keywords.
-        model.updateFilteredDeadlineList(keywords, null, null, Entry.State.ACTIVE);
-        model.updateFilteredEventList(keywords, null, null, Entry.State.ACTIVE);
-        model.updateFilteredFloatingTaskList(keywords, null, null, Entry.State.ACTIVE);
+        // Update all 3 lists with new search parameters until at least 1 result is found.
+        model.updateAllFilteredLists(keywords, null, null, Entry.State.ACTIVE);
 
         // save keywords of the search
         history.setPrevSearch(keywords, null, null, Entry.State.ACTIVE);
@@ -45,12 +43,6 @@ public class FindCommand extends Command {
         int eventSize = model.getFilteredEventList().size();
         int floatingSize = model.getFilteredFloatingTaskList().size();
 
-        // No results, use PowerSearch instead
-        if (deadlineSize + eventSize + floatingSize == 0) {
-            model.updatePowerSearchFilteredDeadlineList(keywords, null, null, Entry.State.ACTIVE);
-            model.updatePowerSearchFilteredEventList(keywords, null, null, Entry.State.ACTIVE);
-            model.updatePowerSearchFilteredFloatingTaskList(keywords, null, null, Entry.State.ACTIVE);
-        }
         deadlineSize = model.getFilteredDeadlineList().size();
         eventSize = model.getFilteredEventList().size();
         floatingSize = model.getFilteredFloatingTaskList().size();

@@ -42,12 +42,7 @@ public class DeleteByIndexCommand extends DeleteCommand {
             assert false : "The target entry cannot be missing";
         }
         // refresh list view after updating.
-        model.updateFilteredDeadlineList(history.getPrevSearch(), history.getPrevStartDate(), history.getPrevEndDate(),
-                                         Entry.State.ACTIVE);
-        model.updateFilteredEventList(history.getPrevSearch(), history.getPrevStartDate(), history.getPrevEndDate(),
-                                         Entry.State.ACTIVE);
-        model.updateFilteredFloatingTaskList(history.getPrevSearch(), history.getPrevStartDate(),
-                                             history.getPrevEndDate(), Entry.State.ACTIVE);
+        model.updateAllFilteredLists(history.getPrevSearch(), null, null, history.getPrevState());
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, entryToDelete));
     }

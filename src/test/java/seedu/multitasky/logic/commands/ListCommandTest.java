@@ -55,7 +55,8 @@ public class ListCommandTest {
     private void showFirstEntryOnly(Model model) {
         ReadOnlyEntry entry = model.getEntryBook().getFloatingTaskList().get(0);
         final String[] splitName = entry.getName().fullName.split("\\s+");
-        model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList(splitName)), null, null, Entry.State.ACTIVE);
+        model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList(splitName)), null, null, Entry.State.ACTIVE,
+                                             Model.Search.AND);
 
         assertTrue(model.getFilteredFloatingTaskList().size() == 1);
     }

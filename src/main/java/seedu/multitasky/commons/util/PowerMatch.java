@@ -211,50 +211,30 @@ public class PowerMatch {
          * Replace each character in turn with a regex expression
          * that can match any non-whitespace character or no character at all
          */
-        for (int i = 0; i < chars.size(); ++i) {
-            String temp = chars.get(i);
-            chars.set(i, REGEX_ANY_NON_WHITESPACE);
-            HashSet<String> tempPermutations = new HashSet<>();
-            generateUniquePermutations(chars, 0, keyword.length() - 1, tempPermutations);
-            for (String permutation : tempPermutations) {
-                permutations.add(permutation);
+        if (chars.size() > 1) {
+            for (int i = 0; i < chars.size(); ++i) {
+                String temp = chars.get(i);
+                chars.set(i, REGEX_ANY_NON_WHITESPACE);
+                HashSet<String> tempPermutations = new HashSet<>();
+                generateUniquePermutations(chars, 0, keyword.length() - 1, tempPermutations);
+                for (String permutation : tempPermutations) {
+                    permutations.add(permutation);
+                }
+                chars.set(i, temp);
             }
-            chars.set(i, temp);
         }
         /**
          * For two wrong/extra characters:
          * Replace each two-character combination in turn with a regex expression
          * that can match any non-whitespace character or no character at all
          */
-        for (int i = 0; i < chars.size(); ++i) {
-            for (int j = i + 1; j < chars.size(); ++j) {
-                String iTemp = chars.get(i);
-                String jTemp = chars.get(j);
-                chars.set(i, REGEX_ANY_NON_WHITESPACE);
-                chars.set(j, REGEX_ANY_NON_WHITESPACE);
-                HashSet<String> tempPermutations = new HashSet<>();
-                generateUniquePermutations(chars, 0, keyword.length() - 1, tempPermutations);
-                for (String permutation : tempPermutations) {
-                    permutations.add(permutation);
-                }
-                chars.set(i, iTemp);
-                chars.set(j, jTemp);
-            }
-        }
-        /**
-         * For three wrong/extra characters:
-         * Replace each three-character combination in turn with a regex expression
-         * that can match any non-whitespace character or no character at all
-         */
-        for (int i = 0; i < chars.size(); ++i) {
-            for (int j = i + 1; j < chars.size(); ++j) {
-                for (int k = j + 1; k < chars.size(); ++k) {
+        if (chars.size() > 2) {
+            for (int i = 0; i < chars.size(); ++i) {
+                for (int j = i + 1; j < chars.size(); ++j) {
                     String iTemp = chars.get(i);
                     String jTemp = chars.get(j);
-                    String kTemp = chars.get(k);
                     chars.set(i, REGEX_ANY_NON_WHITESPACE);
                     chars.set(j, REGEX_ANY_NON_WHITESPACE);
-                    chars.set(k, REGEX_ANY_NON_WHITESPACE);
                     HashSet<String> tempPermutations = new HashSet<>();
                     generateUniquePermutations(chars, 0, keyword.length() - 1, tempPermutations);
                     for (String permutation : tempPermutations) {
@@ -262,7 +242,33 @@ public class PowerMatch {
                     }
                     chars.set(i, iTemp);
                     chars.set(j, jTemp);
-                    chars.set(k, kTemp);
+                }
+            }
+        }
+        /**
+         * For three wrong/extra characters:
+         * Replace each three-character combination in turn with a regex expression
+         * that can match any non-whitespace character or no character at all
+         */
+        if (chars.size() > 3) {
+            for (int i = 0; i < chars.size(); ++i) {
+                for (int j = i + 1; j < chars.size(); ++j) {
+                    for (int k = j + 1; k < chars.size(); ++k) {
+                        String iTemp = chars.get(i);
+                        String jTemp = chars.get(j);
+                        String kTemp = chars.get(k);
+                        chars.set(i, REGEX_ANY_NON_WHITESPACE);
+                        chars.set(j, REGEX_ANY_NON_WHITESPACE);
+                        chars.set(k, REGEX_ANY_NON_WHITESPACE);
+                        HashSet<String> tempPermutations = new HashSet<>();
+                        generateUniquePermutations(chars, 0, keyword.length() - 1, tempPermutations);
+                        for (String permutation : tempPermutations) {
+                            permutations.add(permutation);
+                        }
+                        chars.set(i, iTemp);
+                        chars.set(j, jTemp);
+                        chars.set(k, kTemp);
+                    }
                 }
             }
         }

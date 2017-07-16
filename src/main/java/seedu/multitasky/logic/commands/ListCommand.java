@@ -100,27 +100,21 @@ public class ListCommand extends Command {
         switch (showType) {
         case ARCHIVE:
             commandResultBuilder.append(MESSAGE_ARCHIVE_SUCCESS);
-            model.updateFilteredEventList(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.ARCHIVED);
-            model.updateFilteredDeadlineList(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.ARCHIVED);
-            model.updateFilteredFloatingTaskList(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.ARCHIVED);
+            model.updateAllFilteredLists(MATCH_ALL_KEYWORDS, null, null, Entry.State.ARCHIVED);
             raise(new ListTypeUpdateEvent(Entry.State.ARCHIVED));
-            history.setPrevSearch(new HashSet<String>(), startDate, endDate, Entry.State.ARCHIVED);
+            history.setPrevSearch(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.ARCHIVED);
             break;
         case BIN:
             commandResultBuilder.append(MESSAGE_BIN_SUCCESS);
-            model.updateFilteredEventList(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.DELETED);
-            model.updateFilteredDeadlineList(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.DELETED);
-            model.updateFilteredFloatingTaskList(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.DELETED);
+            model.updateAllFilteredLists(MATCH_ALL_KEYWORDS, null, null, Entry.State.DELETED);
             raise(new ListTypeUpdateEvent(Entry.State.DELETED));
-            history.setPrevSearch(new HashSet<String>(), startDate, endDate, Entry.State.DELETED);
+            history.setPrevSearch(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.DELETED);
             break;
         case ACTIVE:
             commandResultBuilder.append(MESSAGE_ACTIVE_SUCCESS);
-            model.updateFilteredEventList(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.ACTIVE);
-            model.updateFilteredDeadlineList(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.ACTIVE);
-            model.updateFilteredFloatingTaskList(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.ACTIVE);
+            model.updateAllFilteredLists(MATCH_ALL_KEYWORDS, null, null, Entry.State.ACTIVE);
             raise(new ListTypeUpdateEvent(Entry.State.ACTIVE));
-            history.setPrevSearch(new HashSet<String>(), startDate, endDate, Entry.State.ACTIVE);
+            history.setPrevSearch(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.ACTIVE);
             break;
         default:
             throw new AssertionError("Unknown list show type");

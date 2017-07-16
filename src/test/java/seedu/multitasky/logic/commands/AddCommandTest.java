@@ -153,38 +153,26 @@ public class AddCommandTest {
         }
 
         @Override
-        public void updateFilteredEventList(Set<String> keywords, Calendar startDate, Calendar endDate,
-                                            Entry.State state) {
+        public void updateAllFilteredLists(Set<String> keywords, Calendar startDate, Calendar endDate,
+                                           Entry.State state) {
             fail("This method should not be called.");
         }
 
         @Override
-        public void updatePowerSearchFilteredEventList(Set<String> keywords, Calendar startDate, Calendar endDate,
-                                                       Entry.State state) {
+        public void updateFilteredEventList(Set<String> keywords, Calendar startDate, Calendar endDate,
+                                            Entry.State state, Search search) {
             fail("This method should not be called.");
         }
 
         @Override
         public void updateFilteredDeadlineList(Set<String> keywords, Calendar startDate, Calendar endDate,
-                                               Entry.State state) {
-            fail("This method should not be called.");
-        }
-
-        @Override
-        public void updatePowerSearchFilteredDeadlineList(Set<String> keywords, Calendar startDate, Calendar endDate,
-                                                          Entry.State state) {
+                                               Entry.State state, Search search) {
             fail("This method should not be called.");
         }
 
         @Override
         public void updateFilteredFloatingTaskList(Set<String> keywords, Calendar startDate, Calendar endDate,
-                                                   Entry.State state) {
-            fail("This method should not be called.");
-        }
-
-        @Override
-        public void updatePowerSearchFilteredFloatingTaskList(Set<String> keywords,
-                                                              Calendar startDate, Calendar endDate, Entry.State state) {
+                                                   Entry.State state, Search search) {
             fail("This method should not be called.");
         }
 

@@ -45,10 +45,8 @@ public class CompleteByFindCommand extends CompleteCommand {
     @Override
     public CommandResult execute() throws CommandException, DuplicateEntryException {
 
-        // update all 3 lists with new keywords.
-        model.updateFilteredDeadlineList(keywords, null, null, Entry.State.ACTIVE);
-        model.updateFilteredEventList(keywords, null, null, Entry.State.ACTIVE);
-        model.updateFilteredFloatingTaskList(keywords, null, null, Entry.State.ACTIVE);
+        // Update all 3 lists with new search parameters until at least 1 result is found.
+        model.updateAllFilteredLists(keywords, null, null, Entry.State.ACTIVE);
 
         // collate a combined list to measure how many entries are found.
         List<ReadOnlyEntry> allList = new ArrayList<>();
@@ -64,16 +62,11 @@ public class CompleteByFindCommand extends CompleteCommand {
                 assert false : "The target entry cannot be missing";
             }
             // refresh list view after updating.
-            model.updateFilteredDeadlineList(history.getPrevSearch(), null,
-                                             null, history.getPrevState());
-            model.updateFilteredEventList(history.getPrevSearch(), null,
-                                          null, history.getPrevState());
-            model.updateFilteredFloatingTaskList(history.getPrevSearch(), null,
-                                                 null, history.getPrevState());
+            model.updateAllFilteredLists(history.getPrevSearch(), null, null, history.getPrevState());
 
             return new CommandResult(String.format(MESSAGE_SUCCESS, entryToComplete));
         } else {
-            history.setPrevSearch(keywords, Entry.State.ACTIVE);
+            history.setPrevSearch(keywords, null, null, Entry.State.ACTIVE);
             if (allList.size() >= 2) { // multiple entries found
                 return new CommandResult(MESSAGE_MULTIPLE_ENTRIES);
             } else {
