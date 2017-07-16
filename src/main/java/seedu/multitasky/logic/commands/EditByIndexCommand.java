@@ -58,9 +58,8 @@ public class EditByIndexCommand extends EditCommand {
                 model.addEntry(editedEntry);
             }
             // refresh list view after updating
-            model.updateFilteredDeadlineList(history.getPrevSearch(), history.getPrevState());
-            model.updateFilteredEventList(history.getPrevSearch(), history.getPrevState());
-            model.updateFilteredFloatingTaskList(history.getPrevSearch(), history.getPrevState());
+            model.updateAllFilteredLists(history.getPrevSearch(), null, null, history.getPrevState());
+
         } catch (EntryNotFoundException pnfe) {
             throw new AssertionError("The target entry cannot be missing");
         }

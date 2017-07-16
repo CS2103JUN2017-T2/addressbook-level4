@@ -17,31 +17,27 @@ public class PowerMatch {
     public static final int MISSING_INNER_MATCH_MAX_ALLOWED_LENGTH = 8;
     public static final int WRONG_INNER_MATCH_MAX_ALLOWED_LENGTH = 6;
 
-    public static final String REGEX_ANY_NON_WHITESPACE = "((\\S+)?)";
+    public static final String REGEX_ANY_NON_WHITESPACE = "((\\S?)+)";
     public static final String REGEX_ANY_PRESENT_NON_WHITESPACE = "(\\S+)";
     public static final String REGEX_ANY_CHARACTER = "((.+)?)";
 
     /**
      * Attempts to find a match between the input and a single entry in {@code potentialMatches}.
-     * Types of matches attempted are substring, prefix, permutation, missing inner characters,
+     * Types of matches attempted are substring, prefix, acronym, permutation, missing inner characters,
      * wrong/extra inner characters.
-
+     *
      * @param input            the input to attempt to find a match for
      * @param potentialMatches the list of potential matches for {@code input}
-     * @return the match for {@code input}, if one is found. Otherwise the original {@code input} is returned.
-     *         {@code null} is returned if there is a null input string or {@code potentialMatches} is null.
+     * @return the match for {@code input}, if one is found. Otherwise {@code null} is returned.
+     *         {@code null} is also returned if there is a null input string or {@code potentialMatches} is null.
      */
-    public static String match(String input, final ArrayList<String> potentialMatches) {
-        if (input == null || potentialMatches == null) {
+    public static String match(final String input, final String... potentialMatches) {
+        if (input == null || potentialMatches == null || input.isEmpty() || potentialMatches.length == 0) {
             return null;
         }
-        if (potentialMatches.size() == 0) {
-            return input;
-        }
-
         // Create copy to avoid modifying original input string
         String keyword = new String(input.trim().toLowerCase());
-        String match;
+        String match = null;
 
         match = getSubstringMatch(keyword, potentialMatches);
         if (match != null) {
@@ -49,6 +45,11 @@ public class PowerMatch {
         }
 
         match = getPrefixMatch(keyword, potentialMatches);
+        if (match != null) {
+            return match;
+        }
+
+        match = getAcronymMatch(keyword, potentialMatches);
         if (match != null) {
             return match;
         }
@@ -74,10 +75,40 @@ public class PowerMatch {
             }
         }
 
-        return input;
+        return null;
     }
 
-    private static String getRegexMatch(final String regex, final ArrayList<String> potentialMatches) {
+    /**
+     * Attempts to match the input with the potential match.
+     * Types of matches attempted are substring, prefix, acronym, permutation, missing inner characters,
+     * wrong/extra inner characters.
+     *
+     * @param input          the input to attempt to find a match for
+     * @param potentialMatch the potential match {@code input}
+     * @return if {@code input} can be matched to {@code potentialMatch} using the PowerMatch algorithm.
+     */
+    public static boolean isMatch(final String input, final String potentialMatch) {
+        if (input == null || potentialMatch == null || potentialMatch.isEmpty()) {
+            return false;
+        } else if (input.isEmpty()) {
+            return true;
+        }
+        // Create copy to avoid modifying original input string
+        String keyword = new String(input.trim().toLowerCase());
+
+        return getSubstringMatch(keyword, potentialMatch) != null
+               || getPrefixMatch(keyword, potentialMatch) != null
+               || getAcronymMatch(keyword, potentialMatch) != null
+               || (input.length() < PERMUTATION_MATCH_MAX_ALLOWED_LENGTH
+                    && getPermutationMatch(keyword, potentialMatch) != null)
+               || (input.length() < MISSING_INNER_MATCH_MAX_ALLOWED_LENGTH
+                    && getMissingInnerMatch(keyword, potentialMatch) != null)
+               || (input.length() < WRONG_INNER_MATCH_MAX_ALLOWED_LENGTH
+                    && getWrongInnerMatch(keyword, potentialMatch) != null);
+    }
+
+
+    private static String getRegexMatch(final String regex, final String... potentialMatches) {
         ArrayList<String> matches = new ArrayList<>();
         for (String potentialMatch : potentialMatches) {
             if (potentialMatch.matches(regex)) {
@@ -87,7 +118,7 @@ public class PowerMatch {
         return filterMatches(matches);
     }
 
-    private static String getSubstringMatch(final String keyword, final ArrayList<String> potentialMatches) {
+    private static String getSubstringMatch(final String keyword, final String... potentialMatches) {
         final ArrayList<String> matches = new ArrayList<>();
         for (String potentialMatch : potentialMatches) {
             if (potentialMatch.contains(keyword)) {
@@ -97,7 +128,7 @@ public class PowerMatch {
         return filterMatches(matches);
     }
 
-    private static String getPrefixMatch(final String keyword, final ArrayList<String> potentialMatches) {
+    private static String getPrefixMatch(final String keyword, final String... potentialMatches) {
         final ArrayList<String> matches = new ArrayList<>();
         for (String potentialMatch : potentialMatches) {
             if (potentialMatch.startsWith(keyword)) {
@@ -107,8 +138,13 @@ public class PowerMatch {
         return filterMatches(matches);
     }
 
+    private static String getAcronymMatch(final String keyword, final String... potentialMatches) {
+        String regex = getAcronymRegex(keyword);
+        return getRegexMatch(regex, potentialMatches);
+    }
+
     private static String getPermutationMatch(final String keyword,
-                                              final ArrayList<String> potentialMatches) {
+                                              final String... potentialMatches) {
         final ArrayList<String> permutations = getPermutations(keyword);
         String match;
         for (String permutation : permutations) {
@@ -125,7 +161,7 @@ public class PowerMatch {
     }
 
     private static String getMissingInnerMatch(final String keyword,
-                                               final ArrayList<String> potentialMatches) {
+                                               final String... potentialMatches) {
         final ArrayList<String> permutations = getMissingInnerPermutations(keyword);
         String match;
         for (String permutation : permutations) {
@@ -139,10 +175,10 @@ public class PowerMatch {
     }
 
     /**
-     * Currently only accounts for a single wrong character (can be either mistyped or extra)
+     * Accounts for up to 3 wrong/extra characters
      */
     private static String getWrongInnerMatch(final String keyword,
-                                             final ArrayList<String> potentialMatches) {
+                                             final String... potentialMatches) {
         final ArrayList<String> permutations = getWrongInnerPermutations(keyword);
         String match;
         for (String permutation : permutations) {
@@ -153,6 +189,18 @@ public class PowerMatch {
             }
         }
         return null;
+    }
+
+    private static String getAcronymRegex(String keyword) {
+        final ArrayList<String> chars = new ArrayList<>(Arrays.asList(keyword.split("")));
+        final StringBuilder regex = new StringBuilder();
+        // Alternate keyword characters and any non whitespace
+        regex.append(REGEX_ANY_NON_WHITESPACE);
+        for (String singleChar : chars) {
+            regex.append(singleChar);
+            regex.append(REGEX_ANY_NON_WHITESPACE);
+        }
+        return regex.toString();
     }
 
     private static ArrayList<String> getPermutations(final String keyword) {
@@ -186,50 +234,30 @@ public class PowerMatch {
          * Replace each character in turn with a regex expression
          * that can match any non-whitespace character or no character at all
          */
-        for (int i = 0; i < chars.size(); ++i) {
-            String temp = chars.get(i);
-            chars.set(i, REGEX_ANY_NON_WHITESPACE);
-            HashSet<String> tempPermutations = new HashSet<>();
-            generateUniquePermutations(chars, 0, keyword.length() - 1, tempPermutations);
-            for (String permutation : tempPermutations) {
-                permutations.add(permutation);
+        if (chars.size() > 1) {
+            for (int i = 0; i < chars.size(); ++i) {
+                String temp = chars.get(i);
+                chars.set(i, REGEX_ANY_NON_WHITESPACE);
+                HashSet<String> tempPermutations = new HashSet<>();
+                generateUniquePermutations(chars, 0, keyword.length() - 1, tempPermutations);
+                for (String permutation : tempPermutations) {
+                    permutations.add(permutation);
+                }
+                chars.set(i, temp);
             }
-            chars.set(i, temp);
         }
         /**
          * For two wrong/extra characters:
          * Replace each two-character combination in turn with a regex expression
          * that can match any non-whitespace character or no character at all
          */
-        for (int i = 0; i < chars.size(); ++i) {
-            for (int j = i + 1; j < chars.size(); ++j) {
-                String iTemp = chars.get(i);
-                String jTemp = chars.get(j);
-                chars.set(i, REGEX_ANY_NON_WHITESPACE);
-                chars.set(j, REGEX_ANY_NON_WHITESPACE);
-                HashSet<String> tempPermutations = new HashSet<>();
-                generateUniquePermutations(chars, 0, keyword.length() - 1, tempPermutations);
-                for (String permutation : tempPermutations) {
-                    permutations.add(permutation);
-                }
-                chars.set(i, iTemp);
-                chars.set(j, jTemp);
-            }
-        }
-        /**
-         * For three wrong/extra characters:
-         * Replace each three-character combination in turn with a regex expression
-         * that can match any non-whitespace character or no character at all
-         */
-        for (int i = 0; i < chars.size(); ++i) {
-            for (int j = i + 1; j < chars.size(); ++j) {
-                for (int k = j + 1; k < chars.size(); ++k) {
+        if (chars.size() > 2) {
+            for (int i = 0; i < chars.size(); ++i) {
+                for (int j = i + 1; j < chars.size(); ++j) {
                     String iTemp = chars.get(i);
                     String jTemp = chars.get(j);
-                    String kTemp = chars.get(k);
                     chars.set(i, REGEX_ANY_NON_WHITESPACE);
                     chars.set(j, REGEX_ANY_NON_WHITESPACE);
-                    chars.set(k, REGEX_ANY_NON_WHITESPACE);
                     HashSet<String> tempPermutations = new HashSet<>();
                     generateUniquePermutations(chars, 0, keyword.length() - 1, tempPermutations);
                     for (String permutation : tempPermutations) {
@@ -237,7 +265,33 @@ public class PowerMatch {
                     }
                     chars.set(i, iTemp);
                     chars.set(j, jTemp);
-                    chars.set(k, kTemp);
+                }
+            }
+        }
+        /**
+         * For three wrong/extra characters:
+         * Replace each three-character combination in turn with a regex expression
+         * that can match any non-whitespace character or no character at all
+         */
+        if (chars.size() > 3) {
+            for (int i = 0; i < chars.size(); ++i) {
+                for (int j = i + 1; j < chars.size(); ++j) {
+                    for (int k = j + 1; k < chars.size(); ++k) {
+                        String iTemp = chars.get(i);
+                        String jTemp = chars.get(j);
+                        String kTemp = chars.get(k);
+                        chars.set(i, REGEX_ANY_NON_WHITESPACE);
+                        chars.set(j, REGEX_ANY_NON_WHITESPACE);
+                        chars.set(k, REGEX_ANY_NON_WHITESPACE);
+                        HashSet<String> tempPermutations = new HashSet<>();
+                        generateUniquePermutations(chars, 0, keyword.length() - 1, tempPermutations);
+                        for (String permutation : tempPermutations) {
+                            permutations.add(permutation);
+                        }
+                        chars.set(i, iTemp);
+                        chars.set(j, jTemp);
+                        chars.set(k, kTemp);
+                    }
                 }
             }
         }

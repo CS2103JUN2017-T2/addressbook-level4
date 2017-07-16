@@ -33,18 +33,20 @@ public class FindCommand extends Command {
     @Override
     public CommandResult execute() {
 
-        // update all 3 lists with new keywords.
-        model.updateFilteredDeadlineList(keywords, Entry.State.ACTIVE);
-        model.updateFilteredEventList(keywords, Entry.State.ACTIVE);
-        model.updateFilteredFloatingTaskList(keywords, Entry.State.ACTIVE);
+        // Update all 3 lists with new search parameters until at least 1 result is found.
+        model.updateAllFilteredLists(keywords, null, null, Entry.State.ACTIVE);
 
-        // get size of each lists for printing.
+        // save keywords of the search
+        history.setPrevSearch(keywords, null, null, Entry.State.ACTIVE);
+
         int deadlineSize = model.getFilteredDeadlineList().size();
         int eventSize = model.getFilteredEventList().size();
         int floatingSize = model.getFilteredFloatingTaskList().size();
 
-        // save keywords of the search
-        history.setPrevSearch(keywords, Entry.State.ACTIVE);
+        deadlineSize = model.getFilteredDeadlineList().size();
+        eventSize = model.getFilteredEventList().size();
+        floatingSize = model.getFilteredFloatingTaskList().size();
+
         return new CommandResult(getMessageForEntryListShownSummary(deadlineSize + eventSize + floatingSize));
     }
 

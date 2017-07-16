@@ -27,6 +27,7 @@ public class CliSyntax {
     /* EntryLists */
     public static final Prefix PREFIX_ARCHIVE = new Prefix("archive");
     public static final Prefix PREFIX_BIN = new Prefix("bin");
+    public static final Prefix PREFIX_ALL = new Prefix("all");
 
     /* List types */
     public static final Prefix PREFIX_UPCOMING = new Prefix("upcoming");
