@@ -52,6 +52,7 @@ public class EditByFindCommand extends EditCommand {
 
         if (allList.size() == 1) { // proceed to edit
             ReadOnlyEntry entryToEdit = allList.get(0);
+            String targetEntryString = entryToEdit.toString();
             Entry editedEntry = createEditedEntry(entryToEdit, editEntryDescriptor);
             try {
                 assert entryToEdit != null;
@@ -64,7 +65,7 @@ public class EditByFindCommand extends EditCommand {
             } catch (EntryNotFoundException pnfe) {
                 throw new AssertionError("The target entry cannot be missing");
             }
-            return new CommandResult(String.format(MESSAGE_SUCCESS, entryToEdit, editedEntry));
+            return new CommandResult(String.format(MESSAGE_SUCCESS, targetEntryString, editedEntry));
         } else {
             history.setPrevSearch(keywords, null, null, Entry.State.ACTIVE);
             if (allList.size() >= 2) {

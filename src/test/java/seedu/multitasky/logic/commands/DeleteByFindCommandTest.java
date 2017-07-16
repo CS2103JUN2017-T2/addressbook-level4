@@ -49,7 +49,7 @@ public class DeleteByFindCommandTest {
     @Test
     public void execute_noEntryFoundUnfilteredList_returnsNoEntriesMessage() throws Exception {
         Model model = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
-        String searchString = "try to find";
+        String searchString = "randomstring";
         HashSet<String> keywords = new HashSet<>(Arrays.asList(searchString.split("\\s+")));
         DeleteCommand deleteCommand = prepareCommand(model, keywords);
         CommandResult result = deleteCommand.execute();
@@ -109,7 +109,8 @@ public class DeleteByFindCommandTest {
     private void showFirstEntryOnly(Model model) {
         ReadOnlyEntry entry = model.getEntryBook().getFloatingTaskList().get(0);
         final String[] splitName = entry.getName().fullName.split("\\s+");
-        model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList(splitName)), Entry.State.ACTIVE);
+        model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList(splitName)),
+                                             null, null, Entry.State.ACTIVE, Model.Search.AND);
 
         assert model.getFilteredFloatingTaskList().size() == 1;
     }

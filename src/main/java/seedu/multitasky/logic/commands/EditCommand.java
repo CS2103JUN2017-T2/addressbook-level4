@@ -44,7 +44,7 @@ public abstract class EditCommand extends Command {
             + "Note: Existing values will be overwritten by the input values.";
 
     public static final String MESSAGE_SUCCESS = "Target entry: " + Messages.MESSAGE_ENTRY_DESCRIPTION
-            + "%1$s\n " + "Entry edited:" + Messages.MESSAGE_ENTRY_DESCRIPTION + "%2$s";
+            + "%1$s\n" + "Entry edited:" + Messages.MESSAGE_ENTRY_DESCRIPTION + "%2$s";
 
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.\n"
             + "Format: " + COMMAND_WORD + " [" + "[" + "KEYWORDS" + "]" + " |"

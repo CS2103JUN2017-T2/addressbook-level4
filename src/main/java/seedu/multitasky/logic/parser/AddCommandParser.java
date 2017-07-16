@@ -9,6 +9,8 @@ import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_ON;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_TO;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Set;
 
@@ -41,7 +43,7 @@ public class AddCommandParser {
 
         // check for no args input
         if (args.trim().isEmpty()) {
-            throw new ParseException(AddCommand.MESSAGE_USAGE);
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
 
         // TODO check whether need this or not
@@ -170,7 +172,6 @@ public class AddCommandParser {
                && (!ParserUtil.arePrefixesPresent(argMultimap, PREFIX_AT, PREFIX_ON, PREFIX_FROM, PREFIX_TO));
     }
 
-<<<<<<< HEAD
     /**
      * A method that returns false if flags are given in an illogical manner for add commands.
      */
@@ -180,14 +181,6 @@ public class AddCommandParser {
             return false;
         }
         return true;
-=======
-    private Prefix[] toPrefixArray(String... stringPrefixes) {
-        Prefix[] prefixes = new Prefix[stringPrefixes.length];
-        for (int i = 0; i < stringPrefixes.length; ++i) {
-            prefixes[i] = new Prefix(stringPrefixes[i]);
-        }
-        return prefixes;
->>>>>>> V0.4_logictest_refinement
     }
 
 }

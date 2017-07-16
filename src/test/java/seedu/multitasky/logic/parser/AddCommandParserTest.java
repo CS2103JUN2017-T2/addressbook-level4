@@ -39,7 +39,7 @@ public class AddCommandParserTest {
     @Test
     public void parse_emptyArgs_throwsParseException() throws Exception {
         thrown.expect(ParseException.class);
-        thrown.expectMessage(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+        thrown.expectMessage(String.format(AddCommand.MESSAGE_USAGE));
         parser.parse("");
     }
 

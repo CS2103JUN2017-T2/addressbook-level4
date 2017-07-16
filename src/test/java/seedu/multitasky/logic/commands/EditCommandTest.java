@@ -1,5 +1,6 @@
 package seedu.multitasky.logic.commands;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
@@ -36,14 +37,17 @@ public class EditCommandTest {
 
     @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() throws Exception {
+        ReadOnlyEntry targetEntry = model.getFilteredFloatingTaskList().get(INDEX_FIRST_ENTRY.getZeroBased());
         Entry editedEntry = EntryBuilder.build();
         EditEntryDescriptor descriptor = new EditEntryDescriptorBuilder(editedEntry).build();
         EditCommand editCommand = prepareCommand(INDEX_FIRST_ENTRY, descriptor);
-        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, editedEntry);
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, targetEntry, editedEntry);
         Model expectedModel = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
-        expectedModel.updateEntry(model.getFilteredFloatingTaskList().get(INDEX_FIRST_ENTRY.getZeroBased()),
-                                  editedEntry);
-        CommandTestUtil.assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+        expectedModel.updateEntry(targetEntry, editedEntry);
+        CommandResult result = editCommand.execute();
+
+        assertEquals(expectedMessage, result.feedbackToUser);
+        assertEquals(expectedModel, model);
     }
 
     /*

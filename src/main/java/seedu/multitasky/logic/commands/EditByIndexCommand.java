@@ -45,6 +45,7 @@ public class EditByIndexCommand extends EditCommand {
         }
 
         ReadOnlyEntry entryToEdit = listToEditFrom.get(index.getZeroBased());
+        String targetEntryString = entryToEdit.toString();
         Entry editedEntry = createEditedEntry(entryToEdit, editEntryDescriptor);
 
         try {
@@ -59,7 +60,7 @@ public class EditByIndexCommand extends EditCommand {
         } catch (EntryNotFoundException pnfe) {
             throw new AssertionError("The target entry cannot be missing");
         }
-        return new CommandResult(String.format(MESSAGE_SUCCESS, entryToEdit, editedEntry));
+        return new CommandResult(String.format(MESSAGE_SUCCESS, targetEntryString, editedEntry));
     }
 
     @Override

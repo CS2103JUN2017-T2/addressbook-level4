@@ -51,7 +51,8 @@ public class EditByFindCommandTest {
     // @@author A0140633R
     @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() throws Exception {
-        String searchString = model.getFilteredEventList().get(0).getName().fullName;
+        ReadOnlyEntry targetEntry = model.getFilteredEventList().get(0);
+        String searchString = targetEntry.getName().fullName;
         HashSet<String> keywords = new HashSet<>(Arrays.asList(searchString.split("\\s+")));
         Entry editedEntry = EntryBuilder.build(VALID_NAME_CLEAN, parseDate(VALID_DATE_12_JULY_17),
                 parseDate(VALID_DATE_20_DEC_17), VALID_TAG_URGENT, VALID_TAG_FRIEND);
@@ -59,18 +60,22 @@ public class EditByFindCommandTest {
                 .withName(VALID_NAME_CLEAN).withStartDate(VALID_DATE_12_JULY_17).withEndDate(VALID_DATE_20_DEC_17)
                 .withTags(VALID_TAG_URGENT, VALID_TAG_FRIEND).build();
         EditCommand editCommand = prepareCommand(model, keywords, descriptor);
-        String expectedMessage = String.format(EditByFindCommand.MESSAGE_SUCCESS, editedEntry);
+        String expectedMessage = String.format(EditByFindCommand.MESSAGE_SUCCESS, targetEntry, editedEntry);
         Model expectedModel = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
         expectedModel.updateEntry(expectedModel.getFilteredEventList().get(INDEX_FIRST_ENTRY.getZeroBased()),
                                   editedEntry);
 
-        CommandTestUtil.assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+        CommandResult result = editCommand.execute();
+
+        assertEquals(expectedMessage, result.feedbackToUser);
+        assertEquals(expectedModel, model);
     }
     // @@author A0140633R
 
     @Test
     public void execute_someFieldsSpecifiedUnfilteredList_success() throws Exception {
-        String searchString = model.getFilteredDeadlineList().get(0).getName().fullName;
+        ReadOnlyEntry targetEntry = model.getFilteredDeadlineList().get(0);
+        String searchString = targetEntry.getName().fullName;
         HashSet<String> keywords = new HashSet<>(Arrays.asList(searchString.split("\\s+")));
         Entry editedEntry = EntryBuilder.build(VALID_NAME_CLEAN, parseDate(VALID_DATE_11_JULY_17),
                                                VALID_TAG_URGENT, VALID_TAG_FRIEND);
@@ -78,7 +83,7 @@ public class EditByFindCommandTest {
                 .withName(VALID_NAME_CLEAN).withEndDate(VALID_DATE_11_JULY_17)
                 .withTags(VALID_TAG_URGENT, VALID_TAG_FRIEND).build();
         EditCommand editCommand = prepareCommand(model, keywords, descriptor);
-        String expectedMessage = String.format(EditByFindCommand.MESSAGE_SUCCESS, editedEntry);
+        String expectedMessage = String.format(EditByFindCommand.MESSAGE_SUCCESS, targetEntry, editedEntry);
         Model expectedModel = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
         expectedModel.updateEntry(expectedModel.getFilteredDeadlineList().get(INDEX_FIRST_ENTRY.getZeroBased()),
                                   editedEntry);
@@ -98,10 +103,13 @@ public class EditByFindCommandTest {
         editedEntry.setTags(entryInFilteredList.getTags());
         EditCommand editCommand = prepareCommand(model, keywords,
                 new EditEntryDescriptorBuilder().withName(VALID_NAME_MEETING).build());
-        String expectedMessage = String.format(EditByFindCommand.MESSAGE_SUCCESS, editedEntry);
+        String expectedMessage = String.format(EditByFindCommand.MESSAGE_SUCCESS, entryInFilteredList, editedEntry);
         Model expectedModel = new ModelManager(new EntryBook(model.getEntryBook()), new UserPrefs());
 
-        CommandTestUtil.assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+        CommandResult result = editCommand.execute();
+
+        assertEquals(expectedMessage, result.feedbackToUser);
+        assertEquals(expectedModel, model);
     }
 
     // @@author A0140633R
@@ -122,7 +130,7 @@ public class EditByFindCommandTest {
 
     @Test
     public void execute_noEntriesFound_returnsNoEntriesMessage() throws Exception {
-        String searchString = "try to find";
+        String searchString = "asdfasdf";
         HashSet<String> keywords = new HashSet<>(Arrays.asList(searchString.split("\\s+")));
         EditEntryDescriptor editEntryDescriptor = new EditEntryDescriptor();
         EditCommand editCommand = prepareCommand(model, keywords, editEntryDescriptor);
@@ -178,7 +186,8 @@ public class EditByFindCommandTest {
     private void showFirstEntryOnly() {
         ReadOnlyEntry entry = model.getEntryBook().getFloatingTaskList().get(0);
         final String[] splitName = entry.getName().fullName.split("\\s+");
-        model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList(splitName)), Entry.State.ACTIVE);
+        model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList(splitName)),
+                                             null, null, Entry.State.ACTIVE, Model.Search.AND);
 
         assertTrue(model.getFilteredFloatingTaskList().size() == 1);
     }

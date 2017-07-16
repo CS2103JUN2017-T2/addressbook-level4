@@ -1,5 +1,6 @@
 package seedu.multitasky.logic.commands;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -60,24 +61,28 @@ public class EditByIndexCommandTest {
                 .withName(VALID_NAME_CLEAN).withStartDate(VALID_DATE_12_JULY_17).withEndDate(VALID_DATE_20_DEC_17)
                 .withTags(VALID_TAG_URGENT, VALID_TAG_FRIEND).build();
         EditCommand editCommand = prepareCommand(INDEX_FIRST_ENTRY, PREFIX_EVENT, descriptor);
-        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, editedEntry);
         Model expectedModel = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS,
+                                               model.getFilteredEventList().get(0), editedEntry);
+        CommandResult result = editCommand.execute();
         expectedModel.updateEntry(expectedModel.getFilteredEventList().get(INDEX_FIRST_ENTRY.getZeroBased()),
                                   editedEntry);
 
-        CommandTestUtil.assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+        assertEquals(expectedMessage, result.feedbackToUser);
+        assertEquals(expectedModel, model);
     }
-    // @@author A0140633R
+    // @@author
 
     @Test
     public void execute_someFieldsSpecifiedUnfilteredList_success() throws Exception {
+        ReadOnlyEntry targetEntry = model.getFilteredDeadlineList().get(INDEX_FIRST_ENTRY.getZeroBased());
         Entry editedEntry = EntryBuilder.build(VALID_NAME_CLEAN, parseDate(VALID_DATE_11_JULY_17),
                                                VALID_TAG_URGENT, VALID_TAG_FRIEND);
         EditEntryDescriptor descriptor = new EditEntryDescriptorBuilder(editedEntry)
                 .withName(VALID_NAME_CLEAN).withEndDate(VALID_DATE_11_JULY_17)
                 .withTags(VALID_TAG_URGENT, VALID_TAG_FRIEND).build();
         EditCommand editCommand = prepareCommand(INDEX_FIRST_ENTRY, PREFIX_DEADLINE, descriptor);
-        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, editedEntry);
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, targetEntry, editedEntry);
         Model expectedModel = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
         expectedModel.updateEntry(expectedModel.getFilteredDeadlineList().get(INDEX_FIRST_ENTRY.getZeroBased()),
                                   editedEntry);
@@ -95,10 +100,12 @@ public class EditByIndexCommandTest {
         editedEntry.setTags(entryInFilteredList.getTags());
         EditCommand editCommand = prepareCommand(INDEX_FIRST_ENTRY, PREFIX_FLOATINGTASK,
                 new EditEntryDescriptorBuilder().withName(VALID_NAME_MEETING).build());
-        String expectedMessage = String.format(EditByIndexCommand.MESSAGE_SUCCESS, editedEntry);
+        String expectedMessage = String.format(EditByIndexCommand.MESSAGE_SUCCESS, entryInFilteredList, editedEntry);
         Model expectedModel = new ModelManager(new EntryBook(model.getEntryBook()), new UserPrefs());
+        CommandResult result = editCommand.execute();
 
-        CommandTestUtil.assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+        assertEquals(expectedMessage, result.feedbackToUser);
+        assertEquals(expectedModel, model);
     }
 
     @Test
@@ -175,7 +182,8 @@ public class EditByIndexCommandTest {
     private void showFirstEntryOnly() {
         ReadOnlyEntry entry = model.getEntryBook().getFloatingTaskList().get(0);
         final String[] splitName = entry.getName().fullName.split("\\s+");
-        model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList(splitName)), Entry.State.ACTIVE);
+        model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList(splitName)),
+                                             null, null, Entry.State.ACTIVE, Model.Search.AND);
 
         assertTrue(model.getFilteredFloatingTaskList().size() == 1);
     }

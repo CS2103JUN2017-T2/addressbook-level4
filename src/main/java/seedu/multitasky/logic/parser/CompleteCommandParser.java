@@ -37,7 +37,7 @@ public class CompleteCommandParser {
         argMultimap = ArgumentTokenizer.tokenize(args, ParserUtil.toPrefixArray(CompleteCommand.VALID_PREFIXES));
 
         if (args.trim().isEmpty()) {
-            throw new ParseException(CompleteCommand.MESSAGE_USAGE);
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, CompleteCommand.MESSAGE_USAGE));
         }
 
         if (hasIndexFlag(argMultimap)) { // process to complete by indexes

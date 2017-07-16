@@ -37,7 +37,7 @@ public class DeleteCommandParser {
         argMultimap = ArgumentTokenizer.tokenize(args, ParserUtil.toPrefixArray(DeleteCommand.VALID_PREFIXES));
 
         if (args.trim().isEmpty()) {
-            throw new ParseException(DeleteCommand.MESSAGE_USAGE);
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
         }
 
         if (hasIndexFlag(argMultimap)) { // process to delete by indexes

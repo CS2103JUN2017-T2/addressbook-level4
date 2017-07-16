@@ -39,7 +39,7 @@ public class RestoreCommandParser {
         argMultimap = ArgumentTokenizer.tokenize(args, ParserUtil.toPrefixArray(RestoreCommand.VALID_PREFIXES));
 
         if (args.trim().isEmpty()) {
-            throw new ParseException(String.format(RestoreCommand.MESSAGE_USAGE));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RestoreCommand.MESSAGE_USAGE));
         }
 
         if (hasIndexFlag(argMultimap)) { // process to restore by indexes

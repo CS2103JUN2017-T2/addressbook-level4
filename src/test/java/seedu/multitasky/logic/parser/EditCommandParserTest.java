@@ -72,7 +72,7 @@ public class EditCommandParserTest {
         assertParseFailure("try keyword search", EditCommand.MESSAGE_NOT_EDITED);
 
         // no index and no field specified
-        assertParseFailure("", MESSAGE_INVALID_FORMAT);
+        assertParseFailure("", String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
     }
 
     // @@author A0140633R
@@ -92,7 +92,8 @@ public class EditCommandParserTest {
                            Tag.MESSAGE_TAG_CONSTRAINTS);
 
         // does not allow multiple list indicating index flags to be parsed
-        assertParseFailure(PREFIX_DESC_FLOAT + " 1" + PREFIX_DESC_EVENT + " 1", MESSAGE_INVALID_FORMAT);
+        assertParseFailure(PREFIX_DESC_FLOAT + "1" + PREFIX_DESC_EVENT + "1"
+                           + TAG_DESC_FRIEND, MESSAGE_INVALID_FORMAT);
 
         // does not allow parsing of terms prettyTime lib does not recognize.
         assertParseFailure(PREFIX_DESC_FLOAT + " 1" + INVALID_DATE_END_DESC,

@@ -48,7 +48,7 @@ public class EditCommandParser {
         EditEntryDescriptor editEntryDescriptor = new EditEntryDescriptor();
 
         if (args.trim().isEmpty()) { // print help message if command word used without args
-            throw new ParseException(EditCommand.MESSAGE_USAGE);
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
         }
 
         // initialise edit descriptor
