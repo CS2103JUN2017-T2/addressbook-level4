@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.util.Optional;
 
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
-import seedu.multitasky.commons.events.model.EntryBookToRedoEvent;
-import seedu.multitasky.commons.events.model.EntryBookToUndoEvent;
 import seedu.multitasky.commons.events.storage.DataSavingExceptionEvent;
+import seedu.multitasky.commons.events.storage.EntryBookToRedoEvent;
+import seedu.multitasky.commons.events.storage.EntryBookToUndoEvent;
 import seedu.multitasky.commons.exceptions.DataConversionException;
 import seedu.multitasky.model.ReadOnlyEntryBook;
 import seedu.multitasky.model.UserPrefs;

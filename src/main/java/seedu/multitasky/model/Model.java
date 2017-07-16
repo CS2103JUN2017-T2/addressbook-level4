@@ -44,6 +44,9 @@ public interface Model {
     /** Redo the previous undo action */
     void redoPreviousAction() throws NothingToRedoException;
 
+    /** Change the file path for storage */
+    void changeFilePath(String newFilePath);
+
     /**
      * Replaces the given entry {@code target} with {@code editedEntry}.
      *

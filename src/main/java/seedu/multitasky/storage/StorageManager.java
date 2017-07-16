@@ -10,9 +10,10 @@ import com.google.common.eventbus.Subscribe;
 import seedu.multitasky.commons.core.ComponentManager;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
-import seedu.multitasky.commons.events.model.EntryBookToRedoEvent;
-import seedu.multitasky.commons.events.model.EntryBookToUndoEvent;
+import seedu.multitasky.commons.events.model.FilePathChangedEvent;
 import seedu.multitasky.commons.events.storage.DataSavingExceptionEvent;
+import seedu.multitasky.commons.events.storage.EntryBookToRedoEvent;
+import seedu.multitasky.commons.events.storage.EntryBookToUndoEvent;
 import seedu.multitasky.commons.exceptions.DataConversionException;
 import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.ReadOnlyEntryBook;
@@ -23,30 +24,18 @@ import seedu.multitasky.model.UserPrefs;
  */
 public class StorageManager extends ComponentManager implements Storage {
 
-    /** Variable to store number of snapshots for deletion during exit */
-    private static int numSnapshots = 0;
     private static final Logger logger = LogsCenter.getLogger(StorageManager.class);
     private EntryBookStorage entryBookStorage;
     private UserPrefsStorage userPrefsStorage;
+    private UserPrefs userPrefs;
 
-    public StorageManager(EntryBookStorage entryBookStorage, UserPrefsStorage userPrefsStorage) {
+    public StorageManager(EntryBookStorage entryBookStorage, UserPrefsStorage userPrefsStorage, UserPrefs userPrefs) {
         super();
         this.entryBookStorage = entryBookStorage;
         this.userPrefsStorage = userPrefsStorage;
+        this.userPrefs = userPrefs;
     }
 
-    public static int getNumSnapshots() {
-        return numSnapshots;
-    }
-
-    public static void setNumSnapshots(int numSnapshots) {
-        StorageManager.numSnapshots = numSnapshots;
-    }
-
-    /** Method to decrement snapshot index for deletion during app exit */
-    public static void decrementNumSnapshots() {
-        numSnapshots--;
-    }
     // ================ UserPrefs methods ==============================
 
     @Override
@@ -80,12 +69,9 @@ public class StorageManager extends ComponentManager implements Storage {
         return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
     }
 
-    /**
-     * Gets the filepath for deletion during exitApp event
-     */
     @Override
-    public String getFilePathForDeletion() {
-        return UserPrefs.getEntryBookSnapshotPath() + numSnapshots + ".xml";
+    public void setEntryBookFilePath(String newFilePath) {
+        entryBookStorage.setEntryBookFilePath(newFilePath);
     }
 
     // @@author
@@ -164,7 +150,6 @@ public class StorageManager extends ComponentManager implements Storage {
      */
     public String setEntryBookSnapshotPathAndUpdateIndex() {
         UserPrefs.incrementIndexByOne();
-        numSnapshots++;
         String snapshotPath = getEntryBookSnapshotPath();
         return snapshotPath;
     }
@@ -236,4 +221,20 @@ public class StorageManager extends ComponentManager implements Storage {
             UserPrefs.decrementIndexByOne();
         }
     }
+
+    /**
+     * Saves data of the entrybook at the filepath specified.
+     */
+    @Subscribe
+    public void handleFilePathChangedEvent(FilePathChangedEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event, "File path changed, saving to file"));
+        try {
+            entryBookStorage.setEntryBookFilePath(event.getNewFilePath());
+            userPrefs.setEntryBookFilePath(event.getNewFilePath());
+            saveEntryBook(event.data, event.getNewFilePath());
+        } catch (IOException e) {
+            raise(new DataSavingExceptionEvent(e));
+        }
+    }
+
 }

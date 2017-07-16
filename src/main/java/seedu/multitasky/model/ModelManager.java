@@ -14,8 +14,9 @@ import seedu.multitasky.commons.core.ComponentManager;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
-import seedu.multitasky.commons.events.model.EntryBookToRedoEvent;
-import seedu.multitasky.commons.events.model.EntryBookToUndoEvent;
+import seedu.multitasky.commons.events.model.FilePathChangedEvent;
+import seedu.multitasky.commons.events.storage.EntryBookToRedoEvent;
+import seedu.multitasky.commons.events.storage.EntryBookToUndoEvent;
 import seedu.multitasky.commons.util.PowerMatch;
 import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.Entry;
@@ -82,7 +83,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     // @@author A0132788U
-    /** Raises an event when undo is entered */
+    /** Raises an event when undo is entered by user and resets data to previous state */
     private void indicateUndoAction() throws NothingToUndoException {
         EntryBookToUndoEvent undoEvent;
         raise(undoEvent = new EntryBookToUndoEvent(_entryBook, ""));
@@ -93,6 +94,7 @@ public class ModelManager extends ComponentManager implements Model {
         }
     }
 
+    /** Raises an event when redo is entered by user and resets data to next state */
     private void indicateRedoAction() throws NothingToRedoException {
         EntryBookToRedoEvent redoEvent;
         raise(redoEvent = new EntryBookToRedoEvent(_entryBook, ""));
@@ -113,6 +115,11 @@ public class ModelManager extends ComponentManager implements Model {
         indicateRedoAction();
     }
 
+    /** Raises an event when new file path is entered by user */
+    @Override
+    public void changeFilePath(String newFilePath) {
+        raise(new FilePathChangedEvent(_entryBook, newFilePath));
+    }
     // @@author
 
     @Override
@@ -226,8 +233,7 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateAllFilteredListToShowAllActiveEntries() {
         this.updateFilteredEventList(new HashSet<String>(), null, null, Entry.State.ACTIVE, Search.AND);
         this.updateFilteredDeadlineList(new HashSet<String>(), null, null, Entry.State.ACTIVE, Search.AND);
-        this.updateFilteredFloatingTaskList(new HashSet<String>(), null, null, Entry.State.ACTIVE,
-                                            Search.AND);
+        this.updateFilteredFloatingTaskList(new HashSet<String>(), null, null, Entry.State.ACTIVE, Search.AND);
     }
     // @@author
 
@@ -236,8 +242,7 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateAllFilteredListToShowAllArchivedEntries() {
         this.updateFilteredEventList(new HashSet<String>(), null, null, Entry.State.ARCHIVED, Search.AND);
         this.updateFilteredDeadlineList(new HashSet<String>(), null, null, Entry.State.ARCHIVED, Search.AND);
-        this.updateFilteredFloatingTaskList(new HashSet<String>(), null, null, Entry.State.ARCHIVED,
-                                            Search.AND);
+        this.updateFilteredFloatingTaskList(new HashSet<String>(), null, null, Entry.State.ARCHIVED, Search.AND);
     }
     // @@author
 
@@ -246,8 +251,7 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateAllFilteredListToShowAllDeletedEntries() {
         this.updateFilteredEventList(new HashSet<String>(), null, null, Entry.State.DELETED, Search.AND);
         this.updateFilteredDeadlineList(new HashSet<String>(), null, null, Entry.State.DELETED, Search.AND);
-        this.updateFilteredFloatingTaskList(new HashSet<String>(), null, null, Entry.State.DELETED,
-                                            Search.AND);
+        this.updateFilteredFloatingTaskList(new HashSet<String>(), null, null, Entry.State.DELETED, Search.AND);
     }
 
     // @@author A0125586X

@@ -15,8 +15,8 @@ public class UserPrefs {
     private static String entryBookSnapshotPath = "data/snapshots/entrybook";
     // @@author
     private GuiSettings guiSettings;
-    private String entryBookFilePath = "data/entrybook.xml";
     private String entryBookName = "MyEntryBook";
+    private String entryBookFilePath = "data/entrybook.xml";
 
     public UserPrefs() {
         this.setGuiSettings(500, 500, 0, 0);

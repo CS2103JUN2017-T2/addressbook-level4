@@ -1,16 +1,16 @@
-package seedu.multitasky.commons.events.model;
+package seedu.multitasky.commons.events.storage;
 
 import seedu.multitasky.commons.events.BaseEvent;
 import seedu.multitasky.model.EntryBook;
 
 //@@author A0132788U
 /** Indicates the EntryBook in the model has changed */
-public class EntryBookToRedoEvent extends BaseEvent {
+public class EntryBookToUndoEvent extends BaseEvent {
 
     private EntryBook data;
     private String message;
 
-    public EntryBookToRedoEvent(EntryBook data, String message) {
+    public EntryBookToUndoEvent(EntryBook data, String message) {
         this.data = data;
         this.message = message;
     }
@@ -33,6 +33,6 @@ public class EntryBookToRedoEvent extends BaseEvent {
 
     @Override
     public String toString() {
-        return "redo";
+        return "undo";
     }
 }
