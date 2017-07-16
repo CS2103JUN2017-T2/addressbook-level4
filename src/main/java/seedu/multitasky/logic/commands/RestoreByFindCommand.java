@@ -10,6 +10,7 @@ import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 
 /*
 * Finds entries from given keywords and restores entry if it is the only one found.
@@ -46,17 +47,23 @@ public class RestoreByFindCommand extends RestoreCommand {
                 throw new CommandException(RestoreCommand.MESSAGE_ENTRY_ALREADY_ACTIVE);
             }
 
+            CommandResult commandResult = null;
+
             try {
                 model.changeEntryState(entryToRestore, Entry.State.ACTIVE);
+                commandResult = new CommandResult(String.format(MESSAGE_SUCCESS, entryToRestore));
             } catch (EntryNotFoundException e) {
                 assert false : "The target entry cannot be missing";
+            } catch (OverlappingEventException oee) {
+                commandResult = new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERLAP_ALERT,
+                                                                entryToRestore.getName()));
             }
-
             // refresh list view after updating.
             model.updateAllFilteredLists(history.getPrevSearch(), null, null, history.getPrevState());
             history.setPrevSearch(keywords, null, null, history.getPrevState());
+            assert commandResult != null : "commandResult in RestoreByFindCommand shouldn't be null here.";
+            return commandResult;
 
-            return new CommandResult(String.format(MESSAGE_SUCCESS, entryToRestore));
         } else {
             history.setPrevSearch(keywords, null, null, history.getPrevState());
 

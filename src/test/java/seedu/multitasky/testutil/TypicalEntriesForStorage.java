@@ -4,6 +4,7 @@ import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
+import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 import seedu.multitasky.model.util.EntryBuilder;
 
 //@@author A0132788U
@@ -18,13 +19,13 @@ public class TypicalEntriesForStorage {
     public TypicalEntriesForStorage() {
         try {
             eat = EntryBuilder.build("Eat flaxseed",
-                  "health");
+                                     "health");
             journal = EntryBuilder.build("Write experiences in diary",
-                      "writing");
+                                         "writing");
             decorate = EntryBuilder.build("Decorate new room",
-                       "organize");
+                                          "organize");
             project = EntryBuilder.build("Finish 2103 project",
-                      "important");
+                                         "important");
         } catch (Exception e) {
             throw new AssertionError("Sample data cannot be invalid", e);
         }
@@ -32,8 +33,11 @@ public class TypicalEntriesForStorage {
 
     public static void loadEntryBookWithSampleData(EntryBook entryBook) throws DuplicateEntryException {
         for (Entry entry : SampleEntries.getSampleFloatingTasks()) {
-            entryBook.addEntry(new FloatingTask(entry));
-
+            try {
+                entryBook.addEntry(new FloatingTask(entry));
+            } catch (OverlappingEventException oee) {
+                // Ignore overlapping events when loading entry book for testing.
+            }
         }
     }
 

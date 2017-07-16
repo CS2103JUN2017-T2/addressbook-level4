@@ -29,6 +29,10 @@ public abstract class RestoreCommand extends Command {
                                                  + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
                                                  + "Entry has been restored to active list";
 
+    public static final String MESSAGE_SUCCESS_WITH_OVERLAP_ALERT = "Entry restored:" + "\n"
+            + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
+            + "Alert: Restored entry %1$s overlaps with existing event(s).";
+
     public static final String MESSAGE_ENTRY_ALREADY_ACTIVE = "The provided entry is already active.";
 
     public static final String[] VALID_PREFIXES = {CliSyntax.PREFIX_EVENT.toString(),

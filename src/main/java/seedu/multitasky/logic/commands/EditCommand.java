@@ -43,8 +43,12 @@ public abstract class EditCommand extends Command {
             + " 'deadline', 'float'" + "\n"
             + "Note: Existing values will be overwritten by the input values.";
 
+
     public static final String MESSAGE_SUCCESS = "Target entry: " + Messages.MESSAGE_ENTRY_DESCRIPTION
             + "%1$s\n" + "Entry edited:" + Messages.MESSAGE_ENTRY_DESCRIPTION + "%2$s";
+    public static final String MESSAGE_SUCCESS_WITH_OVERLAP_ALERT = "Entry edited:" + "\n"
+            + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
+            + "Alert: Edited entry %1$s overlaps with existing event(s).";
 
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.\n"
             + "Format: " + COMMAND_WORD + " [" + "[" + "KEYWORDS" + "]" + " |"

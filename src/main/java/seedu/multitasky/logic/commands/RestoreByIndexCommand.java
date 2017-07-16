@@ -12,6 +12,7 @@ import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 
 //@@author A0126623L-reused
 /*
@@ -47,6 +48,9 @@ public class RestoreByIndexCommand extends RestoreCommand {
             model.changeEntryState(entryToRestore, Entry.State.ACTIVE);;
         } catch (EntryNotFoundException enfe) {
             assert false : "The target entry cannot be missing";
+        } catch (OverlappingEventException oee) {
+            return new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERLAP_ALERT,
+                                                   entryToRestore.getName()));
         }
 
         // refresh list view after updating.
