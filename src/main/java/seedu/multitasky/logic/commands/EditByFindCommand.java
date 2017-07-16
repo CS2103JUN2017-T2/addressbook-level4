@@ -11,6 +11,7 @@ import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 
 // @@author A0140633R
 /**
@@ -58,15 +59,23 @@ public class EditByFindCommand extends EditCommand {
         if (allList.size() == 1) { // proceed to edit
             ReadOnlyEntry entryToEdit = allList.get(0);
             Entry editedEntry = createEditedEntry(entryToEdit, editEntryDescriptor);
+
+            CommandResult commandResult = null;
             try {
                 model.updateEntry(entryToEdit, editedEntry);
+                commandResult = new CommandResult(String.format(MESSAGE_SUCCESS, entryToEdit));
             } catch (EntryNotFoundException pnfe) {
                 assert false : "The target entry cannot be missing";
+            } catch (OverlappingEventException oee) {
+                commandResult = new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERLAP_ALERT,
+                                                                entryToEdit.getName()));
             }
             // refresh list view after updating.
             model.updateAllFilteredLists(history.getPrevSearch(), null, null, history.getPrevState());
 
-            return new CommandResult(String.format(MESSAGE_SUCCESS, entryToEdit));
+            assert commandResult != null : "commandResult in EditByFindCommand shouldn't be null here.";
+            return commandResult;
+
         } else {
             history.setPrevSearch(keywords, null, null, Entry.State.ACTIVE);
             if (allList.size() >= 2) {

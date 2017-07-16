@@ -36,7 +36,7 @@ public interface Model {
 
     /** Updates the state of a given entry. */
     void changeEntryState(ReadOnlyEntry entryToChange, Entry.State newState)
-            throws DuplicateEntryException, EntryNotFoundException;
+            throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException;
 
     /** Undo the previous data-changing action */
     void undoPreviousAction() throws NothingToUndoException;
@@ -52,8 +52,8 @@ public interface Model {
      *
      * @throws EntryNotFoundException if {@code target} could not be found in the list.
      */
-    void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws DuplicateEntryException,
-            EntryNotFoundException;
+    void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
+            throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException;
 
     /** Returns the filtered event list as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
     UnmodifiableObservableList<ReadOnlyEntry> getFilteredEventList();

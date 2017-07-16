@@ -41,19 +41,41 @@ public class EventList extends EntryList {
 
     // @@author A0126623L
     /**
-     * Checks if a given event has overlapping time with any existing event in the event list.
+     * Checks if a given event has overlapping time with any existing active events in the event list.
      */
     public boolean hasOverlappingEvent(ReadOnlyEntry other) {
         for (Entry existingEntry : internalList) {
             assert (existingEntry instanceof Event) : "Non-event should not exist in an event list.";
             Event existingEvent = (Event) existingEntry;
 
-            if (existingEvent.hasOverlappingTime(other)) {
+            if (existingEvent.isActive()
+                && existingEvent.hasOverlappingTime(other)) {
                 return true;
             }
         }
         return false;
     }
+    // @@author
+
+    // @@author A0126623L
+    /**
+     * Checks if a given event will have overlapping time with any existing active events in the
+     * event list after being updated.
+     */
+    public boolean hasOverlappingEventAfterUpdate(ReadOnlyEntry target, ReadOnlyEntry prospectiveEntry) {
+        for (Entry existingEntry : internalList) {
+            assert (existingEntry instanceof Event) : "Non-event should not exist in an event list.";
+            Event existingEvent = (Event) existingEntry;
+
+            if (existingEvent.isActive()
+                && existingEvent.hasOverlappingTime(prospectiveEntry)
+                && !(existingEvent.equals(target))) {
+                return true;
+            }
+        }
+        return false;
+    }
+    // @@author
 
     // @@author A0125586X
     /**
