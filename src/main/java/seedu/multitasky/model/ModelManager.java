@@ -415,11 +415,9 @@ public class ModelManager extends ComponentManager implements Model {
         public boolean run(ReadOnlyEntry entry) {
             if ((state == null || entry.getState().equals(state))
                     && matchesNameAndTagKeywords(entry)) {
-                System.out.println("state and keyword match");
                 if (entry instanceof FloatingTask
                     || entry instanceof Deadline && isWithinRange(entry.getEndDateAndTime())
                     || entry instanceof Event && isWithinRange(entry.getStartDateAndTime())) {
-                    System.out.println("date match");
                     return true;
                 } else {
                     assert false : "DateAndStatusQualifier::run received ReadOnlyEntry of unknown type";
@@ -433,48 +431,34 @@ public class ModelManager extends ComponentManager implements Model {
             switch (search) {
             case AND:
                 for (String keyword : nameAndTagKeywords) {
-                    System.out.print("Looking for " + keyword.trim().toLowerCase() + " in " + nameAndTags
-                                     + " using AND");
                     if (!nameAndTags.contains(keyword.trim().toLowerCase())) {
-                        System.out.println(" no match");
                         return false;
-                    } else {
-                        System.out.println(" match");
                     }
                 }
                 return true;
             case OR:
+                if (nameAndTagKeywords.size() == 0) {
+                    return true;
+                }
                 for (String keyword : nameAndTagKeywords) {
-                    System.out.print("Looking for " + keyword.trim().toLowerCase() + " in " + nameAndTags
-                                     + " using OR");
-                    if (!nameAndTags.contains(keyword.trim().toLowerCase())) {
-                        System.out.println(" no match");
-                    } else {
-                        System.out.println(" match");
+                    if (nameAndTags.contains(keyword.trim().toLowerCase())) {
                         return true;
                     }
                 }
                 return false;
             case POWER_AND:
                 for (String keyword : nameAndTagKeywords) {
-                    System.out.print("Looking for " + keyword.trim().toLowerCase() + " in " + nameAndTags
-                                     + " using PowerMatch AND");
                     if (!PowerMatch.isMatch(keyword, nameAndTags)) {
-                        System.out.println(" no match");
                         return false;
-                    } else {
-                        System.out.println(" match");
                     }
                 }
                 return true;
             case POWER_OR:
+                if (nameAndTagKeywords.size() == 0) {
+                    return true;
+                }
                 for (String keyword : nameAndTagKeywords) {
-                    System.out.print("Looking for " + keyword.trim().toLowerCase() + " in " + nameAndTags
-                                     + " using PowerMatch OR");
-                    if (!PowerMatch.isMatch(keyword, nameAndTags)) {
-                        System.out.println(" no match");
-                    } else {
-                        System.out.println(" match");
+                    if (PowerMatch.isMatch(keyword, nameAndTags)) {
                         return true;
                     }
                 }
