@@ -38,7 +38,7 @@ public interface Model {
     /** Redo the previous undo action */
     void redoPreviousAction() throws NothingToRedoException;
 
-    /** Change the file path for storage in UserPrefs */
+    /** Change the file path for storage */
     void changeFilePath(String newFilePath);
 
     /**

@@ -114,11 +114,9 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     /** Change file path when entered by user */
-    // TODO for Dash
     @Override
     public void changeFilePath(String newFilePath) {
         // userPrefs.setEntryBookFilePath(newFilePath);
-        // raise new Event for filePathChange
         raise(new FilePathChangedEvent(_entryBook, newFilePath));
     }
     // @@author
