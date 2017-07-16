@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.logic.parser.CliSyntax;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 
 // @@author A0132788U-reused
 /*
@@ -28,10 +28,6 @@ public class CompleteByFindCommand extends CompleteCommand {
                                                           + "]"
                                                           + " INDEX to specify which entry to complete.";
 
-    public static final String MESSAGE_SUCCESS = "Entry completed:" + "\n"
-                                                 + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
-                                                 + "One entry found and completed! Listing all entries now.";
-
     private Set<String> keywords;
 
     public CompleteByFindCommand(Set<String> keywords) {
@@ -45,10 +41,8 @@ public class CompleteByFindCommand extends CompleteCommand {
     @Override
     public CommandResult execute() throws CommandException, DuplicateEntryException {
 
-        // update all 3 lists with new keywords.
-        model.updateFilteredDeadlineList(keywords, Entry.State.ACTIVE);
-        model.updateFilteredEventList(keywords, Entry.State.ACTIVE);
-        model.updateFilteredFloatingTaskList(keywords, Entry.State.ACTIVE);
+        // Update all 3 lists with new search parameters until at least 1 result is found.
+        model.updateAllFilteredLists(keywords, null, null, Entry.State.ACTIVE);
 
         // collate a combined list to measure how many entries are found.
         List<ReadOnlyEntry> allList = new ArrayList<>();
@@ -62,15 +56,16 @@ public class CompleteByFindCommand extends CompleteCommand {
                 model.changeEntryState(entryToComplete, Entry.State.ARCHIVED);
             } catch (EntryNotFoundException e) {
                 assert false : "The target entry cannot be missing";
+            } catch (OverlappingEventException oee) {
+                assert false : "This should not happen for complete command.";
             }
             // refresh list view after updating.
-            model.updateFilteredDeadlineList(history.getPrevSearch(), history.getPrevState());
-            model.updateFilteredEventList(history.getPrevSearch(), history.getPrevState());
-            model.updateFilteredFloatingTaskList(history.getPrevSearch(), history.getPrevState());
+            model.updateAllFilteredLists(history.getPrevSearch(), history.getPrevStartDate(),
+                                         history.getPrevEndDate(), history.getPrevState());
 
             return new CommandResult(String.format(MESSAGE_SUCCESS, entryToComplete));
         } else {
-            history.setPrevSearch(keywords, Entry.State.ACTIVE);
+            history.setPrevSearch(keywords, null, null, Entry.State.ACTIVE);
             if (allList.size() >= 2) { // multiple entries found
                 return new CommandResult(MESSAGE_MULTIPLE_ENTRIES);
             } else {

@@ -10,6 +10,7 @@ import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 
 // @@author A0140633R
 /*
@@ -40,11 +41,12 @@ public class DeleteByIndexCommand extends DeleteCommand {
             model.changeEntryState(entryToDelete, Entry.State.DELETED);
         } catch (EntryNotFoundException enfe) {
             assert false : "The target entry cannot be missing";
+        } catch (OverlappingEventException oee) {
+            assert false : "This should not happen for deletion.";
         }
         // refresh list view after updating.
-        model.updateFilteredDeadlineList(history.getPrevSearch(), Entry.State.ACTIVE);
-        model.updateFilteredEventList(history.getPrevSearch(), Entry.State.ACTIVE);
-        model.updateFilteredFloatingTaskList(history.getPrevSearch(), Entry.State.ACTIVE);
+        model.updateAllFilteredLists(history.getPrevSearch(), history.getPrevStartDate(),
+                                     history.getPrevEndDate(), history.getPrevState());
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, entryToDelete));
     }

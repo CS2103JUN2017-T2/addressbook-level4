@@ -11,6 +11,7 @@ import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 
 // @@author A0140633R
 /**
@@ -45,19 +46,26 @@ public class EditByIndexCommand extends EditCommand {
         }
 
         ReadOnlyEntry entryToEdit = listToEditFrom.get(index.getZeroBased());
+        String targetEntryString = entryToEdit.toString();
         Entry editedEntry = createEditedEntry(entryToEdit, editEntryDescriptor);
 
         try {
+            assert entryToEdit != null;
+            assert editedEntry != null;
+
             model.updateEntry(entryToEdit, editedEntry);
 
             // refresh list view after updating
-            model.updateFilteredDeadlineList(history.getPrevSearch(), history.getPrevState());
-            model.updateFilteredEventList(history.getPrevSearch(), history.getPrevState());
-            model.updateFilteredFloatingTaskList(history.getPrevSearch(), history.getPrevState());
+            model.updateAllFilteredLists(history.getPrevSearch(), history.getPrevStartDate(),
+                                         history.getPrevEndDate(), history.getPrevState());
+
         } catch (EntryNotFoundException pnfe) {
             throw new AssertionError("The target entry cannot be missing");
+        } catch (OverlappingEventException oee) {
+            return new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERLAP_ALERT,
+                                                   entryToEdit.getName()));
         }
-        return new CommandResult(String.format(MESSAGE_SUCCESS, entryToEdit));
+        return new CommandResult(String.format(MESSAGE_SUCCESS, targetEntryString, editedEntry));
     }
 
     @Override

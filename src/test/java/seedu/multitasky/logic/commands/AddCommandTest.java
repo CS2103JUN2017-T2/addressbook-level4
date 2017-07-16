@@ -153,32 +153,26 @@ public class AddCommandTest {
         }
 
         @Override
-        public void updateFilteredEventList(Set<String> keywords, Entry.State state) {
+        public void updateAllFilteredLists(Set<String> keywords, Calendar startDate, Calendar endDate,
+                                           Entry.State state) {
             fail("This method should not be called.");
         }
 
         @Override
-        public void updateFilteredEventList(Calendar startDate, Calendar endDate, Entry.State state) {
+        public void updateFilteredEventList(Set<String> keywords, Calendar startDate, Calendar endDate,
+                                            Entry.State state, Search search) {
             fail("This method should not be called.");
         }
 
         @Override
-        public void updateFilteredDeadlineList(Set<String> keywords, Entry.State state) {
+        public void updateFilteredDeadlineList(Set<String> keywords, Calendar startDate, Calendar endDate,
+                                               Entry.State state, Search search) {
             fail("This method should not be called.");
         }
 
         @Override
-        public void updateFilteredDeadlineList(Calendar startDate, Calendar endDate, Entry.State state) {
-            fail("This method should not be called.");
-        }
-
-        @Override
-        public void updateFilteredFloatingTaskList(Set<String> keywords, Entry.State state) {
-            fail("This method should not be called.");
-        }
-
-        @Override
-        public void updateFilteredFloatingTaskList(Calendar startDate, Calendar endDate, Entry.State state) {
+        public void updateFilteredFloatingTaskList(Set<String> keywords, Calendar startDate, Calendar endDate,
+                                                   Entry.State state, Search search) {
             fail("This method should not be called.");
         }
 
@@ -217,6 +211,11 @@ public class AddCommandTest {
         @Override
         public void changeEntryState(ReadOnlyEntry entryToChange, State newState)
                 throws DuplicateEntryException, EntryNotFoundException {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void changeFilePath(String newFilePath) {
             fail("This method should not be called.");
         }
 

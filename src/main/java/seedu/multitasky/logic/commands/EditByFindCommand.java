@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.logic.parser.CliSyntax;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 
 // @@author A0140633R
 /**
@@ -28,10 +28,6 @@ public class EditByFindCommand extends EditCommand {
                                                           + "]"
                                                           + " INDEX to specify which entry to edit.";
 
-    public static final String MESSAGE_SUCCESS = "Entry edited:" + "\n"
-                                                 + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
-                                                 + "One entry found and edited! Listing all entries now.";
-
     private Set<String> keywords;
 
     /**
@@ -46,10 +42,8 @@ public class EditByFindCommand extends EditCommand {
     @Override
     public CommandResult execute() throws CommandException, DuplicateEntryException {
 
-        // update all 3 lists with new keywords.
-        model.updateFilteredDeadlineList(keywords, Entry.State.ACTIVE);
-        model.updateFilteredEventList(keywords, Entry.State.ACTIVE);
-        model.updateFilteredFloatingTaskList(keywords, Entry.State.ACTIVE);
+        // Update all 3 lists with new search parameters until at least 1 result is found.
+        model.updateAllFilteredLists(keywords, null, null, Entry.State.ACTIVE);
 
         // collate a combined list to measure how many entries are found.
         List<ReadOnlyEntry> allList = new ArrayList<>();
@@ -59,20 +53,31 @@ public class EditByFindCommand extends EditCommand {
 
         if (allList.size() == 1) { // proceed to edit
             ReadOnlyEntry entryToEdit = allList.get(0);
+            String targetEntryString = entryToEdit.toString();
             Entry editedEntry = createEditedEntry(entryToEdit, editEntryDescriptor);
+
+            CommandResult commandResult = null;
             try {
+                assert entryToEdit != null;
+                assert editedEntry != null;
+
                 model.updateEntry(entryToEdit, editedEntry);
+                commandResult = new CommandResult(String.format(MESSAGE_SUCCESS, targetEntryString, entryToEdit));
             } catch (EntryNotFoundException pnfe) {
                 assert false : "The target entry cannot be missing";
+            } catch (OverlappingEventException oee) {
+                commandResult = new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERLAP_ALERT,
+                                                                entryToEdit.getName()));
             }
             // refresh list view after updating.
-            model.updateFilteredDeadlineList(history.getPrevSearch(), history.getPrevState());
-            model.updateFilteredEventList(history.getPrevSearch(), history.getPrevState());
-            model.updateFilteredFloatingTaskList(history.getPrevSearch(), history.getPrevState());
+            model.updateAllFilteredLists(history.getPrevSearch(), history.getPrevStartDate(),
+                                         history.getPrevEndDate(), history.getPrevState());
 
-            return new CommandResult(String.format(MESSAGE_SUCCESS, entryToEdit));
+            assert commandResult != null : "commandResult in EditByFindCommand shouldn't be null here.";
+            return commandResult;
+
         } else {
-            history.setPrevSearch(keywords, Entry.State.ACTIVE);
+            history.setPrevSearch(keywords, null, null, Entry.State.ACTIVE);
             if (allList.size() >= 2) {
                 return new CommandResult(MESSAGE_MULTIPLE_ENTRIES);
             } else {

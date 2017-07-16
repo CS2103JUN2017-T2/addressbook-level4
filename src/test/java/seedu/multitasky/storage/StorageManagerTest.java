@@ -30,7 +30,8 @@ public class StorageManagerTest {
     public void setUp() {
         XmlEntryBookStorage entryBookStorage = new XmlEntryBookStorage(getTempFilePath("ab"));
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(getTempFilePath("prefs"));
-        storageManager = new StorageManager(entryBookStorage, userPrefsStorage);
+        UserPrefs userPrefs = new UserPrefs();
+        storageManager = new StorageManager(entryBookStorage, userPrefsStorage, userPrefs);
     }
 
     private String getTempFilePath(String fileName) {
@@ -73,7 +74,7 @@ public class StorageManagerTest {
     public void handleEntryBookChangedEvent_exceptionThrown_eventRaised() throws IOException {
         // Create a StorageManager while injecting a stub that throws an exception when the save method is called
         Storage storage = new StorageManager(new XmlEntryBookStorageExceptionThrowingStub("dummy"),
-                new JsonUserPrefsStorage("dummy"));
+                new JsonUserPrefsStorage("dummy"), new UserPrefs());
         EventsCollector eventCollector = new EventsCollector();
         storage.handleEntryBookChangedEvent(new EntryBookChangedEvent(new EntryBook()));
         assertTrue(eventCollector.get(0) instanceof DataSavingExceptionEvent);

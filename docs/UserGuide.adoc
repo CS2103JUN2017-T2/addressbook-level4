@@ -251,6 +251,27 @@ Format: `redo`
 
 * Allows redoing up until the most recent change.
 
+//<!-- @@author A0132788U -->
+=== Set storage path : `set`
+
+Sets to user entered filepath. +
+Format: `set ./filepath.xml`
+
+****
+* Filepath should start with / if it is in a different directory.
+* Filepath will be saved in the same directory if it starts with ./.
+* Full path of the file should be specified.
+* Parent folder of filepath should exist.
+* Filepath should end with .xml.
+****
+
+Examples:
+
+* `set /Users/usernamehere/Desktop/entrybook.xml` +
+Creates a file entrybook.xml on the Desktop and saves data there. +
+* `set ./entrybook.xml` +
+Creates file in the same directory as the JAR file. +
+
 //<!-- @@author A0140633R -->
 === Clearing entries : `clear`
 

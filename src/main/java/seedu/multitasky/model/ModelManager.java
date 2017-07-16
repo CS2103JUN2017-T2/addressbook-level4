@@ -14,8 +14,10 @@ import seedu.multitasky.commons.core.ComponentManager;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
-import seedu.multitasky.commons.events.model.EntryBookToRedoEvent;
-import seedu.multitasky.commons.events.model.EntryBookToUndoEvent;
+import seedu.multitasky.commons.events.model.FilePathChangedEvent;
+import seedu.multitasky.commons.events.storage.EntryBookToRedoEvent;
+import seedu.multitasky.commons.events.storage.EntryBookToUndoEvent;
+import seedu.multitasky.commons.util.PowerMatch;
 import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.Event;
@@ -23,6 +25,7 @@ import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 import seedu.multitasky.model.tag.Tag;
 import seedu.multitasky.storage.exception.NothingToRedoException;
 import seedu.multitasky.storage.exception.NothingToUndoException;
@@ -80,7 +83,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     // @@author A0132788U
-    /** Raises an event when undo is entered */
+    /** Raises an event when undo is entered by user and resets data to previous state for updating the UI */
     private void indicateUndoAction() throws NothingToUndoException {
         EntryBookToUndoEvent undoEvent;
         raise(undoEvent = new EntryBookToUndoEvent(_entryBook, ""));
@@ -91,6 +94,7 @@ public class ModelManager extends ComponentManager implements Model {
         }
     }
 
+    /** Raises an event when redo is entered by user and resets data to next state for updating the UI */
     private void indicateRedoAction() throws NothingToRedoException {
         EntryBookToRedoEvent redoEvent;
         raise(redoEvent = new EntryBookToRedoEvent(_entryBook, ""));
@@ -111,6 +115,11 @@ public class ModelManager extends ComponentManager implements Model {
         indicateRedoAction();
     }
 
+    /** Raises an event when new file path is entered by user */
+    @Override
+    public void changeFilePath(String newFilePath) {
+        raise(new FilePathChangedEvent(_entryBook, newFilePath));
+    }
     // @@author
 
     @Override
@@ -123,28 +132,44 @@ public class ModelManager extends ComponentManager implements Model {
 
     // @@author A0126623L
     @Override
-    public synchronized void addEntry(ReadOnlyEntry entry) throws DuplicateEntryException {
-        _entryBook.addEntry(entry);
-        indicateEntryBookChanged();
+    public synchronized void addEntry(ReadOnlyEntry entry)
+            throws DuplicateEntryException, OverlappingEventException {
+        try {
+            _entryBook.addEntry(entry);
+        } finally {
+            indicateEntryBookChanged();
+        }
     }
     // @@author
 
     // @@author A0126623L
     @Override
     public void changeEntryState(ReadOnlyEntry entryToChange, Entry.State newState)
-            throws DuplicateEntryException, EntryNotFoundException {
-        _entryBook.changeEntryState(entryToChange, newState);
-        indicateEntryBookChanged();
+            throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException {
+        try {
+            _entryBook.changeEntryState(entryToChange, newState);
+        } finally {
+            indicateEntryBookChanged();
+        }
     }
 
+    // @@author A0126623L
     @Override
-    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry) throws DuplicateEntryException,
-            EntryNotFoundException {
+    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
+            throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException {
         requireAllNonNull(target, editedEntry);
-
-        _entryBook.updateEntry(target, editedEntry);
-        indicateEntryBookChanged();
+        try {
+            if (target.getClass().equals(editedEntry.getClass())) { // updating to same instance of entry
+                _entryBook.updateEntry(target, editedEntry);
+            } else { // updating entry between lists
+                _entryBook.removeEntry(target);
+                _entryBook.addEntry(editedEntry);
+            }
+        } finally {
+            indicateEntryBookChanged();
+        }
     }
+    // @@author
 
     // =========== Filtered Entry List Accessors ===========
 
@@ -218,42 +243,50 @@ public class ModelManager extends ComponentManager implements Model {
     // @@author A0126623L
     @Override
     public void updateAllFilteredListToShowAllActiveEntries() {
-        this.updateFilteredEventList(new HashSet<String>(), Entry.State.ACTIVE);
-        this.updateFilteredDeadlineList(new HashSet<String>(), Entry.State.ACTIVE);
-        this.updateFilteredFloatingTaskList(new HashSet<String>(), Entry.State.ACTIVE);
+        this.updateFilteredEventList(new HashSet<String>(), null, null, Entry.State.ACTIVE, Search.AND);
+        this.updateFilteredDeadlineList(new HashSet<String>(), null, null, Entry.State.ACTIVE, Search.AND);
+        this.updateFilteredFloatingTaskList(new HashSet<String>(), null, null, Entry.State.ACTIVE, Search.AND);
     }
     // @@author
 
     // @@author A0126623L
     @Override
     public void updateAllFilteredListToShowAllArchivedEntries() {
-        this.updateFilteredEventList(new HashSet<String>(), Entry.State.ARCHIVED);
-        this.updateFilteredDeadlineList(new HashSet<String>(), Entry.State.ARCHIVED);
-        this.updateFilteredFloatingTaskList(new HashSet<String>(), Entry.State.ARCHIVED);
+        this.updateFilteredEventList(new HashSet<String>(), null, null, Entry.State.ARCHIVED, Search.AND);
+        this.updateFilteredDeadlineList(new HashSet<String>(), null, null, Entry.State.ARCHIVED, Search.AND);
+        this.updateFilteredFloatingTaskList(new HashSet<String>(), null, null, Entry.State.ARCHIVED, Search.AND);
     }
     // @@author
 
     // @@author A0126623L
     @Override
     public void updateAllFilteredListToShowAllDeletedEntries() {
-        this.updateFilteredEventList(new HashSet<String>(), Entry.State.DELETED);
-        this.updateFilteredDeadlineList(new HashSet<String>(), Entry.State.DELETED);
-        this.updateFilteredFloatingTaskList(new HashSet<String>(), Entry.State.DELETED);
+        this.updateFilteredEventList(new HashSet<String>(), null, null, Entry.State.DELETED, Search.AND);
+        this.updateFilteredDeadlineList(new HashSet<String>(), null, null, Entry.State.DELETED, Search.AND);
+        this.updateFilteredFloatingTaskList(new HashSet<String>(), null, null, Entry.State.DELETED, Search.AND);
     }
-    // @@author
-
-    // @@author A0126623L
-    @Override
-    public void updateFilteredEventList(Set<String> keywords, Entry.State state) {
-        updateFilteredEventList(new PredicateExpression(new NameAndStatusQualifier(keywords, state)));
-    }
-    // @@author
 
     // @@author A0125586X
     @Override
-    public void updateFilteredEventList(Calendar startDate, Calendar endDate, Entry.State state) {
-        updateFilteredEventList(new PredicateExpression(new DateAndStatusQualifier(startDate, endDate,
-                                                                                   state)));
+    public void updateAllFilteredLists(Set<String> keywords, Calendar startDate, Calendar endDate,
+                                       Entry.State state) {
+        // Attempt until at least one result shown
+        for (Search search : Search.values()) {
+            updateFilteredEventList(new PredicateExpression(new NameDateStateQualifier(keywords,
+                    startDate, endDate,
+                    state, search)));
+            updateFilteredDeadlineList(new PredicateExpression(new NameDateStateQualifier(keywords,
+                    startDate, endDate,
+                    state, search)));
+            updateFilteredFloatingTaskList(new PredicateExpression(new NameDateStateQualifier(keywords,
+                    startDate,
+                    endDate, state,
+                    search)));
+            if ((getFilteredEventList().size() + getFilteredDeadlineList().size()
+                 + getFilteredFloatingTaskList().size()) > 0) {
+                break; // No need to search further
+            }
+        }
     }
 
     // @@author A0126623L
@@ -261,17 +294,13 @@ public class ModelManager extends ComponentManager implements Model {
         _filteredEventList.setPredicate(expression::satisfies);
     }
 
-    // @@author A0126623L
-    @Override
-    public void updateFilteredDeadlineList(Set<String> keywords, Entry.State state) {
-        updateFilteredDeadlineList(new PredicateExpression(new NameAndStatusQualifier(keywords, state)));
-    }
-
     // @@author A0125586X
     @Override
-    public void updateFilteredDeadlineList(Calendar startDate, Calendar endDate, Entry.State state) {
-        updateFilteredDeadlineList(new PredicateExpression(new DateAndStatusQualifier(startDate, endDate,
-                                                                                      state)));
+    public void updateFilteredEventList(Set<String> keywords, Calendar startDate, Calendar endDate,
+                                        Entry.State state, Search search) {
+        updateFilteredEventList(new PredicateExpression(new NameDateStateQualifier(keywords,
+                startDate, endDate, state,
+                search)));
     }
 
     // @@author A0126623L
@@ -279,24 +308,28 @@ public class ModelManager extends ComponentManager implements Model {
         _filteredDeadlineList.setPredicate(expression::satisfies);
     }
 
-    // @@author A0126623L
-    @Override
-    public void updateFilteredFloatingTaskList(Set<String> keywords, Entry.State state) {
-        updateFilteredFloatingTaskList(new PredicateExpression(new NameAndStatusQualifier(keywords, state)));
-    }
-
     // @@author A0125586X
     @Override
-    public void updateFilteredFloatingTaskList(Calendar startDate, Calendar endDate, Entry.State state) {
-        updateFilteredFloatingTaskList(new PredicateExpression(new DateAndStatusQualifier(startDate, endDate,
-                                                                                          state)));
+    public void updateFilteredDeadlineList(Set<String> keywords, Calendar startDate,
+                                           Calendar endDate, Entry.State state, Search search) {
+        updateFilteredDeadlineList(new PredicateExpression(new NameDateStateQualifier(keywords,
+                startDate, endDate,
+                state, search)));
     }
 
     // @@author A0126623L
     private void updateFilteredFloatingTaskList(Expression expression) {
         _filteredFloatingTaskList.setPredicate(expression::satisfies);
     }
-    // @@author
+
+    // @@author A0125586X
+    @Override
+    public void updateFilteredFloatingTaskList(Set<String> keywords, Calendar startDate,
+                                               Calendar endDate, Entry.State state, Search search) {
+        updateFilteredFloatingTaskList(new PredicateExpression(new NameDateStateQualifier(keywords,
+                startDate, endDate,
+                state, search)));
+    }
 
     // @@author A0125586X
     /** Updates the sorting comparators used. */
@@ -367,110 +400,128 @@ public class ModelManager extends ComponentManager implements Model {
         String toString();
     }
 
-    // @@author A0126623L
-    /**
-     * Represents a qualifier can check the presence of all keywords in the name
-     * and tags of a ReadOnlyEntry.
-     */
-    private class NameAndStatusQualifier implements Qualifier {
-
-        private Set<String> nameAndTagKeywords;
-        private Entry.State state;
-
-        NameAndStatusQualifier(Set<String> nameKeywords, Entry.State state) {
-            this.nameAndTagKeywords = nameKeywords;
-            this.state = state;
-        }
-
-        // @@author A0126623L
-        /**
-         * Matches words in an entry's name and tags and with all the keywords
-         * of a Qualifier.
-         *
-         * @return boolean: true if all keywords are present in an entry's name
-         *         and tags.
-         */
-        @Override
-        public boolean run(ReadOnlyEntry entry) {
-            if (!entry.getState().equals(state)) {
-                return false;
-            }
-
-            String wordsInNameAndTags = parseWordsInNameAndTags(entry);
-
-            for (String keyword : nameAndTagKeywords) {
-                if (!wordsInNameAndTags.toLowerCase().contains(keyword.toLowerCase())) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        // @@author A0126623L
-
-        // @@author A0126623L
-        /**
-         * Parses and concatenates all words in an entry's name and tags. " " is
-         * used as a delimiter.
-         *
-         * @param entry
-         * @return String
-         */
-        private String parseWordsInNameAndTags(ReadOnlyEntry entry) {
-            StringBuilder builder = new StringBuilder();
-            builder.append(entry.getName().fullName);
-            for (Tag t : entry.getTags()) {
-                builder.append(" " + t.tagName);
-            }
-            return builder.toString();
-        }
-
-        @Override
-        public String toString() {
-            return "name=" + String.join(", ", nameAndTagKeywords);
-        }
-    }
-    // @@author
-
     // @@author A0125586X
     /**
-     * Represents a qualifier can check if a ReadOnlyEntry falls within a given date range.
+     * Represents a qualifier can check the presence of all keywords in the name
+     * and tags of a ReadOnlyEntry, if a ReadOnlyEntry falls within a given date range,
+     * and if a ReadOnlyEntry matches the required state.
      */
-    private class DateAndStatusQualifier implements Qualifier {
+    private class NameDateStateQualifier implements Qualifier {
 
-        private Calendar startDate;
-        private Calendar endDate;
-        private Entry.State state;
+        protected Set<String> nameAndTagKeywords;
+        protected Calendar startDate;
+        protected Calendar endDate;
+        protected Entry.State state;
+        protected Search search;
 
-        private DateFormat dateFormat;
+        protected DateFormat dateFormat;
 
-        DateAndStatusQualifier(Calendar startDate, Calendar endDate, Entry.State state) {
-            assert state != null : "state for DateAndStatusQualifier cannot be null";
+        /**
+         * Constructs the NameDateStateQualifier.
+         *
+         * @param nameAndTagKeywords the keywords to match against the entry's name and tags. cannot be null.
+         * @param startDate the earliest date that will produce a match. if it is null then
+         *            there is no lower limit on the entry's date.
+         * @param endDate the latest date that will produce a match. if it is null then
+         *            there is no upper limit on the entry's date.
+         * @param state the required state to match against the entry's state. if it is null
+         *            then entries of any state will match.
+         * @param search the type of search to use (AND, OR, POWER_AND, POWER_OR). cannot be null.
+         */
+        NameDateStateQualifier(Set<String> nameAndTagKeywords,
+                Calendar startDate, Calendar endDate,
+                Entry.State state, Search search) {
+            assert nameAndTagKeywords != null : "nameAndTagKeywords for NameDateStateQualifier cannot be null";
+            assert search != null : "search type for NameDateStateQualifier cannot be null";
 
+            this.nameAndTagKeywords = nameAndTagKeywords;
             this.startDate = startDate;
             this.endDate = endDate;
             this.state = state;
+            this.search = search;
 
             dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT);
         }
 
         @Override
         public boolean run(ReadOnlyEntry entry) {
-            if (!entry.getState().equals(state)) {
-                return false;
-            }
-            if (entry instanceof FloatingTask) {
-                return true;
-            } else if (entry instanceof Deadline && isWithinRange(entry.getEndDateAndTime())) {
-                return true;
-            } else if (entry instanceof Event && isWithinRange(entry.getStartDateAndTime())) {
-                return true;
-            } else {
-                assert false : "DateAndStatusQualifier::run received entry of unknown Entry subclass type";
+            if ((state == null || entry.getState().equals(state))
+                && matchesNameAndTagKeywords(entry)) {
+                if (entry instanceof FloatingTask
+                    || entry instanceof Deadline && isWithinRange(entry.getEndDateAndTime())
+                    || entry instanceof Event && isWithinRange(entry.getStartDateAndTime())) {
+                    return true;
+                } else {
+                    assert false : "DateAndStatusQualifier::run received ReadOnlyEntry of unknown type";
+                }
             }
             return false;
         }
 
-        private boolean isWithinRange(Calendar checkDate) {
+        protected boolean matchesNameAndTagKeywords(ReadOnlyEntry entry) {
+            String nameAndTags = parseWordsInNameAndTags(entry).trim().toLowerCase();
+            switch (search) {
+            case AND:
+                for (String keyword : nameAndTagKeywords) {
+                    if (!nameAndTags.contains(keyword.trim().toLowerCase())) {
+                        return false;
+                    }
+                }
+                return true;
+            case OR:
+                if (nameAndTagKeywords.size() == 0) {
+                    return true;
+                }
+                for (String keyword : nameAndTagKeywords) {
+                    if (nameAndTags.contains(keyword.trim().toLowerCase())) {
+                        return true;
+                    }
+                }
+                return false;
+            case POWER_AND:
+                for (String keyword : nameAndTagKeywords) {
+                    if (!PowerMatch.isMatch(keyword, nameAndTags)) {
+                        return false;
+                    }
+                }
+                return true;
+            case POWER_OR:
+                if (nameAndTagKeywords.size() == 0) {
+                    return true;
+                }
+                for (String keyword : nameAndTagKeywords) {
+                    if (PowerMatch.isMatch(keyword, nameAndTags)) {
+                        return true;
+                    }
+                }
+                return false;
+            default:
+                assert false : "DateAndStatusQualifier: unknown search type";
+            }
+            return false;
+        }
+
+        // @@author A0126623L
+        /**
+         * Parses and concatenates all words in an entry's name and tags.
+         *
+         * @param entry
+         * @return String
+         */
+        protected String parseWordsInNameAndTags(ReadOnlyEntry entry) {
+            StringBuilder builder = new StringBuilder();
+            builder.append(entry.getName().fullName.replaceAll("\\s+", ""));
+            for (Tag t : entry.getTags()) {
+                builder.append(t.tagName);
+            }
+            return builder.toString();
+        }
+
+        // @@author A0125586X
+        /**
+         * Checks if the given date to check is within the start and end dates of this Qualifier.
+         */
+        protected boolean isWithinRange(Calendar checkDate) {
             if (startDate == null) {
                 if (endDate == null) {
                     return true;
@@ -483,10 +534,16 @@ public class ModelManager extends ComponentManager implements Model {
                 return (checkDate.compareTo(startDate) <= 0) && (checkDate.compareTo(endDate) >= 0);
             }
         }
+        // @@author
 
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
+            builder.append("NameDateStateQualifier: ")
+                    .append("keywords = ");
+            for (String keyword : nameAndTagKeywords) {
+                builder.append(keyword).append(", ");
+            }
             builder.append("startDate = ");
             if (startDate == null) {
                 builder.append("null");

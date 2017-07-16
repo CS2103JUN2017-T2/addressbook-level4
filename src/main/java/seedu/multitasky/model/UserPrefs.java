@@ -15,8 +15,8 @@ public class UserPrefs {
     private static String entryBookSnapshotPath = "data/snapshots/entrybook";
     // @@author
     private GuiSettings guiSettings;
-    private String entryBookFilePath = "data/entrybook.xml";
     private String entryBookName = "MyEntryBook";
+    private String entryBookFilePath = "data/entrybook.xml";
 
     public UserPrefs() {
         this.setGuiSettings(500, 500, 0, 0);
@@ -53,7 +53,6 @@ public class UserPrefs {
         UserPrefs.entryBookSnapshotPath = entryBookSnapshotPath;
     }
 
-    // @@author A0132788U
     /**
      * Methods to update the indices when files are created during mutation/deleted during exit
      */
@@ -65,7 +64,6 @@ public class UserPrefs {
         index--;
     }
 
-    // @@author
     public static int getIndex() {
         return index;
     }

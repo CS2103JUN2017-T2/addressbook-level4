@@ -9,8 +9,6 @@ import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_ON;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_TO;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Set;
 
@@ -37,7 +35,7 @@ public class AddCommandParser {
      * throws ParseException if the user input does not conform the expected format.
      */
     public AddCommand parse(String args) throws ParseException {
-        argMultimap = ArgumentTokenizer.tokenize(args, toPrefixArray(AddCommand.VALID_PREFIXES));
+        argMultimap = ArgumentTokenizer.tokenize(args, ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES));
         Calendar startDate = null;
         Calendar endDate = null;
 
@@ -49,12 +47,6 @@ public class AddCommandParser {
         // TODO check whether need this or not
         // check for empty name field
         if (argMultimap.getPreamble().get().isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
-        }
-
-        // TODO check whether i need this or not. not really apt anymore for smart command parsing
-        ArrayList<String> prefixesPresent = argMultimap.getPresentPrefixes(AddCommand.VALID_PREFIXES);
-        if (!hasValidPrefixCombination(prefixesPresent)) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
 
@@ -88,19 +80,22 @@ public class AddCommandParser {
             try {
                 Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
                 // only reads using flag indicated by the last occurrence of prefix.
-                Prefix startDatePrefix = requireNonNull(
-                        ParserUtil.getLastPrefix(args, PREFIX_FROM, PREFIX_ON, PREFIX_AT));
-                Prefix endDatePrefix = requireNonNull(
-                        ParserUtil.getLastPrefix(args, PREFIX_TO, PREFIX_BY));
+                Prefix startDatePrefix = requireNonNull(ParserUtil.getLastPrefix(
+                        args, PREFIX_FROM, PREFIX_ON, PREFIX_AT));
+                Prefix endDatePrefix = requireNonNull(ParserUtil.getLastPrefix(args, PREFIX_TO, PREFIX_BY));
                 endDate = ParserUtil.parseDate(argMultimap.getValue(endDatePrefix).get());
                 startDate = ParserUtil.parseDate(argMultimap.getValue(startDatePrefix).get());
-                if (endDate.compareTo(startDate) < 0) {
-                    throw new ParseException("End date should not be before start date!");
-                }
                 Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
-                ReadOnlyEntry entry = new Event(name, startDate, endDate, tagList);
-
-                return new AddCommand(entry);
+                if (endDate.compareTo(startDate) < 0) {
+                    throw new ParseException(AddCommand.MESSAGE_ENDDATE_BEFORE_STARTDATE);
+                } else if (endDate.compareTo(startDate) == 0) {
+                    // convert automatically to deadline
+                    ReadOnlyEntry entry = new Deadline(name, endDate, tagList);
+                    return new AddCommand(entry);
+                } else { // end date is later than start date as it should be
+                    ReadOnlyEntry entry = new Event(name, startDate, endDate, tagList);
+                    return new AddCommand(entry);
+                }
 
             } catch (IllegalValueException ive) {
                 throw new ParseException(ive.getMessage(), ive);
@@ -116,7 +111,7 @@ public class AddCommandParser {
                 // TODO implement import from config
                 endDate.add(Calendar.HOUR, 1);
                 if (endDate.compareTo(startDate) < 0) {
-                    throw new ParseException("End date should not be before start date!");
+                    throw new ParseException(AddCommand.MESSAGE_ENDDATE_BEFORE_STARTDATE);
                 }
                 Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
                 ReadOnlyEntry entry = new Event(name, startDate, endDate, tagList);
@@ -173,25 +168,6 @@ public class AddCommandParser {
         assert argMultimap != null;
         return ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_BY)
                && (!ParserUtil.arePrefixesPresent(argMultimap, PREFIX_AT, PREFIX_ON, PREFIX_FROM, PREFIX_TO));
-    }
-
-    /**
-     * A method that returns false if flags are given in an illogical manner for add commands.
-     */
-    private boolean hasValidPrefixCombination(ArrayList<String> prefixes) {
-        // Cannot have any unknown prefixes
-        if (!Arrays.asList(AddCommand.VALID_PREFIXES).containsAll(prefixes)) {
-            return false;
-        }
-        return true;
-    }
-
-    private Prefix[] toPrefixArray(String... stringPrefixes) {
-        Prefix[] prefixes = new Prefix[stringPrefixes.length];
-        for (int i = 0; i < stringPrefixes.length; ++i) {
-            prefixes[i] = new Prefix(stringPrefixes[i]);
-        }
-        return prefixes;
     }
 
 }
