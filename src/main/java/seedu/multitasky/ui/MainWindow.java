@@ -197,6 +197,9 @@ public class MainWindow extends UiPart<Region> {
      * DELETED -> bin
      */
     private String stateToString(Entry.State state) {
+        if (state == null) {
+            return "all";
+        }
         switch (state) {
         case ACTIVE:
             return "active";
