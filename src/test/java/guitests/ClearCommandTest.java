@@ -93,7 +93,8 @@ public class ClearCommandTest extends EntryBookGuiTest {
 
     @Test
     public void clear_tabAutocomplete_success() {
-        for (int i = 1; i < ClearCommand.COMMAND_WORD.length(); ++i) {
+        assertClearTabAutocompleteFailure(ClearCommand.COMMAND_WORD.substring(0, 1));
+        for (int i = 2; i < ClearCommand.COMMAND_WORD.length(); ++i) {
             assertClearTabAutocomplete(ClearCommand.COMMAND_WORD.substring(0, i));
         }
         assertClearTabAutocomplete(ClearCommand.COMMAND_WORD + "a");
@@ -106,6 +107,12 @@ public class ClearCommandTest extends EntryBookGuiTest {
         commandBox.enterCommand(input);
         commandBox.pressTabKey();
         assertCommandBox(ClearCommand.COMMAND_WORD + " ");
+    }
+
+    private void assertClearTabAutocompleteFailure(String input) {
+        commandBox.enterCommand(input);
+        commandBox.pressTabKey();
+        assertCommandBox(input);
     }
 
     private void assertCleared() {
