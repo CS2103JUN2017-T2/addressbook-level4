@@ -24,6 +24,7 @@ import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 import seedu.multitasky.model.tag.Tag;
 import seedu.multitasky.storage.exception.NothingToRedoException;
 import seedu.multitasky.storage.exception.NothingToUndoException;
@@ -124,9 +125,13 @@ public class ModelManager extends ComponentManager implements Model {
 
     // @@author A0126623L
     @Override
-    public synchronized void addEntry(ReadOnlyEntry entry) throws DuplicateEntryException {
-        _entryBook.addEntry(entry);
-        indicateEntryBookChanged();
+    public synchronized void addEntry(ReadOnlyEntry entry)
+            throws DuplicateEntryException, OverlappingEventException {
+        try {
+            _entryBook.addEntry(entry);
+        } finally {
+            indicateEntryBookChanged();
+        }
     }
     // @@author
 
@@ -221,7 +226,8 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateAllFilteredListToShowAllActiveEntries() {
         this.updateFilteredEventList(new HashSet<String>(), null, null, Entry.State.ACTIVE, Search.AND);
         this.updateFilteredDeadlineList(new HashSet<String>(), null, null, Entry.State.ACTIVE, Search.AND);
-        this.updateFilteredFloatingTaskList(new HashSet<String>(), null, null, Entry.State.ACTIVE, Search.AND);
+        this.updateFilteredFloatingTaskList(new HashSet<String>(), null, null, Entry.State.ACTIVE,
+                                            Search.AND);
     }
     // @@author
 
@@ -230,7 +236,8 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateAllFilteredListToShowAllArchivedEntries() {
         this.updateFilteredEventList(new HashSet<String>(), null, null, Entry.State.ARCHIVED, Search.AND);
         this.updateFilteredDeadlineList(new HashSet<String>(), null, null, Entry.State.ARCHIVED, Search.AND);
-        this.updateFilteredFloatingTaskList(new HashSet<String>(), null, null, Entry.State.ARCHIVED, Search.AND);
+        this.updateFilteredFloatingTaskList(new HashSet<String>(), null, null, Entry.State.ARCHIVED,
+                                            Search.AND);
     }
     // @@author
 
@@ -239,7 +246,8 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateAllFilteredListToShowAllDeletedEntries() {
         this.updateFilteredEventList(new HashSet<String>(), null, null, Entry.State.DELETED, Search.AND);
         this.updateFilteredDeadlineList(new HashSet<String>(), null, null, Entry.State.DELETED, Search.AND);
-        this.updateFilteredFloatingTaskList(new HashSet<String>(), null, null, Entry.State.DELETED, Search.AND);
+        this.updateFilteredFloatingTaskList(new HashSet<String>(), null, null, Entry.State.DELETED,
+                                            Search.AND);
     }
 
     // @@author A0125586X
@@ -249,11 +257,15 @@ public class ModelManager extends ComponentManager implements Model {
         // Attempt until at least one result shown
         for (Search search : Search.values()) {
             updateFilteredEventList(new PredicateExpression(new NameDateStateQualifier(keywords,
-                                                                        startDate, endDate, state, search)));
+                                                                                       startDate, endDate,
+                                                                                       state, search)));
             updateFilteredDeadlineList(new PredicateExpression(new NameDateStateQualifier(keywords,
-                                                                        startDate, endDate, state, search)));
+                                                                                          startDate, endDate,
+                                                                                          state, search)));
             updateFilteredFloatingTaskList(new PredicateExpression(new NameDateStateQualifier(keywords,
-                                                                        startDate, endDate, state, search)));
+                                                                                              startDate,
+                                                                                              endDate, state,
+                                                                                              search)));
             if ((getFilteredEventList().size() + getFilteredDeadlineList().size()
                  + getFilteredFloatingTaskList().size()) > 0) {
                 break; // No need to search further
@@ -271,7 +283,8 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateFilteredEventList(Set<String> keywords, Calendar startDate, Calendar endDate,
                                         Entry.State state, Search search) {
         updateFilteredEventList(new PredicateExpression(new NameDateStateQualifier(keywords,
-                                                                    startDate, endDate, state, search)));
+                                                                                   startDate, endDate, state,
+                                                                                   search)));
     }
 
     // @@author A0126623L
@@ -284,7 +297,8 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateFilteredDeadlineList(Set<String> keywords, Calendar startDate,
                                            Calendar endDate, Entry.State state, Search search) {
         updateFilteredDeadlineList(new PredicateExpression(new NameDateStateQualifier(keywords,
-                                                                        startDate, endDate, state, search)));
+                                                                                      startDate, endDate,
+                                                                                      state, search)));
     }
 
     // @@author A0126623L
@@ -297,7 +311,8 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateFilteredFloatingTaskList(Set<String> keywords, Calendar startDate,
                                                Calendar endDate, Entry.State state, Search search) {
         updateFilteredFloatingTaskList(new PredicateExpression(new NameDateStateQualifier(keywords,
-                                                                        startDate, endDate, state, search)));
+                                                                                          startDate, endDate,
+                                                                                          state, search)));
     }
 
     // @@author A0125586X
@@ -397,8 +412,8 @@ public class ModelManager extends ComponentManager implements Model {
          * @param search             the type of search to use (AND, OR, POWER_AND, POWER_OR). cannot be null.
          */
         NameDateStateQualifier(Set<String> nameAndTagKeywords,
-                               Calendar startDate, Calendar endDate,
-                               Entry.State state, Search search) {
+                Calendar startDate, Calendar endDate,
+                Entry.State state, Search search) {
             assert nameAndTagKeywords != null : "nameAndTagKeywords for NameDateStateQualifier cannot be null";
             assert search != null : "search type for NameDateStateQualifier cannot be null";
 
@@ -414,7 +429,7 @@ public class ModelManager extends ComponentManager implements Model {
         @Override
         public boolean run(ReadOnlyEntry entry) {
             if ((state == null || entry.getState().equals(state))
-                    && matchesNameAndTagKeywords(entry)) {
+                && matchesNameAndTagKeywords(entry)) {
                 if (entry instanceof FloatingTask
                     || entry instanceof Deadline && isWithinRange(entry.getEndDateAndTime())
                     || entry instanceof Event && isWithinRange(entry.getStartDateAndTime())) {
