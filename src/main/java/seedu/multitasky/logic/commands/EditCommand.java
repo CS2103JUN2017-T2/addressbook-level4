@@ -60,7 +60,7 @@ public abstract class EditCommand extends Command {
 
     public static final String MESSAGE_DUPLICATE_ENTRY = "This entry already exists in the task manager.";
 
-    public static final String MESSAGE_ENDDATE_AFTER_STARTDATE = "Can not have end date before start date!";
+    public static final String MESSAGE_ENDDATE_BEFORE_STARTDATE = "Can not have end date before start date!";
 
     public static final String[] VALID_PREFIXES = {CliSyntax.PREFIX_EVENT.toString(),
                                                    CliSyntax.PREFIX_DEADLINE.toString(),
@@ -126,7 +126,7 @@ public abstract class EditCommand extends Command {
 
         } else if (editToEvent(updatedStartDate, updatedEndDate)) { //events cases
             if (updatedEndDate.compareTo(updatedStartDate) < 0) { // edited to invalid end date
-                throw new CommandException(MESSAGE_ENDDATE_AFTER_STARTDATE);
+                throw new CommandException(MESSAGE_ENDDATE_BEFORE_STARTDATE);
             }
             return new Event(updatedName, updatedStartDate, updatedEndDate, updatedTags);
         } else {
