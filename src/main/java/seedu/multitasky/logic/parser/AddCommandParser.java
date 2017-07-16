@@ -10,7 +10,11 @@ import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_TO;
 
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.Set;
+
+import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 
 import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.logic.commands.AddCommand;
@@ -53,6 +57,9 @@ public class AddCommandParser {
         if (isFloatingTask()) {
             try {
                 Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
+                if (requiresSmartParsing(ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES))) {
+                    name = new Name(doSmartParsingPreamble(ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES)));
+                }
                 Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
                 ReadOnlyEntry entry = new FloatingTask(name, tagList);
                 return new AddCommand(entry);
@@ -64,6 +71,9 @@ public class AddCommandParser {
         } else if (isDeadline()) {
             try {
                 Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
+                if (requiresSmartParsing(ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES))) {
+                    name = new Name(doSmartParsingPreamble(ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES)));
+                }
 
                 // only PREFIX_BY to indicate deadline.
                 Prefix datePrefix = PREFIX_BY;
@@ -79,6 +89,9 @@ public class AddCommandParser {
         } else if (isEventStartEndVariant()) {
             try {
                 Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
+                if (requiresSmartParsing(ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES))) {
+                    name = new Name(doSmartParsingPreamble(ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES)));
+                }
                 // only reads using flag indicated by the last occurrence of prefix.
                 Prefix startDatePrefix = requireNonNull(ParserUtil.getLastPrefix(
                         args, PREFIX_FROM, PREFIX_ON, PREFIX_AT));
@@ -103,6 +116,9 @@ public class AddCommandParser {
         } else if (isEventStartOnlyVariant()) {
             try {
                 Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
+                if (requiresSmartParsing(ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES))) {
+                    name = new Name(doSmartParsingPreamble(ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES)));
+                }
                 // only reads using flag indicated by the last occurrence of prefix.
                 Prefix startDatePrefix = requireNonNull(
                         ParserUtil.getLastPrefix(args, PREFIX_FROM, PREFIX_ON, PREFIX_AT));
@@ -168,6 +184,38 @@ public class AddCommandParser {
         assert argMultimap != null;
         return ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_BY)
                && (!ParserUtil.arePrefixesPresent(argMultimap, PREFIX_AT, PREFIX_ON, PREFIX_FROM, PREFIX_TO));
+    }
+
+    private boolean requiresSmartParsing(Prefix...prefixes)  {
+        assert argMultimap != null;
+        for (Prefix prefix : prefixes) {
+            if (argMultimap.getAllValues(prefix).size() > 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private String doSmartParsingPreamble(Prefix...prefixes) {
+        assert argMultimap != null;
+        PrettyTimeParser ptp = new PrettyTimeParser();
+        List<Date> dateList;
+        StringBuilder builder = new StringBuilder();
+        builder.append(argMultimap.getPreamble().get());
+        for (Prefix prefix : prefixes) {
+            List<String> argList = argMultimap.getAllValues(prefix);
+            if (argList.size() > 1) {
+                for (int i = 0; i < argList.size() - 1; i++) {
+                    String args = argList.get(i);
+                    dateList = ptp.parse(args);
+                    if (dateList.size() < 1 && !args.equals("")) {
+                        builder.append(" ").append(prefix.toString())
+                        .append(" ").append(argList.get(i));
+                    }
+                }
+            }
+        }
+        return builder.toString();
     }
 
 }
