@@ -6,6 +6,7 @@ import seedu.multitasky.logic.parser.CliSyntax;
 import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.entry.Entry;
 
+// @@author A0126623L
 /**
  * Clears the entry book.
  */
@@ -45,10 +46,10 @@ public class ClearCommand extends Command {
         clearType = ClearType.ACTIVE;
     }
 
+    // @@author A0126623L
     public ClearCommand(String prefix) {
         /*
-         * TODO: Use hashmap for initialising this.clearType later instead
-         * of multiple if-else
+         * TODO: Consider better ways than using multiple if-else?
          */
         if (prefix.equals(CliSyntax.PREFIX_ALL.toString())) {
             clearType = ClearType.ALL;
@@ -62,7 +63,9 @@ public class ClearCommand extends Command {
             throw new AssertionError("ClearCommand constructor shouldn't reach this point.");
         }
     }
+    // @@author
 
+    // @@author A0126623L
     @Override
     public CommandResult execute() {
         requireNonNull(model);
@@ -84,5 +87,5 @@ public class ClearCommand extends Command {
             throw new AssertionError("Unknown clear command option given.");
         }
     }
-
+    // @@author
 }
