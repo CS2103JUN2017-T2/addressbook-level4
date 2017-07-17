@@ -6,12 +6,14 @@ import java.io.File;
 /**
  * Checks validify of entered filepath and sets the filepath to store entrybook data in a user-defined location.
  */
+
 public class SetCommand extends Command {
 
     public static final String COMMAND_WORD = "set";
 
     public static final String MESSAGE_SUCCESS = "File path set successfully to ";
     public static final String MESSAGE_FAILURE = "Invalid file path!\n";
+    public static final String MESSAGE_EXISTS = "File already exists! Rename file.\n";
     public static final String SAMPLE_FILEPATH = " /Users/usernamehere/Desktop/entrybook.xml";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Sets file path of the entrybook\n" + "Format: "
@@ -23,11 +25,18 @@ public class SetCommand extends Command {
         this.newFilePath = newFilePath.trim();
     }
 
+    /**
+     * Executes the Set command if the path is valid and file doesn't already exist in this location.
+     */
     @Override
     public CommandResult execute() {
         if (isValidPath(newFilePath)) {
-            model.changeFilePath(newFilePath);
-            return new CommandResult(MESSAGE_SUCCESS + newFilePath);
+            if ((new File(newFilePath)).isFile()) {
+                return new CommandResult(MESSAGE_EXISTS);
+            } else {
+                model.changeFilePath(newFilePath);
+                return new CommandResult(MESSAGE_SUCCESS + newFilePath);
+            }
         } else {
             return new CommandResult(MESSAGE_FAILURE + MESSAGE_USAGE);
         }
