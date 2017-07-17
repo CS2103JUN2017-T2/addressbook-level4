@@ -8,7 +8,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import seedu.multitasky.commons.core.Messages;
-import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.logic.commands.FindCommand;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
 
@@ -63,7 +62,7 @@ public class FindCommandParser {
         try {
             Calendar date = ParserUtil.parseDate(rawDate).get();
             return date;
-        } catch (IllegalValueException e) {
+        } catch (Exception e) {
             return null;
         }
     }

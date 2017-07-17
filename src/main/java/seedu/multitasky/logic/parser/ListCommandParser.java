@@ -6,7 +6,6 @@ import java.util.Calendar;
 import java.util.Optional;
 
 import seedu.multitasky.commons.core.Messages;
-import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.logic.commands.ListCommand;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
 
@@ -55,7 +54,7 @@ public class ListCommandParser {
         try {
             Calendar date = ParserUtil.parseDate(rawDate).get();
             return date;
-        } catch (IllegalValueException e) {
+        } catch (Exception e) {
             return null;
         }
     }
