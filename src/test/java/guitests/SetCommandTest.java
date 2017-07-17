@@ -1,6 +1,7 @@
 package guitests;
 
 import java.io.File;
+import java.util.Random;
 
 import org.junit.Test;
 
@@ -17,9 +18,8 @@ public class SetCommandTest extends EntryBookGuiTest {
      **************************/
     @Test
     public void setToValidPath_success() {
-        String validPath = TestUtil.getFilePathInSandboxFolder("abc.xml");
-        File writeableFolder = new File(validPath).getParentFile();
-        writeableFolder.setWritable(true);
+        String validPath = TestUtil.getFilePathInSandboxFolder(Integer.toString(new Random().nextInt(250000)) + ".xml");
+        new File(validPath).getParentFile().setWritable(true);
         commandBox.runCommand("set " + validPath);
         assertResultMessage(String.format(SetCommand.MESSAGE_SUCCESS + validPath));
     }
@@ -29,29 +29,40 @@ public class SetCommandTest extends EntryBookGuiTest {
      **************************/
     @Test
     public void setFilePathToNonXml_failure() {
-        String nonXmlFilePath = TestUtil.getFilePathInSandboxFolder("taskmanager.txt");
+        String nonXmlFilePath = TestUtil.getFilePathInSandboxFolder("entrybook.fxml");
         commandBox.runCommand("set " + nonXmlFilePath);
         assertResultMessage(String.format(SetCommand.MESSAGE_FAILURE + SetCommand.MESSAGE_USAGE));
     }
 
     /***************************
+     * Save at location of existing file *
+     **************************/
+    public void setToExistingPath_failure() {
+        String validPath = TestUtil.getFilePathInSandboxFolder("exists.xml");
+        new File(validPath).getParentFile().setWritable(true);
+        commandBox.runCommand("set " + validPath);
+        commandBox.runCommand("set " + validPath);
+        assertResultMessage(String.format(SetCommand.MESSAGE_EXISTS));
+    }
+
+    /***************************
      * Set non-writable file *
      **************************/
-    /*@Test
+
+    @Test
     public void setFileToNonWritable_failure() {
         String nonWriteableFilePath = TestUtil.getFilePathInSandboxFolder("unwritable.xml");
-        File nonWriteableFolder = new File(nonWriteableFilePath).getParentFile();
-        nonWriteableFolder.setReadOnly();
+        new File(nonWriteableFilePath).getParentFile().setWritable(false);
         commandBox.runCommand("set " + nonWriteableFilePath);
         assertResultMessage(String.format(SetCommand.MESSAGE_FAILURE + SetCommand.MESSAGE_USAGE));
-    }*/
+    }
 
     /***************************
      * Set invalid parent *
      **************************/
     @Test
-    public void serToInvalidParent_failure() {
-        String invalidParentFile = TestUtil.getFilePathInSandboxFolder("Desktop/noparent.xml");
+    public void setToInvalidParent_failure() {
+        String invalidParentFile = TestUtil.getFilePathInSandboxFolder("folderdoesntexist/noparent.xml");
         commandBox.runCommand("set " + invalidParentFile);
         assertResultMessage(String.format(SetCommand.MESSAGE_FAILURE + SetCommand.MESSAGE_USAGE));
     }
