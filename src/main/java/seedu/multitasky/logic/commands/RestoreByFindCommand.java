@@ -70,10 +70,10 @@ public class RestoreByFindCommand extends RestoreCommand {
             history.setPrevSearch(keywords, null, null, history.getPrevState());
 
             if (allList.size() >= 2) { // multiple entries found
-                return new CommandResult(MESSAGE_MULTIPLE_ENTRIES);
+                throw new CommandException(MESSAGE_MULTIPLE_ENTRIES);
             } else {
                 assert (allList.size() == 0); // no entries found
-                return new CommandResult(MESSAGE_NO_ENTRIES);
+                throw new CommandException(MESSAGE_NO_ENTRIES);
             }
         }
     }

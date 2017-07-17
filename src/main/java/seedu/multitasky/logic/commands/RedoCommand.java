@@ -22,9 +22,9 @@ public class RedoCommand extends Command {
             model.redoPreviousAction();
             return new CommandResult(MESSAGE_SUCCESS);
         } catch (NothingToRedoException e) {
-            return new CommandResult(MESSAGE_FAILURE);
-        } catch (Exception e) {
             throw new CommandException(MESSAGE_FAILURE);
+        } catch (Exception e) {
+            throw new AssertionError("redo should not have other exceptions");
         }
     }
 
