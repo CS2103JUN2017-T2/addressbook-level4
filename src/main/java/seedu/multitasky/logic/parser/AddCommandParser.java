@@ -19,6 +19,7 @@ import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.logic.commands.AddCommand;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
+import seedu.multitasky.model.UserPrefs;
 import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.Event;
 import seedu.multitasky.model.entry.FloatingTask;
@@ -38,7 +39,7 @@ public class AddCommandParser {
      * AddCommand and returns an AddCommand object for execution.
      * throws ParseException if the user input does not conform the expected format.
      */
-    public AddCommand parse(String args) throws ParseException {
+    public AddCommand parse(String args, UserPrefs userprefs) throws ParseException {
         argMultimap = ArgumentTokenizer.tokenize(args, ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES));
         Calendar startDate = null;
         Calendar endDate = null;
@@ -48,7 +49,6 @@ public class AddCommandParser {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
 
-        // TODO check whether need this or not
         // check for empty name field
         if (argMultimap.getPreamble().get().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
@@ -56,11 +56,13 @@ public class AddCommandParser {
 
         if (isFloatingTask()) {
             try {
+                // parse entry details
                 Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
                 if (requiresSmartParsing(ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES))) {
                     name = new Name(doSmartParsingPreamble(ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES)));
                 }
                 Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+
                 ReadOnlyEntry entry = new FloatingTask(name, tagList);
                 return new AddCommand(entry);
 
@@ -70,43 +72,56 @@ public class AddCommandParser {
 
         } else if (isDeadline()) {
             try {
+                // parse all entry details
                 Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
                 if (requiresSmartParsing(ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES))) {
                     name = new Name(doSmartParsingPreamble(ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES)));
                 }
-
-                // only PREFIX_BY to indicate deadline.
                 Prefix datePrefix = PREFIX_BY;
                 endDate = ParserUtil.parseDate(argMultimap.getValue(datePrefix).get());
                 Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
-                ReadOnlyEntry entry = new Deadline(name, endDate, tagList);
 
+                ReadOnlyEntry entry = new Deadline(name, endDate, tagList);
                 return new AddCommand(entry);
+
             } catch (IllegalValueException ive) {
                 throw new ParseException(ive.getMessage(), ive);
             }
 
         } else if (isEventStartEndVariant()) {
             try {
+                // parse entry details
                 Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
                 if (requiresSmartParsing(ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES))) {
                     name = new Name(doSmartParsingPreamble(ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES)));
                 }
+                Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
                 // only reads using flag indicated by the last occurrence of prefix.
                 Prefix startDatePrefix = requireNonNull(ParserUtil.getLastPrefix(
                         args, PREFIX_FROM, PREFIX_ON, PREFIX_AT));
                 Prefix endDatePrefix = requireNonNull(ParserUtil.getLastPrefix(args, PREFIX_TO, PREFIX_BY));
                 endDate = ParserUtil.parseDate(argMultimap.getValue(endDatePrefix).get());
                 startDate = ParserUtil.parseDate(argMultimap.getValue(startDatePrefix).get());
-                Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+
+                // check for special cases of date
+                endDate.set(Calendar.SECOND, 0);
+                endDate.set(Calendar.MILLISECOND, 0);
+                startDate.set(Calendar.SECOND, 0);
+                startDate.set(Calendar.MILLISECOND, 0);
                 if (endDate.compareTo(startDate) < 0) {
                     throw new ParseException(AddCommand.MESSAGE_ENDDATE_BEFORE_STARTDATE);
                 } else if (endDate.compareTo(startDate) == 0) {
-                    // convert automatically to deadline
-                    ReadOnlyEntry entry = new Deadline(name, endDate, tagList);
+                    // convert automatically to full day event
+                    startDate.set(Calendar.HOUR, 0);
+                    startDate.set(Calendar.MINUTE, 0);
+                    endDate.set(Calendar.HOUR, 23);
+                    endDate.set(Calendar.MINUTE, 59);
+                    ReadOnlyEntry entry = new Event(name, startDate, endDate, tagList);
+
                     return new AddCommand(entry);
                 } else { // end date is later than start date as it should be
                     ReadOnlyEntry entry = new Event(name, startDate, endDate, tagList);
+
                     return new AddCommand(entry);
                 }
 
@@ -119,17 +134,50 @@ public class AddCommandParser {
                 if (requiresSmartParsing(ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES))) {
                     name = new Name(doSmartParsingPreamble(ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES)));
                 }
+                Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
                 // only reads using flag indicated by the last occurrence of prefix.
                 Prefix startDatePrefix = requireNonNull(
                         ParserUtil.getLastPrefix(args, PREFIX_FROM, PREFIX_ON, PREFIX_AT));
                 startDate = ParserUtil.parseDate(argMultimap.getValue(startDatePrefix).get());
                 endDate = (Calendar) startDate.clone();
-                // TODO implement import from config
-                endDate.add(Calendar.HOUR, 1);
+
+                // get default duration from preferences.json file
+                int addDurationHour = userprefs.getDurationHour();
+                if (addDurationHour <= 0) {
+                    throw new ParseException(AddCommand.MESSAGE_INVALID_CONFIG_DURATION);
+                }
+                endDate.add(Calendar.HOUR, addDurationHour);
                 if (endDate.compareTo(startDate) < 0) {
                     throw new ParseException(AddCommand.MESSAGE_ENDDATE_BEFORE_STARTDATE);
                 }
+                ReadOnlyEntry entry = new Event(name, startDate, endDate, tagList);
+
+                return new AddCommand(entry);
+            } catch (IllegalValueException ive) {
+                throw new ParseException(ive.getMessage(), ive);
+            }
+        } else if (isEventEndOnlyVariant()) {
+            try {
+                Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
+                if (requiresSmartParsing(ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES))) {
+                    name =
+                         new Name(doSmartParsingPreamble(ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES)));
+                }
                 Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+                // this variant only accepts PREFIX_TO
+                Prefix endDatePrefix = PREFIX_TO;
+                endDate = ParserUtil.parseDate(argMultimap.getValue(endDatePrefix).get());
+                startDate = (Calendar) endDate.clone();
+
+                // get default duration from preferences.json file
+                int negAddDurationHour = 0 - userprefs.getDurationHour();
+                if (negAddDurationHour >= 0) {
+                    throw new ParseException(AddCommand.MESSAGE_INVALID_CONFIG_DURATION);
+                }
+                startDate.add(Calendar.HOUR, negAddDurationHour);
+                if (endDate.compareTo(startDate) < 0) {
+                    throw new ParseException(AddCommand.MESSAGE_ENDDATE_BEFORE_STARTDATE);
+                }
                 ReadOnlyEntry entry = new Event(name, startDate, endDate, tagList);
 
                 return new AddCommand(entry);
@@ -177,12 +225,24 @@ public class AddCommandParser {
     }
 
     /**
+     * Returns true if flags present in argMultimap indicate to add an event entry by giving only
+     * end date.
+     * MUST have /to only
+     * Precondition : argumentMultimap within parser has been properly initialised beforehand.
+     */
+    private boolean isEventEndOnlyVariant() {
+        assert argMultimap != null;
+        return ParserUtil.arePrefixesPresent(argMultimap, PREFIX_TO)
+               && !ParserUtil.arePrefixesPresent(argMultimap, PREFIX_BY, PREFIX_FROM, PREFIX_AT, PREFIX_ON);
+    }
+
+    /**
      * Returns true if flags present in argMultimap indicate to add a deadline entry.
      * Precondition : argumentMultimap within parser has been properly initialised beforehand.
      */
     private boolean isDeadline() {
         assert argMultimap != null;
-        return ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_BY)
+        return ParserUtil.arePrefixesPresent(argMultimap, PREFIX_BY)
                && (!ParserUtil.arePrefixesPresent(argMultimap, PREFIX_AT, PREFIX_ON, PREFIX_FROM, PREFIX_TO));
     }
 

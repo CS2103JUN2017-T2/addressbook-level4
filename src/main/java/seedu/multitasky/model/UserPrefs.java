@@ -13,10 +13,12 @@ public class UserPrefs {
     private static int index = 0;
     /** Snapshot file path without index and xml */
     private static String entryBookSnapshotPath = "data/snapshots/entrybook";
-    // @@author
     private GuiSettings guiSettings;
     private String entryBookName = "MyEntryBook";
     private String entryBookFilePath = "data/entrybook.xml";
+    // @@author A0140633R
+    private int addDurationHour = 1;
+    // @@author
 
     public UserPrefs() {
         this.setGuiSettings(500, 500, 0, 0);
@@ -66,6 +68,14 @@ public class UserPrefs {
 
     public static int getIndex() {
         return index;
+    }
+
+    public int getDurationHour() {
+        return addDurationHour;
+    }
+
+    public void setDurationHour(int value) {
+        addDurationHour = value;
     }
 
     public static void setIndex(int index) {
