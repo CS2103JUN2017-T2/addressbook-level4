@@ -219,6 +219,11 @@ public class AddCommandTest {
             fail("This method should not be called.");
         }
 
+        @Override
+        public void loadFilePath(String newFilePath) {
+            fail("This method should not be called.");
+        }
+
     }
 
     /**

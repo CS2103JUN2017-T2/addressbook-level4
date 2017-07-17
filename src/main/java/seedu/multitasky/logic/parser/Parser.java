@@ -17,6 +17,7 @@ import seedu.multitasky.logic.commands.FindCommand;
 import seedu.multitasky.logic.commands.HelpCommand;
 import seedu.multitasky.logic.commands.HistoryCommand;
 import seedu.multitasky.logic.commands.ListCommand;
+import seedu.multitasky.logic.commands.LoadCommand;
 import seedu.multitasky.logic.commands.RedoCommand;
 import seedu.multitasky.logic.commands.RestoreCommand;
 import seedu.multitasky.logic.commands.SetCommand;
@@ -69,6 +70,9 @@ public class Parser {
 
         case FindCommand.COMMAND_WORD:
             return new FindCommandParser().parse(arguments);
+
+        case LoadCommand.COMMAND_WORD:
+            return new LoadCommandParser().parse(arguments);
 
         case ListCommand.COMMAND_WORD:
             return new ListCommandParser().parse(arguments);

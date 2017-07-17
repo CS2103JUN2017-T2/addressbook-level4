@@ -47,6 +47,9 @@ public interface Model {
     /** Change the file path for storage */
     void changeFilePath(String newFilePath);
 
+    /** Load data at the given file path */
+    void loadFilePath(String newFilePath);
+
     /**
      * Replaces the given entry {@code target} with {@code editedEntry}.
      *

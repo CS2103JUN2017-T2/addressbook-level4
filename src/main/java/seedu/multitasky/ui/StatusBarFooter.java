@@ -12,9 +12,9 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.Region;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
-import seedu.multitasky.commons.events.model.FilePathChangedEvent;
 import seedu.multitasky.commons.events.storage.EntryBookToRedoEvent;
 import seedu.multitasky.commons.events.storage.EntryBookToUndoEvent;
+import seedu.multitasky.commons.events.storage.FilePathChangedEvent;
 
 /**
  * A ui for the status bar that is displayed at the footer of the application.

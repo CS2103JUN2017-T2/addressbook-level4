@@ -13,15 +13,16 @@ public class LoadCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "Loaded data from ";
     public static final String MESSAGE_FAILURE = "File does not exist!\n";
+    public static final String MESSAGE_INVALID_XML_FILE = "File is not in readable XML format!\n";
     public static final String SAMPLE_FILEPATH = " /Users/usernamehere/Desktop/entrybook.xml";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Loads entrybook data at given filepath\n" + "Format: "
                                                + COMMAND_WORD + " filepath\n" + "Example: " + COMMAND_WORD
                                                + SAMPLE_FILEPATH;
-    private final String newFilePath;
+    private final String filepath;
 
-    public LoadCommand(String newFilePath) {
-        this.newFilePath = newFilePath.trim();
+    public LoadCommand(String filePath) {
+        this.filepath = filePath.trim();
     }
 
     /**
@@ -29,8 +30,13 @@ public class LoadCommand extends Command {
      */
     @Override
     public CommandResult execute() {
-        if ((new File(newFilePath)).exists()) {
-            return new CommandResult(MESSAGE_SUCCESS);
+        if ((new File(filepath)).exists()) {
+            try {
+                model.loadFilePath(filepath);
+                return new CommandResult(MESSAGE_SUCCESS + filepath);
+            } catch (Exception e) {
+                return new CommandResult(MESSAGE_INVALID_XML_FILE + MESSAGE_USAGE);
+            }
         } else {
             return new CommandResult(MESSAGE_FAILURE + MESSAGE_USAGE);
         }
