@@ -154,21 +154,25 @@ public class CommandAutocomplete {
     }
 
     private String autocompleteCommandWord(String keyword) {
-        String match = PowerMatch.match(keyword, commandWords);
-        if (match != null) {
-            return match;
-        } else {
-            return keyword;
+        String match = null;
+        for (PowerMatch.Level level : PowerMatch.Level.values()) {
+            match = PowerMatch.match(level, keyword, commandWords);
+            if (match != null) {
+                return match;
+            }
         }
+        return keyword;
     }
 
     private String autocompletePrefix(String keyword, String commandWord) {
-        String match = PowerMatch.match(keyword, commandKeywords.get(commandWord));
-        if (match != null) {
-            return match;
-        } else {
-            return keyword;
+        String match = null;
+        for (PowerMatch.Level level : PowerMatch.Level.values()) {
+            match = PowerMatch.match(level, keyword, commandKeywords.get(commandWord));
+            if (match != null) {
+                return match;
+            }
         }
+        return keyword;
     }
 
     /**

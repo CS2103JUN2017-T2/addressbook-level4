@@ -14,6 +14,7 @@ import org.junit.rules.ExpectedException;
 
 import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.commons.exceptions.IllegalValueException;
+import seedu.multitasky.commons.util.PowerMatch;
 import seedu.multitasky.logic.CommandHistory;
 import seedu.multitasky.model.Model;
 import seedu.multitasky.model.ReadOnlyEntryBook;
@@ -154,25 +155,25 @@ public class AddCommandTest {
 
         @Override
         public void updateAllFilteredLists(Set<String> keywords, Calendar startDate, Calendar endDate,
-                                           Entry.State state) {
+                                           Entry.State state, Search... searches) {
             fail("This method should not be called.");
         }
 
         @Override
         public void updateFilteredEventList(Set<String> keywords, Calendar startDate, Calendar endDate,
-                                            Entry.State state, Search search) {
+                                            Entry.State state, Search search, PowerMatch.Level level) {
             fail("This method should not be called.");
         }
 
         @Override
         public void updateFilteredDeadlineList(Set<String> keywords, Calendar startDate, Calendar endDate,
-                                               Entry.State state, Search search) {
+                                               Entry.State state, Search search, PowerMatch.Level level) {
             fail("This method should not be called.");
         }
 
         @Override
         public void updateFilteredFloatingTaskList(Set<String> keywords, Calendar startDate, Calendar endDate,
-                                                   Entry.State state, Search search) {
+                                                   Entry.State state, Search search, PowerMatch.Level level) {
             fail("This method should not be called.");
         }
 

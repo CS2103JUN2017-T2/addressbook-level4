@@ -105,25 +105,29 @@ public class ListCommand extends Command {
         switch (showType) {
         case ARCHIVE:
             commandResultBuilder.append(MESSAGE_ARCHIVE_SUCCESS);
-            model.updateAllFilteredLists(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.ARCHIVED);
+            model.updateAllFilteredLists(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.ARCHIVED,
+                                         Model.LENIENT_SEARCHES);
             raise(new ListTypeUpdateEvent(Entry.State.ARCHIVED));
             history.setPrevSearch(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.ARCHIVED);
             break;
         case BIN:
             commandResultBuilder.append(MESSAGE_BIN_SUCCESS);
-            model.updateAllFilteredLists(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.DELETED);
+            model.updateAllFilteredLists(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.DELETED,
+                                         Model.LENIENT_SEARCHES);
             raise(new ListTypeUpdateEvent(Entry.State.DELETED));
             history.setPrevSearch(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.DELETED);
             break;
         case ACTIVE:
             commandResultBuilder.append(MESSAGE_ACTIVE_SUCCESS);
-            model.updateAllFilteredLists(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.ACTIVE);
+            model.updateAllFilteredLists(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.ACTIVE,
+                                         Model.LENIENT_SEARCHES);
             raise(new ListTypeUpdateEvent(Entry.State.ACTIVE));
             history.setPrevSearch(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.ACTIVE);
             break;
         case ALL:
             commandResultBuilder.append(MESSAGE_ALL_SUCCESS);
-            model.updateAllFilteredLists(MATCH_ALL_KEYWORDS, startDate, endDate, null);
+            model.updateAllFilteredLists(MATCH_ALL_KEYWORDS, startDate, endDate, null,
+                                         Model.LENIENT_SEARCHES);
             raise(new ListTypeUpdateEvent(null));
             history.setPrevSearch(MATCH_ALL_KEYWORDS, startDate, endDate, null);
             break;
