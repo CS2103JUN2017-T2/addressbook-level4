@@ -4,7 +4,7 @@ import java.io.File;
 
 // @@author A0132788U
 /**
- * Checks validify of entered filepath and sets the filepath to store entrybook data in a user-defined location.
+ * Checks validity of entered filepath and sets the filepath to store entrybook data in a user-defined location.
  */
 
 public class SetCommand extends Command {
