@@ -81,12 +81,4 @@ public class FindCommandParser {
         return true;
     }
 
-    private String getString(ArrayList<String> parts) {
-        StringBuilder builder = new StringBuilder();
-        for (String part : parts) {
-            builder.append(part);
-        }
-        return builder.toString();
-    }
-
 }
