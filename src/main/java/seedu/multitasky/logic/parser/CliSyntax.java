@@ -25,6 +25,7 @@ public class CliSyntax {
     public static final Prefix PREFIX_FLOATINGTASK = new Prefix("float");
 
     /* EntryLists */
+    public static final Prefix PREFIX_ACTIVE = new Prefix("active");
     public static final Prefix PREFIX_ARCHIVE = new Prefix("archive");
     public static final Prefix PREFIX_BIN = new Prefix("bin");
     public static final Prefix PREFIX_ALL = new Prefix("all");

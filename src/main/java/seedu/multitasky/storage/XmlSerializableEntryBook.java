@@ -107,7 +107,7 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
     }
 
     @Override
-    public ObservableList<ReadOnlyEntry> getActiveList() {
+    public ObservableList<ReadOnlyEntry> getAllEntries() {
         final ObservableList<Entry> active = this.active.stream().map(p -> {
             try {
                 return p.toModelType();
