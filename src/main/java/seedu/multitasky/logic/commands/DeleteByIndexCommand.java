@@ -40,9 +40,9 @@ public class DeleteByIndexCommand extends DeleteCommand {
         try {
             model.changeEntryState(entryToDelete, Entry.State.DELETED);
         } catch (EntryNotFoundException enfe) {
-            assert false : "The target entry cannot be missing";
+            throw new AssertionError("The target entry cannot be missing");
         } catch (OverlappingEventException oee) {
-            assert false : "This should not happen for deletion.";
+            throw new AssertionError("Overlap should not happen for deletion.");
         }
         // refresh list view after updating.
         model.updateAllFilteredLists(history.getPrevSearch(), history.getPrevStartDate(),
