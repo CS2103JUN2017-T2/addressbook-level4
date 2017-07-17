@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import seedu.multitasky.commons.core.Messages;
+import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.logic.commands.FindCommand;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
 
@@ -51,23 +52,18 @@ public class FindCommandParser {
     }
 
     private Calendar getStartDate(ArgumentMultimap argumentMultimap) {
-        ArrayList<String> dateArgs = (ArrayList<String>) argumentMultimap.getAllValues(CliSyntax.PREFIX_FROM);
-        return getDate(getString(dateArgs).trim());
+        return getDate(argumentMultimap.getValue(CliSyntax.PREFIX_FROM));
     }
 
     private Calendar getEndDate(ArgumentMultimap argumentMultimap) {
-        ArrayList<String> dateArgs = (ArrayList<String>) argumentMultimap.getAllValues(CliSyntax.PREFIX_TO);
-        return getDate(getString(dateArgs).trim());
+        return getDate(argumentMultimap.getValue(CliSyntax.PREFIX_TO));
     }
 
-    private Calendar getDate(String rawDate) {
-        if (rawDate.isEmpty()) {
-            return null;
-        }
+    private Calendar getDate(Optional<String> rawDate) {
         try {
-            Calendar date = ParserUtil.parseDate(rawDate);
+            Calendar date = ParserUtil.parseDate(rawDate).get();
             return date;
-        } catch (ParseException e) {
+        } catch (IllegalValueException e) {
             return null;
         }
     }

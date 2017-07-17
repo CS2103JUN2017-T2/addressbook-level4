@@ -3,8 +3,10 @@ package seedu.multitasky.logic.parser;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Optional;
 
 import seedu.multitasky.commons.core.Messages;
+import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.logic.commands.ListCommand;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
 
@@ -42,23 +44,18 @@ public class ListCommandParser {
     }
 
     private Calendar getStartDate(ArgumentMultimap argumentMultimap) {
-        ArrayList<String> dateArgs = (ArrayList<String>) argumentMultimap.getAllValues(CliSyntax.PREFIX_FROM);
-        return getDate(getString(dateArgs).trim());
+        return getDate(argumentMultimap.getValue(CliSyntax.PREFIX_FROM));
     }
 
     private Calendar getEndDate(ArgumentMultimap argumentMultimap) {
-        ArrayList<String> dateArgs = (ArrayList<String>) argumentMultimap.getAllValues(CliSyntax.PREFIX_TO);
-        return getDate(getString(dateArgs).trim());
+        return getDate(argumentMultimap.getValue(CliSyntax.PREFIX_TO));
     }
 
-    private Calendar getDate(String rawDate) {
-        if (rawDate.isEmpty()) {
-            return null;
-        }
+    private Calendar getDate(Optional<String> rawDate) {
         try {
-            Calendar date = ParserUtil.parseDate(rawDate);
+            Calendar date = ParserUtil.parseDate(rawDate).get();
             return date;
-        } catch (ParseException e) {
+        } catch (IllegalValueException e) {
             return null;
         }
     }
@@ -77,14 +74,6 @@ public class ListCommandParser {
             return false;
         }
         return true;
-    }
-
-    private String getString(ArrayList<String> parts) {
-        StringBuilder builder = new StringBuilder();
-        for (String part : parts) {
-            builder.append(part);
-        }
-        return builder.toString();
     }
 
 }
