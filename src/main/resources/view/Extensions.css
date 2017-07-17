@@ -3,10 +3,6 @@
     -fx-text-fill: white !important; /* The error class should always override the default text-fill style */
 }
 
-.result-box-error {
-    -fx-text-fill: red !important;
-}
-
 .list-cell:empty {
     /* Empty cells will not have alternating colours */
     -fx-background: #383838;

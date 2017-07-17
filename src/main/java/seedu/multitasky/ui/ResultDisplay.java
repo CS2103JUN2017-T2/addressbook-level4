@@ -6,7 +6,6 @@ import com.google.common.eventbus.Subscribe;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Region;
@@ -19,7 +18,8 @@ import seedu.multitasky.commons.events.ui.ResultStyleChangeEvent;
  */
 public class ResultDisplay extends UiPart<Region> {
 
-    public static final String ERROR_STYLE_CLASS = "result-box-error";
+    private static final String FAILURE_STYLE = "-fx-background-color: red; -fx-text-fill: red;";
+    private static final String SUCCESS_STYLE = "-fx-background-color: derive(#1d1d1d, 20%) -fx-text-fill: white;";
 
     private static final Logger logger = LogsCenter.getLogger(ResultDisplay.class);
     private static final String FXML = "ResultDisplay.fxml";
@@ -36,14 +36,11 @@ public class ResultDisplay extends UiPart<Region> {
     }
 
     private void setStyleToIndicateCommandSuccess() {
-        resultDisplay.getStyleClass().remove(ERROR_STYLE_CLASS);
+        resultDisplay.setStyle(SUCCESS_STYLE);
     }
 
     private void setStyleToIndicateCommandFailure() {
-        ObservableList<String> styleClass = resultDisplay.getStyleClass();
-        if (!styleClass.contains(ERROR_STYLE_CLASS)) {
-            styleClass.add(ERROR_STYLE_CLASS);
-        }
+        resultDisplay.setStyle(FAILURE_STYLE);
     }
 
     @Subscribe
