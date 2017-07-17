@@ -22,9 +22,9 @@ public class UndoCommand extends Command {
             model.undoPreviousAction();
             return new CommandResult(MESSAGE_SUCCESS);
         } catch (NothingToUndoException e) {
-            return new CommandResult(MESSAGE_FAILURE);
-        } catch (Exception e) {
             throw new CommandException(MESSAGE_FAILURE);
+        } catch (Exception e) {
+            throw new AssertionError("undo should not have other exceptions");
         }
     }
 
