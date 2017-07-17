@@ -18,6 +18,7 @@ import seedu.multitasky.commons.events.storage.EntryBookToRedoEvent;
 import seedu.multitasky.commons.events.storage.EntryBookToUndoEvent;
 import seedu.multitasky.commons.events.storage.FilePathChangedEvent;
 import seedu.multitasky.commons.events.storage.LoadDataFromFilePathEvent;
+import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.commons.util.PowerMatch;
 import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.Entry;
@@ -124,11 +125,15 @@ public class ModelManager extends ComponentManager implements Model {
 
     /** Raises an event when filepath to load data from is entered by user */
     @Override
-    public void loadFilePath(String newFilePath) {
+    public void loadFilePath(String newFilePath) throws IllegalValueException {
         LoadDataFromFilePathEvent event;
-        raise(event = new LoadDataFromFilePathEvent(_entryBook, newFilePath));
-        _entryBook.resetData(event.getData());
-        indicateEntryBookChanged();
+        raise(event = new LoadDataFromFilePathEvent(_entryBook, newFilePath, ""));
+        if (event.getMessage().equals("load successful")) {
+            _entryBook.resetData(event.getData());
+            indicateEntryBookChanged();
+        } else {
+            throw new IllegalValueException("load unsuccessful");
+        }
     }
     // @@author
 

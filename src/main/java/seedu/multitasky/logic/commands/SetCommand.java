@@ -17,7 +17,7 @@ public class SetCommand extends Command {
     public static final String SAMPLE_FILEPATH = " /Users/usernamehere/Desktop/entrybook.xml";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Sets file path of the entrybook\n" + "Format: "
-                                               + COMMAND_WORD + " newfilepath\n" + "Example: " + COMMAND_WORD
+                                               + COMMAND_WORD + " newfilepath.xml\n" + "Example: " + COMMAND_WORD
                                                + SAMPLE_FILEPATH;
     private final String newFilePath;
 

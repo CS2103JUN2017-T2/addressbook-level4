@@ -257,14 +257,15 @@ public class StorageManager extends ComponentManager implements Storage {
      * @throws DataConversionException
      */
     @Subscribe
-    public void handleLoadDataFromFilePathEvent(LoadDataFromFilePathEvent event) throws DataConversionException {
+    public void handleLoadDataFromFilePathEvent(LoadDataFromFilePathEvent event) throws Exception {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "File changed, loading data from file"));
         try {
             EntryBook entry = loadDataFromFile(event.getFilepath());
             saveEntryBook(entry);
             event.setData(entry);
-        } catch (IOException e) {
-            raise(new DataSavingExceptionEvent(e));
+            event.setMessage("load successful");
+        } catch (Exception e) {
+            event.setMessage(e.getMessage());
         }
     }
 

@@ -2,6 +2,8 @@ package seedu.multitasky.logic.commands;
 
 import java.io.File;
 
+import seedu.multitasky.commons.exceptions.IllegalValueException;
+
 // @@author A0132788U
 /**
  * Loads the XML data at a given filepath.
@@ -17,7 +19,7 @@ public class LoadCommand extends Command {
     public static final String SAMPLE_FILEPATH = " /Users/usernamehere/Desktop/entrybook.xml";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Loads entrybook data at given filepath\n" + "Format: "
-                                               + COMMAND_WORD + " filepath\n" + "Example: " + COMMAND_WORD
+                                               + COMMAND_WORD + " filepath.xml\n" + "Example: " + COMMAND_WORD
                                                + SAMPLE_FILEPATH;
     private final String filepath;
 
@@ -34,8 +36,8 @@ public class LoadCommand extends Command {
             try {
                 model.loadFilePath(filepath);
                 return new CommandResult(MESSAGE_SUCCESS + filepath);
-            } catch (Exception e) {
-                return new CommandResult(MESSAGE_INVALID_XML_FILE + MESSAGE_USAGE);
+            } catch (IllegalValueException e) {
+                return new CommandResult(MESSAGE_INVALID_XML_FILE);
             }
         } else {
             return new CommandResult(MESSAGE_FAILURE + MESSAGE_USAGE);

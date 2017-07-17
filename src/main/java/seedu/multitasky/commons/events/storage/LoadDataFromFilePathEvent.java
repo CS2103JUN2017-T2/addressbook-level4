@@ -10,10 +10,12 @@ import seedu.multitasky.model.EntryBook;
 public class LoadDataFromFilePathEvent extends BaseEvent {
     private EntryBook data;
     private String filepath;
+    private String message;
 
-    public LoadDataFromFilePathEvent(EntryBook data, String filepath) {
+    public LoadDataFromFilePathEvent(EntryBook data, String filepath, String message) {
         this.data = data;
         this.filepath = filepath;
+        this.message = message;
     }
 
     public EntryBook getData() {
@@ -30,6 +32,14 @@ public class LoadDataFromFilePathEvent extends BaseEvent {
 
     public void setFilepath(String filepath) {
         this.filepath = filepath;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     @Override
