@@ -1,6 +1,12 @@
 
-.error {
+.command-box-error {
     -fx-text-fill: white !important; /* The error class should always override the default text-fill style */
+}
+
+.result-box-error {
+    -fx-text-fill: red !important;
+    -fx-highlight-fill: #4c0000 !important;
+    -fx-body-color: linear-gradient(to bottom, #ff0000, #4c0000) !important;
 }
 
 .list-cell:empty {

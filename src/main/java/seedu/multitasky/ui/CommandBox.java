@@ -13,6 +13,7 @@ import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.events.ui.NewCommandEvent;
 import seedu.multitasky.commons.events.ui.NewCommandToExecuteEvent;
 import seedu.multitasky.commons.events.ui.NewResultAvailableEvent;
+import seedu.multitasky.commons.events.ui.ResultStyleChangeEvent;
 import seedu.multitasky.logic.Logic;
 import seedu.multitasky.logic.commands.CommandResult;
 import seedu.multitasky.logic.commands.ListCommand;
@@ -30,7 +31,7 @@ import seedu.multitasky.ui.util.CommandHistory;
  */
 public class CommandBox extends UiPart<Region> {
 
-    public static final String ERROR_STYLE_CLASS = "error";
+    public static final String ERROR_STYLE_CLASS = "command-box-error";
     private static final String FXML = "CommandBox.fxml";
 
     private final Logger logger = LogsCenter.getLogger(CommandBox.class);
@@ -81,7 +82,6 @@ public class CommandBox extends UiPart<Region> {
             setStyleToIndicateCommandSuccess();
             logger.info("Result: " + commandResult.feedbackToUser);
             raise(new NewResultAvailableEvent(commandResult.feedbackToUser));
-
         } catch (CommandException | ParseException e) {
             // handle command failure
             setStyleToIndicateCommandFailure();
@@ -99,6 +99,7 @@ public class CommandBox extends UiPart<Region> {
      */
     private void setStyleToIndicateCommandSuccess() {
         commandTextField.getStyleClass().remove(ERROR_STYLE_CLASS);
+        raise(new ResultStyleChangeEvent(false));
     }
 
     /**
@@ -106,12 +107,10 @@ public class CommandBox extends UiPart<Region> {
      */
     private void setStyleToIndicateCommandFailure() {
         ObservableList<String> styleClass = commandTextField.getStyleClass();
-
-        if (styleClass.contains(ERROR_STYLE_CLASS)) {
-            return;
+        if (!styleClass.contains(ERROR_STYLE_CLASS)) {
+            styleClass.add(ERROR_STYLE_CLASS);
         }
-
-        styleClass.add(ERROR_STYLE_CLASS);
+        raise(new ResultStyleChangeEvent(true));
     }
 
     private void onlyShowActiveEntries() {
