@@ -1,14 +1,17 @@
 package seedu.multitasky.logic.parser;
 
-import static seedu.multitasky.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
+import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.logic.commands.FindCommand;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
 
+// @@author A0125586X
 /**
  * Parses input arguments and creates a new FindCommand object
  */
@@ -24,15 +27,70 @@ public class FindCommandParser {
         String trimmedArgs = args.trim();
 
         if (args.trim().isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+            throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
                                                    FindCommand.MESSAGE_USAGE));
         }
+        ArgumentMultimap argumentMultimap = ArgumentTokenizer.tokenize(trimmedArgs,
+                                                                ParserUtil.toPrefixArray(FindCommand.VALID_PREFIXES));
+        ArrayList<String> prefixesPresent = argumentMultimap.getPresentPrefixes(FindCommand.VALID_PREFIXES);
+        if (!hasValidPrefixCombination(prefixesPresent)) {
+            throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                                                   FindCommand.MESSAGE_USAGE));
+        }
+        Set<String> keywords;
+        Optional<String> optKeywords = argumentMultimap.getPreamble();
+        if (optKeywords.isPresent()) {
+            keywords = new HashSet<>(Arrays.asList(optKeywords.get().split("\\s+")));
+        } else {
+            keywords = new HashSet<>();
+        }
+        Calendar startDate = getStartDate(argumentMultimap);
+        Calendar endDate = getEndDate(argumentMultimap);
 
-        String searchString = trimmedArgs.replaceAll("\\" + CliSyntax.PREFIX_ESCAPE, "");
-        // keywords delimited by whitespace
-        final String[] keywords = searchString.split("\\s+");
-        final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
-        return new FindCommand(keywordSet);
+        return new FindCommand(keywords, startDate, endDate, prefixesPresent);
+    }
+
+    private Calendar getStartDate(ArgumentMultimap argumentMultimap) {
+        ArrayList<String> dateArgs = (ArrayList<String>) argumentMultimap.getAllValues(CliSyntax.PREFIX_FROM);
+        return getDate(getString(dateArgs).trim());
+    }
+
+    private Calendar getEndDate(ArgumentMultimap argumentMultimap) {
+        ArrayList<String> dateArgs = (ArrayList<String>) argumentMultimap.getAllValues(CliSyntax.PREFIX_TO);
+        return getDate(getString(dateArgs).trim());
+    }
+
+    private Calendar getDate(String rawDate) {
+        if (rawDate.isEmpty()) {
+            return null;
+        }
+        try {
+            Calendar date = ParserUtil.parseDate(rawDate);
+            return date;
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
+    private boolean hasValidPrefixCombination(ArrayList<String> prefixes) {
+        // Cannot have any unknown prefixes
+        if (!Arrays.asList(FindCommand.VALID_PREFIXES).containsAll(prefixes)) {
+            return false;
+        }
+        // Check for invalid flag combinations
+        if (prefixes.contains(CliSyntax.PREFIX_ARCHIVE.toString())
+            && prefixes.contains(CliSyntax.PREFIX_BIN.toString())) {
+            return false;
+        }
+        return true;
+    }
+
+    private String getString(ArrayList<String> parts) {
+        StringBuilder builder = new StringBuilder();
+        for (String part : parts) {
+            builder.append(part);
+        }
+        return builder.toString();
     }
 
 }

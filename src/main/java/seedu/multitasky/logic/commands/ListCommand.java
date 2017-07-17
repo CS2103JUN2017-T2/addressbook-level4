@@ -23,13 +23,14 @@ public class ListCommand extends Command {
 
     public static final String COMMAND_WORD = "list";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Lists entries in the entry book. " + "\n"
-                                               + "Format: " + COMMAND_WORD
-                                               + " [" + "[" + CliSyntax.PREFIX_ARCHIVE + "]" + " |"
-                                               + " [" + CliSyntax.PREFIX_BIN + "]" + "]"
-                                               + " [" + CliSyntax.PREFIX_UPCOMING + "]"
-                                               + " [" + CliSyntax.PREFIX_REVERSE + "]" + "\n"
-                                               + "Example: " + COMMAND_WORD + " " + CliSyntax.PREFIX_UPCOMING;
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Lists entries in the active/archive/bin list"
+            + ", filtered by an optional starting and ending date. The entries can also be shown in "
+            + "different sorted orders." + "\n"
+            + "Format: " + COMMAND_WORD
+            + " [" + CliSyntax.PREFIX_ARCHIVE + " | " + CliSyntax.PREFIX_BIN + "]"
+            + " [" + CliSyntax.PREFIX_UPCOMING + " | " + CliSyntax.PREFIX_REVERSE + "]"
+            + " [" + CliSyntax.PREFIX_FROM + " start date]" + " [" + CliSyntax.PREFIX_TO + "end date]" + "\n"
+            + "Example: " + COMMAND_WORD + " " + CliSyntax.PREFIX_UPCOMING;
 
     public static final String MESSAGE_ALL_SUCCESS = "Listed all entries";
 
