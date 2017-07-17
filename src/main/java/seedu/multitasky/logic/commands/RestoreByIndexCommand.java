@@ -47,7 +47,7 @@ public class RestoreByIndexCommand extends RestoreCommand {
         try {
             model.changeEntryState(entryToRestore, Entry.State.ACTIVE);;
         } catch (EntryNotFoundException enfe) {
-            assert false : "The target entry cannot be missing";
+            throw new AssertionError("The target entry cannot be missing");
         } catch (OverlappingEventException oee) {
             return new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERLAP_ALERT,
                                                    entryToRestore.getName()));

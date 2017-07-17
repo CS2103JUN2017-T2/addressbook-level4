@@ -64,10 +64,10 @@ public class EditByFindCommand extends EditCommand {
                 model.updateEntry(entryToEdit, editedEntry);
                 commandResult = new CommandResult(String.format(MESSAGE_SUCCESS, targetEntryString, editedEntry));
             } catch (EntryNotFoundException pnfe) {
-                assert false : "The target entry cannot be missing";
+                throw new AssertionError("The target entry cannot be missing");
             } catch (OverlappingEventException oee) {
                 commandResult = new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERLAP_ALERT,
-                                                                entryToEdit.getName()));
+                                                                editedEntry.getName()));
             }
             // refresh list view after updating.
             model.updateAllFilteredLists(history.getPrevSearch(), history.getPrevStartDate(),
@@ -79,10 +79,10 @@ public class EditByFindCommand extends EditCommand {
         } else {
             history.setPrevSearch(keywords, null, null, Entry.State.ACTIVE);
             if (allList.size() >= 2) {
-                return new CommandResult(MESSAGE_MULTIPLE_ENTRIES);
+                throw new CommandException(MESSAGE_MULTIPLE_ENTRIES);
             } else {
                 assert allList.size() == 0;
-                return new CommandResult(MESSAGE_NO_ENTRIES);
+                throw new CommandException(MESSAGE_NO_ENTRIES);
             }
         }
     }
