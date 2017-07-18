@@ -4,24 +4,24 @@ import java.io.File;
 
 // @@author A0132788U
 /**
- * Checks validity of entered filepath and sets the filepath to store entrybook data in a user-defined location.
+ * Checks validity of entered path and saves data at the given file.
  */
 
-public class SetCommand extends Command {
+public class SaveCommand extends Command {
 
-    public static final String COMMAND_WORD = "set";
+    public static final String COMMAND_WORD = "save";
 
-    public static final String MESSAGE_SUCCESS = "File path set successfully to ";
+    public static final String MESSAGE_SUCCESS = "Entrybook data saved successfully to ";
     public static final String MESSAGE_FAILURE = "Invalid file path!\n";
     public static final String MESSAGE_EXISTS = "File already exists! Rename file.\n";
     public static final String SAMPLE_FILEPATH = " /Users/usernamehere/Desktop/entrybook.xml";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Sets file path of the entrybook\n" + "Format: "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Saves entrybook data to given filepath\n" + "Format: "
                                                + COMMAND_WORD + " newfilepath.xml\n" + "Example: " + COMMAND_WORD
                                                + SAMPLE_FILEPATH;
     private final String newFilePath;
 
-    public SetCommand(String newFilePath) {
+    public SaveCommand(String newFilePath) {
         this.newFilePath = newFilePath.trim();
     }
 

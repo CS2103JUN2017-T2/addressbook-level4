@@ -53,7 +53,7 @@ public interface Model {
      *
      * @throws IllegalValueException
      */
-    void loadFilePath(String newFilePath) throws IllegalValueException;
+    void openFilePath(String newFilePath) throws IllegalValueException;
 
     /**
      * Replaces the given entry {@code target} with {@code editedEntry}.

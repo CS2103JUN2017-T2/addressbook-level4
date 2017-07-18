@@ -125,10 +125,10 @@ public class ModelManager extends ComponentManager implements Model {
 
     /** Raises an event when filepath to load data from is entered by user */
     @Override
-    public void loadFilePath(String newFilePath) throws IllegalValueException {
+    public void openFilePath(String newFilePath) throws IllegalValueException {
         LoadDataFromFilePathEvent event;
         raise(event = new LoadDataFromFilePathEvent(_entryBook, newFilePath, ""));
-        if (event.getMessage().equals("load successful")) {
+        if (event.getMessage().equals("open successful")) {
             _entryBook.resetData(event.getData());
             indicateEntryBookChanged();
         } else {
