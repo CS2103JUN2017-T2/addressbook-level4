@@ -23,10 +23,18 @@
             } catch (OverlappingEventException oee) {
                 commandResult = new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERLAP_ALERT,
                                                                 entryToRestore.getName()));
+            } catch (EntryOverdueException e) {
+                commandResult = new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERDUE_ALERT,
+                                                                entryToRestore.getName()));
+            } catch (OverlappingAndOverdueEventException e) {
+                commandResult = new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERLAP_AND_OVERDUE_ALERT,
+                                                                entryToRestore.getName()));
             }
+
             // refresh list view after updating.
-            model.updateAllFilteredLists(history.getPrevSearch(), history.getPrevStartDate(),
-                                         history.getPrevEndDate(), history.getPrevState());
+            model.updateAllFilteredLists(history.getPrevKeywords(), history.getPrevStartDate(),
+                                         history.getPrevEndDate(), history.getPrevState(),
+                                         history.getPrevSearches());
             if (commandResult == null) {
                 throw new AssertionError("commandResult in RestoreByFindCommand shouldn't be null here.");
             }
@@ -36,10 +44,10 @@
             history.setPrevSearch(keywords, null, null, history.getPrevState());
 
             if (allList.size() >= 2) { // multiple entries found
-                return new CommandResult(MESSAGE_MULTIPLE_ENTRIES);
+                throw new CommandException(MESSAGE_MULTIPLE_ENTRIES);
             } else {
                 assert (allList.size() == 0); // no entries found
-                return new CommandResult(MESSAGE_NO_ENTRIES);
+                throw new CommandException(MESSAGE_NO_ENTRIES);
             }
         }
     }
@@ -78,15 +86,22 @@ public class RestoreByIndexCommand extends RestoreCommand {
         try {
             model.changeEntryState(entryToRestore, Entry.State.ACTIVE);;
         } catch (EntryNotFoundException enfe) {
-            assert false : "The target entry cannot be missing";
+            throw new AssertionError("The target entry cannot be missing");
         } catch (OverlappingEventException oee) {
             return new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERLAP_ALERT,
+                                                   entryToRestore.getName()));
+        } catch (EntryOverdueException e) {
+            return new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERDUE_ALERT,
+                                                   entryToRestore.getName()));
+        } catch (OverlappingAndOverdueEventException e) {
+            return new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERLAP_AND_OVERDUE_ALERT,
                                                    entryToRestore.getName()));
         }
 
         // refresh list view after updating.
-        model.updateAllFilteredLists(history.getPrevSearch(), history.getPrevStartDate(),
-                                     history.getPrevEndDate(), history.getPrevState());
+        model.updateAllFilteredLists(history.getPrevKeywords(), history.getPrevStartDate(),
+                                     history.getPrevEndDate(), history.getPrevState(),
+                                     history.getPrevSearches());
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, entryToRestore));
     }
@@ -117,7 +132,13 @@ public abstract class RestoreCommand extends Command {
 
     public static final String MESSAGE_SUCCESS_WITH_OVERLAP_ALERT = "Entry restored:" + "\n"
             + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
-            + "Alert: Restored entry %1$s overlaps with existing event(s).";
+            + "Alert: Restored entry overlaps with existing event(s).";
+    public static final String MESSAGE_SUCCESS_WITH_OVERDUE_ALERT = "Entry restored:" + "\n"
+            + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
+            + "Alert: Restored entry is overdue.";
+    public static final String MESSAGE_SUCCESS_WITH_OVERLAP_AND_OVERDUE_ALERT = "Entry restored:" + "\n"
+            + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
+            + "Alert: Restored entry is overdue and overlaps with existing event(s).";
 
     public static final String MESSAGE_ENTRY_ALREADY_ACTIVE = "The provided entry is already active.";
 
@@ -137,6 +158,16 @@ public abstract class RestoreCommand extends Command {
     }
 
 }
+```
+###### \java\seedu\multitasky\logic\parser\ClearCommandParser.java
+``` java
+    private Prefix[] toPrefixArray(String... stringPrefixes) {
+        Prefix[] prefixes = new Prefix[stringPrefixes.length];
+        for (int i = 0; i < stringPrefixes.length; ++i) {
+            prefixes[i] = new Prefix(stringPrefixes[i]);
+        }
+        return prefixes;
+    }
 ```
 ###### \java\seedu\multitasky\logic\parser\RestoreCommandParser.java
 ``` java
@@ -160,10 +191,12 @@ public class RestoreCommandParser {
      * @throws ParseException if the user input does not conform the expected format
      */
     public RestoreCommand parse(String args) throws ParseException {
-        argMultimap = ArgumentTokenizer.tokenize(args, ParserUtil.toPrefixArray(RestoreCommand.VALID_PREFIXES));
+        argMultimap = ArgumentTokenizer.tokenize(args,
+                                                 ParserUtil.toPrefixArray(RestoreCommand.VALID_PREFIXES));
 
         if (args.trim().isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RestoreCommand.MESSAGE_USAGE));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                                                   RestoreCommand.MESSAGE_USAGE));
         }
 
         if (hasIndexFlag(argMultimap)) { // process to restore by indexes
@@ -196,12 +229,11 @@ public class RestoreCommandParser {
     /**
      * A method that returns true if flags are given in an illogical manner for restoring commands.
      * illogical := any 2 of /float, /deadline, /event used together.
-     *
-     * TODO: Since more than 1 command parsers (delete, complete and restore) use this method,
-     * it may be refactored into the ParserUtil class as a static method.
      */
     private boolean hasInvalidFlagCombination(ArgumentMultimap argMultimap) {
-        assert argMultimap != null;
+        if (argMultimap == null) {
+            throw new AssertionError("argMultimap cannot be null.");
+        }
         return ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_DEADLINE)
                || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_DEADLINE, PREFIX_EVENT)
                || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_EVENT);
