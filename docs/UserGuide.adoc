@@ -82,8 +82,9 @@ Format: `add ENTRY_NAME [on | at | from DATE_TIME_A] [to | by DATE_TIME_B] [tag 
 * `on`, or `at` can be used to create an `event entry`. The default value of 1 hour will be used to set the ending datetime.
 * `from` should be used in conjunction with `to` for `event entry` that needs adjustable ending datetime.
 * You may use multiple flags to replace the previous flags if you come to realise mid-typing that you've entered the wrong information. e.g `add project deadline by tomorrow tag school finals by next week` will use `next week` as the deadline instead of `tomorrow` because the last flag to indicate end time is `by next week`.
-* To add a full day event, simply use the same start datetime and end datetime. e.g. `add work from tomorrow to tomorrow`.
 * `tag` can be used as an optional command to tag your entries.
+[NOTE]
+To add a full day event, simply use the same start datetime and end datetime. e.g. `add work from tomorrow to tomorrow`.
 ****
 
 *Defaults from `preferences.json`*: +
