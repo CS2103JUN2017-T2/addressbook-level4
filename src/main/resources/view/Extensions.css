@@ -1,5 +1,5 @@
 
-.error {
+.command-box-error {
     -fx-text-fill: white !important; /* The error class should always override the default text-fill style */
 }
 
