@@ -185,13 +185,10 @@ public class EditCommandParser {
      */
     private boolean hasValidFlags() {
         assert argMultimap != null;
-        if (ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_TAG, PREFIX_ADDTAG)
-            || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_DEADLINE)
-            || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_DEADLINE, PREFIX_EVENT)
-            || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_EVENT)) {
-            return false;
-        }
-        return true;
+        return !(ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_TAG, PREFIX_ADDTAG)
+                 || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_DEADLINE)
+                 || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_DEADLINE, PREFIX_EVENT)
+                 || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_EVENT));
     }
 
 }

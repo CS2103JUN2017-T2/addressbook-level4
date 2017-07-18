@@ -73,10 +73,7 @@ public class CommandHistory implements EditCommandHistory {
 
     @Override
     public boolean hasEditHistory() {
-        if (editEntryDescriptor == null) {
-            return false;
-        }
-        return true;
+        return editEntryDescriptor != null;
     }
 
     @Override
