@@ -31,6 +31,8 @@ import java.util.Set;
 import org.junit.Test;
 
 import seedu.multitasky.commons.core.index.Index;
+import seedu.multitasky.logic.CommandHistory;
+import seedu.multitasky.logic.EditCommandHistory;
 import seedu.multitasky.logic.commands.Command;
 import seedu.multitasky.logic.commands.EditByFindCommand;
 import seedu.multitasky.logic.commands.EditByIndexCommand;
@@ -39,6 +41,7 @@ import seedu.multitasky.logic.commands.EditCommand.EditEntryDescriptor;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
 import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.tag.Tag;
+import seedu.multitasky.testutil.EditCommandTestUtil;
 import seedu.multitasky.testutil.EditEntryDescriptorBuilder;
 
 public class EditCommandParserTest {
@@ -66,7 +69,7 @@ public class EditCommandParserTest {
             MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE);
 
     private EditCommandParser parser = new EditCommandParser();
-
+    private EditCommandHistory history = new CommandHistory();
 
     @Test
     public void parse_missingParts_failure() {
@@ -245,6 +248,21 @@ public class EditCommandParserTest {
         expectedCommand = new EditByFindCommand(keywordSet, descriptor);
         assertParseSuccess(userInput, expectedCommand);
     }
+
+    @Test
+    public void parse_withSavedDescriptor_success() throws Exception {
+        String searchString = "typical entryname";
+        String[] keywords = searchString.split("\\s+");
+        Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
+
+        // assumes editEntry has been saved in history
+        history.setEditHistory(EditCommandTestUtil.DESC_MEETING);
+
+        String userInput = searchString + NAME_DESC_CLEAN;
+        EditEntryDescriptor descriptor = history.getEditHistory();
+        EditCommand expectedCommand = new EditByFindCommand(keywordSet, descriptor);
+        assertParseSuccess(userInput, expectedCommand);
+    }
     // @@author
 
     @Test
@@ -295,7 +313,7 @@ public class EditCommandParserTest {
      */
     private void assertParseFailure(String userInput, String expectedMessage) {
         try {
-            parser.parse(userInput);
+            parser.parse(userInput, history);
             fail("An exception should have been thrown.");
         } catch (ParseException pe) {
             assertEquals(expectedMessage, pe.getMessage());
@@ -306,7 +324,7 @@ public class EditCommandParserTest {
      * Asserts the parsing of {@code userInput} is successful and the result matches {@code expectedCommand}
      */
     private void assertParseSuccess(String userInput, EditCommand expectedCommand) throws Exception {
-        Command command = parser.parse(userInput);
+        Command command = parser.parse(userInput, history);
         assert expectedCommand.equals(command);
     }
 }

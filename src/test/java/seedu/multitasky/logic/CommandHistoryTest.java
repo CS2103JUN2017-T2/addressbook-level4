@@ -1,6 +1,8 @@
 package seedu.multitasky.logic;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -10,6 +12,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
+import seedu.multitasky.logic.commands.EditCommand.EditEntryDescriptor;
 import seedu.multitasky.model.entry.Entry;
 
 public class CommandHistoryTest {
@@ -55,6 +58,16 @@ public class CommandHistoryTest {
         assertEquals(history.getPrevStartDate(), expectedStartDate);
         assertEquals(history.getPrevEndDate(), expectedEndDate);
         assertEquals(history.getPrevState(), expectedState);
+    }
+
+    @Test
+    public void setEditHistory_validArgs_success() {
+        assertFalse(history.hasEditHistory());
+
+        EditEntryDescriptor editEntryDescriptor = new EditEntryDescriptor();
+        history.setEditHistory(editEntryDescriptor);
+        assertTrue(history.hasEditHistory());
+        assertEquals(history.getEditHistory(), editEntryDescriptor);
     }
 
 }
