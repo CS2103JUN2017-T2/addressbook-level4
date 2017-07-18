@@ -70,13 +70,13 @@ public class EditByFindCommand extends EditCommand {
                 throw new AssertionError("The target entry cannot be missing");
             } catch (OverlappingEventException oee) {
                 commandResult = new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERLAP_ALERT,
-                                                                editedEntry.getName()));
+                                                                targetEntryString, editedEntry));
             } catch (EntryOverdueException e) {
                 commandResult = new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERDUE_ALERT,
-                                                                editedEntry.getName()));
+                                                                targetEntryString, editedEntry));
             } catch (OverlappingAndOverdueEventException e) {
                 commandResult = new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERLAP_AND_OVERDUE_ALERT,
-                                                                editedEntry.getName()));
+                                                                targetEntryString, editedEntry));
             }
 
             // refresh list view after updating.

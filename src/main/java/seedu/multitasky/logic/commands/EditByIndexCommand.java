@@ -65,13 +65,13 @@ public class EditByIndexCommand extends EditCommand {
             throw new AssertionError("The target entry cannot be missing");
         } catch (OverlappingEventException oee) {
             return new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERLAP_ALERT,
-                                                   editedEntry.getName()));
+                                                   targetEntryString, editedEntry));
         } catch (EntryOverdueException e) {
             return new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERDUE_ALERT,
-                                                   editedEntry.getName()));
+                                                   targetEntryString, editedEntry));
         } catch (OverlappingAndOverdueEventException e) {
             return new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERLAP_AND_OVERDUE_ALERT,
-                                                   editedEntry.getName()));
+                                                   targetEntryString, editedEntry));
         }
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, targetEntryString, editedEntry));

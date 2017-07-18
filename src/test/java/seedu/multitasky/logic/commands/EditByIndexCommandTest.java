@@ -41,6 +41,7 @@ import seedu.multitasky.model.UserPrefs;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
+import seedu.multitasky.model.entry.exceptions.EntryOverdueException;
 import seedu.multitasky.model.util.EntryBuilder;
 import seedu.multitasky.testutil.EditEntryDescriptorBuilder;
 import seedu.multitasky.testutil.SampleEntries;
@@ -62,11 +63,15 @@ public class EditByIndexCommandTest {
                 .withTags(VALID_TAG_URGENT, VALID_TAG_FRIEND).build();
         EditCommand editCommand = prepareCommand(INDEX_FIRST_ENTRY, PREFIX_EVENT, descriptor);
         Model expectedModel = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
-        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS,
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS_WITH_OVERDUE_ALERT,
                                                model.getFilteredEventList().get(0), editedEntry);
         CommandResult result = editCommand.execute();
-        expectedModel.updateEntry(expectedModel.getFilteredEventList().get(INDEX_FIRST_ENTRY.getZeroBased()),
+        try {
+            expectedModel.updateEntry(expectedModel.getFilteredEventList().get(INDEX_FIRST_ENTRY.getZeroBased()),
                                   editedEntry);
+        } catch (EntryOverdueException eoe) {
+            // Do nothing. Accept overdue entries in test.
+        }
 
         assertEquals(expectedMessage, result.feedbackToUser);
         assertEquals(expectedModel, model);
@@ -82,11 +87,16 @@ public class EditByIndexCommandTest {
                 .withName(VALID_NAME_CLEAN).withEndDate(VALID_DATE_11_JULY_17)
                 .withTags(VALID_TAG_URGENT, VALID_TAG_FRIEND).build();
         EditCommand editCommand = prepareCommand(INDEX_FIRST_ENTRY, PREFIX_DEADLINE, descriptor);
-        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS,
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS_WITH_OVERDUE_ALERT,
                                                targetEntry, editedEntry);
         Model expectedModel = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
-        expectedModel.updateEntry(expectedModel.getFilteredDeadlineList().get(INDEX_FIRST_ENTRY.getZeroBased()),
+        try {
+            expectedModel.updateEntry(expectedModel.getFilteredDeadlineList().get(INDEX_FIRST_ENTRY.getZeroBased()),
                                   editedEntry);
+        } catch (EntryOverdueException eoe) {
+            // Do nothing. Accept overdue entries in test.
+        }
+
         CommandResult result = editCommand.execute();
 
         assertEquals(expectedMessage, result.feedbackToUser);
