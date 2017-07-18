@@ -167,19 +167,14 @@ Edits the entry matching "zoo" and "outing" to take place on 20 September, 12pm.
 === Finding an entry : `find`
 
 Finds entries which names or tags contain all of the given keywords. +
-Format: `find KEYWORD_1 [KEYWORD_2 ...] [archive|bin]`
+Format: `find KEYWORD_1 [KEYWORD_2 ...] [archive | bin] [from START_DATE] [to END_DATE]`
 
 ****
 * The find is case insensitive. e.g `meeting` will match `Meeting`
 * The order of the keywords does not matter. e.g. `meeting group` will match `group meeting`
-* The given keywords are matched with the name and tag of entries.
-* Only full words will be matched e.g. `Meet` will not match `Meeting` but matches `meet`.
-* Only entries matching all keywords will be returned. e.g. `group meeting` will not match `client meeting`.
+* The given keywords are compared against the name and tag of entries.
+* Use the `from` and `to` dates to limit the search to a certain date range.
 ****
-
-*Defaults from `config.json`*: +
-
-* The maximum number of `find` results shown to the user is `findNumResults`
 
 //<!-- @@author A0125586X -->
 === Deleting an entry : `delete`
@@ -304,6 +299,14 @@ Here are some examples you can try:
 ** If you want to delete the first deadline in the list, you can type `d d` and press `tab`, and it completes to `delete deadline`. Now all you need is to enter `1` and press `enter` to execute your command.
 ** This goes beyond just two words in some special cases. Try typing in `l u f` which completes to `list upcoming from`, and you can continue on to type your desired starting date.
 
+=== PowerSearch
+
+PowerSearch is enabled for all commands that search for entries by keyword, like `find`, `edit`, `complete` and so on:
+
+* PowerSearch is used automatically when regular search is unable to find any results.
+* PowerSearch uses similar matching rules as Autocomplete. It can also do some more interesting things that Autocomplete cannot:
+** It can match acronyms. So if you had an event called `Play tennis with friends`, the keyword `ptwf` would produce a match.
+
 === Keyboard Shortcuts
 
 There are several keyboard shortcuts that allow you to bring up or even execute commands immediately. +
@@ -319,6 +322,10 @@ Shortcuts that bring up commands:
 * `F3` types `find` into the command box
 * `F4` types `exit` into the command box
 * `F5` types `list` into the command box
+* `ctrl` + `s` types `set` into the command box
+
+Other shortcuts:
+* `F6` brings the command box into focus for typing
 //<!-- @@author -->
 
 == FAQ
@@ -414,7 +421,7 @@ ____
 ** e.g. `list archive from yesterday 5pm`
 * *Edit* : `edit [KEYWORD_1 KEYWORD_2...] | [event | deadline | float INDEX] [name NEW_ENTRY_NAME] [on | at | from DATE_TIME_A] [to | by DATE_TIME_B] [tag TAG_1 TAG_2...]`
 ** e.g. `edit zoo outing on next friday`
-* *Find* : `find KEYWORD_1 [KEYWORD_2 ...] [archive | bin]`
+* *Find* : `find KEYWORD_1 [KEYWORD_2 ...] [archive | bin] [from START_DATE] [to END_DATE]`
 ** e.g. `find lecture`
 * *Set* : `set ./newfilepath.xml`
 ** e.g. `set ./entrybook.xml`
