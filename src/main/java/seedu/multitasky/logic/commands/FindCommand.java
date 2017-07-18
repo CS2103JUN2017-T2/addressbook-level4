@@ -33,11 +33,11 @@ public class FindCommand extends Command {
     @Override
     public CommandResult execute() {
 
-        // Update all 3 lists with new search parameters until at least 1 result is found.
-        model.updateAllFilteredLists(keywords, null, null, Entry.State.ACTIVE);
+        // Update all 3 lists with lenient search parameters until at least 1 result is found.
+        model.updateAllFilteredLists(keywords, null, null, Entry.State.ACTIVE, Model.LENIENT_SEARCHES);
 
         // save keywords of the search
-        history.setPrevSearch(keywords, null, null, Entry.State.ACTIVE);
+        history.setPrevSearch(keywords, null, null, Entry.State.ACTIVE, Model.LENIENT_SEARCHES);
 
         int deadlineSize = model.getFilteredDeadlineList().size();
         int eventSize = model.getFilteredEventList().size();
