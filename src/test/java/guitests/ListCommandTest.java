@@ -99,6 +99,30 @@ public class ListCommandTest extends EntryBookGuiTest {
         assertTrue(commandBox.getCommandInput().equals(ListCommand.COMMAND_WORD + " "));
     }
 
+    /*******************************
+     * Mixed-case and autocomplete *
+     ******************************/
+    @Test
+    public void list_tabAutocomplete_success() {
+        for (int i = 1; i < ListCommand.COMMAND_WORD.length(); ++i) {
+            assertListTabAutocomplete(ListCommand.COMMAND_WORD.substring(0, i));
+        }
+        assertListTabAutocomplete(ListCommand.COMMAND_WORD + "a");
+        assertListTabAutocomplete(ListCommand.COMMAND_WORD + "aa");
+    }
+
+    @Test
+    public void list_tabAutocompleteKeyword_success() {
+        commandBox.enterCommand("l r");
+        commandBox.pressTabKey();
+        assertCommandBox("list reverse ");
+
+        commandBox.enterCommand("l u f");
+        commandBox.pressTabKey();
+        assertCommandBox("list upcoming from ");
+    }
+
+
     /*******************
      * Utility methods *
      ******************/
@@ -108,5 +132,14 @@ public class ListCommandTest extends EntryBookGuiTest {
             reversed[i] = EntryBuilder.build(entries[entries.length - 1 - i]);
         }
         return reversed;
+    }
+
+    /**
+     * Confirms that the given input string will autocomplete to the correct command word.
+     */
+    private void assertListTabAutocomplete(String input) {
+        commandBox.enterCommand(input);
+        commandBox.pressTabKey();
+        assertCommandBox(ListCommand.COMMAND_WORD + " ");
     }
 }

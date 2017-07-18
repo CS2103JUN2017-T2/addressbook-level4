@@ -2,13 +2,18 @@ package seedu.multitasky.model;
 
 import java.util.Calendar;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 
 import seedu.multitasky.commons.core.UnmodifiableObservableList;
+import seedu.multitasky.commons.exceptions.IllegalValueException;
+import seedu.multitasky.commons.util.PowerMatch;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.exceptions.EntryOverdueException;
+import seedu.multitasky.model.entry.exceptions.OverlappingAndOverdueEventException;
 import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 import seedu.multitasky.storage.exception.NothingToRedoException;
 import seedu.multitasky.storage.exception.NothingToUndoException;
@@ -18,9 +23,10 @@ import seedu.multitasky.storage.exception.NothingToUndoException;
  */
 public interface Model {
 
-    public enum Search {
-        AND, OR, POWER_AND, POWER_OR
-    };
+    public enum Search { AND, OR, POWER_AND, POWER_OR };
+
+    public static final Search[] STRICT_SEARCHES = { Search.AND, Search.POWER_AND };
+    public static final Search[] LENIENT_SEARCHES = { Search.AND, Search.OR, Search.POWER_AND, Search.POWER_OR };
 
     /** Clears existing backing model and replaces with the provided new data. */
     void resetData(ReadOnlyEntryBook newData);
@@ -31,12 +37,23 @@ public interface Model {
     /** Deletes the given entry. */
     void deleteEntry(ReadOnlyEntry target) throws DuplicateEntryException, EntryNotFoundException;
 
-    /** Adds the given entry */
-    void addEntry(ReadOnlyEntry entry) throws DuplicateEntryException, OverlappingEventException;
+    /** Clears all entries of a specific state. */
+    public void clearStateSpecificEntries(Entry.State state);
 
-    /** Updates the state of a given entry. */
+    /** Adds the given entry
+     * @throws EntryOverdueException
+     * @throws OverlappingAndOverdueEventException
+     */
+    void addEntry(ReadOnlyEntry entry) throws DuplicateEntryException, OverlappingEventException,
+            OverlappingAndOverdueEventException, EntryOverdueException;
+
+    /** Updates the state of a given entry.
+     * @throws EntryOverdueException
+     * @throws OverlappingAndOverdueEventException
+     */
     void changeEntryState(ReadOnlyEntry entryToChange, Entry.State newState)
-            throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException;
+            throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException,
+            OverlappingAndOverdueEventException, EntryOverdueException;
 
     /** Undo the previous data-changing action */
     void undoPreviousAction() throws NothingToUndoException;
@@ -48,12 +65,23 @@ public interface Model {
     void changeFilePath(String newFilePath);
 
     /**
+     * Load data at the given file path
+     *
+     * @throws IllegalValueException
+     */
+    void openFilePath(String newFilePath) throws IllegalValueException;
+
+    /**
      * Replaces the given entry {@code target} with {@code editedEntry}.
      *
      * @throws EntryNotFoundException if {@code target} could not be found in the list.
+     * @throws EntryOverdueException if {@code editedReadOnlyEntry} is overdue.
+     * @throws OverlappingAndOverdueEventException is an event which overlaps with
+     *              existing event(s) and is overdue.
      */
     void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
-            throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException;
+            throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException,
+            OverlappingAndOverdueEventException, EntryOverdueException;
 
     /** Returns the filtered event list as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
     UnmodifiableObservableList<ReadOnlyEntry> getFilteredEventList();
@@ -93,28 +121,36 @@ public interface Model {
      * date range and state. Attempts all the different searches in order until it has at least 1 result.
      */
     void updateAllFilteredLists(Set<String> keywords, Calendar startDate, Calendar endDate,
-                                Entry.State state);
+                                Entry.State state, Search... searches);
 
-    /*
+    /**
+     * Updates the filter of all entry lists to filter by the given keywords,
+     * date range and state. Attempts all the different searches in order until it has at least 1 result.
+     * Allows for multiple states to be shown at the same time.
+     */
+    void updateAllFilteredLists(Set<String> keywords, Calendar startDate, Calendar endDate,
+                                List<Entry.State> states, Search... searches);
+
+    /**
      * Updates the filter of the filtered event list to filter by the given keywords,
      * date range and state using the specified search type.
      */
     void updateFilteredEventList(Set<String> keywords, Calendar startDate, Calendar endDate,
-                                 Entry.State state, Search search);
+                                 Entry.State state, Search search, PowerMatch.Level level);
 
-    /*
+    /**
      * Updates the filter of the filtered deadline list to filter by the given keywords,
      * date range and state using the specified search type.
      */
     void updateFilteredDeadlineList(Set<String> keywords, Calendar startDate, Calendar endDate,
-                                    Entry.State state, Search search);
+                                    Entry.State state, Search search, PowerMatch.Level level);
 
-    /*
+    /**
      * Updates the filter of the filtered floating task list to filter by the given keywords,
      * date range and state using the specified search type.
      */
     void updateFilteredFloatingTaskList(Set<String> keywords, Calendar startDate, Calendar endDate,
-                                        Entry.State state, Search search);
+                                        Entry.State state, Search search, PowerMatch.Level level);
 
     /** Updates the sorting comparators used. */
     void updateSortingComparators(Comparator<ReadOnlyEntry> eventComparator,

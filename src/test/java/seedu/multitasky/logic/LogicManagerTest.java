@@ -26,10 +26,9 @@ import org.junit.rules.TemporaryFolder;
 import com.google.common.eventbus.Subscribe;
 
 import seedu.multitasky.commons.core.EventsCenter;
-import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
-import seedu.multitasky.commons.events.ui.JumpToListRequestEvent;
 import seedu.multitasky.commons.events.ui.ShowHelpRequestEvent;
+import seedu.multitasky.commons.util.PowerMatch;
 import seedu.multitasky.logic.commands.AddCommand;
 import seedu.multitasky.logic.commands.Command;
 import seedu.multitasky.logic.commands.CommandResult;
@@ -67,7 +66,6 @@ public class LogicManagerTest {
     // These are for checking the correctness of the events raised
     private ReadOnlyEntryBook latestSavedEntryBook;
     private boolean helpShown;
-    private Index targetedJumpIndex;
 
     @Subscribe
     private void handleLocalModelChangedEvent(EntryBookChangedEvent abce) {
@@ -79,20 +77,14 @@ public class LogicManagerTest {
         helpShown = true;
     }
 
-    @Subscribe
-    private void handleJumpToListRequestEvent(JumpToListRequestEvent je) {
-        targetedJumpIndex = Index.fromZeroBased(je.targetIndex);
-    }
-
     @Before
     public void setUp() {
         model = new ModelManager();
-        logic = new LogicManager(model);
+        logic = new LogicManager(model, new UserPrefs());
         EventsCenter.getInstance().registerHandler(this);
 
         latestSavedEntryBook = new EntryBook(model.getEntryBook()); // last saved assumed to be up to date
         helpShown = false;
-        targetedJumpIndex = null;
     }
 
     @After
@@ -248,23 +240,6 @@ public class LogicManagerTest {
      * @param commandWord to test assuming it targets a single entry in the last shown list
      *        based on visible index.
      */
-    private void assertIncorrectIndexFormatBehaviorForCommand(String commandWord,
-                                                              String expectedMessage)
-            throws Exception {
-        assertParseException(commandWord, expectedMessage); // index missing
-        assertParseException(commandWord + " +1", expectedMessage); // index should be unsigned
-        assertParseException(commandWord + " -1", expectedMessage); // index should be unsigned
-        assertParseException(commandWord + " 0", expectedMessage); // index cannot be 0
-        assertParseException(commandWord + " not_a_number", expectedMessage);
-    }
-
-    /**
-     * Confirms the 'invalid argument index number behaviour' for the given command
-     * targeting a single entry in the shown list, using visible index.
-     *
-     * @param commandWord to test assuming it targets a single entry in the last shown list
-     *        based on visible index.
-     */
     private void assertIndexNotFoundBehaviorForCommand(String commandWord) throws Exception {
         String expectedMessage = MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX;
         TestDataHelper helper = new TestDataHelper();
@@ -362,7 +337,7 @@ public class LogicManagerTest {
         Model expectedModel = new ModelManager(helper.generateEntryBook(fourEntrys), new UserPrefs());
         expectedModel.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList("key", "rAnDoM")),
                                                      null, null,
-                                                     Entry.State.ACTIVE, Model.Search.OR);
+                                                     Entry.State.ACTIVE, Model.Search.OR, PowerMatch.Level.LEVEL_0);
         helper.addToModel(model, fourEntrys);
 
         assertCommandSuccess(FindCommand.COMMAND_WORD + " key rAnDoM",

@@ -145,4 +145,78 @@ public class EventTest {
         assertTrue(array1[0].equals(array2[0]));
     }
 
+    // @@author A0126623L
+    @Test
+    public void hasOverlappingTimeTest() {
+        final int offsetAmount = 2;
+
+        // Make an event with start time overlapping with event1.
+        Entry eventWithStartTimeOverlapped = EntryBuilder.build(event1);
+        eventWithStartTimeOverlapped.getStartDateAndTime().add(Calendar.HOUR, offsetAmount);
+        eventWithStartTimeOverlapped.getEndDateAndTime().add(Calendar.HOUR, offsetAmount);
+        assertTrue(event1.hasOverlappingTime(eventWithStartTimeOverlapped));
+
+        // Make an event with start time overlapping with event1.
+        Entry eventWithEndTimeOverlapped = EntryBuilder.build(event1);
+        eventWithEndTimeOverlapped.getStartDateAndTime().add(Calendar.HOUR, -offsetAmount);
+        eventWithEndTimeOverlapped.getEndDateAndTime().add(Calendar.HOUR, -offsetAmount);
+        assertTrue(event1.hasOverlappingTime(eventWithEndTimeOverlapped));
+
+        // Make an event fully overlapped with event1.
+        Entry eventFullyOverlapped = EntryBuilder.build(event1);
+        assertTrue(event1.hasOverlappingTime(eventFullyOverlapped));
+
+        try {
+            // Make an event that doesn't overlap with event1.
+            Entry eventWithNoOverlap = EntryBuilder.build(new Name("noOverlapEvent"),
+                                                          Calendar.getInstance(),
+                                                          Calendar.getInstance(),
+                                                          "tag1");
+            eventWithNoOverlap.getStartDateAndTime().add(Calendar.YEAR, offsetAmount);
+            eventWithNoOverlap.getEndDateAndTime().add(Calendar.YEAR, offsetAmount + 1);
+            assertFalse(event1.hasOverlappingTime(eventWithNoOverlap));
+        } catch (Exception e) {
+            fail("Should not fail.");
+        }
+    }
+    // @@author
+
+    // @@author A0126623L
+    @Test
+    public void isOverdueTest() {
+        final int offsetAmount = 10;
+        try {
+            // Overdue event
+            Entry overdueEvent = EntryBuilder.build(new Name("eventSample"),
+                                                    Calendar.getInstance(),
+                                                    Calendar.getInstance(),
+                                                    "tag1");
+            overdueEvent.getEndDateAndTime().add(Calendar.YEAR, -offsetAmount);
+            overdueEvent.getStartDateAndTime().add(Calendar.YEAR, -offsetAmount - 1);
+            assertTrue(((Event) overdueEvent).isOverdue());
+
+            // Current event should be considered overdue
+            Entry currentEvent = EntryBuilder.build(new Name("eventSample"),
+                                                    Calendar.getInstance(),
+                                                    Calendar.getInstance(),
+                                                    "tag1");
+            assertTrue(((Event) currentEvent).isOverdue());
+
+            // Future event
+            // Overdue event
+            Entry futureEvent = EntryBuilder.build(new Name("eventSample"),
+                                                   Calendar.getInstance(),
+                                                   Calendar.getInstance(),
+                                                   "tag1");
+            futureEvent.getEndDateAndTime().add(Calendar.YEAR, offsetAmount + 1);
+            futureEvent.getStartDateAndTime().add(Calendar.YEAR, offsetAmount);
+            assertFalse(((Event) futureEvent).isOverdue());
+
+        } catch (Exception e) {
+            fail("Should not fail.");
+        }
+
+    }
+    // @@author
+
 }

@@ -6,10 +6,13 @@ import java.util.Set;
 
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.logic.parser.CliSyntax;
+import seedu.multitasky.model.Model;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.exceptions.EntryOverdueException;
+import seedu.multitasky.model.entry.exceptions.OverlappingAndOverdueEventException;
 import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 
 /*
@@ -57,10 +60,18 @@ public class RestoreByFindCommand extends RestoreCommand {
             } catch (OverlappingEventException oee) {
                 commandResult = new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERLAP_ALERT,
                                                                 entryToRestore.getName()));
+            } catch (EntryOverdueException e) {
+                commandResult = new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERDUE_ALERT,
+                                                                entryToRestore.getName()));
+            } catch (OverlappingAndOverdueEventException e) {
+                commandResult = new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERLAP_AND_OVERDUE_ALERT,
+                                                                entryToRestore.getName()));
             }
+
             // refresh list view after updating.
-            model.updateAllFilteredLists(history.getPrevSearch(), history.getPrevStartDate(),
-                                         history.getPrevEndDate(), history.getPrevState());
+            model.updateAllFilteredLists(history.getPrevKeywords(), history.getPrevStartDate(),
+                                         history.getPrevEndDate(), history.getPrevState(),
+                                         history.getPrevSearches());
             if (commandResult == null) {
                 throw new AssertionError("commandResult in RestoreByFindCommand shouldn't be null here.");
             }
@@ -70,10 +81,10 @@ public class RestoreByFindCommand extends RestoreCommand {
             history.setPrevSearch(keywords, null, null, history.getPrevState());
 
             if (allList.size() >= 2) { // multiple entries found
-                return new CommandResult(MESSAGE_MULTIPLE_ENTRIES);
+                throw new CommandException(MESSAGE_MULTIPLE_ENTRIES);
             } else {
                 assert (allList.size() == 0); // no entries found
-                return new CommandResult(MESSAGE_NO_ENTRIES);
+                throw new CommandException(MESSAGE_NO_ENTRIES);
             }
         }
     }
@@ -87,14 +98,12 @@ public class RestoreByFindCommand extends RestoreCommand {
     private List<ReadOnlyEntry> collateArchivedAndDeletedEntries() {
 
         List<ReadOnlyEntry> allList = new ArrayList<>();
-        // Filter and collate archived entries that matches keywords
-        model.updateAllFilteredLists(keywords, null, null, Entry.State.ARCHIVED);
-        allList.addAll(model.getFilteredDeadlineList());
-        allList.addAll(model.getFilteredEventList());
-        allList.addAll(model.getFilteredFloatingTaskList());
+        List<Entry.State> states = new ArrayList<>();
+        states.add(Entry.State.ARCHIVED);
+        states.add(Entry.State.DELETED);
 
-        // Filter and collate deleted entries that matches keywords
-        model.updateAllFilteredLists(keywords, null, null, Entry.State.DELETED);
+        // Filter and collate archived and deleted entries that matches keywords
+        model.updateAllFilteredLists(keywords, null, null, states, Model.STRICT_SEARCHES);
         allList.addAll(model.getFilteredDeadlineList());
         allList.addAll(model.getFilteredEventList());
         allList.addAll(model.getFilteredFloatingTaskList());

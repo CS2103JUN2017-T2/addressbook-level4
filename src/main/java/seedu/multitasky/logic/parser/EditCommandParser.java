@@ -2,6 +2,7 @@ package seedu.multitasky.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.multitasky.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_ADDTAG;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_AT;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_BY;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_DEADLINE;
@@ -22,6 +23,7 @@ import java.util.Set;
 
 import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.commons.exceptions.IllegalValueException;
+import seedu.multitasky.logic.EditCommandHistory;
 import seedu.multitasky.logic.commands.EditByFindCommand;
 import seedu.multitasky.logic.commands.EditByIndexCommand;
 import seedu.multitasky.logic.commands.EditCommand;
@@ -42,7 +44,7 @@ public class EditCommandParser {
      *
      * @throws ParseException if the user input does not conform the expected format
      */
-    public EditCommand parse(String args) throws ParseException {
+    public EditCommand parse(String args, EditCommandHistory history) throws ParseException {
         requireNonNull(args);
         argMultimap = ArgumentTokenizer.tokenize(args, ParserUtil.toPrefixArray(EditCommand.VALID_PREFIXES));
         EditEntryDescriptor editEntryDescriptor = new EditEntryDescriptor();
@@ -51,30 +53,35 @@ public class EditCommandParser {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
         }
 
-        // initialise edit descriptor
-        Prefix startDatePrefix = null;
-        Prefix endDatePrefix = null;
-        if (hasStartDatePrefix()) {
-            startDatePrefix = ParserUtil.getLastPrefix(args, PREFIX_FROM, PREFIX_AT, PREFIX_ON);
-            if (argMultimap.getValue(startDatePrefix).get().equals("")) { //indicates reset
-                editEntryDescriptor.setResetStartDate(true);
-                startDatePrefix = null; // prevent parsing of date since it will throw exception there
-            }
+        if (!hasValidFlags()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
         }
-        if (hasEndDatePrefix()) {
-            endDatePrefix = ParserUtil.getLastPrefix(args, PREFIX_BY, PREFIX_TO);
-            if (argMultimap.getValue(endDatePrefix).get().equals("")) { //indicates reset
-                editEntryDescriptor.setResetEndDate(true);
-                endDatePrefix = null; // prevent parsing of date since it will throw exception there
+
+        if (!history.hasEditHistory()) {
+            // initialise edit descriptor
+            Prefix startDatePrefix = null;
+            Prefix endDatePrefix = null;
+            if (hasStartDatePrefix()) {
+                startDatePrefix = ParserUtil.getLastPrefix(args, PREFIX_FROM, PREFIX_AT, PREFIX_ON);
+                if (argMultimap.getValue(startDatePrefix).get().equals("")) { // indicates reset
+                    editEntryDescriptor.setResetStartDate(true);
+                    startDatePrefix = null; // prevent parsing of date since it will throw exception there
+                }
             }
+            if (hasEndDatePrefix()) {
+                endDatePrefix = ParserUtil.getLastPrefix(args, PREFIX_BY, PREFIX_TO);
+                if (argMultimap.getValue(endDatePrefix).get().equals("")) { // indicates reset
+                    editEntryDescriptor.setResetEndDate(true);
+                    endDatePrefix = null; // prevent parsing of date since it will throw exception there
+                }
+            }
+            initEntryEditor(argMultimap, editEntryDescriptor, startDatePrefix, endDatePrefix);
+        } else { // load up editEntryDescriptor from previous try
+            editEntryDescriptor = history.getEditHistory();
+            history.resetEditHistory();
         }
-        initEntryEditor(argMultimap, editEntryDescriptor, startDatePrefix, endDatePrefix);
 
         if (hasIndexFlag(argMultimap)) { // edit by index
-            if (hasInvalidFlagCombination(argMultimap)) {
-                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                                                       EditCommand.MESSAGE_USAGE));
-            }
             try {
                 Prefix listIndicatorPrefix = ParserUtil.getMainPrefix(argMultimap, PREFIX_FLOATINGTASK,
                                                                       PREFIX_DEADLINE, PREFIX_EVENT);
@@ -116,6 +123,8 @@ public class EditCommandParser {
             }
             parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG))
                       .ifPresent(editEntryDescriptor::setTags);
+            parseTagsForEdit(argMultimap.getAllValues(PREFIX_ADDTAG))
+                      .ifPresent(editEntryDescriptor::setAddTags);
         } catch (IllegalValueException ive) {
             throw new ParseException(ive.getMessage(), ive);
         }
@@ -138,17 +147,6 @@ public class EditCommandParser {
         }
         Collection<String> tagSet = tags.size() == 1 && tags.contains("") ? Collections.emptySet() : tags;
         return Optional.of(ParserUtil.parseTags(tagSet));
-    }
-
-    /**
-     * A method that returns true if flags are given in an illogical manner for editing commands.
-     * illogical := any 2 of /float, /deadline, /event used together.
-     */
-    private boolean hasInvalidFlagCombination(ArgumentMultimap argMultimap) {
-        assert argMultimap != null;
-        return ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_DEADLINE)
-               || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_DEADLINE, PREFIX_EVENT)
-               || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_EVENT);
     }
 
     /**
@@ -178,6 +176,19 @@ public class EditCommandParser {
     private boolean hasEndDatePrefix() {
         assert argMultimap != null;
         return ParserUtil.arePrefixesPresent(argMultimap, PREFIX_BY, PREFIX_TO);
+    }
+
+    /**
+     * returns false if flags present in argMultimap indicate invalid flags are present
+     * invalid for edit: cannot use tag and addtag at the same time, cannot use more than 2 of any
+     * float, deadline, event tags.
+     */
+    private boolean hasValidFlags() {
+        assert argMultimap != null;
+        return !(ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_TAG, PREFIX_ADDTAG)
+                 || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_DEADLINE)
+                 || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_DEADLINE, PREFIX_EVENT)
+                 || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_EVENT));
     }
 
 }

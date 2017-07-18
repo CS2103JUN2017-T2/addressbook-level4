@@ -6,10 +6,13 @@ import java.util.Set;
 
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.logic.parser.CliSyntax;
+import seedu.multitasky.model.Model;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.exceptions.EntryOverdueException;
+import seedu.multitasky.model.entry.exceptions.OverlappingAndOverdueEventException;
 import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 
 // @@author A0140633R
@@ -26,7 +29,8 @@ public class EditByFindCommand extends EditCommand {
                                                                         CliSyntax.PREFIX_DEADLINE.toString(),
                                                                         CliSyntax.PREFIX_FLOATINGTASK.toString())
                                                           + "]"
-                                                          + " INDEX to specify which entry to edit.";
+                                                          + " INDEX to specify which entry to edit. \n"
+                                                          + "The edit details have been saved for next edit try";
 
     private Set<String> keywords;
 
@@ -43,7 +47,7 @@ public class EditByFindCommand extends EditCommand {
     public CommandResult execute() throws CommandException, DuplicateEntryException {
 
         // Update all 3 lists with new search parameters until at least 1 result is found.
-        model.updateAllFilteredLists(keywords, null, null, Entry.State.ACTIVE);
+        model.updateAllFilteredLists(keywords, null, null, Entry.State.ACTIVE, Model.STRICT_SEARCHES);
 
         // collate a combined list to measure how many entries are found.
         List<ReadOnlyEntry> allList = new ArrayList<>();
@@ -62,27 +66,37 @@ public class EditByFindCommand extends EditCommand {
                 assert editedEntry != null;
 
                 model.updateEntry(entryToEdit, editedEntry);
-                commandResult = new CommandResult(String.format(MESSAGE_SUCCESS, targetEntryString, editedEntry));
+                commandResult = new CommandResult(String.format(MESSAGE_SUCCESS, targetEntryString,
+                                                                editedEntry));
             } catch (EntryNotFoundException pnfe) {
-                assert false : "The target entry cannot be missing";
+                throw new AssertionError("The target entry cannot be missing");
             } catch (OverlappingEventException oee) {
                 commandResult = new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERLAP_ALERT,
-                                                                entryToEdit.getName()));
+                                                                targetEntryString, editedEntry));
+            } catch (EntryOverdueException e) {
+                commandResult = new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERDUE_ALERT,
+                                                                targetEntryString, editedEntry));
+            } catch (OverlappingAndOverdueEventException e) {
+                commandResult = new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERLAP_AND_OVERDUE_ALERT,
+                                                                targetEntryString, editedEntry));
             }
+
             // refresh list view after updating.
-            model.updateAllFilteredLists(history.getPrevSearch(), history.getPrevStartDate(),
-                                         history.getPrevEndDate(), history.getPrevState());
+            model.updateAllFilteredLists(history.getPrevKeywords(), history.getPrevStartDate(),
+                                         history.getPrevEndDate(), history.getPrevState(),
+                                         history.getPrevSearches());
 
             assert commandResult != null : "commandResult in EditByFindCommand shouldn't be null here.";
             return commandResult;
 
         } else {
             history.setPrevSearch(keywords, null, null, Entry.State.ACTIVE);
+            history.setEditHistory(editEntryDescriptor);
             if (allList.size() >= 2) {
-                return new CommandResult(MESSAGE_MULTIPLE_ENTRIES);
+                throw new CommandException(MESSAGE_MULTIPLE_ENTRIES);
             } else {
                 assert allList.size() == 0;
-                return new CommandResult(MESSAGE_NO_ENTRIES);
+                throw new CommandException(MESSAGE_NO_ENTRIES);
             }
         }
     }

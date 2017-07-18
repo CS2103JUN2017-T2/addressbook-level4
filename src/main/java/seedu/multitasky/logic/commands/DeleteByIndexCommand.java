@@ -10,6 +10,8 @@ import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.exceptions.EntryOverdueException;
+import seedu.multitasky.model.entry.exceptions.OverlappingAndOverdueEventException;
 import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 
 // @@author A0140633R
@@ -40,13 +42,18 @@ public class DeleteByIndexCommand extends DeleteCommand {
         try {
             model.changeEntryState(entryToDelete, Entry.State.DELETED);
         } catch (EntryNotFoundException enfe) {
-            assert false : "The target entry cannot be missing";
+            throw new AssertionError("The target entry cannot be missing");
         } catch (OverlappingEventException oee) {
-            assert false : "This should not happen for deletion.";
+            throw new AssertionError("Overlap should not happen for deletion.");
+        } catch (EntryOverdueException e) {
+            throw new AssertionError("Overdue should not apply to deletion.");
+        } catch (OverlappingAndOverdueEventException e) {
+            throw new AssertionError("Overlap and overdue should not apply to deletion.");
         }
         // refresh list view after updating.
-        model.updateAllFilteredLists(history.getPrevSearch(), history.getPrevStartDate(),
-                                     history.getPrevEndDate(), history.getPrevState());
+        model.updateAllFilteredLists(history.getPrevKeywords(), history.getPrevStartDate(),
+                                     history.getPrevEndDate(), history.getPrevState(),
+                                     history.getPrevSearches());
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, entryToDelete));
     }

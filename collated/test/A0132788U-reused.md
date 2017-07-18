@@ -53,7 +53,7 @@ public class CompleteCommandTest {
         ReadOnlyEntry entry = model.getEntryBook().getFloatingTaskList().get(0);
         final String[] splitName = entry.getName().fullName.split("\\s+");
         model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList(splitName)), null, null, Entry.State.ACTIVE,
-                                             Model.Search.AND);
+                                             Model.Search.AND, PowerMatch.Level.LEVEL_0);
 
         assert model.getFilteredFloatingTaskList().size() == 1;
     }
@@ -62,7 +62,8 @@ public class CompleteCommandTest {
      * Updates {@code model}'s filtered list to show no one.
      */
     private void showNoEntry(Model model) {
-        model.updateFilteredFloatingTaskList(Collections.emptySet(), null, null, Entry.State.ACTIVE, Model.Search.AND);
+        model.updateFilteredFloatingTaskList(Collections.emptySet(), null, null, Entry.State.ACTIVE, Model.Search.AND,
+                                             PowerMatch.Level.LEVEL_0);
         assert model.getFilteredFloatingTaskList().isEmpty();
     }
 

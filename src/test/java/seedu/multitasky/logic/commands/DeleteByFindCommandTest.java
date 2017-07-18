@@ -7,9 +7,13 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
+import seedu.multitasky.commons.util.PowerMatch;
 import seedu.multitasky.logic.CommandHistory;
+import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.model.Model;
 import seedu.multitasky.model.ModelManager;
 import seedu.multitasky.model.UserPrefs;
@@ -23,6 +27,9 @@ import seedu.multitasky.testutil.SampleEntries;
  * Contains integration tests (interaction with the Model) and unit tests for {@code DeleteByFindCommand}.
  */
 public class DeleteByFindCommandTest {
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void execute_validKeywordsUnfilteredList_success() throws Exception {
@@ -48,17 +55,21 @@ public class DeleteByFindCommandTest {
 
     @Test
     public void execute_noEntryFoundUnfilteredList_returnsNoEntriesMessage() throws Exception {
+        thrown.expect(CommandException.class);
+        thrown.expectMessage(DeleteByFindCommand.MESSAGE_NO_ENTRIES);
+
         Model model = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
         String searchString = "randomstring";
         HashSet<String> keywords = new HashSet<>(Arrays.asList(searchString.split("\\s+")));
         DeleteCommand deleteCommand = prepareCommand(model, keywords);
-        CommandResult result = deleteCommand.execute();
-
-        assertEquals(result.feedbackToUser, DeleteByFindCommand.MESSAGE_NO_ENTRIES);
+        deleteCommand.execute();
     }
 
     @Test
     public void execute_multipleEntriesFoundFilteredList_returnsMultipleEntriesMessage() throws Exception {
+        thrown.expect(CommandException.class);
+        thrown.expectMessage(DeleteByFindCommand.MESSAGE_MULTIPLE_ENTRIES);
+
         Model model = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
         String searchString = "try to find";
         HashSet<String> keywords = new HashSet<>(Arrays.asList(searchString.split("\\s+")));
@@ -66,9 +77,7 @@ public class DeleteByFindCommandTest {
         model.addEntry(EntryBuilder.build(searchString + " 2", "second_tag"));
         model.addEntry(EntryBuilder.build(searchString + " 3", "third_tag"));
         DeleteCommand deleteCommand = prepareCommand(model, keywords);
-        CommandResult result = deleteCommand.execute();
-
-        assertEquals(result.feedbackToUser, DeleteByFindCommand.MESSAGE_MULTIPLE_ENTRIES);
+        deleteCommand.execute();
     }
 
     @Test
@@ -110,7 +119,8 @@ public class DeleteByFindCommandTest {
         ReadOnlyEntry entry = model.getEntryBook().getFloatingTaskList().get(0);
         final String[] splitName = entry.getName().fullName.split("\\s+");
         model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList(splitName)),
-                                             null, null, Entry.State.ACTIVE, Model.Search.AND);
+                                             null, null, Entry.State.ACTIVE, Model.Search.AND,
+                                             PowerMatch.Level.LEVEL_0);
 
         assert model.getFilteredFloatingTaskList().size() == 1;
     }

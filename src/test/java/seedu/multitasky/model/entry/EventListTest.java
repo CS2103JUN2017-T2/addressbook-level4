@@ -4,6 +4,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.Calendar;
 import java.util.Objects;
 
 import org.junit.Before;
@@ -194,4 +195,39 @@ public class EventListTest {
         eventListToTest.setEntries(eventList1);
         assertTrue(eventListToTest.equals(eventList1));
     }
+
+    // @@author A0126623L
+    @Test
+    public void hasOverlappingEventTest() {
+        int offsetAmount = 1000;
+
+        Entry overlappingEventToAdd = this.sampleEventArray[0];
+        assertTrue(eventList1.hasOverlappingEvent(overlappingEventToAdd));
+        try {
+            Entry nonOverlappingEvent = EntryBuilder.build(new Name("nonOverlappingEventName"),
+                                                           Calendar.getInstance(),
+                                                           Calendar.getInstance(),
+                                                           "tag1");
+            nonOverlappingEvent.getEndDateAndTime().add(Calendar.YEAR, offsetAmount + 1);
+            nonOverlappingEvent.getStartDateAndTime().add(Calendar.YEAR, offsetAmount);
+            assertFalse(eventList1.hasOverlappingEvent(nonOverlappingEvent));
+        } catch (Exception e) {
+            fail("Should not fail.");
+        }
+    }
+
+    // @@author A0126623L
+    @Test
+    public void hasOverlappingEventAfterUpdateTest() {
+        Entry eventToManipulate = eventList1.asObservableList().get(0);
+        eventToManipulate.setState(Entry.State.DELETED);
+        assertTrue(eventList1.asObservableList().get(0).isDeleted());
+
+        Entry activatedManipulatedEvent = EntryBuilder.build(eventToManipulate);
+        activatedManipulatedEvent.setState(Entry.State.ACTIVE);
+
+        assertFalse(activatedManipulatedEvent.equals(eventToManipulate));
+        assertTrue(eventList1.hasOverlappingEventAfterUpdate(eventToManipulate, activatedManipulatedEvent));
+    }
+
 }

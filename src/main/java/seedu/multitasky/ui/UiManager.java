@@ -14,7 +14,6 @@ import seedu.multitasky.commons.core.ComponentManager;
 import seedu.multitasky.commons.core.Config;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.events.storage.DataSavingExceptionEvent;
-import seedu.multitasky.commons.events.ui.JumpToListRequestEvent;
 import seedu.multitasky.commons.events.ui.ShowHelpRequestEvent;
 import seedu.multitasky.commons.util.StringUtil;
 import seedu.multitasky.logic.Logic;
@@ -111,13 +110,6 @@ public class UiManager extends ComponentManager implements Ui {
     private void handleShowHelpEvent(ShowHelpRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         mainWindow.handleHelp();
-    }
-
-    @Subscribe
-    private void handleJumpToListRequestEvent(JumpToListRequestEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        // Currently scrolls the floating tasks, might do more later on
-        mainWindow.getFloatingTaskListPanel().scrollTo(event.targetIndex);
     }
 
 }

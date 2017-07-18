@@ -1,4 +1,4 @@
-package seedu.multitasky.commons.events.model;
+package seedu.multitasky.commons.events.storage;
 
 import seedu.multitasky.commons.events.BaseEvent;
 import seedu.multitasky.model.ReadOnlyEntryBook;

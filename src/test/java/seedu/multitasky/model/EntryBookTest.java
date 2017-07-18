@@ -21,6 +21,8 @@ import seedu.multitasky.model.entry.FloatingTaskListTest;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.exceptions.EntryOverdueException;
+import seedu.multitasky.model.entry.exceptions.OverlappingAndOverdueEventException;
 import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 
 public class EntryBookTest {
@@ -48,6 +50,10 @@ public class EntryBookTest {
                 entryBook.addEntry(event);
             } catch (OverlappingEventException oee) {
                 // Do nothing. OverlappingEventException is to be expected here.
+            } catch (OverlappingAndOverdueEventException e) {
+                // Do nothing. Overlapping and overdue entries are fine.
+            } catch (EntryOverdueException e) {
+                // Do nothing. Overdue entries are fine.
             }
         }
 
@@ -57,6 +63,10 @@ public class EntryBookTest {
                 entryBook.addEntry(event);
             } catch (OverlappingEventException oee) {
                 // Do nothing. OverlappingEventException is to be expected here.
+            } catch (OverlappingAndOverdueEventException e) {
+                // Do nothing. Overlapping and overdue entries are fine.
+            } catch (EntryOverdueException e) {
+                // Do nothing. Overdue entries are fine.
             }
         }
 
@@ -66,6 +76,10 @@ public class EntryBookTest {
                 entryBook.addEntry(event);
             } catch (OverlappingEventException oee) {
                 // Do nothing. OverlappingEventException is to be expected here.
+            } catch (OverlappingAndOverdueEventException e) {
+                // Do nothing. Overlapping and overdue entries are fine.
+            } catch (EntryOverdueException e) {
+                // Do nothing. Overdue entries are fine.
             }
         }
 
@@ -104,18 +118,18 @@ public class EntryBookTest {
             EntryBook entryBookUnderTest = EntryBookTest.getSampleEntryBook();
 
             Entry eventToRemove = listOfEventLists[0].asObservableList().get(0);
-            assertTrue(entryBookUnderTest.getActiveList().contains(eventToRemove));
+            assertTrue(entryBookUnderTest.getAllEntries().contains(eventToRemove));
             Entry deadlineToRemove = listOfDeadlineLists[0].asObservableList().get(0);
-            assertTrue(entryBookUnderTest.getActiveList().contains(deadlineToRemove));
+            assertTrue(entryBookUnderTest.getAllEntries().contains(deadlineToRemove));
             Entry floatingTaskToRemove = listOfFloatingTaskLists[0].asObservableList().get(0);
-            assertTrue(entryBookUnderTest.getActiveList().contains(floatingTaskToRemove));
+            assertTrue(entryBookUnderTest.getAllEntries().contains(floatingTaskToRemove));
 
             entryBookUnderTest.removeEntry(eventToRemove);
-            assertFalse(entryBookUnderTest.getActiveList().contains(eventToRemove));
+            assertFalse(entryBookUnderTest.getAllEntries().contains(eventToRemove));
             entryBookUnderTest.removeEntry(deadlineToRemove);
-            assertFalse(entryBookUnderTest.getActiveList().contains(deadlineToRemove));
+            assertFalse(entryBookUnderTest.getAllEntries().contains(deadlineToRemove));
             entryBookUnderTest.removeEntry(floatingTaskToRemove);
-            assertFalse(entryBookUnderTest.getActiveList().contains(floatingTaskToRemove));
+            assertFalse(entryBookUnderTest.getAllEntries().contains(floatingTaskToRemove));
 
             try {
                 entryBookUnderTest.removeEntry(eventToRemove);

@@ -11,7 +11,7 @@ image::mattheuslee.jpg[width="150", align="left"]
 
 * Role: Team Leader
 * Components in charge of: https://github.com/CS2103JUN2017-T2/main/blob/master/docs/DeveloperGuide.adoc#ui-component[GUI], commons
-* Aspects/tools in charge of: Git, Deliverables and scheduling, Integration
+* Aspects/tools in charge of: Git, Deliverables and scheduling, GUI tests
 * Features implemented:
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#listing-all-entries-code-list-code[List entries]
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#autocomplete[Command Autocomplete] using https://github.com/CS2103JUN2017-T2/main/blob/master/docs/DeveloperGuide.adoc#261-powermatch[PowerMatch]
@@ -32,9 +32,11 @@ image::chuapingchan.png[width="150", align="left"]
 * Features implemented:
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/DeveloperGuide.adoc#model-component[Entry States] -- archive and bin concept
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#restoring-an-entry-code-restore-code[Restore command]
-** https://github.com/CS2103JUN2017-T2/main/blob/V0.4/docs/DeveloperGuide.adoc#user-stories[Detection and alert notification of overlapping events]
+** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#clearing-entries-code-clear-code[Clear command]
 * Code written: https://github.com/CS2103JUN2017-T2/main/blob/master/collated/main/A0126623L.md[functional code], https://github.com/CS2103JUN2017-T2/main/blob/master/collated/test/A0126623L.md[test code] and https://github.com/CS2103JUN2017-T2/main/blob/master/collated/docs/A0126623L.md[documentation]
 * Other major contributions:
+** https://github.com/CS2103JUN2017-T2/main/issues/158[Implement detection and alert notification of overlapping events]
+** https://github.com/CS2103JUN2017-T2/main/issues/163[Implement detection and alert notification of overdue entries]
 ** Maintain meeting minutes.
 
 '''
@@ -57,15 +59,17 @@ image::kevinlamkb.png[width="150", align="left"]
 image::akd13.png[width="150", align="left"]
 * Role: Developer
 * Components in charge of: https://github.com/CS2103JUN2017-T2/main/blob/master/docs/DeveloperGuide.adoc#storage-component[Storage]
-* Aspects/tools in charge of: Terminology and Style, SourceTree
+* Aspects/tools in charge of: Terminology and Style, SourceTree, Integration
 * Features implemented:
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#undo-changes-code-undo-code[Undo]
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#redo-changes-code-redo-code[Redo]
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#completing-a-task-code-complete-code[Complete a task]
-** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#set-storage-path-code-set-code[Set Storage path]
+** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#save-storage-path-code-save-code[Save Storage path]
+** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#open-data-from-file-code-open-code[Open data from file]
 * Code written: https://github.com/CS2103JUN2017-T2/main/blob/master/collated/main/A0132788U.md[functional code], https://github.com/CS2103JUN2017-T2/main/blob/master/collated/test/A0132788U.md[test code] and https://github.com/CS2103JUN2017-T2/main/blob/master/collated/docs/A0132788U.md[documentation]
 * Other major contributions:
 ** Make initial UI mockup.
+** Create 50 sample entries required for given milestones.
 
 '''
 

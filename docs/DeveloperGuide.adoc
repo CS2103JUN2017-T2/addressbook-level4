@@ -113,16 +113,16 @@ Each of the four components
 
 For example, the `Logic` component (see the class diagram given below) defines its API in the `Logic.java` interface and exposes its functionality using the `LogicManager.java` class.
 
-image::LogicClassDiagram1.png[width="800"]
+image::LogicClassDiagram.png[width="800"]
 _Figure 2.1.2 : Class Diagram of the Logic Component_
 
 [discrete]
 ==== Events-Driven nature of the design
 
-The _Sequence Diagram_ below shows how the components interact for the scenario where the user issues the command `delete /float 1`.
+The _Sequence Diagram_ below shows how the components interact for the scenario where the user issues the command `delete float 1`.
 
 image::SDforDeleteEntry.png[width="800"]
-_Figure 2.1.3a : Component interactions for `delete /float 1` command (part 1)_
+_Figure 2.1.3a : Component interactions for `delete float 1` command (part 1)_
 
 [NOTE]
 Note how the `Model` simply raises a `EntryBookChangedEvent` when an Entry has been changed, instead of asking the `Storage` directly to save the updates to the hard disk.
@@ -130,7 +130,7 @@ Note how the `Model` simply raises a `EntryBookChangedEvent` when an Entry has b
 The diagram below shows how the `EventsCenter` reacts to that event, which eventually results in the updates being saved to the hard disk and the status bar of the UI being updated to reflect the 'Last Updated' time.
 
 image::SDforDeleteEntryEventHandling.png[width="800"]
-_Figure 2.1.3b : Component interactions for `delete /float 1` command (part 2)_
+_Figure 2.1.3b : Component interactions for `delete float 1` command (part 2)_
 
 [NOTE]
 Note how the event is propagated through the `EventsCenter` to the `Storage` and `UI` without `Model` having to be coupled to either of them. This is an example of how this Event Driven approach helps us reduce direct coupling between components.
@@ -164,24 +164,25 @@ The `UI` component
 
 Author: Kevin Lam
 
-image::LogicClassDiagram1.png[width="800"]
+image::LogicClassDiagram.png[width="800"]
 _Figure 2.3.1 : Structure of the Logic Component_
 
 *API* :
 link:{repoURL}/src/main/java/seedu/multitasky/logic/Logic.java[`Logic.java`]
 
 .  `Logic` uses the `Parser` class to parse the user command.
-..  Some `Commands`, such as `DeleteCommand` require further parsing, which will be done by their subsidiary parsers such as the `DeleteCommandParser` object.
+..  Some `Commands`, such as `DeleteCommand` require further parsing, which will be done by their subsidiary parsers such as the `DeleteCommandParser` class.
 .  After some processing, the parser classes will create the appropriate `Command` object which contain their inner mechanisms.
+.  Some `Command` objects such as `EditCommand` will depend on `CommandHistory` to determine its route of action. e.g. make use of the edit details from a previous `EditCommand` saved in the `CommandHistory`.
 .  This results in a `Command` object which is then executed by the `LogicManager`.
 .  The command execution can affect the `Model` (e.g. adding an Entry) and/or raise events.
 .  The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `Ui`.
 
-Given below is the Sequence Diagram for interactions within the `Logic` component for the `execute("delete /float 1")` API call.
+Given below is the Sequence Diagram for interactions within the `Logic` component for the `execute("delete float 1")` API call.
 
-image::DeleteEntrySdForLogic1.png[width="800"]
+image::DeleteEntrySdForLogic.png[width="800"]
 
-_Figure 2.3.1 : Interactions Inside the Logic Component for the `delete /float 1` Command_
+_Figure 2.3.1 : Interactions Inside the Logic Component for the `delete float 1` Command_
 
 //<!-- @@author A0126623L -->
 === Model component
@@ -227,12 +228,16 @@ Classes used by multiple components are in the `seedu.multitasky.commons` packag
 //<!-- @@author A0125586X -->
 ==== PowerMatch
 
-PowerMatch is the algorithm that powers the command autocomplete as well as PowerFind. When checking if a given input matches a potential match, it performs the following checks:
+PowerMatch is the algorithm that powers the command autocomplete as well as PowerSearch. When checking if a given input matches a potential match, it can perform the following checks:
 
 * Substring check - if the input is a substring of the potential match
 * Permutation check - if the input characters permutated in a different way produce a match
+* Acronym check - if the input characters represent an acronym of a series of words
 * Missing characters check - if the input with additional characters added in produces a match
 * Additional/wrong characters check - if the input with characters changed/removed produces a match
+* Acronym permutation - if the input characters permuted in a different way represent an acronym of a series of words
+
+PowerMatch allows the developer to specify the matching level for better control of the number of results.
 //<!-- @@author -->
 
 == Implementation
@@ -370,6 +375,8 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |user |list the next `n` number of entries |see upcoming events to attend/tasks to finish
 
+|`* *` |user |load data from an XML file |manipulate existing data
+
 |`* *` |advanced user |use the `tab` key to automatically complete the command name that I've started typing |save time entering commands
 
 |`* *` |user |use the up and down arrow keys to bring up previously entered commands |avoid typing out commands I've previously used
@@ -430,7 +437,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |user |be able to search for task entries using partial words | find entries easily without remembering exact words
 
-|`* *` |user |be notified when my input commands result in overlapping events | make changes if overlapping of events is undesirable.
+|`* *` |user |be notified when my input commands result in overlapping or overdue entries | make changes if overlaps or overdue entries are undesirable.
 
 |`*` |user with many projects |tag entries by assignment |distinguish tasks for similar assignments
 

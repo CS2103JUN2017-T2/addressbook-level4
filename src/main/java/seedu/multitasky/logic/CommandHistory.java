@@ -3,23 +3,29 @@ package seedu.multitasky.logic;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import seedu.multitasky.logic.commands.EditCommand.EditEntryDescriptor;
+import seedu.multitasky.model.Model;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.Entry.State;
 
+// @@author A0140633R
 /**
  * Stores the history of commands executed, and also the keywords used in the previous filters of inner lists.
  */
-public class CommandHistory {
+public class CommandHistory implements EditCommandHistory {
     private ArrayList<String> userInputHistory;
     private Set<String> previousSearchKeywords;
     private State previousState;
     private Calendar previousStartDate;
     private Calendar previousEndDate;
+    private ArrayList<Model.Search> previousSearches;
+    private EditEntryDescriptor editEntryDescriptor;
 
     public CommandHistory() {
         userInputHistory = new ArrayList<>();
@@ -27,6 +33,8 @@ public class CommandHistory {
         previousState = Entry.State.ACTIVE;
         previousStartDate = null;
         previousEndDate = null;
+        previousSearches = new ArrayList<>(Arrays.asList(Model.LENIENT_SEARCHES));
+        editEntryDescriptor = null;
     }
 
     /**
@@ -45,7 +53,7 @@ public class CommandHistory {
     }
 
     // @@author A0140633R
-    public Set<String> getPrevSearch() {
+    public Set<String> getPrevKeywords() {
         return previousSearchKeywords;
     }
 
@@ -61,11 +69,37 @@ public class CommandHistory {
         return previousEndDate;
     }
 
-    public void setPrevSearch(Set<String> nextSearch, Calendar startDate, Calendar endDate, State nextState) {
-        previousSearchKeywords = nextSearch;
+    public Model.Search[] getPrevSearches() {
+        return previousSearches.toArray(new Model.Search[previousSearches.size()]);
+    }
+
+    public void setPrevSearch(Set<String> searchKeywords, Calendar startDate, Calendar endDate, State state,
+                              Model.Search... searches) {
+        previousSearchKeywords = searchKeywords;
         previousStartDate = startDate;
         previousEndDate = endDate;
-        previousState = nextState;
+        previousState = state;
+        previousSearches = new ArrayList<>(Arrays.asList(searches));
+    }
+
+    @Override
+    public boolean hasEditHistory() {
+        return editEntryDescriptor != null;
+    }
+
+    @Override
+    public void resetEditHistory() {
+        editEntryDescriptor = null;
+    }
+
+    @Override
+    public EditEntryDescriptor getEditHistory() {
+        return editEntryDescriptor;
+    }
+
+    @Override
+    public void setEditHistory(EditEntryDescriptor editEntryDescriptor) {
+        this.editEntryDescriptor = editEntryDescriptor;
     }
 
 }

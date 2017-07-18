@@ -6,10 +6,13 @@ import java.util.Set;
 
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.logic.parser.CliSyntax;
+import seedu.multitasky.model.Model;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.exceptions.EntryOverdueException;
+import seedu.multitasky.model.entry.exceptions.OverlappingAndOverdueEventException;
 import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 
 // @@author A0132788U-reused
@@ -42,7 +45,7 @@ public class CompleteByFindCommand extends CompleteCommand {
     public CommandResult execute() throws CommandException, DuplicateEntryException {
 
         // Update all 3 lists with new search parameters until at least 1 result is found.
-        model.updateAllFilteredLists(keywords, null, null, Entry.State.ACTIVE);
+        model.updateAllFilteredLists(keywords, null, null, Entry.State.ACTIVE, Model.STRICT_SEARCHES);
 
         // collate a combined list to measure how many entries are found.
         List<ReadOnlyEntry> allList = new ArrayList<>();
@@ -55,22 +58,27 @@ public class CompleteByFindCommand extends CompleteCommand {
             try {
                 model.changeEntryState(entryToComplete, Entry.State.ARCHIVED);
             } catch (EntryNotFoundException e) {
-                assert false : "The target entry cannot be missing";
+                throw new AssertionError("The target entry cannot be missing");
             } catch (OverlappingEventException oee) {
-                assert false : "This should not happen for complete command.";
+                throw new AssertionError("Overlap should not happen for complete command.");
+            } catch (EntryOverdueException e) {
+                throw new AssertionError("Overdue should not apply to complete command.");
+            } catch (OverlappingAndOverdueEventException e) {
+                throw new AssertionError("Overlap and overdue should not apply to complete command.");
             }
             // refresh list view after updating.
-            model.updateAllFilteredLists(history.getPrevSearch(), history.getPrevStartDate(),
-                                         history.getPrevEndDate(), history.getPrevState());
+            model.updateAllFilteredLists(history.getPrevKeywords(), history.getPrevStartDate(),
+                                         history.getPrevEndDate(), history.getPrevState(),
+                                         history.getPrevSearches());
 
             return new CommandResult(String.format(MESSAGE_SUCCESS, entryToComplete));
         } else {
             history.setPrevSearch(keywords, null, null, Entry.State.ACTIVE);
             if (allList.size() >= 2) { // multiple entries found
-                return new CommandResult(MESSAGE_MULTIPLE_ENTRIES);
+                throw new CommandException(MESSAGE_MULTIPLE_ENTRIES);
             } else {
                 assert (allList.size() == 0); // no entries found
-                return new CommandResult(MESSAGE_NO_ENTRIES);
+                throw new CommandException(MESSAGE_NO_ENTRIES);
             }
         }
     }

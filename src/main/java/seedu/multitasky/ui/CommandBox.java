@@ -2,17 +2,14 @@ package seedu.multitasky.ui;
 
 import java.util.logging.Logger;
 
-import com.google.common.eventbus.Subscribe;
-
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 import seedu.multitasky.commons.core.LogsCenter;
-import seedu.multitasky.commons.events.ui.NewCommandEvent;
-import seedu.multitasky.commons.events.ui.NewCommandToExecuteEvent;
 import seedu.multitasky.commons.events.ui.NewResultAvailableEvent;
+import seedu.multitasky.commons.events.ui.ResultStyleChangeEvent;
 import seedu.multitasky.logic.Logic;
 import seedu.multitasky.logic.commands.CommandResult;
 import seedu.multitasky.logic.commands.ListCommand;
@@ -30,7 +27,7 @@ import seedu.multitasky.ui.util.CommandHistory;
  */
 public class CommandBox extends UiPart<Region> {
 
-    public static final String ERROR_STYLE_CLASS = "error";
+    public static final String ERROR_STYLE_CLASS = "command-box-error";
     private static final String FXML = "CommandBox.fxml";
 
     private final Logger logger = LogsCenter.getLogger(CommandBox.class);
@@ -52,36 +49,25 @@ public class CommandBox extends UiPart<Region> {
         registerAsAnEventHandler(this);
     }
 
-    /**
-     * Requests focus on the command text field once the main UI window is open,
-     * so that the user can immediately begin typing.
-     */
-    private void setCommandTextFieldFocus() {
-        Platform.runLater(new Runnable() {
-            public void run() {
-                commandTextField.requestFocus();
-            }
-        });
+    public void setCommand(String command) {
+        commandTextField.setText(command);
+        commandTextField.positionCaret(commandTextField.getText().length());
     }
 
-    @FXML
-    private void handleCommandInputChanged() throws DuplicateEntryException {
-        commandHistory.saveCommand();
-        executeLogic(commandTextField.getText().trim());
-        commandTextField.setText("");
+    public void requestFocus() {
+        commandTextField.requestFocus();
     }
 
     /**
      * Calls the logic component to execute the command given by the string.
      */
-    private void executeLogic(String command) {
+    public void executeCommand(String command) {
         try {
             CommandResult commandResult = logic.execute(command);
             // process result of the command
             setStyleToIndicateCommandSuccess();
             logger.info("Result: " + commandResult.feedbackToUser);
             raise(new NewResultAvailableEvent(commandResult.feedbackToUser));
-
         } catch (CommandException | ParseException e) {
             // handle command failure
             setStyleToIndicateCommandFailure();
@@ -94,11 +80,31 @@ public class CommandBox extends UiPart<Region> {
         }
     }
 
+    @FXML
+    private void handleCommandInputChanged() {
+        commandHistory.saveCommand();
+        executeCommand(commandTextField.getText().trim());
+        commandTextField.setText("");
+    }
+
+    /**
+     * Requests focus on the command text field once the main UI window is open,
+     * so that the user can immediately begin typing.
+     */
+    private void setCommandTextFieldFocus() {
+        Platform.runLater(new Runnable() {
+            public void run() {
+                commandTextField.requestFocus();
+            }
+        });
+    }
+
     /**
      * Sets the command box style to indicate a successful command.
      */
     private void setStyleToIndicateCommandSuccess() {
         commandTextField.getStyleClass().remove(ERROR_STYLE_CLASS);
+        raise(new ResultStyleChangeEvent(true));
     }
 
     /**
@@ -106,12 +112,10 @@ public class CommandBox extends UiPart<Region> {
      */
     private void setStyleToIndicateCommandFailure() {
         ObservableList<String> styleClass = commandTextField.getStyleClass();
-
-        if (styleClass.contains(ERROR_STYLE_CLASS)) {
-            return;
+        if (!styleClass.contains(ERROR_STYLE_CLASS)) {
+            styleClass.add(ERROR_STYLE_CLASS);
         }
-
-        styleClass.add(ERROR_STYLE_CLASS);
+        raise(new ResultStyleChangeEvent(false));
     }
 
     private void onlyShowActiveEntries() {
@@ -120,17 +124,6 @@ public class CommandBox extends UiPart<Region> {
         } catch (Exception e) {
             assert false : "Initial list of active entries cannot throw exceptions";
         }
-    }
-
-    @Subscribe
-    private void handleNewCommandEvent(NewCommandEvent event) {
-        commandTextField.setText(event.command);
-        commandTextField.positionCaret(commandTextField.getText().length());
-    }
-
-    @Subscribe
-    private void handleNewCommandToExecuteEvent(NewCommandToExecuteEvent event) {
-        executeLogic(event.command);
     }
 
 }

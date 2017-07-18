@@ -10,21 +10,32 @@ import java.util.HashSet;
  * Checks for matches using a variety of criteria between an input and a list of potential outputs.
  * Can be quite computationally intensive so is is best to call it with short inputs. Developer testing is
  * encouraged to confirm response time is reasonable for your application.
+ * PowerMatch offers different levels of matching, each more powerful than the one before.
+ * LEVEL_0: substring, prefix and acronym matches
+ * LEVEL_1: permutation match
+ * LEVEL_2: missing character match
+ * LEVEL_3: 1 wrong/extra character match
+ * LEVEL_4: 2 wrong/extra characters match
+ * LEVEL_5: 3 wrong/extra characters match
+ * LEVEL_6: acronym permutation match
  */
 public class PowerMatch {
 
+    public enum Level { LEVEL_0, LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4, LEVEL_5, LEVEL_6 };
+
     public static final int PERMUTATION_MATCH_MAX_ALLOWED_LENGTH = 8;
-    public static final int MISSING_INNER_MATCH_MAX_ALLOWED_LENGTH = 8;
-    public static final int WRONG_INNER_MATCH_MAX_ALLOWED_LENGTH = 6;
+    public static final int MISSING_CHAR_MATCH_MAX_ALLOWED_LENGTH = 7;
+    public static final int WRONG_EXTRA_CHAR_1_MATCH_MAX_ALLOWED_LENGTH = 6;
+    public static final int WRONG_EXTRA_CHAR_2_MATCH_MAX_ALLOWED_LENGTH = 6;
+    public static final int WRONG_EXTRA_CHAR_3_MATCH_MAX_ALLOWED_LENGTH = 6;
+    public static final int ACRONYM_PERMUTATION_MATCH_MAX_ALLOWED_LENGTH = 6;
 
     public static final String REGEX_ANY_NON_WHITESPACE = "((\\S?)+)";
     public static final String REGEX_ANY_PRESENT_NON_WHITESPACE = "(\\S+)";
-    public static final String REGEX_ANY_CHARACTER = "((.+)?)";
 
     /**
      * Attempts to find a match between the input and a single entry in {@code potentialMatches}.
-     * Types of matches attempted are substring, prefix, acronym, permutation, missing inner characters,
-     * wrong/extra inner characters.
+     * Automatically tries all matching levels until that level provides a single match.
      *
      * @param input            the input to attempt to find a match for
      * @param potentialMatches the list of potential matches for {@code input}
@@ -32,81 +43,175 @@ public class PowerMatch {
      *         {@code null} is also returned if there is a null input string or {@code potentialMatches} is null.
      */
     public static String match(final String input, final String... potentialMatches) {
-        if (input == null || potentialMatches == null || input.isEmpty() || potentialMatches.length == 0) {
+        if (input == null || potentialMatches == null || potentialMatches.length == 0) {
             return null;
+        } else if (input.isEmpty()) {
+            if (potentialMatches.length == 1) {
+                return potentialMatches[0];
+            } else {
+                return null;
+            }
+        }
+        String match = null;
+        for (Level level : Level.values()) {
+            match = match(level, input, potentialMatches);
+            if (match != null) {
+                return match;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Attempts to find a match between the input and a single entry in {@code potentialMatches},
+     * using the matching level provided.
+     *
+     * @param input            the input to attempt to find a match for
+     * @param potentialMatches the list of potential matches for {@code input}
+     * @param level            the level of matching to use.
+     * @return the match for {@code input}, if one is found. Otherwise {@code null} is returned.
+     *         {@code null} is also returned if there is a null input string or {@code potentialMatches} is null.
+     */
+    public static String match(Level level, final String input, final String... potentialMatches) {
+        if (level == null || input == null || potentialMatches == null || potentialMatches.length == 0) {
+            return null;
+        } else if (input.isEmpty()) {
+            if (potentialMatches.length == 1) {
+                return potentialMatches[0];
+            } else {
+                return null;
+            }
         }
         // Create copy to avoid modifying original input string
         String keyword = new String(input.trim().toLowerCase());
         String match = null;
 
-        match = getSubstringMatch(keyword, potentialMatches);
-        if (match != null) {
-            return match;
-        }
-
-        match = getPrefixMatch(keyword, potentialMatches);
-        if (match != null) {
-            return match;
-        }
-
-        match = getAcronymMatch(keyword, potentialMatches);
-        if (match != null) {
-            return match;
-        }
-
-        if (input.length() <= PERMUTATION_MATCH_MAX_ALLOWED_LENGTH) {
-            match = getPermutationMatch(keyword, potentialMatches);
+        switch (level) {
+        case LEVEL_0:
+            match = getSubstringMatch(keyword, potentialMatches);
             if (match != null) {
                 return match;
             }
-        }
-
-        if (input.length() <= MISSING_INNER_MATCH_MAX_ALLOWED_LENGTH) {
-            match = getMissingInnerMatch(keyword, potentialMatches);
+            match = getPrefixMatch(keyword, potentialMatches);
             if (match != null) {
                 return match;
             }
-        }
-
-        if (input.length() <= WRONG_INNER_MATCH_MAX_ALLOWED_LENGTH) {
-            match = getWrongInnerMatch(keyword, potentialMatches);
+            match = getAcronymMatch(keyword, potentialMatches);
             if (match != null) {
                 return match;
             }
+            break;
+        case LEVEL_1:
+            if (input.length() <= PERMUTATION_MATCH_MAX_ALLOWED_LENGTH) {
+                match = getPermutationMatch(keyword, potentialMatches);
+                if (match != null) {
+                    return match;
+                }
+            }
+            break;
+        case LEVEL_2:
+            if (input.length() <= MISSING_CHAR_MATCH_MAX_ALLOWED_LENGTH) {
+                match = getMissingCharMatch(keyword, potentialMatches);
+                if (match != null) {
+                    return match;
+                }
+            }
+            break;
+        case LEVEL_3:
+            if (input.length() <= WRONG_EXTRA_CHAR_1_MATCH_MAX_ALLOWED_LENGTH) {
+                match = getWrongExtraCharMatch(1, keyword, potentialMatches);
+                if (match != null) {
+                    return match;
+                }
+            }
+            break;
+        case LEVEL_4:
+            if (input.length() <= WRONG_EXTRA_CHAR_2_MATCH_MAX_ALLOWED_LENGTH) {
+                match = getWrongExtraCharMatch(2, keyword, potentialMatches);
+                if (match != null) {
+                    return match;
+                }
+            }
+            break;
+        case LEVEL_5:
+            if (input.length() <= WRONG_EXTRA_CHAR_3_MATCH_MAX_ALLOWED_LENGTH) {
+                match = getWrongExtraCharMatch(3, keyword, potentialMatches);
+                if (match != null) {
+                    return match;
+                }
+            }
+            break;
+        case LEVEL_6:
+            if (input.length() <= ACRONYM_PERMUTATION_MATCH_MAX_ALLOWED_LENGTH) {
+                match = getAcronymPermutationMatch(keyword, potentialMatches);
+                if (match != null) {
+                    return match;
+                }
+            }
+            break;
+        default:
+            throw new AssertionError("Unknown PowerMatch level");
         }
 
         return null;
     }
 
     /**
-     * Attempts to match the input with the potential match.
-     * Types of matches attempted are substring, prefix, acronym, permutation, missing inner characters,
-     * wrong/extra inner characters.
+     * Attempts to match the input with the potential match, using the matching level provided.
      *
      * @param input          the input to attempt to find a match for
      * @param potentialMatch the potential match {@code input}
      * @return if {@code input} can be matched to {@code potentialMatch} using the PowerMatch algorithm.
      */
-    public static boolean isMatch(final String input, final String potentialMatch) {
-        if (input == null || potentialMatch == null || potentialMatch.isEmpty()) {
+    public static boolean isMatch(Level level, final String input, final String potentialMatch) {
+        if (level == null || input == null || potentialMatch == null || potentialMatch.isEmpty()) {
             return false;
         } else if (input.isEmpty()) {
             return true;
         }
         // Create copy to avoid modifying original input string
         String keyword = new String(input.trim().toLowerCase());
-
-        return getSubstringMatch(keyword, potentialMatch) != null
-               || getPrefixMatch(keyword, potentialMatch) != null
-               || getAcronymMatch(keyword, potentialMatch) != null
-               || (input.length() < PERMUTATION_MATCH_MAX_ALLOWED_LENGTH
-                    && getPermutationMatch(keyword, potentialMatch) != null)
-               || (input.length() < MISSING_INNER_MATCH_MAX_ALLOWED_LENGTH
-                    && getMissingInnerMatch(keyword, potentialMatch) != null)
-               || (input.length() < WRONG_INNER_MATCH_MAX_ALLOWED_LENGTH
-                    && getWrongInnerMatch(keyword, potentialMatch) != null);
+        switch (level) {
+        case LEVEL_0:
+            return getSubstringMatch(keyword, potentialMatch) != null
+                || getPrefixMatch(keyword, potentialMatch) != null
+                || getAcronymMatch(keyword, potentialMatch) != null;
+        case LEVEL_1:
+            return keyword.length() <= PERMUTATION_MATCH_MAX_ALLOWED_LENGTH
+                && getPermutationMatch(keyword, potentialMatch) != null;
+        case LEVEL_2:
+            return keyword.length() <= MISSING_CHAR_MATCH_MAX_ALLOWED_LENGTH
+                && getMissingCharMatch(keyword, potentialMatch) != null;
+        case LEVEL_3:
+            return keyword.length() <= WRONG_EXTRA_CHAR_1_MATCH_MAX_ALLOWED_LENGTH
+                && getWrongExtraCharMatch(1, keyword, potentialMatch) != null;
+        case LEVEL_4:
+            return keyword.length() <= WRONG_EXTRA_CHAR_2_MATCH_MAX_ALLOWED_LENGTH
+                && getWrongExtraCharMatch(2, keyword, potentialMatch) != null;
+        case LEVEL_5:
+            return keyword.length() <= WRONG_EXTRA_CHAR_3_MATCH_MAX_ALLOWED_LENGTH
+                && getWrongExtraCharMatch(3, keyword, potentialMatch) != null;
+        case LEVEL_6:
+            return keyword.length() <= ACRONYM_PERMUTATION_MATCH_MAX_ALLOWED_LENGTH
+                && getAcronymPermutationMatch(keyword, potentialMatch) != null;
+        default:
+            throw new AssertionError("Unknown PowerMatch level");
+        }
     }
 
+    /*
+     * Returns as soon as any one of the regexes returns as a single match
+     */
+    private static String getRegexMatch(final ArrayList<String> regexes, final String... potentialMatches) {
+        String match = null;
+        for (String regex : regexes) {
+            match = getRegexMatch(regex, potentialMatches);
+            if (match != null) {
+                return match;
+            }
+        }
+        return null;
+    }
 
     private static String getRegexMatch(final String regex, final String... potentialMatches) {
         ArrayList<String> matches = new ArrayList<>();
@@ -119,23 +224,13 @@ public class PowerMatch {
     }
 
     private static String getSubstringMatch(final String keyword, final String... potentialMatches) {
-        final ArrayList<String> matches = new ArrayList<>();
-        for (String potentialMatch : potentialMatches) {
-            if (potentialMatch.contains(keyword)) {
-                matches.add(potentialMatch);
-            }
-        }
-        return filterMatches(matches);
+        String regex = REGEX_ANY_NON_WHITESPACE + keyword + REGEX_ANY_NON_WHITESPACE;
+        return getRegexMatch(regex, potentialMatches);
     }
 
     private static String getPrefixMatch(final String keyword, final String... potentialMatches) {
-        final ArrayList<String> matches = new ArrayList<>();
-        for (String potentialMatch : potentialMatches) {
-            if (potentialMatch.startsWith(keyword)) {
-                matches.add(potentialMatch);
-            }
-        }
-        return filterMatches(matches);
+        String regex = keyword + REGEX_ANY_NON_WHITESPACE;
+        return getRegexMatch(regex, potentialMatches);
     }
 
     private static String getAcronymMatch(final String keyword, final String... potentialMatches) {
@@ -160,35 +255,22 @@ public class PowerMatch {
         return null;
     }
 
-    private static String getMissingInnerMatch(final String keyword,
+    private static String getMissingCharMatch(final String keyword,
                                                final String... potentialMatches) {
         final ArrayList<String> permutations = getMissingInnerPermutations(keyword);
-        String match;
-        for (String permutation : permutations) {
-            // Use of regex instead of string literal comparison here
-            match = getRegexMatch(permutation, potentialMatches);
-            if (match != null) {
-                return match;
-            }
-        }
-        return null;
+        return getRegexMatch(permutations, potentialMatches);
     }
 
-    /**
-     * Accounts for up to 3 wrong/extra characters
-     */
-    private static String getWrongInnerMatch(final String keyword,
-                                             final String... potentialMatches) {
-        final ArrayList<String> permutations = getWrongInnerPermutations(keyword);
-        String match;
-        for (String permutation : permutations) {
-            // Use of regex instead of string literal comparison here
-            match = getRegexMatch(permutation, potentialMatches);
-            if (match != null) {
-                return match;
-            }
-        }
-        return null;
+    private static String getWrongExtraCharMatch(int numChars, final String keyword,
+                                                 final String... potentialMatches) {
+        final ArrayList<String> permutations = getWrongExtraPermutations(keyword, numChars);
+        return getRegexMatch(permutations, potentialMatches);
+    }
+
+    private static String getAcronymPermutationMatch(final String keyword,
+                                                     final String... potentialMatches) {
+        final ArrayList<String> permutations = getAcronymPermutations(keyword);
+        return getRegexMatch(permutations, potentialMatches);
     }
 
     private static String getAcronymRegex(String keyword) {
@@ -220,13 +302,13 @@ public class PowerMatch {
         ArrayList<String> permutationsList = new ArrayList<>(permutations);
         for (int i = 0; i < permutationsList.size(); ++i) {
             String permutation = permutationsList.get(i);
-            permutation = REGEX_ANY_CHARACTER + permutation + REGEX_ANY_CHARACTER;
+            permutation = REGEX_ANY_NON_WHITESPACE + permutation + REGEX_ANY_NON_WHITESPACE;
             permutationsList.set(i, permutation);
         }
         return permutationsList;
     }
 
-    private static ArrayList<String> getWrongInnerPermutations(final String keyword) {
+    private static ArrayList<String> getWrongExtraPermutations(final String keyword, int numChars) {
         HashSet<String> permutations = new HashSet<>();
         ArrayList<String> chars = new ArrayList<>(Arrays.asList(keyword.split("")));
         /**
@@ -234,14 +316,15 @@ public class PowerMatch {
          * Replace each character in turn with a regex expression
          * that can match any non-whitespace character or no character at all
          */
-        if (chars.size() > 1) {
+        if (numChars >= 1 && chars.size() > 1) {
             for (int i = 0; i < chars.size(); ++i) {
                 String temp = chars.get(i);
                 chars.set(i, REGEX_ANY_NON_WHITESPACE);
                 HashSet<String> tempPermutations = new HashSet<>();
                 generateUniquePermutations(chars, 0, keyword.length() - 1, tempPermutations);
                 for (String permutation : tempPermutations) {
-                    permutations.add(permutation);
+                    // Add in regex expressions before and after to match any substring
+                    permutations.add(REGEX_ANY_NON_WHITESPACE + permutation + REGEX_ANY_NON_WHITESPACE);
                 }
                 chars.set(i, temp);
             }
@@ -251,7 +334,7 @@ public class PowerMatch {
          * Replace each two-character combination in turn with a regex expression
          * that can match any non-whitespace character or no character at all
          */
-        if (chars.size() > 2) {
+        if (numChars >= 2 && chars.size() > 2) {
             for (int i = 0; i < chars.size(); ++i) {
                 for (int j = i + 1; j < chars.size(); ++j) {
                     String iTemp = chars.get(i);
@@ -261,7 +344,8 @@ public class PowerMatch {
                     HashSet<String> tempPermutations = new HashSet<>();
                     generateUniquePermutations(chars, 0, keyword.length() - 1, tempPermutations);
                     for (String permutation : tempPermutations) {
-                        permutations.add(permutation);
+                        // Add in regex expressions before and after to match any substring
+                        permutations.add(REGEX_ANY_NON_WHITESPACE + permutation + REGEX_ANY_NON_WHITESPACE);
                     }
                     chars.set(i, iTemp);
                     chars.set(j, jTemp);
@@ -273,7 +357,7 @@ public class PowerMatch {
          * Replace each three-character combination in turn with a regex expression
          * that can match any non-whitespace character or no character at all
          */
-        if (chars.size() > 3) {
+        if (numChars >= 3 && chars.size() > 3) {
             for (int i = 0; i < chars.size(); ++i) {
                 for (int j = i + 1; j < chars.size(); ++j) {
                     for (int k = j + 1; k < chars.size(); ++k) {
@@ -286,7 +370,8 @@ public class PowerMatch {
                         HashSet<String> tempPermutations = new HashSet<>();
                         generateUniquePermutations(chars, 0, keyword.length() - 1, tempPermutations);
                         for (String permutation : tempPermutations) {
-                            permutations.add(permutation);
+                            // Add in regex expressions before and after to match any substring
+                            permutations.add(REGEX_ANY_NON_WHITESPACE + permutation + REGEX_ANY_NON_WHITESPACE);
                         }
                         chars.set(i, iTemp);
                         chars.set(j, jTemp);
@@ -295,18 +380,25 @@ public class PowerMatch {
                 }
             }
         }
-        /**
-         * Stopping at three since it's a bit unreasonable to expect the user to enter four or more
-         * wrong/extra characters in a single word
-         */
-        // Add in regex expressions before and after to match any substring
-        ArrayList<String> permutationsList = new ArrayList<>(permutations);
-        for (int i = 0; i < permutationsList.size(); ++i) {
-            String permutation = permutationsList.get(i);
-            permutation = REGEX_ANY_CHARACTER + permutation + REGEX_ANY_CHARACTER;
-            permutationsList.set(i, permutation);
+        return new ArrayList<>(permutations);
+    }
+
+    private static ArrayList<String> getAcronymPermutations(final String keyword) {
+        HashSet<String> permutationsSet = new HashSet<>();
+        ArrayList<String> chars = new ArrayList<>(Arrays.asList(keyword.split("")));
+        generateUniquePermutations(chars, 0, keyword.length() - 1, permutationsSet);
+        ArrayList<String> permutations = new ArrayList<>();
+        for (String permutation : permutationsSet) {
+            String[] permutationChars = permutation.split("");
+            StringBuilder acronymPermutation = new StringBuilder();
+            acronymPermutation.append(REGEX_ANY_NON_WHITESPACE);
+            for (String permutationChar : permutationChars) {
+                acronymPermutation.append(permutationChar);
+                acronymPermutation.append(REGEX_ANY_NON_WHITESPACE);
+            }
+            permutations.add(acronymPermutation.toString());
         }
-        return permutationsList;
+        return permutations;
     }
 
     private static void generateUniquePermutations(ArrayList<String> chars, int i, int permutationLength,
@@ -332,10 +424,11 @@ public class PowerMatch {
     }
 
     private static String filterMatches(ArrayList<String> matches) {
-        // For now, the match is only accepted if there is only one match.
-        if (matches.size() == 1) {
-            return matches.get(0);
+        if (matches == null || matches.size() != 1) {
+            return null;
         }
-        return null;
+        // For now, the match is only accepted if there is only one match.
+        return matches.get(0);
     }
+
 }

@@ -12,6 +12,8 @@ import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.exceptions.EntryOverdueException;
+import seedu.multitasky.model.entry.exceptions.OverlappingAndOverdueEventException;
 import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 
 //@@author A0126623L-reused
@@ -47,15 +49,22 @@ public class RestoreByIndexCommand extends RestoreCommand {
         try {
             model.changeEntryState(entryToRestore, Entry.State.ACTIVE);;
         } catch (EntryNotFoundException enfe) {
-            assert false : "The target entry cannot be missing";
+            throw new AssertionError("The target entry cannot be missing");
         } catch (OverlappingEventException oee) {
             return new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERLAP_ALERT,
+                                                   entryToRestore.getName()));
+        } catch (EntryOverdueException e) {
+            return new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERDUE_ALERT,
+                                                   entryToRestore.getName()));
+        } catch (OverlappingAndOverdueEventException e) {
+            return new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERLAP_AND_OVERDUE_ALERT,
                                                    entryToRestore.getName()));
         }
 
         // refresh list view after updating.
-        model.updateAllFilteredLists(history.getPrevSearch(), history.getPrevStartDate(),
-                                     history.getPrevEndDate(), history.getPrevState());
+        model.updateAllFilteredLists(history.getPrevKeywords(), history.getPrevStartDate(),
+                                     history.getPrevEndDate(), history.getPrevState(),
+                                     history.getPrevSearches());
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, entryToRestore));
     }

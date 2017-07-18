@@ -4,6 +4,8 @@ import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
+import seedu.multitasky.model.entry.exceptions.EntryOverdueException;
+import seedu.multitasky.model.entry.exceptions.OverlappingAndOverdueEventException;
 import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 import seedu.multitasky.model.tag.Tag;
 
@@ -27,6 +29,10 @@ public class EntryBookBuilder {
             entryBook.addEntry(entry);
         } catch (OverlappingEventException oee) {
             // Ignore overlapping events in building entrybook for testing.
+        } catch (OverlappingAndOverdueEventException e) {
+            // Do nothing. Overlapping and overdue entries are fine.
+        } catch (EntryOverdueException e) {
+            // Do nothing. Overdue entries are fine.
         }
         return this;
     }
