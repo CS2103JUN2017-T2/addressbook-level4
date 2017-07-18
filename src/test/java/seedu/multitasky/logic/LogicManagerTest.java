@@ -28,6 +28,7 @@ import com.google.common.eventbus.Subscribe;
 import seedu.multitasky.commons.core.EventsCenter;
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
 import seedu.multitasky.commons.events.ui.ShowHelpRequestEvent;
+import seedu.multitasky.commons.util.PowerMatch;
 import seedu.multitasky.logic.commands.AddCommand;
 import seedu.multitasky.logic.commands.Command;
 import seedu.multitasky.logic.commands.CommandResult;
@@ -336,7 +337,7 @@ public class LogicManagerTest {
         Model expectedModel = new ModelManager(helper.generateEntryBook(fourEntrys), new UserPrefs());
         expectedModel.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList("key", "rAnDoM")),
                                                      null, null,
-                                                     Entry.State.ACTIVE, Model.Search.OR);
+                                                     Entry.State.ACTIVE, Model.Search.OR, PowerMatch.Level.LEVEL_0);
         helper.addToModel(model, fourEntrys);
 
         assertCommandSuccess(FindCommand.COMMAND_WORD + " key rAnDoM",

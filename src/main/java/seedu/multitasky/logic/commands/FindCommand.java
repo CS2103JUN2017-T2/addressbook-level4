@@ -70,9 +70,9 @@ public class FindCommand extends Command {
         }
         raise(new ListTypeUpdateEvent(state));
         // Update all 3 lists with new search parameters until at least 1 result is found.
-        model.updateAllFilteredLists(keywords, startDate, endDate, state);
+        model.updateAllFilteredLists(keywords, startDate, endDate, state, Model.LENIENT_SEARCHES);
         // Save parameters of the search
-        history.setPrevSearch(keywords, startDate, endDate, state);
+        history.setPrevSearch(keywords, startDate, endDate, state, Model.LENIENT_SEARCHES);
 
         int deadlineSize = model.getFilteredDeadlineList().size();
         int eventSize = model.getFilteredEventList().size();

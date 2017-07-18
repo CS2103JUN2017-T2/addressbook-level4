@@ -6,6 +6,7 @@ import java.util.Set;
 
 import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.commons.exceptions.IllegalValueException;
+import seedu.multitasky.commons.util.PowerMatch;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
@@ -19,9 +20,10 @@ import seedu.multitasky.storage.exception.NothingToUndoException;
  */
 public interface Model {
 
-    public enum Search {
-        AND, OR, POWER_AND, POWER_OR
-    };
+    public enum Search { AND, OR, POWER_AND, POWER_OR };
+
+    public static final Search[] STRICT_SEARCHES = { Search.AND, Search.POWER_AND };
+    public static final Search[] LENIENT_SEARCHES = { Search.AND, Search.OR, Search.POWER_AND, Search.POWER_OR };
 
     /** Clears existing backing model and replaces with the provided new data. */
     void resetData(ReadOnlyEntryBook newData);
@@ -104,28 +106,28 @@ public interface Model {
      * date range and state. Attempts all the different searches in order until it has at least 1 result.
      */
     void updateAllFilteredLists(Set<String> keywords, Calendar startDate, Calendar endDate,
-                                Entry.State state);
+                                Entry.State state, Search... searches);
 
     /**
      * Updates the filter of the filtered event list to filter by the given keywords,
      * date range and state using the specified search type.
      */
     void updateFilteredEventList(Set<String> keywords, Calendar startDate, Calendar endDate,
-                                 Entry.State state, Search search);
+                                 Entry.State state, Search search, PowerMatch.Level level);
 
     /**
      * Updates the filter of the filtered deadline list to filter by the given keywords,
      * date range and state using the specified search type.
      */
     void updateFilteredDeadlineList(Set<String> keywords, Calendar startDate, Calendar endDate,
-                                    Entry.State state, Search search);
+                                    Entry.State state, Search search, PowerMatch.Level level);
 
     /**
      * Updates the filter of the filtered floating task list to filter by the given keywords,
      * date range and state using the specified search type.
      */
     void updateFilteredFloatingTaskList(Set<String> keywords, Calendar startDate, Calendar endDate,
-                                        Entry.State state, Search search);
+                                        Entry.State state, Search search, PowerMatch.Level level);
 
     /** Updates the sorting comparators used. */
     void updateSortingComparators(Comparator<ReadOnlyEntry> eventComparator,

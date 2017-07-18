@@ -6,6 +6,7 @@ import java.util.Set;
 
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.logic.parser.CliSyntax;
+import seedu.multitasky.model.Model;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
@@ -59,8 +60,9 @@ public class RestoreByFindCommand extends RestoreCommand {
                                                                 entryToRestore.getName()));
             }
             // refresh list view after updating.
-            model.updateAllFilteredLists(history.getPrevSearch(), history.getPrevStartDate(),
-                                         history.getPrevEndDate(), history.getPrevState());
+            model.updateAllFilteredLists(history.getPrevKeywords(), history.getPrevStartDate(),
+                                         history.getPrevEndDate(), history.getPrevState(),
+                                         history.getPrevSearches());
             if (commandResult == null) {
                 throw new AssertionError("commandResult in RestoreByFindCommand shouldn't be null here.");
             }
@@ -88,13 +90,13 @@ public class RestoreByFindCommand extends RestoreCommand {
 
         List<ReadOnlyEntry> allList = new ArrayList<>();
         // Filter and collate archived entries that matches keywords
-        model.updateAllFilteredLists(keywords, null, null, Entry.State.ARCHIVED);
+        model.updateAllFilteredLists(keywords, null, null, Entry.State.ARCHIVED, Model.STRICT_SEARCHES);
         allList.addAll(model.getFilteredDeadlineList());
         allList.addAll(model.getFilteredEventList());
         allList.addAll(model.getFilteredFloatingTaskList());
 
         // Filter and collate deleted entries that matches keywords
-        model.updateAllFilteredLists(keywords, null, null, Entry.State.DELETED);
+        model.updateAllFilteredLists(keywords, null, null, Entry.State.DELETED, Model.STRICT_SEARCHES);
         allList.addAll(model.getFilteredDeadlineList());
         allList.addAll(model.getFilteredEventList());
         allList.addAll(model.getFilteredFloatingTaskList());

@@ -6,6 +6,7 @@ import java.util.Set;
 
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.logic.parser.CliSyntax;
+import seedu.multitasky.model.Model;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
@@ -42,7 +43,7 @@ public class DeleteByFindCommand extends DeleteCommand {
     public CommandResult execute() throws CommandException, DuplicateEntryException {
 
         // Update all 3 lists with new search parameters until at least 1 result is found.
-        model.updateAllFilteredLists(keywords, null, null, Entry.State.ACTIVE);
+        model.updateAllFilteredLists(keywords, null, null, Entry.State.ACTIVE, Model.STRICT_SEARCHES);
 
         // collate a combined list to measure how many entries are found.
         List<ReadOnlyEntry> allList = new ArrayList<>();
@@ -60,13 +61,13 @@ public class DeleteByFindCommand extends DeleteCommand {
                 throw new AssertionError("Overlap should not happen for deletion.");
             }
             // refresh list view after updating.
-            model.updateAllFilteredLists(history.getPrevSearch(), history.getPrevStartDate(),
-                                         history.getPrevEndDate(), history.getPrevState());
-
+            model.updateAllFilteredLists(history.getPrevKeywords(), history.getPrevStartDate(),
+                                         history.getPrevEndDate(), history.getPrevState(),
+                                         history.getPrevSearches());
             return new CommandResult(String.format(MESSAGE_SUCCESS, entryToDelete));
         } else {
-            // save what search i did
-            history.setPrevSearch(keywords, null, null, Entry.State.ACTIVE);
+            // save search parameters
+            history.setPrevSearch(keywords, null, null, Entry.State.ACTIVE, Model.STRICT_SEARCHES);
             if (allList.size() >= 2) { // multiple entries found
                 throw new CommandException(MESSAGE_MULTIPLE_ENTRIES);
             } else {

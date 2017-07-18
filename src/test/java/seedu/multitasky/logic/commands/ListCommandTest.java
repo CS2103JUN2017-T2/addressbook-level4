@@ -9,6 +9,7 @@ import java.util.HashSet;
 import org.junit.Before;
 import org.junit.Test;
 
+import seedu.multitasky.commons.util.PowerMatch;
 import seedu.multitasky.logic.CommandHistory;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.model.Model;
@@ -56,7 +57,7 @@ public class ListCommandTest {
         ReadOnlyEntry entry = model.getEntryBook().getFloatingTaskList().get(0);
         final String[] splitName = entry.getName().fullName.split("\\s+");
         model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList(splitName)), null, null, Entry.State.ACTIVE,
-                                             Model.Search.AND);
+                                             Model.Search.AND, PowerMatch.Level.LEVEL_0);
 
         assertTrue(model.getFilteredFloatingTaskList().size() == 1);
     }

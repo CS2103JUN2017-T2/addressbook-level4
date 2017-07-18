@@ -34,7 +34,7 @@ public class CommandHistoryTest {
     }
 
     @Test
-    public void add_success() {
+    public void commandHistory_add_success() {
         final String validCommand = "clear";
         final String invalidCommand = "adds Task";
 
@@ -65,7 +65,7 @@ public class CommandHistoryTest {
 
     private void assertAll(CommandHistory history, Set<String> expectedKeywords, Calendar expectedStartDate,
                            Calendar expectedEndDate, Entry.State expectedState) {
-        assertEquals(history.getPrevSearch(), expectedKeywords);
+        assertEquals(history.getPrevKeywords(), expectedKeywords);
         assertEquals(history.getPrevStartDate(), expectedStartDate);
         assertEquals(history.getPrevEndDate(), expectedEndDate);
         assertEquals(history.getPrevState(), expectedState);

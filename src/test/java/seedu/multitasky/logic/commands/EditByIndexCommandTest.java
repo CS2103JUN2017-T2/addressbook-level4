@@ -31,6 +31,7 @@ import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.commons.core.index.Index;
+import seedu.multitasky.commons.util.PowerMatch;
 import seedu.multitasky.logic.CommandHistory;
 import seedu.multitasky.logic.commands.EditCommand.EditEntryDescriptor;
 import seedu.multitasky.logic.parser.Prefix;
@@ -185,7 +186,8 @@ public class EditByIndexCommandTest {
         ReadOnlyEntry entry = model.getEntryBook().getFloatingTaskList().get(0);
         final String[] splitName = entry.getName().fullName.split("\\s+");
         model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList(splitName)),
-                                             null, null, Entry.State.ACTIVE, Model.Search.AND);
+                                             null, null, Entry.State.ACTIVE, Model.Search.AND,
+                                             PowerMatch.Level.LEVEL_0);
 
         assertTrue(model.getFilteredFloatingTaskList().size() == 1);
     }
