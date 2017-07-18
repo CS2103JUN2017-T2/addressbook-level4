@@ -52,10 +52,10 @@ public class ResultDisplay extends UiPart<Region> {
     @Subscribe
     private void handleResultStyleChangeEvent(ResultStyleChangeEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        if (event.hasError()) {
-            setStyleToIndicateCommandFailure();
-        } else {
+        if (event.isSuccess()) {
             setStyleToIndicateCommandSuccess();
+        } else {
+            setStyleToIndicateCommandFailure();
         }
     }
 

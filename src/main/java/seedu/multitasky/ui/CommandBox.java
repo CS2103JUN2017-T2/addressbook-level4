@@ -99,7 +99,7 @@ public class CommandBox extends UiPart<Region> {
      */
     private void setStyleToIndicateCommandSuccess() {
         commandTextField.getStyleClass().remove(ERROR_STYLE_CLASS);
-        raise(new ResultStyleChangeEvent(false));
+        raise(new ResultStyleChangeEvent(true));
     }
 
     /**
@@ -110,7 +110,7 @@ public class CommandBox extends UiPart<Region> {
         if (!styleClass.contains(ERROR_STYLE_CLASS)) {
             styleClass.add(ERROR_STYLE_CLASS);
         }
-        raise(new ResultStyleChangeEvent(true));
+        raise(new ResultStyleChangeEvent(false));
     }
 
     private void onlyShowActiveEntries() {
