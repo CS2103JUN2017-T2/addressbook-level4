@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import seedu.multitasky.logic.commands.ListCommand;
 import seedu.multitasky.ui.CommandBox;
 
@@ -91,7 +93,7 @@ public class CommandBoxTest extends EntryBookGuiTest {
     }
 
     @Test
-    public void commandbox_downKey_retrievedTypedCommand() {
+    public void commandBox_downKey_retrievedTypedCommand() {
         commandBox.runCommand(DUMMY_COMMANDS[0]);
         commandBox.enterCommand(DUMMY_COMMANDS[1]);
         commandBox.pressUpKey();
@@ -103,10 +105,21 @@ public class CommandBoxTest extends EntryBookGuiTest {
      * Command autocomplete *
      ***********************/
     @Test
-    public void commandbox_nonMatchingKeyword_noAutocompleteChange() {
+    public void commandBox_nonMatchingKeyword_noAutocompleteChange() {
         commandBox.enterCommand(COMMAND_THAT_CANNOT_AUTOCOMPLETE);
         commandBox.pressTabKey();
         assertCommandBox(COMMAND_THAT_CANNOT_AUTOCOMPLETE);
+    }
+
+    /*********************
+     * Command box focus *
+     ********************/
+    @Test
+    public void commandBox_shortcutFocus_focus() {
+        resultDisplay.clickOnTextArea();
+        resultDisplay.pressKeyCombination(new KeyCodeCombination(KeyCode.F6));
+        guiRobot.type(KeyCode.A);
+        assertCommandBox(KeyCode.A.getName().toLowerCase());
     }
 
     /**

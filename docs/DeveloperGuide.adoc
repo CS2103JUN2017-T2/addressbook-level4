@@ -227,12 +227,16 @@ Classes used by multiple components are in the `seedu.multitasky.commons` packag
 //<!-- @@author A0125586X -->
 ==== PowerMatch
 
-PowerMatch is the algorithm that powers the command autocomplete as well as PowerFind. When checking if a given input matches a potential match, it performs the following checks:
+PowerMatch is the algorithm that powers the command autocomplete as well as PowerSearch. When checking if a given input matches a potential match, it can perform the following checks:
 
 * Substring check - if the input is a substring of the potential match
 * Permutation check - if the input characters permutated in a different way produce a match
+* Acronym check - if the input characters represent an acronym of a series of words
 * Missing characters check - if the input with additional characters added in produces a match
 * Additional/wrong characters check - if the input with characters changed/removed produces a match
+* Acronym permutation - if the input characters permuted in a different way represent an acronym of a series of words
+
+PowerMatch allows the developer to specify the matching level for better control of the number of results.
 //<!-- @@author -->
 
 == Implementation

@@ -5,6 +5,9 @@ import java.util.Random;
 
 import org.junit.Test;
 
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import seedu.multitasky.logic.commands.SaveCommand;
 import seedu.multitasky.testutil.TestUtil;
 
@@ -44,6 +47,15 @@ public class SaveCommandTest extends EntryBookGuiTest {
         commandBox.runCommand("save " + validPath);
         commandBox.runCommand("save " + validPath);
         assertResultMessage(String.format(SaveCommand.MESSAGE_EXISTS));
+    }
+
+    /*******************************
+     * Mixed-case and autocomplete *
+     ******************************/
+    @Test
+    public void save_shortcut_commandWord() {
+        commandBox.pressKeyCombination(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
+        assertCommandBox(SaveCommand.COMMAND_WORD + " ");
     }
 
     /***************************

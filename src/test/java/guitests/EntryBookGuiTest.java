@@ -57,6 +57,8 @@ public abstract class EntryBookGuiTest {
 
     protected Stage stage;
 
+    protected GuiRobot guiRobot;
+
     @BeforeClass
     public static void setupSpec() {
         try {
@@ -70,7 +72,8 @@ public abstract class EntryBookGuiTest {
     @Before
     public void setup() throws Exception {
         FxToolkit.setupStage((stage) -> {
-            mainGui = new MainWindowHandle(new GuiRobot(), stage);
+            guiRobot = new GuiRobot();
+            mainGui = new MainWindowHandle(guiRobot, stage);
             mainMenu = mainGui.getMainMenu();
             eventListPanel = mainGui.getEventListPanel();
             deadlineListPanel = mainGui.getDeadlineListPanel();

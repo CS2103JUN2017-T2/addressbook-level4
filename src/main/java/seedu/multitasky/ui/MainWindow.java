@@ -20,15 +20,15 @@ import seedu.multitasky.commons.core.GuiSettings;
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.commons.events.ui.ExitAppRequestEvent;
 import seedu.multitasky.commons.events.ui.ListTypeUpdateEvent;
-import seedu.multitasky.commons.events.ui.NewCommandEvent;
-import seedu.multitasky.commons.events.ui.NewCommandToExecuteEvent;
 import seedu.multitasky.commons.util.FxViewUtil;
 import seedu.multitasky.logic.Logic;
 import seedu.multitasky.logic.commands.EditCommand;
 import seedu.multitasky.logic.commands.ExitCommand;
 import seedu.multitasky.logic.commands.FindCommand;
 import seedu.multitasky.logic.commands.ListCommand;
+import seedu.multitasky.logic.commands.OpenCommand;
 import seedu.multitasky.logic.commands.RedoCommand;
+import seedu.multitasky.logic.commands.SaveCommand;
 import seedu.multitasky.logic.commands.UndoCommand;
 import seedu.multitasky.model.UserPrefs;
 import seedu.multitasky.model.entry.Entry;
@@ -75,6 +75,7 @@ public class MainWindow extends UiPart<Region> {
 
     @FXML
     private StackPane commandBoxPlaceholder;
+    private CommandBox commandBox;
 
     @FXML
     private StackPane statusbarPlaceholder;
@@ -120,6 +121,12 @@ public class MainWindow extends UiPart<Region> {
         setCommandShortcut(FindCommand.COMMAND_WORD + " ", new KeyCodeCombination(KeyCode.F3));
         setCommandShortcut(ExitCommand.COMMAND_WORD + " ", new KeyCodeCombination(KeyCode.F4));
         setCommandShortcut(ListCommand.COMMAND_WORD + " ", new KeyCodeCombination(KeyCode.F5));
+        setCommandShortcut(SaveCommand.COMMAND_WORD + " ",
+                           new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
+        setCommandShortcut(OpenCommand.COMMAND_WORD + " ",
+                           new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN));
+
+        setCommandBoxFocusShortcut(new KeyCodeCombination(KeyCode.F6));
     }
 
     /**
@@ -142,8 +149,8 @@ public class MainWindow extends UiPart<Region> {
      */
     private void setCommandExecuteShortcut(String command, KeyCodeCombination keyCodeCombination) {
         getRoot().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            if (event.getTarget() instanceof TextInputControl && keyCodeCombination.match(event)) {
-                raise(new NewCommandToExecuteEvent(command));
+            if (keyCodeCombination.match(event)) {
+                commandBox.executeCommand(command);
                 event.consume();
             }
         });
@@ -156,12 +163,25 @@ public class MainWindow extends UiPart<Region> {
      */
     private void setCommandShortcut(String command, KeyCodeCombination keyCodeCombination) {
         getRoot().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            if (event.getTarget() instanceof TextInputControl && keyCodeCombination.match(event)) {
-                raise(new NewCommandEvent(command));
+            if (keyCodeCombination.match(event)) {
+                commandBox.setCommand(command);
                 event.consume();
             }
         });
     }
+
+    /**
+     * Sets up the shortcut to bring the command box into focus
+     */
+    private void setCommandBoxFocusShortcut(KeyCodeCombination keyCodeCombination) {
+        getRoot().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (keyCodeCombination.match(event)) {
+                commandBox.requestFocus();
+                event.consume();
+            }
+        });
+    }
+
 
     void fillInnerParts() {
         stateCurrentlyShown.setText(String.format(Messages.MESSAGE_CURRENTLY_DISPLAYING,
@@ -182,7 +202,7 @@ public class MainWindow extends UiPart<Region> {
         StatusBarFooter statusBarFooter = new StatusBarFooter(prefs.getEntryBookFilePath());
         statusbarPlaceholder.getChildren().add(statusBarFooter.getRoot());
 
-        CommandBox commandBox = new CommandBox(logic);
+        commandBox = new CommandBox(logic);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
 
     }

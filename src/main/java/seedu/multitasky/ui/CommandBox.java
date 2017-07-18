@@ -2,16 +2,12 @@ package seedu.multitasky.ui;
 
 import java.util.logging.Logger;
 
-import com.google.common.eventbus.Subscribe;
-
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 import seedu.multitasky.commons.core.LogsCenter;
-import seedu.multitasky.commons.events.ui.NewCommandEvent;
-import seedu.multitasky.commons.events.ui.NewCommandToExecuteEvent;
 import seedu.multitasky.commons.events.ui.NewResultAvailableEvent;
 import seedu.multitasky.commons.events.ui.ResultStyleChangeEvent;
 import seedu.multitasky.logic.Logic;
@@ -53,29 +49,19 @@ public class CommandBox extends UiPart<Region> {
         registerAsAnEventHandler(this);
     }
 
-    /**
-     * Requests focus on the command text field once the main UI window is open,
-     * so that the user can immediately begin typing.
-     */
-    private void setCommandTextFieldFocus() {
-        Platform.runLater(new Runnable() {
-            public void run() {
-                commandTextField.requestFocus();
-            }
-        });
+    public void setCommand(String command) {
+        commandTextField.setText(command);
+        commandTextField.positionCaret(commandTextField.getText().length());
     }
 
-    @FXML
-    private void handleCommandInputChanged() throws DuplicateEntryException {
-        commandHistory.saveCommand();
-        executeLogic(commandTextField.getText().trim());
-        commandTextField.setText("");
+    public void requestFocus() {
+        commandTextField.requestFocus();
     }
 
     /**
      * Calls the logic component to execute the command given by the string.
      */
-    private void executeLogic(String command) {
+    public void executeCommand(String command) {
         try {
             CommandResult commandResult = logic.execute(command);
             // process result of the command
@@ -92,6 +78,25 @@ public class CommandBox extends UiPart<Region> {
             logger.info("Unable to add duplicate entry with command: " + command);
             raise(new NewResultAvailableEvent(e.getMessage()));
         }
+    }
+
+    @FXML
+    private void handleCommandInputChanged() {
+        commandHistory.saveCommand();
+        executeCommand(commandTextField.getText().trim());
+        commandTextField.setText("");
+    }
+
+    /**
+     * Requests focus on the command text field once the main UI window is open,
+     * so that the user can immediately begin typing.
+     */
+    private void setCommandTextFieldFocus() {
+        Platform.runLater(new Runnable() {
+            public void run() {
+                commandTextField.requestFocus();
+            }
+        });
     }
 
     /**
@@ -119,17 +124,6 @@ public class CommandBox extends UiPart<Region> {
         } catch (Exception e) {
             assert false : "Initial list of active entries cannot throw exceptions";
         }
-    }
-
-    @Subscribe
-    private void handleNewCommandEvent(NewCommandEvent event) {
-        commandTextField.setText(event.command);
-        commandTextField.positionCaret(commandTextField.getText().length());
-    }
-
-    @Subscribe
-    private void handleNewCommandToExecuteEvent(NewCommandToExecuteEvent event) {
-        executeLogic(event.command);
     }
 
 }
