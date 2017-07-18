@@ -61,11 +61,11 @@ public class CommandHistory {
         return previousEndDate;
     }
 
-    public void setPrevSearch(Set<String> nextSearch, Calendar startDate, Calendar endDate, State nextState) {
-        previousSearchKeywords = nextSearch;
+    public void setPrevSearch(Set<String> prevSearch, Calendar startDate, Calendar endDate, State prevState) {
+        previousSearchKeywords = prevSearch;
         previousStartDate = startDate;
         previousEndDate = endDate;
-        previousState = nextState;
+        previousState = prevState;
     }
 
 }
