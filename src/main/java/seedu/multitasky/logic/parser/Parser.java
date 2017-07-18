@@ -19,9 +19,10 @@ import seedu.multitasky.logic.commands.FindCommand;
 import seedu.multitasky.logic.commands.HelpCommand;
 import seedu.multitasky.logic.commands.HistoryCommand;
 import seedu.multitasky.logic.commands.ListCommand;
+import seedu.multitasky.logic.commands.OpenCommand;
 import seedu.multitasky.logic.commands.RedoCommand;
 import seedu.multitasky.logic.commands.RestoreCommand;
-import seedu.multitasky.logic.commands.SetCommand;
+import seedu.multitasky.logic.commands.SaveCommand;
 import seedu.multitasky.logic.commands.UndoCommand;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
 import seedu.multitasky.model.LogicUserPrefs;
@@ -74,11 +75,14 @@ public class Parser {
         case FindCommand.COMMAND_WORD:
             return new FindCommandParser().parse(arguments);
 
+        case OpenCommand.COMMAND_WORD:
+            return new OpenCommandParser().parse(arguments);
+
         case ListCommand.COMMAND_WORD:
             return new ListCommandParser().parse(arguments);
 
-        case SetCommand.COMMAND_WORD:
-            return new SetCommandParser().parse(arguments);
+        case SaveCommand.COMMAND_WORD:
+            return new SaveCommandParser().parse(arguments);
 
         case UndoCommand.COMMAND_WORD:
             return new UndoCommand();

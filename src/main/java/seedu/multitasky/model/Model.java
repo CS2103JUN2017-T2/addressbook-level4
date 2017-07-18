@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.Set;
 
 import seedu.multitasky.commons.core.UnmodifiableObservableList;
+import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
@@ -49,6 +50,13 @@ public interface Model {
 
     /** Change the file path for storage */
     void changeFilePath(String newFilePath);
+
+    /**
+     * Load data at the given file path
+     *
+     * @throws IllegalValueException
+     */
+    void openFilePath(String newFilePath) throws IllegalValueException;
 
     /**
      * Replaces the given entry {@code target} with {@code editedEntry}.

@@ -1,6 +1,7 @@
 package seedu.multitasky.storage;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -10,10 +11,11 @@ import com.google.common.eventbus.Subscribe;
 import seedu.multitasky.commons.core.ComponentManager;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
-import seedu.multitasky.commons.events.model.FilePathChangedEvent;
 import seedu.multitasky.commons.events.storage.DataSavingExceptionEvent;
 import seedu.multitasky.commons.events.storage.EntryBookToRedoEvent;
 import seedu.multitasky.commons.events.storage.EntryBookToUndoEvent;
+import seedu.multitasky.commons.events.storage.FilePathChangedEvent;
+import seedu.multitasky.commons.events.storage.LoadDataFromFilePathEvent;
 import seedu.multitasky.commons.exceptions.DataConversionException;
 import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.ReadOnlyEntryBook;
@@ -147,6 +149,17 @@ public class StorageManager extends ComponentManager implements Storage {
     }
 
     /**
+     * Loads data from the given file.
+     *
+     * @throws FileNotFoundException
+     * @throws Exception
+     */
+    public EntryBook loadDataFromFile(String filepath) throws DataConversionException, FileNotFoundException {
+        ReadOnlyEntryBook dataFromFile = XmlFileStorage.loadDataFromSaveFile(new File(filepath));
+        return new EntryBook(dataFromFile);
+    }
+
+    /**
      * Gets the filepath of the most current snapshot xml file and increments index by one.
      */
     public String setEntryBookSnapshotPathAndUpdateIndex() {
@@ -235,6 +248,24 @@ public class StorageManager extends ComponentManager implements Storage {
             saveEntryBook(event.data, event.getNewFilePath());
         } catch (IOException e) {
             raise(new DataSavingExceptionEvent(e));
+        }
+    }
+
+    /**
+     * Saves data of the entrybook at the filepath specified.
+     *
+     * @throws DataConversionException
+     */
+    @Subscribe
+    public void handleLoadDataFromFilePathEvent(LoadDataFromFilePathEvent event) throws Exception {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Data changed, opening file and loading data"));
+        try {
+            EntryBook entry = loadDataFromFile(event.getFilepath());
+            saveEntryBook(entry);
+            event.setData(entry);
+            event.setMessage("open successful");
+        } catch (Exception e) {
+            event.setMessage(e.getMessage());
         }
     }
 

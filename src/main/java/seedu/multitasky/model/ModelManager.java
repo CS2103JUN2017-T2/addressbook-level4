@@ -14,9 +14,11 @@ import seedu.multitasky.commons.core.ComponentManager;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
-import seedu.multitasky.commons.events.model.FilePathChangedEvent;
 import seedu.multitasky.commons.events.storage.EntryBookToRedoEvent;
 import seedu.multitasky.commons.events.storage.EntryBookToUndoEvent;
+import seedu.multitasky.commons.events.storage.FilePathChangedEvent;
+import seedu.multitasky.commons.events.storage.LoadDataFromFilePathEvent;
+import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.commons.util.PowerMatch;
 import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.Entry;
@@ -80,6 +82,7 @@ public class ModelManager extends ComponentManager implements Model {
     // =========== List Level Operations ===========
 
     // @@author A0126623L
+
     @Override
     public void clearStateSpecificEntries(Entry.State state) {
         _entryBook.clearStateSpecificEntries(state);
@@ -213,7 +216,7 @@ public class ModelManager extends ComponentManager implements Model {
         this.updateFilteredEventList(new HashSet<String>(), null, null, Entry.State.ACTIVE, Search.AND);
         this.updateFilteredDeadlineList(new HashSet<String>(), null, null, Entry.State.ACTIVE, Search.AND);
         this.updateFilteredFloatingTaskList(new HashSet<String>(), null, null, Entry.State.ACTIVE,
-                                            Search.AND);
+                Search.AND);
     }
     // @@author
 
@@ -223,7 +226,7 @@ public class ModelManager extends ComponentManager implements Model {
         this.updateFilteredEventList(new HashSet<String>(), null, null, Entry.State.ARCHIVED, Search.AND);
         this.updateFilteredDeadlineList(new HashSet<String>(), null, null, Entry.State.ARCHIVED, Search.AND);
         this.updateFilteredFloatingTaskList(new HashSet<String>(), null, null, Entry.State.ARCHIVED,
-                                            Search.AND);
+                Search.AND);
     }
     // @@author
 
@@ -233,7 +236,7 @@ public class ModelManager extends ComponentManager implements Model {
         this.updateFilteredEventList(new HashSet<String>(), null, null, Entry.State.DELETED, Search.AND);
         this.updateFilteredDeadlineList(new HashSet<String>(), null, null, Entry.State.DELETED, Search.AND);
         this.updateFilteredFloatingTaskList(new HashSet<String>(), null, null, Entry.State.DELETED,
-                                            Search.AND);
+                Search.AND);
     }
 
     // @@author A0125586X
@@ -243,15 +246,15 @@ public class ModelManager extends ComponentManager implements Model {
         // Attempt until at least one result shown
         for (Search search : Search.values()) {
             updateFilteredEventList(new PredicateExpression(new NameDateStateQualifier(keywords,
-                                                                                       startDate, endDate,
-                                                                                       state, search)));
+                    startDate, endDate,
+                    state, search)));
             updateFilteredDeadlineList(new PredicateExpression(new NameDateStateQualifier(keywords,
-                                                                                          startDate, endDate,
-                                                                                          state, search)));
+                    startDate, endDate,
+                    state, search)));
             updateFilteredFloatingTaskList(new PredicateExpression(new NameDateStateQualifier(keywords,
-                                                                                              startDate,
-                                                                                              endDate, state,
-                                                                                              search)));
+                    startDate,
+                    endDate, state,
+                    search)));
             if ((getFilteredEventList().size() + getFilteredDeadlineList().size()
                  + getFilteredFloatingTaskList().size()) > 0) {
                 break; // No need to search further
@@ -269,8 +272,8 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateFilteredEventList(Set<String> keywords, Calendar startDate, Calendar endDate,
                                         Entry.State state, Search search) {
         updateFilteredEventList(new PredicateExpression(new NameDateStateQualifier(keywords,
-                                                                                   startDate, endDate, state,
-                                                                                   search)));
+                startDate, endDate, state,
+                search)));
     }
 
     // @@author A0126623L
@@ -283,8 +286,8 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateFilteredDeadlineList(Set<String> keywords, Calendar startDate,
                                            Calendar endDate, Entry.State state, Search search) {
         updateFilteredDeadlineList(new PredicateExpression(new NameDateStateQualifier(keywords,
-                                                                                      startDate, endDate,
-                                                                                      state, search)));
+                startDate, endDate,
+                state, search)));
     }
 
     // @@author A0126623L
@@ -297,8 +300,8 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateFilteredFloatingTaskList(Set<String> keywords, Calendar startDate,
                                                Calendar endDate, Entry.State state, Search search) {
         updateFilteredFloatingTaskList(new PredicateExpression(new NameDateStateQualifier(keywords,
-                                                                                          startDate, endDate,
-                                                                                          state, search)));
+                startDate, endDate,
+                state, search)));
     }
 
     // @@author A0125586X
@@ -399,8 +402,8 @@ public class ModelManager extends ComponentManager implements Model {
          * @param search the type of search to use (AND, OR, POWER_AND, POWER_OR). cannot be null.
          */
         NameDateStateQualifier(Set<String> nameAndTagKeywords,
-                               Calendar startDate, Calendar endDate,
-                               Entry.State state, Search search) {
+                Calendar startDate, Calendar endDate,
+                Entry.State state, Search search) {
             assert nameAndTagKeywords != null : "nameAndTagKeywords for NameDateStateQualifier cannot be null";
             assert search != null : "search type for NameDateStateQualifier cannot be null";
 
@@ -510,7 +513,7 @@ public class ModelManager extends ComponentManager implements Model {
         public String toString() {
             StringBuilder builder = new StringBuilder();
             builder.append("NameDateStateQualifier: ")
-                   .append("keywords = ");
+                    .append("keywords = ");
             for (String keyword : nameAndTagKeywords) {
                 builder.append(keyword).append(", ");
             }
@@ -575,6 +578,19 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void changeFilePath(String newFilePath) {
         raise(new FilePathChangedEvent(_entryBook, newFilePath));
+    }
+
+    /** Raises an event when filepath to load data from is entered by user */
+    @Override
+    public void openFilePath(String newFilePath) throws IllegalValueException {
+        LoadDataFromFilePathEvent event;
+        raise(event = new LoadDataFromFilePathEvent(_entryBook, newFilePath, ""));
+        if (event.getMessage().equals("open successful")) {
+            _entryBook.resetData(event.getData());
+            indicateEntryBookChanged();
+        } else {
+            throw new IllegalValueException("load unsuccessful");
+        }
     }
     // @@author
 
