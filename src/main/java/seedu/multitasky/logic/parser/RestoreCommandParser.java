@@ -36,10 +36,12 @@ public class RestoreCommandParser {
      * @throws ParseException if the user input does not conform the expected format
      */
     public RestoreCommand parse(String args) throws ParseException {
-        argMultimap = ArgumentTokenizer.tokenize(args, ParserUtil.toPrefixArray(RestoreCommand.VALID_PREFIXES));
+        argMultimap = ArgumentTokenizer.tokenize(args,
+                                                 ParserUtil.toPrefixArray(RestoreCommand.VALID_PREFIXES));
 
         if (args.trim().isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RestoreCommand.MESSAGE_USAGE));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                                                   RestoreCommand.MESSAGE_USAGE));
         }
 
         if (hasIndexFlag(argMultimap)) { // process to restore by indexes
@@ -68,16 +70,19 @@ public class RestoreCommandParser {
     }
     // @@author
 
+    /**
+     * TODO: Since more than 1 command parsers (delete, complete and restore) use the method below,
+     * it may be refactored into the ParserUtil class as a static method.
+     */
     // @@author A0126623L-reused
     /**
      * A method that returns true if flags are given in an illogical manner for restoring commands.
      * illogical := any 2 of /float, /deadline, /event used together.
-     *
-     * TODO: Since more than 1 command parsers (delete, complete and restore) use this method,
-     * it may be refactored into the ParserUtil class as a static method.
      */
     private boolean hasInvalidFlagCombination(ArgumentMultimap argMultimap) {
-        assert argMultimap != null;
+        if (argMultimap == null) {
+            throw new AssertionError("argMultimap cannot be null.");
+        }
         return ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_DEADLINE)
                || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_DEADLINE, PREFIX_EVENT)
                || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_EVENT);

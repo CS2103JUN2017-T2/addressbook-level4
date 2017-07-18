@@ -16,31 +16,31 @@ public class ClearCommandTest extends EntryBookGuiTest {
      * Clearing the list *
      ********************/
     @Test
-    public void clear_emptyList_success() {
-        assertClearCommandSuccess();
-        assertClearCommandSuccess();
+    public void clearAll_emptyList_success() {
+        assertClearAllCommandSuccess();
+        assertClearAllCommandSuccess();
     }
 
     /**********************************
      * Adding after clearing the list *
      *********************************/
     @Test
-    public void clear_addEventAfterClear_success() {
-        assertClearCommandSuccess();
+    public void clear_addEventAfterClearAll_success() {
+        assertClearAllCommandSuccess();
         commandBox.runCommand(CommandUtil.getAddEventCommand(SampleEntries.CAT));
         assertTrue(eventListPanel.isListMatching(SampleEntries.CAT));
     }
 
     @Test
-    public void clear_addDeadlineAfterClear_success() {
-        assertClearCommandSuccess();
+    public void clear_addDeadlineAfterClearAll_success() {
+        assertClearAllCommandSuccess();
         commandBox.runCommand(CommandUtil.getAddDeadlineCommand(SampleEntries.SUBMISSION));
         assertTrue(deadlineListPanel.isListMatching(SampleEntries.SUBMISSION));
     }
 
     @Test
-    public void clear_addFloatingTaskAfterClear_success() {
-        assertClearCommandSuccess();
+    public void clear_addFloatingTaskAfterClearAll_success() {
+        assertClearAllCommandSuccess();
         commandBox.runCommand(CommandUtil.getAddFloatingTaskCommand(SampleEntries.CLEAN));
         assertTrue(floatingTaskListPanel.isListMatching(SampleEntries.CLEAN));
     }
@@ -121,8 +121,8 @@ public class ClearCommandTest extends EntryBookGuiTest {
         assertTrue(floatingTaskListPanel.isEmpty());
     }
 
-    private void assertClearCommandSuccess() {
-        commandBox.runCommand(ClearCommand.COMMAND_WORD);
+    private void assertClearAllCommandSuccess() {
+        commandBox.runCommand(ClearCommand.COMMAND_WORD + " all");
         assertCleared();
         assertResultMessage("Entry book has been cleared!");
     }

@@ -2,6 +2,7 @@ package seedu.multitasky.model;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -35,15 +36,15 @@ import seedu.multitasky.model.util.EntryBuilder;
  */
 public class EntryBook implements ReadOnlyEntryBook {
 
-    // TODO: Decide later if it's useful to keep an internal active list
-    private final MiscEntryList _activeList;
+    // TODO: Decide later if it's useful to keep an internal list of all entries
+    private final MiscEntryList _allEntriesList;
     private final EventList _eventList;
     private final DeadlineList _deadlineList;
     private final FloatingTaskList _floatingTaskList;
     private final UniqueTagList _tags;
 
     public EntryBook() {
-        _activeList = new MiscEntryList();
+        _allEntriesList = new MiscEntryList();
         _eventList = new EventList();
         _deadlineList = new DeadlineList();
         _floatingTaskList = new FloatingTaskList();
@@ -61,20 +62,21 @@ public class EntryBook implements ReadOnlyEntryBook {
     //// list overwrite operations
 
     // @@author A0126623L
-    private void setActiveList() throws DuplicateEntryException {
+    private void setAllEntriesList() throws DuplicateEntryException {
         /*
-         * The reset of active list is different from the others because here we want to add the references to
+         * The reset of list of all entries is different from the others because here we want to add the
+         * references to
          * existing entries, not making new copies.
          */
-        this._activeList.setEntries(new MiscEntryList());
+        this._allEntriesList.setEntries(new MiscEntryList());
         for (ReadOnlyEntry entry : _eventList) {
-            this._activeList.add(entry);
+            this._allEntriesList.add(entry);
         }
         for (ReadOnlyEntry entry : _deadlineList) {
-            this._activeList.add(entry);
+            this._allEntriesList.add(entry);
         }
         for (ReadOnlyEntry entry : _floatingTaskList) {
-            this._activeList.add(entry);
+            this._allEntriesList.add(entry);
         }
     }
 
@@ -103,7 +105,7 @@ public class EntryBook implements ReadOnlyEntryBook {
             setDeadlineList(newData.getDeadlineList());
             setFloatingTaskList(newData.getFloatingTaskList());
 
-            setActiveList();
+            setAllEntriesList();
         } catch (DuplicateEntryException e) {
             assert false : "EntryBooks should not have duplicate entries";
         }
@@ -113,7 +115,7 @@ public class EntryBook implements ReadOnlyEntryBook {
         } catch (UniqueTagList.DuplicateTagException e) {
             assert false : "EntryBooks should not have duplicate tags";
         }
-        syncMasterTagListWith(_activeList);
+        syncMasterTagListWith(_allEntriesList);
     }
     // @@author
 
@@ -145,8 +147,10 @@ public class EntryBook implements ReadOnlyEntryBook {
             Entry newEntry = convertToEntry(e);
             syncMasterTagListWith(newEntry);
 
-            // TODO: Decide later if it's still necessary to keep an internal active list
-            _activeList.add(newEntry); // Adds reference of newEntry to activeList, not creating a copy.
+            // TODO: Decide later if it's still necessary to keep an internal list of all entries
+
+            // Adds reference of newEntry to allEntriesList, not creating a copy.
+            _allEntriesList.add(newEntry);
         }
     }
     // @@author
@@ -288,7 +292,7 @@ public class EntryBook implements ReadOnlyEntryBook {
      * @throws DuplicateEntryException, EntryNotFoundException
      */
     public boolean removeEntry(ReadOnlyEntry entryToRemove) throws EntryNotFoundException {
-        return (_activeList.remove(entryToRemove) && removeFromEntrySubtypeList(entryToRemove));
+        return (_allEntriesList.remove(entryToRemove) && removeFromEntrySubtypeList(entryToRemove));
     }
 
     /**
@@ -307,6 +311,32 @@ public class EntryBook implements ReadOnlyEntryBook {
             return _floatingTaskList.remove(entryToRemove);
         }
     }
+
+    // @@author A0126623L
+    /**
+     * Clears all entries of a specific state within this {@code EntryBook}.
+     * @param state of entries to be cleared.
+     */
+    public void clearStateSpecificEntries(Entry.State state) {
+
+        ArrayList<ReadOnlyEntry> entriesToRemove = new ArrayList<>();
+
+        for (ReadOnlyEntry readOnlyEntry : _allEntriesList) {
+            if (readOnlyEntry.getState() == state) {
+                entriesToRemove.add(readOnlyEntry);
+            }
+        }
+
+        try {
+            for (ReadOnlyEntry entryToRemove : entriesToRemove) {
+                this.removeEntry(entryToRemove);
+            }
+        } catch (EntryNotFoundException enfe) {
+            throw new AssertionError("If things are going as expected, "
+                                     + " EntryNotFoundException shouldn't be arising here.");
+        }
+    }
+    // @@author
 
     // @@author A0126623L
     /**
@@ -357,13 +387,13 @@ public class EntryBook implements ReadOnlyEntryBook {
      */
     @Override
     public String toString() {
-        return _activeList.asObservableList().size() + " active entries, " + _tags.asObservableList().size()
+        return _allEntriesList.asObservableList().size() + " entries, " + _tags.asObservableList().size()
                + " tags";
     }
 
     @Override
-    public ObservableList<ReadOnlyEntry> getActiveList() {
-        return new UnmodifiableObservableList<>(_activeList.asObservableList());
+    public ObservableList<ReadOnlyEntry> getAllEntries() {
+        return new UnmodifiableObservableList<>(_allEntriesList.asObservableList());
     }
 
     @Override
@@ -390,7 +420,7 @@ public class EntryBook implements ReadOnlyEntryBook {
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                || (other instanceof EntryBook // instanceof handles nulls
-                   && this.getActiveList().equals(((EntryBook) other).getActiveList())
+                   && this.getAllEntries().equals(((EntryBook) other).getAllEntries())
                    && this.getEventList().equals(((EntryBook) other).getEventList())
                    && this.getDeadlineList().equals(((EntryBook) other).getDeadlineList())
                    && this.getFloatingTaskList().equals(((EntryBook) other).getFloatingTaskList())
@@ -400,7 +430,7 @@ public class EntryBook implements ReadOnlyEntryBook {
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(getActiveList(), getEventList(), getDeadlineList(),
+        return Objects.hash(getAllEntries(), getEventList(), getDeadlineList(),
                             getFloatingTaskList(), getTagList());
     }
 }

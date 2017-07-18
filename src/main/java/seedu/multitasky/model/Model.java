@@ -31,6 +31,9 @@ public interface Model {
     /** Deletes the given entry. */
     void deleteEntry(ReadOnlyEntry target) throws DuplicateEntryException, EntryNotFoundException;
 
+    /** Clears all entries of a specific state. */
+    public void clearStateSpecificEntries(Entry.State state);
+
     /** Adds the given entry */
     void addEntry(ReadOnlyEntry entry) throws DuplicateEntryException, OverlappingEventException;
 
@@ -95,21 +98,21 @@ public interface Model {
     void updateAllFilteredLists(Set<String> keywords, Calendar startDate, Calendar endDate,
                                 Entry.State state);
 
-    /*
+    /**
      * Updates the filter of the filtered event list to filter by the given keywords,
      * date range and state using the specified search type.
      */
     void updateFilteredEventList(Set<String> keywords, Calendar startDate, Calendar endDate,
                                  Entry.State state, Search search);
 
-    /*
+    /**
      * Updates the filter of the filtered deadline list to filter by the given keywords,
      * date range and state using the specified search type.
      */
     void updateFilteredDeadlineList(Set<String> keywords, Calendar startDate, Calendar endDate,
                                     Entry.State state, Search search);
 
-    /*
+    /**
      * Updates the filter of the filtered floating task list to filter by the given keywords,
      * date range and state using the specified search type.
      */
