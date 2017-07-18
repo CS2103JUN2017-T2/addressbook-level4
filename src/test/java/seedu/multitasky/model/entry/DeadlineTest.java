@@ -123,4 +123,37 @@ public class DeadlineTest {
         assertFalse(deadline1.equals(deadline5));
     }
 
+    // @@author A0126623L
+    @Test
+    public void isOverdueTest() {
+        final int offsetAmount = 10;
+        try {
+            // Overdue deadline
+            Entry overdueDeadline = EntryBuilder.build(new Name("deadlineSample"),
+                                                       Calendar.getInstance(),
+                                                       "tag1");
+            overdueDeadline.getEndDateAndTime().add(Calendar.YEAR, -offsetAmount);
+            assertTrue(((Deadline) overdueDeadline).isOverdue());
+
+            // Current deadline should be considered overdue
+            Entry currentDeadline = EntryBuilder.build(new Name("deadlineSample"),
+                                                       Calendar.getInstance(),
+                                                       "tag1");
+            assertTrue(((Deadline) currentDeadline).isOverdue());
+
+            // Future deadline
+            // Overdue deadline
+            Entry futureDeadline = EntryBuilder.build(new Name("deadlineSample"),
+                                                      Calendar.getInstance(),
+                                                      "tag1");
+            futureDeadline.getEndDateAndTime().add(Calendar.YEAR, offsetAmount + 1);
+            assertFalse(((Deadline) futureDeadline).isOverdue());
+
+        } catch (Exception e) {
+            fail("Should not fail.");
+        }
+
+    }
+    // @@author
+
 }
