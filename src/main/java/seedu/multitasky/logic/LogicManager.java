@@ -10,6 +10,7 @@ import seedu.multitasky.logic.commands.CommandResult;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.logic.parser.Parser;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
+import seedu.multitasky.model.LogicUserPrefs;
 import seedu.multitasky.model.Model;
 import seedu.multitasky.model.UserPrefs;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
@@ -24,7 +25,7 @@ public class LogicManager extends ComponentManager implements Logic {
     private final Model model;
     private final CommandHistory history;
     private final Parser parser;
-    private final UserPrefs userprefs;
+    private final LogicUserPrefs userprefs;
 
     public LogicManager(Model model, UserPrefs userprefs) {
         this.model = model;

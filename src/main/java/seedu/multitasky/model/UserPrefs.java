@@ -8,7 +8,7 @@ import seedu.multitasky.commons.core.GuiSettings;
  * Represents User's preferences.
  */
 // @@author A0132788U
-public class UserPrefs {
+public class UserPrefs implements LogicUserPrefs {
     /** Index to maintain snapshot file number */
     private static int index = 0;
     /** Snapshot file path without index and xml */
@@ -17,7 +17,7 @@ public class UserPrefs {
     private String entryBookName = "MyEntryBook";
     private String entryBookFilePath = "data/entrybook.xml";
     // @@author A0140633R
-    private int addDurationHour = 1;
+    private final int defaultDurationHour = 1;
     // @@author
 
     public UserPrefs() {
@@ -70,16 +70,14 @@ public class UserPrefs {
         return index;
     }
 
-    public int getDurationHour() {
-        return addDurationHour;
-    }
-
-    public void setDurationHour(int value) {
-        addDurationHour = value;
-    }
-
     public static void setIndex(int index) {
         UserPrefs.index = index;
+    }
+
+
+    @Override
+    public int getDurationHour() {
+        return defaultDurationHour;
     }
 
     public String getEntryBookName() {

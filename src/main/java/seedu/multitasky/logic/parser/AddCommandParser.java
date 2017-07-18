@@ -19,7 +19,7 @@ import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.logic.commands.AddCommand;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
-import seedu.multitasky.model.UserPrefs;
+import seedu.multitasky.model.LogicUserPrefs;
 import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.Event;
 import seedu.multitasky.model.entry.FloatingTask;
@@ -39,7 +39,7 @@ public class AddCommandParser {
      * AddCommand and returns an AddCommand object for execution.
      * throws ParseException if the user input does not conform the expected format.
      */
-    public AddCommand parse(String args, UserPrefs userprefs) throws ParseException {
+    public AddCommand parse(String args, LogicUserPrefs userprefs) throws ParseException {
         argMultimap = ArgumentTokenizer.tokenize(args, ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES));
         Calendar startDate = null;
         Calendar endDate = null;
