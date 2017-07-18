@@ -26,7 +26,8 @@ public class EditByFindCommand extends EditCommand {
                                                                         CliSyntax.PREFIX_DEADLINE.toString(),
                                                                         CliSyntax.PREFIX_FLOATINGTASK.toString())
                                                           + "]"
-                                                          + " INDEX to specify which entry to edit.";
+                                                          + " INDEX to specify which entry to edit. \n"
+                                                          + "The edit details have been saved for next edit try";
 
     private Set<String> keywords;
 
@@ -78,6 +79,7 @@ public class EditByFindCommand extends EditCommand {
 
         } else {
             history.setPrevSearch(keywords, null, null, Entry.State.ACTIVE);
+            history.setEditHistory(editEntryDescriptor);
             if (allList.size() >= 2) {
                 throw new CommandException(MESSAGE_MULTIPLE_ENTRIES);
             } else {

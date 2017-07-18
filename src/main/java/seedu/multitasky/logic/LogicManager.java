@@ -38,7 +38,7 @@ public class LogicManager extends ComponentManager implements Logic {
     public CommandResult execute(String commandText) throws CommandException, ParseException, DuplicateEntryException {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
         try {
-            Command command = parser.parseCommand(commandText, userprefs);
+            Command command = parser.parseCommand(commandText, userprefs, history);
             logger.info("User input successfully parsed into Command!");
             command.setData(model, history);
             return command.execute();

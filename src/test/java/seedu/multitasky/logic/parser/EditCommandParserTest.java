@@ -3,6 +3,7 @@ package seedu.multitasky.logic.parser;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static seedu.multitasky.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_ADDTAG;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_BY;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_DEADLINE;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_EVENT;
@@ -10,6 +11,7 @@ import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FROM;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_TO;
 import static seedu.multitasky.logic.parser.ParserUtil.MESSAGE_FAIL_PARSE_DATE;
 import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_DATE_11_JULY_17;
 import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_DATE_12_JULY_17;
@@ -29,6 +31,8 @@ import java.util.Set;
 import org.junit.Test;
 
 import seedu.multitasky.commons.core.index.Index;
+import seedu.multitasky.logic.CommandHistory;
+import seedu.multitasky.logic.EditCommandHistory;
 import seedu.multitasky.logic.commands.Command;
 import seedu.multitasky.logic.commands.EditByFindCommand;
 import seedu.multitasky.logic.commands.EditByIndexCommand;
@@ -37,6 +41,7 @@ import seedu.multitasky.logic.commands.EditCommand.EditEntryDescriptor;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
 import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.tag.Tag;
+import seedu.multitasky.testutil.EditCommandTestUtil;
 import seedu.multitasky.testutil.EditEntryDescriptorBuilder;
 
 public class EditCommandParserTest {
@@ -47,9 +52,11 @@ public class EditCommandParserTest {
     private static final String NAME_DESC_CLEAN = " " + PREFIX_NAME + " " + VALID_NAME_CLEAN;
     private static final String NAME_DESC_MEETING = " " + PREFIX_NAME + " " + VALID_NAME_MEETING;
     private static final String DATE_DESC_START_12JULY = " " + PREFIX_FROM + " " + VALID_DATE_12_JULY_17;
+    private static final String DATE_DESC_END_12JULY = " " + PREFIX_TO + " " + VALID_DATE_12_JULY_17;
     private static final String DATE_DESC_END_11JULY = " " + PREFIX_BY + " " + VALID_DATE_11_JULY_17;
     private static final String DATE_DESC_END_20DEC = " " + PREFIX_BY + " " + VALID_DATE_20_DEC_17;
     private static final String TAG_DESC_FRIEND = " " + PREFIX_TAG + " " + VALID_TAG_FRIEND;
+    private static final String ADDTAG_DESC_URGENT = " " + PREFIX_ADDTAG + " " + VALID_TAG_URGENT;
     private static final String TAG_DESC_URGENT = " " + PREFIX_TAG + " " + VALID_TAG_URGENT;
     private static final String TAG_EMPTY = " " + PREFIX_TAG;
 
@@ -62,6 +69,7 @@ public class EditCommandParserTest {
             MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE);
 
     private EditCommandParser parser = new EditCommandParser();
+    private EditCommandHistory history = new CommandHistory();
 
     @Test
     public void parse_missingParts_failure() {
@@ -94,6 +102,10 @@ public class EditCommandParserTest {
         // does not allow multiple list indicating index flags to be parsed
         assertParseFailure(PREFIX_DESC_FLOAT + "1" + PREFIX_DESC_EVENT + "1"
                            + TAG_DESC_FRIEND, MESSAGE_INVALID_FORMAT);
+
+        // does not allow tag and addtag to be used together, illogical combination
+        assertParseFailure(PREFIX_DESC_FLOAT + "1" + PREFIX_DESC_EVENT + "1"
+                + TAG_DESC_FRIEND + ADDTAG_DESC_URGENT, MESSAGE_INVALID_FORMAT);
 
         // does not allow parsing of terms prettyTime lib does not recognize.
         assertParseFailure(PREFIX_DESC_FLOAT + " 1" + INVALID_DATE_END_DESC,
@@ -138,12 +150,14 @@ public class EditCommandParserTest {
         assertParseSuccess(userInput, expectedCommand);
 
         // search with escape words
-        searchString = "typical entry \\name \\by \\at \\on";
+        searchString = "typical entry with escaped words \\name \\by \\at \\on";
         keywords = searchString.split("\\s+");
         keywordSet = new HashSet<>(Arrays.asList(keywords));
         userInput = searchString + DATE_DESC_START_12JULY + DATE_DESC_END_20DEC + TAG_DESC_URGENT
                 + NAME_DESC_CLEAN + TAG_DESC_FRIEND;
-        // descriptor unchanged
+        descriptor = new EditEntryDescriptorBuilder().withName(VALID_NAME_CLEAN)
+                .withTags(VALID_TAG_URGENT, VALID_TAG_FRIEND).withStartDate(VALID_DATE_12_JULY_17)
+                .withEndDate(VALID_DATE_20_DEC_17).build();
         expectedCommand = new EditByFindCommand(keywordSet, descriptor);
 
         assertParseSuccess(userInput, expectedCommand);
@@ -160,6 +174,13 @@ public class EditCommandParserTest {
         EditCommand expectedCommand = new EditByIndexCommand(targetIndex, PREFIX_FLOATINGTASK, descriptor);
 
         assertParseSuccess(userInput, expectedCommand);
+
+        // start date == end date
+        userInput = PREFIX_DESC_FLOAT + targetIndex.getOneBased() + DATE_DESC_START_12JULY + DATE_DESC_END_12JULY;
+        descriptor = new EditEntryDescriptorBuilder().withStartDate(VALID_DATE_12_JULY_17)
+                                                     .withEndDate(VALID_DATE_12_JULY_17).build();
+        expectedCommand = new EditByIndexCommand(targetIndex, PREFIX_EVENT, descriptor);
+        assertParseSuccess(userInput, expectedCommand);
     }
 
     // @@author A0140633R
@@ -175,6 +196,12 @@ public class EditCommandParserTest {
         // tags
         userInput = PREFIX_DESC_FLOAT + targetIndex.getOneBased() + TAG_DESC_FRIEND;
         descriptor = new EditEntryDescriptorBuilder().withTags(VALID_TAG_FRIEND).build();
+        expectedCommand = new EditByIndexCommand(targetIndex, PREFIX_FLOATINGTASK, descriptor);
+        assertParseSuccess(userInput, expectedCommand);
+
+        // addtag
+        userInput = PREFIX_DESC_FLOAT + targetIndex.getOneBased() + ADDTAG_DESC_URGENT;
+        descriptor = new EditEntryDescriptorBuilder().withAddTags(VALID_TAG_URGENT).build();
         expectedCommand = new EditByIndexCommand(targetIndex, PREFIX_FLOATINGTASK, descriptor);
         assertParseSuccess(userInput, expectedCommand);
 
@@ -219,6 +246,21 @@ public class EditCommandParserTest {
         userInput = searchString + DATE_DESC_END_11JULY;
         descriptor = new EditEntryDescriptorBuilder().withEndDate(VALID_DATE_11_JULY_17).build();
         expectedCommand = new EditByFindCommand(keywordSet, descriptor);
+        assertParseSuccess(userInput, expectedCommand);
+    }
+
+    @Test
+    public void parse_withSavedDescriptor_success() throws Exception {
+        String searchString = "typical entryname";
+        String[] keywords = searchString.split("\\s+");
+        Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
+
+        // assumes editEntry has been saved in history
+        history.setEditHistory(EditCommandTestUtil.DESC_MEETING);
+
+        String userInput = searchString + NAME_DESC_CLEAN;
+        EditEntryDescriptor descriptor = history.getEditHistory();
+        EditCommand expectedCommand = new EditByFindCommand(keywordSet, descriptor);
         assertParseSuccess(userInput, expectedCommand);
     }
     // @@author
@@ -271,7 +313,7 @@ public class EditCommandParserTest {
      */
     private void assertParseFailure(String userInput, String expectedMessage) {
         try {
-            parser.parse(userInput);
+            parser.parse(userInput, history);
             fail("An exception should have been thrown.");
         } catch (ParseException pe) {
             assertEquals(expectedMessage, pe.getMessage());
@@ -282,7 +324,7 @@ public class EditCommandParserTest {
      * Asserts the parsing of {@code userInput} is successful and the result matches {@code expectedCommand}
      */
     private void assertParseSuccess(String userInput, EditCommand expectedCommand) throws Exception {
-        Command command = parser.parse(userInput);
+        Command command = parser.parse(userInput, history);
         assert expectedCommand.equals(command);
     }
 }

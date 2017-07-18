@@ -14,6 +14,7 @@ import org.junit.rules.ExpectedException;
 import seedu.multitasky.logic.commands.AddCommand;
 import seedu.multitasky.logic.commands.Command;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
+import seedu.multitasky.model.LogicUserPrefs;
 import seedu.multitasky.model.UserPrefs;
 
 
@@ -31,7 +32,7 @@ public class AddCommandParserTest {
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
-    private final UserPrefs userprefs = new UserPrefs();
+    private final LogicUserPrefs userprefs = new UserPrefs();
     private final AddCommandParser parser = new AddCommandParser();
 
     //@A0140633R
@@ -82,6 +83,9 @@ public class AddCommandParserTest {
 
         // only end date variant event
         command = parser.parse("task with only \\to flag " + PREFIX_TO + " " + VALID_DATE_17JULY, userprefs);
+        assertTrue(command instanceof AddCommand);
+        // only end date variant event
+        command = parser.parse(" a special event with only end date " + PREFIX_TO + " " + VALID_DATE_17JULY, userprefs);
         assertTrue(command instanceof AddCommand);
 
     }

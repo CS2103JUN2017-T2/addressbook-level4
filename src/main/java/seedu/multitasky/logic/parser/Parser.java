@@ -6,6 +6,8 @@ import static seedu.multitasky.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import seedu.multitasky.logic.CommandHistory;
+import seedu.multitasky.logic.EditCommandHistory;
 import seedu.multitasky.logic.commands.AddCommand;
 import seedu.multitasky.logic.commands.ClearCommand;
 import seedu.multitasky.logic.commands.Command;
@@ -42,7 +44,8 @@ public class Parser {
      * @return the command based on the user input
      * @throws ParseException if the user input does not conform the expected format
      */
-    public Command parseCommand(String userInput, LogicUserPrefs userprefs) throws ParseException {
+    public Command parseCommand(String userInput, LogicUserPrefs userprefs,
+                                CommandHistory history) throws ParseException {
         final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(userInput.trim());
         if (!matcher.matches()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
@@ -60,7 +63,7 @@ public class Parser {
             return new DeleteCommandParser().parse(arguments);
 
         case EditCommand.COMMAND_WORD:
-            return new EditCommandParser().parse(arguments);
+            return new EditCommandParser().parse(arguments, (EditCommandHistory) history);
 
         case CompleteCommand.COMMAND_WORD:
             return new CompleteCommandParser().parse(arguments);
