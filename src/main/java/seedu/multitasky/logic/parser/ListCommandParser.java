@@ -3,6 +3,7 @@ package seedu.multitasky.logic.parser;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Optional;
 
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.logic.commands.ListCommand;
@@ -29,7 +30,7 @@ public class ListCommandParser {
         // Preamble is necessary due to how ArgumentTokenizer works
         // TODO modify ArgumentTokenizer to be able to detect without preamble
         ArgumentMultimap argumentMultimap = ArgumentTokenizer.tokenize("preamble " + trimmedArgs,
-                                                                       toPrefixArray(ListCommand.VALID_PREFIXES));
+                                                                ParserUtil.toPrefixArray(ListCommand.VALID_PREFIXES));
         ArrayList<String> prefixesPresent = argumentMultimap.getPresentPrefixes(ListCommand.VALID_PREFIXES);
         if (!hasValidPrefixCombination(prefixesPresent)) {
             throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
@@ -42,23 +43,18 @@ public class ListCommandParser {
     }
 
     private Calendar getStartDate(ArgumentMultimap argumentMultimap) {
-        ArrayList<String> dateArgs = (ArrayList<String>) argumentMultimap.getAllValues(CliSyntax.PREFIX_FROM);
-        return getDate(getString(dateArgs).trim());
+        return getDate(argumentMultimap.getValue(CliSyntax.PREFIX_FROM));
     }
 
     private Calendar getEndDate(ArgumentMultimap argumentMultimap) {
-        ArrayList<String> dateArgs = (ArrayList<String>) argumentMultimap.getAllValues(CliSyntax.PREFIX_TO);
-        return getDate(getString(dateArgs).trim());
+        return getDate(argumentMultimap.getValue(CliSyntax.PREFIX_TO));
     }
 
-    private Calendar getDate(String rawDate) {
-        if (rawDate.isEmpty()) {
-            return null;
-        }
+    private Calendar getDate(Optional<String> rawDate) {
         try {
-            Calendar date = ParserUtil.parseDate(rawDate);
+            Calendar date = ParserUtil.parseDate(rawDate).get();
             return date;
-        } catch (ParseException e) {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -77,22 +73,6 @@ public class ListCommandParser {
             return false;
         }
         return true;
-    }
-
-    private Prefix[] toPrefixArray(String... stringPrefixes) {
-        Prefix[] prefixes = new Prefix[stringPrefixes.length];
-        for (int i = 0; i < stringPrefixes.length; ++i) {
-            prefixes[i] = new Prefix(stringPrefixes[i]);
-        }
-        return prefixes;
-    }
-
-    private String getString(ArrayList<String> parts) {
-        StringBuilder builder = new StringBuilder();
-        for (String part : parts) {
-            builder.append(part);
-        }
-        return builder.toString();
     }
 
 }

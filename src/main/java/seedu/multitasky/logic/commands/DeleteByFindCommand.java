@@ -55,9 +55,9 @@ public class DeleteByFindCommand extends DeleteCommand {
             try {
                 model.changeEntryState(entryToDelete, Entry.State.DELETED);
             } catch (EntryNotFoundException e) {
-                assert false : "The target entry cannot be missing";
+                throw new AssertionError("The target entry cannot be missing");
             } catch (OverlappingEventException oee) {
-                assert false : "This should not happen for deletion.";
+                throw new AssertionError("Overlap should not happen for deletion.");
             }
             // refresh list view after updating.
             model.updateAllFilteredLists(history.getPrevSearch(), history.getPrevStartDate(),
@@ -68,10 +68,10 @@ public class DeleteByFindCommand extends DeleteCommand {
             // save what search i did
             history.setPrevSearch(keywords, null, null, Entry.State.ACTIVE);
             if (allList.size() >= 2) { // multiple entries found
-                return new CommandResult(MESSAGE_MULTIPLE_ENTRIES);
+                throw new CommandException(MESSAGE_MULTIPLE_ENTRIES);
             } else {
                 assert (allList.size() == 0); // no entries found
-                return new CommandResult(MESSAGE_NO_ENTRIES);
+                throw new CommandException(MESSAGE_NO_ENTRIES);
             }
         }
     }

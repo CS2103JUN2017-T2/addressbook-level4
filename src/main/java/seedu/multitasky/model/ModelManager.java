@@ -555,7 +555,7 @@ public class ModelManager extends ComponentManager implements Model {
             } else if (endDate == null) {
                 return checkDate.compareTo(startDate) >= 0;
             } else {
-                return (checkDate.compareTo(startDate) <= 0) && (checkDate.compareTo(endDate) >= 0);
+                return (checkDate.compareTo(startDate) >= 0) && (checkDate.compareTo(endDate) <= 0);
             }
         }
         // @@author

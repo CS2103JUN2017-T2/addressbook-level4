@@ -40,9 +40,9 @@ public class CompleteByIndexCommand extends CompleteCommand {
         try {
             model.changeEntryState(entryToComplete, Entry.State.ARCHIVED);
         } catch (EntryNotFoundException enfe) {
-            assert false : "The target entry cannot be missing";
+            throw new AssertionError("The target entry cannot be missing");
         } catch (OverlappingEventException oee) {
-            assert false : "This should not happen for complete command.";
+            throw new AssertionError("Overlap should not happen for complete command.");
         }
         // refresh list view after updating.
         model.updateAllFilteredLists(history.getPrevSearch(), history.getPrevStartDate(),
