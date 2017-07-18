@@ -220,7 +220,11 @@ public class AddCommandTest {
         }
 
         @Override
+<<<<<<< HEAD
         public void openFilePath(String newFilePath) {
+=======
+        public void clearStateSpecificEntries(State state) {
+>>>>>>> origin/V0.5rc
             fail("This method should not be called.");
         }
 

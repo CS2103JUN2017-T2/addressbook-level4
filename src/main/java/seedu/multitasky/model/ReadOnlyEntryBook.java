@@ -13,7 +13,7 @@ public interface ReadOnlyEntryBook {
      * Returns an unmodifiable view of the active entry list.
      * TODO: Update this Javadoc if duplicate is not allowed in the future.
      */
-    ObservableList<ReadOnlyEntry> getActiveList();
+    ObservableList<ReadOnlyEntry> getAllEntries();
 
     /**
      * Returns an unmodifiable view of the (active) event list.

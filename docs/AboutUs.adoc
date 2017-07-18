@@ -11,7 +11,7 @@ image::mattheuslee.jpg[width="150", align="left"]
 
 * Role: Team Leader
 * Components in charge of: https://github.com/CS2103JUN2017-T2/main/blob/master/docs/DeveloperGuide.adoc#ui-component[GUI], commons
-* Aspects/tools in charge of: Git, Deliverables and scheduling, Integration
+* Aspects/tools in charge of: Git, Deliverables and scheduling, GUI tests
 * Features implemented:
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#listing-all-entries-code-list-code[List entries]
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#autocomplete[Command Autocomplete] using https://github.com/CS2103JUN2017-T2/main/blob/master/docs/DeveloperGuide.adoc#261-powermatch[PowerMatch]

@@ -104,18 +104,18 @@ public class EntryBookTest {
             EntryBook entryBookUnderTest = EntryBookTest.getSampleEntryBook();
 
             Entry eventToRemove = listOfEventLists[0].asObservableList().get(0);
-            assertTrue(entryBookUnderTest.getActiveList().contains(eventToRemove));
+            assertTrue(entryBookUnderTest.getAllEntries().contains(eventToRemove));
             Entry deadlineToRemove = listOfDeadlineLists[0].asObservableList().get(0);
-            assertTrue(entryBookUnderTest.getActiveList().contains(deadlineToRemove));
+            assertTrue(entryBookUnderTest.getAllEntries().contains(deadlineToRemove));
             Entry floatingTaskToRemove = listOfFloatingTaskLists[0].asObservableList().get(0);
-            assertTrue(entryBookUnderTest.getActiveList().contains(floatingTaskToRemove));
+            assertTrue(entryBookUnderTest.getAllEntries().contains(floatingTaskToRemove));
 
             entryBookUnderTest.removeEntry(eventToRemove);
-            assertFalse(entryBookUnderTest.getActiveList().contains(eventToRemove));
+            assertFalse(entryBookUnderTest.getAllEntries().contains(eventToRemove));
             entryBookUnderTest.removeEntry(deadlineToRemove);
-            assertFalse(entryBookUnderTest.getActiveList().contains(deadlineToRemove));
+            assertFalse(entryBookUnderTest.getAllEntries().contains(deadlineToRemove));
             entryBookUnderTest.removeEntry(floatingTaskToRemove);
-            assertFalse(entryBookUnderTest.getActiveList().contains(floatingTaskToRemove));
+            assertFalse(entryBookUnderTest.getAllEntries().contains(floatingTaskToRemove));
 
             try {
                 entryBookUnderTest.removeEntry(eventToRemove);
