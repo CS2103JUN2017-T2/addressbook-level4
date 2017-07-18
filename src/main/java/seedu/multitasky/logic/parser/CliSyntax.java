@@ -17,6 +17,7 @@ public class CliSyntax {
     public static final Prefix PREFIX_ON = new Prefix("on");
     public static final Prefix PREFIX_TO = new Prefix("to");
     public static final Prefix PREFIX_TAG = new Prefix("tag");
+    public static final Prefix PREFIX_ADDTAG = new Prefix("addtag");
     public static final Prefix PREFIX_ESCAPE = new Prefix("\\");
 
     /* Entry type */
@@ -25,6 +26,7 @@ public class CliSyntax {
     public static final Prefix PREFIX_FLOATINGTASK = new Prefix("float");
 
     /* EntryLists */
+    public static final Prefix PREFIX_ACTIVE = new Prefix("active");
     public static final Prefix PREFIX_ARCHIVE = new Prefix("archive");
     public static final Prefix PREFIX_BIN = new Prefix("bin");
     public static final Prefix PREFIX_ALL = new Prefix("all");

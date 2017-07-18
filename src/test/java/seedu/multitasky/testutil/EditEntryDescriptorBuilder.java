@@ -63,6 +63,11 @@ public class EditEntryDescriptorBuilder {
         return this;
     }
 
+    public EditEntryDescriptorBuilder withAddTags(String... tags) throws IllegalValueException {
+        descriptor.setAddTags(ParserUtil.parseTags(Arrays.asList(tags)));
+        return this;
+    }
+
     public EditEntryDescriptor build() {
         return descriptor;
     }

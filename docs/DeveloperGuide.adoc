@@ -374,6 +374,8 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |user |list the next `n` number of entries |see upcoming events to attend/tasks to finish
 
+|`* *` |user |load data from an XML file |manipulate existing data
+
 |`* *` |advanced user |use the `tab` key to automatically complete the command name that I've started typing |save time entering commands
 
 |`* *` |user |use the up and down arrow keys to bring up previously entered commands |avoid typing out commands I've previously used

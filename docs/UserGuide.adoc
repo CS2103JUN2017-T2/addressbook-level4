@@ -242,25 +242,52 @@ Format: `redo`
 * Allows redoing up until the most recent change.
 
 //<!-- @@author A0132788U -->
-=== Set storage path : `set`
+=== Save storage path : `save`
 
-Sets to user entered filepath. +
-Format: `set ./filepath.xml`
+Saves entrybook data to user entered filepath. +
+Format: `save ./filepath/filename.xml`
 
 ****
-* Filepath should start with / if it is in a different directory.
+* Filepath should use  `\` as a delimiter if MultiTasky is used on a system with Windows OS.
 * Filepath will be saved in the same directory if it starts with `./`.
 * Full path of the file should be specified.
 * Parent folder of filepath should exist.
-* Filepath should end with .xml.
+* Filepath should end with `.xml`.
+* Filename should be unique and should not already exist.
 ****
 
 Examples:
 
-* `set /Users/usernamehere/Desktop/entrybook.xml` +
+* `save /Users/usernamehere/Desktop/entrybook.xml` +
 Creates a file entrybook.xml on the Desktop and saves data there. +
-* `set ./entrybook.xml` +
+* `save C:\Users\<username>\Desktop\entrybook.xml` +
+Creates a file entrybook.xml on a Windows OS. +
+* `save ./entrybook.xml` +
 Creates file in the same directory as the JAR file. +
+
+=== Open data from file : `open`
+
+Opens data from given valid XML file and saves to current entrybook. +
+Format: `open ./filepath.xml`
+
+****
+* Filepath should use  `\` as a delimiter if MultiTasky is used on a system with Windows OS.
+* Filepath will be saved in the same directory if it starts with `./`.
+* Full path of the file should be specified.
+* File should exist.
+* Filepath should contain XML data which is readable by MultiTasky.
+****
+
+Examples:
+
+* `open /Users/usernamehere/Desktop/entrybook.xml` +
+Loads data from file entrybook.xml on the Desktop and saves this data to current entrybook. +
+* `open C:\Users\<username>\Desktop\entrybook.xml` +
+Opens a file entrybook.xml on a Windows OS. +
+* `open ./entrybook.xml` +
+Opens file in the same directory as the JAR file. +
+
+//<!-- @@author -->
 
 //<!-- @@author A0140633R -->
 === Clearing entries : `clear`
@@ -428,7 +455,9 @@ ____
 * *Delete* : `delete [KEYWORD_1 KEYWORD_2...] | [event | deadline | float INDEX] `
 ** e.g. `delete pasta dinner`
 * *History* : `history`
-* *Clear* : `clear [archive | bin | all]`
 * *Undo* : `undo`
 * *Redo* : `redo`
+* *Save* : `save ./newfile.xml`
+* *Open* : `open ./getdata.xml`
+* *Clear* : `clear [archive | bin | all]`
 * *Exit* : `exit`

@@ -6,6 +6,8 @@ import static seedu.multitasky.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import seedu.multitasky.logic.CommandHistory;
+import seedu.multitasky.logic.EditCommandHistory;
 import seedu.multitasky.logic.commands.AddCommand;
 import seedu.multitasky.logic.commands.ClearCommand;
 import seedu.multitasky.logic.commands.Command;
@@ -17,11 +19,13 @@ import seedu.multitasky.logic.commands.FindCommand;
 import seedu.multitasky.logic.commands.HelpCommand;
 import seedu.multitasky.logic.commands.HistoryCommand;
 import seedu.multitasky.logic.commands.ListCommand;
+import seedu.multitasky.logic.commands.OpenCommand;
 import seedu.multitasky.logic.commands.RedoCommand;
 import seedu.multitasky.logic.commands.RestoreCommand;
-import seedu.multitasky.logic.commands.SetCommand;
+import seedu.multitasky.logic.commands.SaveCommand;
 import seedu.multitasky.logic.commands.UndoCommand;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
+import seedu.multitasky.model.LogicUserPrefs;
 
 /**
  * Parses user input.
@@ -41,11 +45,12 @@ public class Parser {
      * @return the command based on the user input
      * @throws ParseException if the user input does not conform the expected format
      */
-    public Command parseCommand(String userInput) throws ParseException {
+    public Command parseCommand(String userInput, LogicUserPrefs userprefs,
+                                CommandHistory history) throws ParseException {
         final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(userInput.trim());
         if (!matcher.matches()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    HelpCommand.MESSAGE_USAGE));
+                                                   HelpCommand.MESSAGE_USAGE));
         }
 
         final String commandWord = matcher.group("commandWord");
@@ -53,28 +58,31 @@ public class Parser {
         switch (commandWord.toLowerCase()) {
 
         case AddCommand.COMMAND_WORD:
-            return new AddCommandParser().parse(arguments);
+            return new AddCommandParser().parse(arguments, userprefs);
 
         case DeleteCommand.COMMAND_WORD:
             return new DeleteCommandParser().parse(arguments);
 
         case EditCommand.COMMAND_WORD:
-            return new EditCommandParser().parse(arguments);
+            return new EditCommandParser().parse(arguments, (EditCommandHistory) history);
 
         case CompleteCommand.COMMAND_WORD:
             return new CompleteCommandParser().parse(arguments);
 
         case ClearCommand.COMMAND_WORD:
-            return new ClearCommand();
+            return new ClearCommandParser().parse(arguments);
 
         case FindCommand.COMMAND_WORD:
             return new FindCommandParser().parse(arguments);
 
+        case OpenCommand.COMMAND_WORD:
+            return new OpenCommandParser().parse(arguments);
+
         case ListCommand.COMMAND_WORD:
             return new ListCommandParser().parse(arguments);
 
-        case SetCommand.COMMAND_WORD:
-            return new SetCommandParser().parse(arguments);
+        case SaveCommand.COMMAND_WORD:
+            return new SaveCommandParser().parse(arguments);
 
         case UndoCommand.COMMAND_WORD:
             return new UndoCommand();
