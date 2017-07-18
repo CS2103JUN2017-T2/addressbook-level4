@@ -76,10 +76,6 @@ public class EditCommandParser {
         initEntryEditor(argMultimap, editEntryDescriptor, startDatePrefix, endDatePrefix);
 
         if (hasIndexFlag(argMultimap)) { // edit by index
-            if (hasInvalidFlagCombination(argMultimap)) {
-                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                                                       EditCommand.MESSAGE_USAGE));
-            }
             try {
                 Prefix listIndicatorPrefix = ParserUtil.getMainPrefix(argMultimap, PREFIX_FLOATINGTASK,
                                                                       PREFIX_DEADLINE, PREFIX_EVENT);
@@ -148,17 +144,6 @@ public class EditCommandParser {
     }
 
     /**
-     * A method that returns true if flags are given in an illogical manner for editing commands.
-     * illogical := any 2 of /float, /deadline, /event used together.
-     */
-    private boolean hasInvalidFlagCombination(ArgumentMultimap argMultimap) {
-        assert argMultimap != null;
-        return ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_DEADLINE)
-               || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_DEADLINE, PREFIX_EVENT)
-               || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_EVENT);
-    }
-
-    /**
      * A method that returns true if flags in given ArgumentMultimap has at least one index-indicating
      * Prefix mapped to some arguments.
      * Index-indicating := /float or /deadline or /event
@@ -189,11 +174,15 @@ public class EditCommandParser {
 
     /**
      * returns false if flags present in argMultimap indicate invalid flags are present
-     * invalid for edit: cannot use /tag and /addtag at the same time
+     * invalid for edit: cannot use tag and addtag at the same time, cannot use more than 2 of any
+     * float, deadline, event tags.
      */
     private boolean hasValidFlags() {
         assert argMultimap != null;
-        if (ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_TAG, PREFIX_ADDTAG)) {
+        if (ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_TAG, PREFIX_ADDTAG)
+            || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_DEADLINE)
+            || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_DEADLINE, PREFIX_EVENT)
+            || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_EVENT)) {
             return false;
         }
         return true;
