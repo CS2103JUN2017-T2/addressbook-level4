@@ -50,15 +50,15 @@ public abstract class EditCommand extends Command {
     public static final String MESSAGE_SUCCESS_WITH_OVERLAP_ALERT = "Target entry: "
             + Messages.MESSAGE_ENTRY_DESCRIPTION
             + "%1$s\n" + "Entry edited: " + Messages.MESSAGE_ENTRY_DESCRIPTION + "%2$s" + "\n"
-            + "Alert: Edited entry %2$s overlaps with existing event(s).";
+            + "Alert: Edited entry overlaps with existing event(s).";
     public static final String MESSAGE_SUCCESS_WITH_OVERDUE_ALERT = "Target entry: "
             + Messages.MESSAGE_ENTRY_DESCRIPTION
             + "%1$s\n" + "Entry edited: " + Messages.MESSAGE_ENTRY_DESCRIPTION + "%2$s" + "\n"
-            + "Alert: Edited entry %2$s is overdue.";
+            + "Alert: Edited entry is overdue.";
     public static final String MESSAGE_SUCCESS_WITH_OVERLAP_AND_OVERDUE_ALERT = "Target entry: "
             + Messages.MESSAGE_ENTRY_DESCRIPTION
             + "%1$s\n" + "Entry edited: " + Messages.MESSAGE_ENTRY_DESCRIPTION + "%2$s" + "\n"
-            + "Alert: Edited entry %2$s is overdue and overlaps with existing event(s).";
+            + "Alert: Edited entry is overdue and overlaps with existing event(s).";
 
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.\n"
             + "Format: " + COMMAND_WORD + " [" + "[" + "KEYWORDS" + "]" + " |"
