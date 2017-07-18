@@ -2,6 +2,7 @@ package seedu.multitasky.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.multitasky.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_ADDTAG;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_AT;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_BY;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_DEADLINE;
@@ -48,6 +49,10 @@ public class EditCommandParser {
         EditEntryDescriptor editEntryDescriptor = new EditEntryDescriptor();
 
         if (args.trim().isEmpty()) { // print help message if command word used without args
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+        }
+
+        if (!hasValidFlags()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
         }
 
@@ -116,6 +121,8 @@ public class EditCommandParser {
             }
             parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG))
                       .ifPresent(editEntryDescriptor::setTags);
+            parseTagsForEdit(argMultimap.getAllValues(PREFIX_ADDTAG))
+                      .ifPresent(editEntryDescriptor::setAddTags);
         } catch (IllegalValueException ive) {
             throw new ParseException(ive.getMessage(), ive);
         }
@@ -178,6 +185,18 @@ public class EditCommandParser {
     private boolean hasEndDatePrefix() {
         assert argMultimap != null;
         return ParserUtil.arePrefixesPresent(argMultimap, PREFIX_BY, PREFIX_TO);
+    }
+
+    /**
+     * returns false if flags present in argMultimap indicate invalid flags are present
+     * invalid for edit: cannot use /tag and /addtag at the same time
+     */
+    private boolean hasValidFlags() {
+        assert argMultimap != null;
+        if (ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_TAG, PREFIX_ADDTAG)) {
+            return false;
+        }
+        return true;
     }
 
 }

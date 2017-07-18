@@ -71,6 +71,9 @@ public class AddCommandParserTest {
         assertTrue(command instanceof AddCommand);
         command = parser.parse(" a special task with only start date " + PREFIX_AT + " " + VALID_DATE_20JULY);
         assertTrue(command instanceof AddCommand);
+        // only end date variant event
+        command = parser.parse(" a special event with only end date " + PREFIX_TO + " " + VALID_DATE_17JULY);
+        assertTrue(command instanceof AddCommand);
     }
 
     public void parse_invalidArgsFollowedByValidArgs_returnsAddCommand() throws Exception {

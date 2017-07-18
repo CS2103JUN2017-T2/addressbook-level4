@@ -40,8 +40,9 @@ public abstract class EditCommand extends Command {
             + " " + CliSyntax.PREFIX_TO + " DATE" + "]" + "]"
             + " [" + CliSyntax.PREFIX_TAG + " TAGS..." + "]" + "\n"
             + "All possible flags for Edit : 'name', 'tag','by', 'from', 'to', 'at', 'on', 'event',"
-            + " 'deadline', 'float'" + "\n"
-            + "Note: Existing values will be overwritten by the input values.";
+            + " 'deadline', 'float', 'addtag" + "\n"
+            + "Note: Existing values will be overwritten by the input values. "
+            + "Use addtag to add on to previous tag values";
 
 
     public static final String MESSAGE_SUCCESS = "Target entry: " + Messages.MESSAGE_ENTRY_DESCRIPTION
@@ -60,7 +61,7 @@ public abstract class EditCommand extends Command {
             + " " + CliSyntax.PREFIX_TO + " DATE" + "]" + "]"
             + " [" + CliSyntax.PREFIX_TAG + " TAGS..." + "]" + "\n"
             + "All possible flags for Edit : 'name', 'tag', 'by', 'from', 'to', 'at', 'event',"
-            + " 'deadline', 'float'" + "\n";
+            + " 'deadline', 'float', 'addtag'";
 
     public static final String MESSAGE_DUPLICATE_ENTRY = "This entry already exists in the task manager.";
 
@@ -75,7 +76,8 @@ public abstract class EditCommand extends Command {
                                                    CliSyntax.PREFIX_AT.toString(),
                                                    CliSyntax.PREFIX_ON.toString(),
                                                    CliSyntax.PREFIX_TO.toString(),
-                                                   CliSyntax.PREFIX_TAG.toString()};
+                                                   CliSyntax.PREFIX_TAG.toString(),
+                                                   CliSyntax.PREFIX_ADDTAG.toString()};
 
     protected final EditEntryDescriptor editEntryDescriptor;
     protected ReadOnlyEntry entryToEdit;
@@ -99,6 +101,10 @@ public abstract class EditCommand extends Command {
 
         Name updatedName = editEntryDescriptor.getName().orElse(entryToEdit.getName());
         Set<Tag> updatedTags = editEntryDescriptor.getTags().orElse(entryToEdit.getTags());
+        if (editEntryDescriptor.getAddTags().isPresent()) {
+            editEntryDescriptor.getAddTags().get().addAll(entryToEdit.getTags());
+            updatedTags = editEntryDescriptor.getAddTags().get();
+        }
         Calendar updatedStartDate = editEntryDescriptor.getStartDate()
                                                        .orElse(entryToEdit.getStartDateAndTime());
         Calendar updatedEndDate = editEntryDescriptor.getEndDate()
@@ -178,6 +184,7 @@ public abstract class EditCommand extends Command {
     public static class EditEntryDescriptor {
         private Name name;
         private Set<Tag> tags;
+        private Set<Tag> addtags;
         private Calendar startDate;
         private Calendar endDate;
         private boolean resetStartDate;
@@ -186,6 +193,7 @@ public abstract class EditCommand extends Command {
         public EditEntryDescriptor() {
             name = null;
             tags = null;
+            addtags = null;
             startDate = null;
             endDate = null;
             resetStartDate = false;
@@ -199,9 +207,14 @@ public abstract class EditCommand extends Command {
             if (toCopy.getTags().isPresent()) {
                 this.tags = toCopy.getTags().get();
             }
+            if (toCopy.getAddTags().isPresent()) {
+                this.addtags = toCopy.getAddTags().get();
+            }
+
             if (toCopy.getStartDate().isPresent()) {
                 this.startDate = toCopy.getStartDate().get();
             }
+
             if (toCopy.getEndDate().isPresent()) {
                 this.endDate = toCopy.getEndDate().get();
             }
@@ -213,7 +226,7 @@ public abstract class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(this.name, this.tags, this.startDate, this.endDate)
+            return CollectionUtil.isAnyNonNull(this.name, this.tags, this.startDate, this.endDate, this.addtags)
                     || resetStartDate || resetEndDate;
         }
 
@@ -233,6 +246,10 @@ public abstract class EditCommand extends Command {
             return Optional.ofNullable(tags);
         }
 
+        public Optional<Set<Tag>> getAddTags() {
+            return Optional.ofNullable(addtags);
+        }
+
         public boolean hasResetStartDate() {
             return resetStartDate;
         }
@@ -243,6 +260,10 @@ public abstract class EditCommand extends Command {
 
         public void setTags(Set<Tag> tags) {
             this.tags = tags;
+        }
+
+        public void setAddTags(Set<Tag> addtags) {
+            this.addtags = addtags;
         }
 
         public void setName(Name name) {
@@ -279,9 +300,11 @@ public abstract class EditCommand extends Command {
 
             // state check
             EditEntryDescriptor e = (EditEntryDescriptor) other;
-            return getName().equals(e.getName()) && getTags().equals(e.getTags())
+            return getName().equals(e.getName())
+                   && getTags().equals(e.getTags()) && getAddTags().equals(e.getAddTags())
                    && getStartDate().equals(e.getStartDate()) && getEndDate().equals(e.getEndDate())
-                   && (hasResetStartDate() == e.hasResetStartDate()) && (hasResetEndDate() == e.hasResetEndDate());
+                   && (hasResetStartDate() == e.hasResetStartDate())
+                   && (hasResetEndDate() == e.hasResetEndDate());
         }
     }
 
