@@ -26,8 +26,9 @@ import seedu.multitasky.logic.commands.EditCommand;
 import seedu.multitasky.logic.commands.ExitCommand;
 import seedu.multitasky.logic.commands.FindCommand;
 import seedu.multitasky.logic.commands.ListCommand;
+import seedu.multitasky.logic.commands.OpenCommand;
 import seedu.multitasky.logic.commands.RedoCommand;
-import seedu.multitasky.logic.commands.SetCommand;
+import seedu.multitasky.logic.commands.SaveCommand;
 import seedu.multitasky.logic.commands.UndoCommand;
 import seedu.multitasky.model.UserPrefs;
 import seedu.multitasky.model.entry.Entry;
@@ -120,8 +121,10 @@ public class MainWindow extends UiPart<Region> {
         setCommandShortcut(FindCommand.COMMAND_WORD + " ", new KeyCodeCombination(KeyCode.F3));
         setCommandShortcut(ExitCommand.COMMAND_WORD + " ", new KeyCodeCombination(KeyCode.F4));
         setCommandShortcut(ListCommand.COMMAND_WORD + " ", new KeyCodeCombination(KeyCode.F5));
-        setCommandShortcut(SetCommand.COMMAND_WORD + " ",
+        setCommandShortcut(SaveCommand.COMMAND_WORD + " ",
                            new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
+        setCommandShortcut(OpenCommand.COMMAND_WORD + " ",
+                           new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN));
 
         setCommandBoxFocusShortcut(new KeyCodeCombination(KeyCode.F6));
     }

@@ -8,6 +8,9 @@ import java.util.Random;
 
 import org.junit.Test;
 
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import seedu.multitasky.logic.commands.AddCommand;
 import seedu.multitasky.logic.commands.OpenCommand;
 import seedu.multitasky.logic.commands.SaveCommand;
@@ -51,6 +54,15 @@ public class OpenCommandTest extends EntryBookGuiTest {
         String nonXmlFilePath = TestUtil.getFilePathInSandboxFolder("entrybook.fxml");
         commandBox.runCommand("open " + nonXmlFilePath);
         assertResultMessage(String.format(OpenCommand.MESSAGE_FAILURE + OpenCommand.MESSAGE_USAGE));
+    }
+
+    /*******************************
+     * Mixed-case and autocomplete *
+     ******************************/
+    @Test
+    public void open_shortcut_commandWord() {
+        commandBox.pressKeyCombination(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN));
+        assertCommandBox(OpenCommand.COMMAND_WORD + " ");
     }
 
     /***************************
