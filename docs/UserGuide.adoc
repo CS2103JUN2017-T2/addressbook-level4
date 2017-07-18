@@ -250,7 +250,7 @@ Format: `redo`
 === Save storage path : `save`
 
 Saves entrybook data to user entered filepath. +
-Format: `save ./filepath.xml`
+Format: `save ./filepath/filename.xml`
 
 ****
 * Filepath should use  `\` as a delimiter if MultiTasky is used on a system with Windows OS.

@@ -81,61 +81,12 @@ public class ModelManager extends ComponentManager implements Model {
 
     // =========== List Level Operations ===========
 
-<<<<<<< HEAD
-    // @@author A0132788U
-    /** Raises an event when undo is entered by user and resets data to previous state for updating the UI */
-    private void indicateUndoAction() throws NothingToUndoException {
-        EntryBookToUndoEvent undoEvent;
-        raise(undoEvent = new EntryBookToUndoEvent(_entryBook, ""));
-        if (undoEvent.getMessage().equals("undo successful")) {
-            _entryBook.resetData(undoEvent.getData());
-        } else {
-            throw new NothingToUndoException("");
-        }
-    }
-
-    /** Raises an event when redo is entered by user and resets data to next state for updating the UI */
-    private void indicateRedoAction() throws NothingToRedoException {
-        EntryBookToRedoEvent redoEvent;
-        raise(redoEvent = new EntryBookToRedoEvent(_entryBook, ""));
-        if (redoEvent.getMessage().equals("redo successful")) {
-            _entryBook.resetData(redoEvent.getData());
-        } else {
-            throw new NothingToRedoException("");
-        }
-    }
-
-    @Override
-    public void undoPreviousAction() throws NothingToUndoException {
-        indicateUndoAction();
-    }
-
-    @Override
-    public void redoPreviousAction() throws NothingToRedoException {
-        indicateRedoAction();
-    }
-
-    /** Raises an event when new filepath to set storage to is entered by user */
-=======
     // @@author A0126623L
->>>>>>> origin/V0.5rc
+
     @Override
     public void clearStateSpecificEntries(Entry.State state) {
         _entryBook.clearStateSpecificEntries(state);
         indicateEntryBookChanged();
-    }
-
-    /** Raises an event when filepath to load data from is entered by user */
-    @Override
-    public void openFilePath(String newFilePath) throws IllegalValueException {
-        LoadDataFromFilePathEvent event;
-        raise(event = new LoadDataFromFilePathEvent(_entryBook, newFilePath, ""));
-        if (event.getMessage().equals("open successful")) {
-            _entryBook.resetData(event.getData());
-            indicateEntryBookChanged();
-        } else {
-            throw new IllegalValueException("load unsuccessful");
-        }
     }
     // @@author
 
@@ -451,8 +402,8 @@ public class ModelManager extends ComponentManager implements Model {
          * @param search the type of search to use (AND, OR, POWER_AND, POWER_OR). cannot be null.
          */
         NameDateStateQualifier(Set<String> nameAndTagKeywords,
-                               Calendar startDate, Calendar endDate,
-                               Entry.State state, Search search) {
+                Calendar startDate, Calendar endDate,
+                Entry.State state, Search search) {
             assert nameAndTagKeywords != null : "nameAndTagKeywords for NameDateStateQualifier cannot be null";
             assert search != null : "search type for NameDateStateQualifier cannot be null";
 
@@ -627,6 +578,19 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void changeFilePath(String newFilePath) {
         raise(new FilePathChangedEvent(_entryBook, newFilePath));
+    }
+
+    /** Raises an event when filepath to load data from is entered by user */
+    @Override
+    public void openFilePath(String newFilePath) throws IllegalValueException {
+        LoadDataFromFilePathEvent event;
+        raise(event = new LoadDataFromFilePathEvent(_entryBook, newFilePath, ""));
+        if (event.getMessage().equals("open successful")) {
+            _entryBook.resetData(event.getData());
+            indicateEntryBookChanged();
+        } else {
+            throw new IllegalValueException("load unsuccessful");
+        }
     }
     // @@author
 

@@ -2,6 +2,8 @@ package seedu.multitasky.logic.commands;
 
 import java.io.File;
 
+import seedu.multitasky.logic.commands.exceptions.CommandException;
+
 // @@author A0132788U
 /**
  * Checks validity of entered path and saves data at the given file.
@@ -27,18 +29,20 @@ public class SaveCommand extends Command {
 
     /**
      * Executes the Set command if the path is valid and file doesn't already exist in this location.
+     *
+     * @throws CommandException
      */
     @Override
-    public CommandResult execute() {
+    public CommandResult execute() throws CommandException {
         if (isValidPath(newFilePath)) {
             if ((new File(newFilePath)).isFile()) {
-                return new CommandResult(MESSAGE_EXISTS);
+                throw new CommandException(MESSAGE_EXISTS);
             } else {
                 model.changeFilePath(newFilePath);
                 return new CommandResult(MESSAGE_SUCCESS + newFilePath);
             }
         } else {
-            return new CommandResult(MESSAGE_FAILURE + MESSAGE_USAGE);
+            throw new CommandException(MESSAGE_FAILURE + MESSAGE_USAGE);
         }
     }
 
