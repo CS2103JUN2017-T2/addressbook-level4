@@ -10,6 +10,8 @@ import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.exceptions.EntryOverdueException;
+import seedu.multitasky.model.entry.exceptions.OverlappingAndOverdueEventException;
 import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 
 /*
@@ -57,7 +59,14 @@ public class RestoreByFindCommand extends RestoreCommand {
             } catch (OverlappingEventException oee) {
                 commandResult = new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERLAP_ALERT,
                                                                 entryToRestore.getName()));
+            } catch (EntryOverdueException e) {
+                commandResult = new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERDUE_ALERT,
+                                                                entryToRestore.getName()));
+            } catch (OverlappingAndOverdueEventException e) {
+                commandResult = new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERLAP_AND_OVERDUE_ALERT,
+                                                                entryToRestore.getName()));
             }
+
             // refresh list view after updating.
             model.updateAllFilteredLists(history.getPrevSearch(), history.getPrevStartDate(),
                                          history.getPrevEndDate(), history.getPrevState());

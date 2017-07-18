@@ -40,6 +40,7 @@ import seedu.multitasky.model.UserPrefs;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
+import seedu.multitasky.model.entry.exceptions.EntryOverdueException;
 import seedu.multitasky.model.util.EntryBuilder;
 import seedu.multitasky.testutil.EditEntryDescriptorBuilder;
 import seedu.multitasky.testutil.SampleEntries;
@@ -68,8 +69,12 @@ public class EditByFindCommandTest {
         EditCommand editCommand = prepareCommand(model, keywords, descriptor);
         String expectedMessage = String.format(EditByFindCommand.MESSAGE_SUCCESS, targetEntry, editedEntry);
         Model expectedModel = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
-        expectedModel.updateEntry(expectedModel.getFilteredEventList().get(INDEX_FIRST_ENTRY.getZeroBased()),
+        try {
+            expectedModel.updateEntry(expectedModel.getFilteredEventList().get(INDEX_FIRST_ENTRY.getZeroBased()),
                                   editedEntry);
+        } catch (EntryOverdueException eoe) {
+            // Do nothing. Accept overdue entries in test.
+        }
 
         CommandResult result = editCommand.execute();
 
@@ -91,8 +96,12 @@ public class EditByFindCommandTest {
         EditCommand editCommand = prepareCommand(model, keywords, descriptor);
         String expectedMessage = String.format(EditByFindCommand.MESSAGE_SUCCESS, targetEntry, editedEntry);
         Model expectedModel = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
-        expectedModel.updateEntry(expectedModel.getFilteredDeadlineList().get(INDEX_FIRST_ENTRY.getZeroBased()),
+        try {
+            expectedModel.updateEntry(expectedModel.getFilteredDeadlineList().get(INDEX_FIRST_ENTRY.getZeroBased()),
                                   editedEntry);
+        } catch (EntryOverdueException eoe) {
+            // Do nothing. Accept overdue entries in test.
+        }
 
         CommandResult result = editCommand.execute();
 

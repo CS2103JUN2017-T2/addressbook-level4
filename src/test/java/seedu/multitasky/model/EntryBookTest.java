@@ -21,6 +21,8 @@ import seedu.multitasky.model.entry.FloatingTaskListTest;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.exceptions.EntryOverdueException;
+import seedu.multitasky.model.entry.exceptions.OverlappingAndOverdueEventException;
 import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 
 public class EntryBookTest {
@@ -48,6 +50,10 @@ public class EntryBookTest {
                 entryBook.addEntry(event);
             } catch (OverlappingEventException oee) {
                 // Do nothing. OverlappingEventException is to be expected here.
+            } catch (OverlappingAndOverdueEventException e) {
+                // Do nothing. Overlapping and overdue entries are fine.
+            } catch (EntryOverdueException e) {
+                // Do nothing. Overdue entries are fine.
             }
         }
 
@@ -57,6 +63,10 @@ public class EntryBookTest {
                 entryBook.addEntry(event);
             } catch (OverlappingEventException oee) {
                 // Do nothing. OverlappingEventException is to be expected here.
+            } catch (OverlappingAndOverdueEventException e) {
+                // Do nothing. Overlapping and overdue entries are fine.
+            } catch (EntryOverdueException e) {
+                // Do nothing. Overdue entries are fine.
             }
         }
 
@@ -66,6 +76,10 @@ public class EntryBookTest {
                 entryBook.addEntry(event);
             } catch (OverlappingEventException oee) {
                 // Do nothing. OverlappingEventException is to be expected here.
+            } catch (OverlappingAndOverdueEventException e) {
+                // Do nothing. Overlapping and overdue entries are fine.
+            } catch (EntryOverdueException e) {
+                // Do nothing. Overdue entries are fine.
             }
         }
 

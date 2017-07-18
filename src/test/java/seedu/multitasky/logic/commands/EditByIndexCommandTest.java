@@ -82,7 +82,8 @@ public class EditByIndexCommandTest {
                 .withName(VALID_NAME_CLEAN).withEndDate(VALID_DATE_11_JULY_17)
                 .withTags(VALID_TAG_URGENT, VALID_TAG_FRIEND).build();
         EditCommand editCommand = prepareCommand(INDEX_FIRST_ENTRY, PREFIX_DEADLINE, descriptor);
-        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, targetEntry, editedEntry);
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS,
+                                               targetEntry, editedEntry);
         Model expectedModel = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
         expectedModel.updateEntry(expectedModel.getFilteredDeadlineList().get(INDEX_FIRST_ENTRY.getZeroBased()),
                                   editedEntry);
