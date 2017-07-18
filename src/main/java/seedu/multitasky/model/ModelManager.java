@@ -27,6 +27,8 @@ import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.exceptions.EntryOverdueException;
+import seedu.multitasky.model.entry.exceptions.OverlappingAndOverdueEventException;
 import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 import seedu.multitasky.model.tag.Tag;
 import seedu.multitasky.storage.exception.NothingToRedoException;
@@ -103,7 +105,8 @@ public class ModelManager extends ComponentManager implements Model {
     // @@author A0126623L
     @Override
     public synchronized void addEntry(ReadOnlyEntry entry)
-            throws DuplicateEntryException, OverlappingEventException {
+            throws DuplicateEntryException, OverlappingEventException,
+            OverlappingAndOverdueEventException, EntryOverdueException {
         try {
             _entryBook.addEntry(entry);
         } finally {
@@ -115,7 +118,8 @@ public class ModelManager extends ComponentManager implements Model {
     // @@author A0126623L
     @Override
     public void changeEntryState(ReadOnlyEntry entryToChange, Entry.State newState)
-            throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException {
+            throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException,
+            OverlappingAndOverdueEventException, EntryOverdueException {
         try {
             _entryBook.changeEntryState(entryToChange, newState);
         } finally {
@@ -126,7 +130,8 @@ public class ModelManager extends ComponentManager implements Model {
     // @@author A0126623L
     @Override
     public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
-            throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException {
+            throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException,
+            OverlappingAndOverdueEventException, EntryOverdueException {
         requireAllNonNull(target, editedEntry);
         try {
             if (target.getClass().equals(editedEntry.getClass())) { // updating to same instance of entry

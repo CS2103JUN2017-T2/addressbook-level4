@@ -11,6 +11,8 @@ import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.exceptions.EntryOverdueException;
+import seedu.multitasky.model.entry.exceptions.OverlappingAndOverdueEventException;
 import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 import seedu.multitasky.storage.exception.NothingToRedoException;
 import seedu.multitasky.storage.exception.NothingToUndoException;
@@ -37,12 +39,20 @@ public interface Model {
     /** Clears all entries of a specific state. */
     public void clearStateSpecificEntries(Entry.State state);
 
-    /** Adds the given entry */
-    void addEntry(ReadOnlyEntry entry) throws DuplicateEntryException, OverlappingEventException;
+    /** Adds the given entry
+     * @throws EntryOverdueException
+     * @throws OverlappingAndOverdueEventException
+     */
+    void addEntry(ReadOnlyEntry entry) throws DuplicateEntryException, OverlappingEventException,
+            OverlappingAndOverdueEventException, EntryOverdueException;
 
-    /** Updates the state of a given entry. */
+    /** Updates the state of a given entry.
+     * @throws EntryOverdueException
+     * @throws OverlappingAndOverdueEventException
+     */
     void changeEntryState(ReadOnlyEntry entryToChange, Entry.State newState)
-            throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException;
+            throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException,
+            OverlappingAndOverdueEventException, EntryOverdueException;
 
     /** Undo the previous data-changing action */
     void undoPreviousAction() throws NothingToUndoException;
@@ -64,9 +74,13 @@ public interface Model {
      * Replaces the given entry {@code target} with {@code editedEntry}.
      *
      * @throws EntryNotFoundException if {@code target} could not be found in the list.
+     * @throws EntryOverdueException if {@code editedReadOnlyEntry} is overdue.
+     * @throws OverlappingAndOverdueEventException is an event which overlaps with
+     *              existing event(s) and is overdue.
      */
     void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
-            throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException;
+            throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException,
+            OverlappingAndOverdueEventException, EntryOverdueException;
 
     /** Returns the filtered event list as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
     UnmodifiableObservableList<ReadOnlyEntry> getFilteredEventList();

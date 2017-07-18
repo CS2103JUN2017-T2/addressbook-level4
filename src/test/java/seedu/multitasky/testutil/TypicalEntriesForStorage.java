@@ -4,6 +4,8 @@ import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
+import seedu.multitasky.model.entry.exceptions.EntryOverdueException;
+import seedu.multitasky.model.entry.exceptions.OverlappingAndOverdueEventException;
 import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 import seedu.multitasky.model.util.EntryBuilder;
 
@@ -37,6 +39,10 @@ public class TypicalEntriesForStorage {
                 entryBook.addEntry(new FloatingTask(entry));
             } catch (OverlappingEventException oee) {
                 // Ignore overlapping events when loading entry book for testing.
+            } catch (OverlappingAndOverdueEventException e) {
+                // Do nothing. Overlapping and overdue entries are fine.
+            } catch (EntryOverdueException e) {
+                // Do nothing. Overdue entries are fine.
             }
         }
     }

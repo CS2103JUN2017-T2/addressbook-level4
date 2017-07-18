@@ -26,6 +26,8 @@ import seedu.multitasky.model.entry.MiscEntryList;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.exceptions.EntryOverdueException;
+import seedu.multitasky.model.entry.exceptions.OverlappingAndOverdueEventException;
 import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 import seedu.multitasky.model.tag.Tag;
 import seedu.multitasky.model.tag.UniqueTagList;
@@ -138,8 +140,12 @@ public class EntryBook implements ReadOnlyEntryBook {
      * well as one of event/deadline/floating task list.
      * Also checks the new entry's tags and updates {@link #tags} with any new tags found,
      * and updates the Tag objects in the entry to point to those in {@link #tags}.
+     * @throws EntryOverdueException
+     * @throws OverlappingAndOverdueEventException
      */
-    public void addEntry(ReadOnlyEntry e) throws DuplicateEntryException, OverlappingEventException {
+    public void addEntry(ReadOnlyEntry e)
+            throws DuplicateEntryException, OverlappingEventException,
+            OverlappingAndOverdueEventException, EntryOverdueException {
         try {
             addToEntrySubtypeList(e);
         } finally {
@@ -158,17 +164,33 @@ public class EntryBook implements ReadOnlyEntryBook {
     // @@author A0126623L
     /**
      * Add a given ReadOnlyEntry to one of either active, deadline or floating task list.
+     * @throws OverlappingAndOverdueEventException
+     * @throws EntryOverdueException
      */
     private void addToEntrySubtypeList(ReadOnlyEntry newEntry)
-            throws DuplicateEntryException, OverlappingEventException {
+            throws DuplicateEntryException, OverlappingEventException, OverlappingAndOverdueEventException,
+            EntryOverdueException {
         if (newEntry instanceof Event) {
             boolean overlappingEventPresent = _eventList.hasOverlappingEvent(newEntry);
+            boolean eventIsDue = ((Event) newEntry).isOverdue();
+
             _eventList.add(newEntry);
-            if (overlappingEventPresent) {
+
+            if (overlappingEventPresent && eventIsDue) {
+                throw new OverlappingAndOverdueEventException();
+            } else if (overlappingEventPresent) {
                 throw new OverlappingEventException();
+            } else if (eventIsDue) {
+                throw new EntryOverdueException();
             }
         } else if (newEntry instanceof Deadline) {
+            boolean deadlineIsDue = ((Deadline) newEntry).isOverdue();
+
             _deadlineList.add(newEntry);
+
+            if (deadlineIsDue) {
+                throw new EntryOverdueException();
+            }
         } else {
             assert (newEntry instanceof FloatingTask);
             _floatingTaskList.add(newEntry);
@@ -186,17 +208,21 @@ public class EntryBook implements ReadOnlyEntryBook {
      * @throws EntryNotFoundException if {@code target} could not be found in the list.
      * @throws OverlappingEventException if {@code target} is an event and would overlap with existing active events
      * after being updated.
+     * @throws EntryOverdueException if {@code editedReadOnlyEntry} is overdue.
+     * @throws OverlappingAndOverdueEventException is an event which overlaps with
+     *              existing event(s) and is overdue.
      * @see #syncMasterTagListWith(Entry)
      */
     public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedReadOnlyEntry)
-            throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException {
+            throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException,
+            OverlappingAndOverdueEventException, EntryOverdueException {
         requireNonNull(target);
         requireNonNull(editedReadOnlyEntry);
         try {
             updateEntryInSubtypeList(target, editedReadOnlyEntry);
             /*
-             * Active list does not need updating because it's pointing to the same entries contained in the
-             * appropriate sub-type lists.
+             * this._allEntriesList does not need updating because it's pointing to the same entries contained
+             * in the appropriate sub-type lists.
              */
         } finally {
             Entry editedEntry = convertToEntry(editedReadOnlyEntry);
@@ -211,22 +237,40 @@ public class EntryBook implements ReadOnlyEntryBook {
      *
      * @throws EntryNotFoundException if {@code target} could not be found in the list.
      * @throws OverlappingEventException  if {@code target} is an event and would overlap with existing active events
-     * after being updated.
+     *              after being updated.
+     * @throws OverlappingAndOverdueEventException if {@code editedReadOnlyEntry} is an event which overlaps with
+     *              existing event(s) and is overdue.
+     * @throws EntryOverdueException if {@code editedReadOnlyEntry} is overdue.
      * @see #syncMasterTagListWith(Entry)
      */
     private void updateEntryInSubtypeList(ReadOnlyEntry target, ReadOnlyEntry editedReadOnlyEntry)
-            throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException {
+            throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException,
+            OverlappingAndOverdueEventException, EntryOverdueException {
         if (target instanceof Event) {
             boolean overlappingEventPresent = editedReadOnlyEntry.isActive()
                                               && _eventList.hasOverlappingEventAfterUpdate(target,
                                                                                            editedReadOnlyEntry);
+            Event editedEvent = (Event) editedReadOnlyEntry;
+            boolean editedEventIsDue = editedEvent.isOverdue();
+
             _eventList.updateEntry(target, editedReadOnlyEntry);
 
-            if (overlappingEventPresent) {
+            if (overlappingEventPresent && editedEventIsDue) {
+                throw new OverlappingAndOverdueEventException();
+            } else if (editedEventIsDue) {
+                throw new EntryOverdueException();
+            } else if (overlappingEventPresent) {
                 throw new OverlappingEventException();
             }
         } else if (target instanceof Deadline) {
+            Deadline editedDeadline = (Deadline) editedReadOnlyEntry;
+            boolean editedDeadlineIsDue = editedDeadline.isOverdue();
+
             _deadlineList.updateEntry(target, editedReadOnlyEntry);
+
+            if (editedDeadlineIsDue) {
+                throw new EntryOverdueException();
+            }
         } else {
             assert (target instanceof FloatingTask);
             _floatingTaskList.updateEntry(target, editedReadOnlyEntry);
@@ -346,11 +390,15 @@ public class EntryBook implements ReadOnlyEntryBook {
      * @param entryToMark
      * @param newState      cannot be null
      * @return boolean
-     * @throws DuplicateEntryException, EntryNotFoundException
+     * @throws DuplicateEntryException
+     * @throws EntryNotFoundException
      * @throws OverlappingEventException if entryToChange overlaps with existing active events after being restored.
+     * @throws OverlappingAndOverdueEventException
+     * @throws EntryOverdueException
      */
     public void changeEntryState(ReadOnlyEntry entryToChange, Entry.State newState)
-            throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException {
+            throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException,
+            OverlappingAndOverdueEventException, EntryOverdueException {
         if (entryToChange instanceof Event) {
             // Checks if there will be overlapping entry after entryToChange is set to active.
             Entry prospectiveEntry = EntryBuilder.build(entryToChange);
@@ -358,11 +406,17 @@ public class EntryBook implements ReadOnlyEntryBook {
             boolean overlappingEventPresent = newState.equals(Entry.State.ACTIVE)
                                               && _eventList.hasOverlappingEventAfterUpdate(entryToChange,
                                                                                            prospectiveEntry);
+            boolean eventIsDue = newState.equals(Entry.State.ACTIVE)
+                                 && ((Event) prospectiveEntry).isOverdue();
 
             _eventList.changeEntryState(entryToChange, newState);
 
-            if (overlappingEventPresent) {
+            if (overlappingEventPresent && eventIsDue) {
+                throw new OverlappingAndOverdueEventException();
+            } else if (overlappingEventPresent) {
                 throw new OverlappingEventException();
+            } else if (eventIsDue) {
+                throw new EntryOverdueException();
             }
 
         } else if (entryToChange instanceof Deadline) {

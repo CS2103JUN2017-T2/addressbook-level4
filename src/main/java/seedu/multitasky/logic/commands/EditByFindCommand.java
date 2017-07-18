@@ -11,6 +11,8 @@ import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.exceptions.EntryOverdueException;
+import seedu.multitasky.model.entry.exceptions.OverlappingAndOverdueEventException;
 import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 
 // @@author A0140633R
@@ -64,13 +66,21 @@ public class EditByFindCommand extends EditCommand {
                 assert editedEntry != null;
 
                 model.updateEntry(entryToEdit, editedEntry);
-                commandResult = new CommandResult(String.format(MESSAGE_SUCCESS, targetEntryString, editedEntry));
+                commandResult = new CommandResult(String.format(MESSAGE_SUCCESS, targetEntryString,
+                                                                editedEntry));
             } catch (EntryNotFoundException pnfe) {
                 throw new AssertionError("The target entry cannot be missing");
             } catch (OverlappingEventException oee) {
                 commandResult = new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERLAP_ALERT,
-                                                                editedEntry.getName()));
+                                                                targetEntryString, editedEntry));
+            } catch (EntryOverdueException e) {
+                commandResult = new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERDUE_ALERT,
+                                                                targetEntryString, editedEntry));
+            } catch (OverlappingAndOverdueEventException e) {
+                commandResult = new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERLAP_AND_OVERDUE_ALERT,
+                                                                targetEntryString, editedEntry));
             }
+
             // refresh list view after updating.
             model.updateAllFilteredLists(history.getPrevKeywords(), history.getPrevStartDate(),
                                          history.getPrevEndDate(), history.getPrevState(),

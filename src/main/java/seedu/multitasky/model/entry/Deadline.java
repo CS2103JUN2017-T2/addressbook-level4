@@ -8,7 +8,8 @@ import java.util.Set;
 
 import seedu.multitasky.model.tag.Tag;
 
-public class Deadline extends Entry {
+//@@author A0126623L
+public class Deadline extends Entry implements OverdueCapable {
 
     private Calendar _startDateAndTime;
     private Calendar _endDateAndTime;
@@ -88,6 +89,18 @@ public class Deadline extends Entry {
                 && this.getEndDateAndTime().equals(other.getEndDateAndTime())
                 && this.getState().equals(other.getState())
                 && this.getTags().equals(other.getTags()));
+    }
+    // @@author
+
+    // @@author A0126623L
+    @Override
+    public boolean isOverdue() {
+        if (!(this.isActive())) {
+            return false;
+        }
+
+        Calendar currentCalendar = Calendar.getInstance();
+        return ((this.getEndDateAndTime().compareTo(currentCalendar)) < 0);
     }
     // @@author
 

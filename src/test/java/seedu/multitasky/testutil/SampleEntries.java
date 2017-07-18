@@ -7,6 +7,10 @@ import java.util.Objects;
 import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
+import seedu.multitasky.model.entry.exceptions.EntryOverdueException;
+import seedu.multitasky.model.entry.exceptions.OverlappingAndOverdueEventException;
+import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 import seedu.multitasky.model.util.EntryBuilder;
 
 /**
@@ -29,50 +33,50 @@ public class SampleEntries {
     static {
         try {
             // Events
-            DINNER      = EntryBuilder.build("Dinner with family",
-                          new GregorianCalendar(2017, Calendar.DECEMBER, 25, 19, 00),
-                          new GregorianCalendar(2017, Calendar.DECEMBER, 25, 21, 00),
-                          "cook");
-            CAT         = EntryBuilder.build("Feed the cat",
-                          new GregorianCalendar(2017, Calendar.JULY, 12, 19, 00),
-                          new GregorianCalendar(2017, Calendar.JULY, 12, 21, 00),
-                          "pet");
-            MOVIE       = EntryBuilder.build("Watch Spiderman",
-                          new GregorianCalendar(2017, Calendar.JULY, 15, 15, 00),
-                          new GregorianCalendar(2017, Calendar.JULY, 15, 17, 30),
-                          "marvel", "comics");
-            OPENING     = EntryBuilder.build("Attend exhibition opening",
-                          new GregorianCalendar(2017, Calendar.OCTOBER, 7, 18, 00),
-                          new GregorianCalendar(2017, Calendar.OCTOBER, 7, 21, 00),
-                          "tuxedo", "suit");
+            DINNER = EntryBuilder.build("Dinner with family",
+                                        new GregorianCalendar(2017, Calendar.DECEMBER, 25, 19, 00),
+                                        new GregorianCalendar(2017, Calendar.DECEMBER, 25, 21, 00),
+                                        "cook");
+            CAT = EntryBuilder.build("Feed the cat",
+                                     new GregorianCalendar(2017, Calendar.JULY, 12, 19, 00),
+                                     new GregorianCalendar(2017, Calendar.JULY, 12, 21, 00),
+                                     "pet");
+            MOVIE = EntryBuilder.build("Watch Spiderman",
+                                       new GregorianCalendar(2017, Calendar.JULY, 15, 15, 00),
+                                       new GregorianCalendar(2017, Calendar.JULY, 15, 17, 30),
+                                       "marvel", "comics");
+            OPENING = EntryBuilder.build("Attend exhibition opening",
+                                         new GregorianCalendar(2017, Calendar.OCTOBER, 7, 18, 00),
+                                         new GregorianCalendar(2017, Calendar.OCTOBER, 7, 21, 00),
+                                         "tuxedo", "suit");
 
             // Deadlines
-            TAX         = EntryBuilder.build("Submit tax forms",
-                          new GregorianCalendar(2017, Calendar.JULY, 1, 00, 00),
-                          "money", "pay");
-            PAPER       = EntryBuilder.build("CS2103 finals",
-                          new GregorianCalendar(2017, Calendar.JULY, 28, 10, 0),
-                          "school", "exam", "study");
-            SUBMISSION  = EntryBuilder.build("Submit assignment",
-                          new GregorianCalendar(2017, Calendar.JULY, 12, 16, 00),
-                          "school");
-            UPGRADE     = EntryBuilder.build("Upgrade computer",
-                          new GregorianCalendar(2017, Calendar.DECEMBER, 1, 00, 00),
-                          "personal", "project");
+            TAX = EntryBuilder.build("Submit tax forms",
+                                     new GregorianCalendar(2017, Calendar.JULY, 1, 00, 00),
+                                     "money", "pay");
+            PAPER = EntryBuilder.build("CS2103 finals",
+                                       new GregorianCalendar(2017, Calendar.JULY, 28, 10, 0),
+                                       "school", "exam", "study");
+            SUBMISSION = EntryBuilder.build("Submit assignment",
+                                            new GregorianCalendar(2017, Calendar.JULY, 12, 16, 00),
+                                            "school");
+            UPGRADE = EntryBuilder.build("Upgrade computer",
+                                         new GregorianCalendar(2017, Calendar.DECEMBER, 1, 00, 00),
+                                         "personal", "project");
 
             // Floating tasks
-            COOK        = EntryBuilder.build("Learn to cook",
-                          "goals");
+            COOK = EntryBuilder.build("Learn to cook",
+                                      "goals");
             PROGRAMMING = EntryBuilder.build("Learn programming",
-                          "lessons", "computer");
-            HIRE        = EntryBuilder.build("Hire an assistant",
-                          "help");
-            SPECTACLES  = EntryBuilder.build("Make new spectacles",
-                          "health", "eyesight");
-            CLEAN       = EntryBuilder.build("Clean up room",
-                          "never", "hopefully");
-            SELL        = EntryBuilder.build("Sell old things",
-                          "sale", "clutter");
+                                             "lessons", "computer");
+            HIRE = EntryBuilder.build("Hire an assistant",
+                                      "help");
+            SPECTACLES = EntryBuilder.build("Make new spectacles",
+                                            "health", "eyesight");
+            CLEAN = EntryBuilder.build("Clean up room",
+                                       "never", "hopefully");
+            SELL = EntryBuilder.build("Sell old things",
+                                      "sale", "clutter");
 
         } catch (Exception e) {
             throw new AssertionError("Sample data cannot be invalid", e);
@@ -104,15 +108,21 @@ public class SampleEntries {
      */
     public static void loadEntryBookWithSampleData(EntryBook entryBook) {
         Objects.requireNonNull(entryBook);
-        try {
-            for (Entry entry: getSampleEntries()) {
+        for (Entry entry : getSampleEntries()) {
+            try {
                 entryBook.addEntry(EntryBuilder.build(entry));
+            } catch (OverlappingEventException oee) {
+                // Do nothing. OverlappingEventException is to be expected here.
+            } catch (OverlappingAndOverdueEventException e) {
+                // Do nothing. Overlapping and overdue entries are fine.
+            } catch (EntryOverdueException e) {
+                // Do nothing. Overdue entries are fine.
+            } catch (DuplicateEntryException e) {
+                assert false : "Sample entries cannot have duplicate entries.";
             }
-        } catch (Exception e) {
-            assert false : "Sample entries cannot have errors";
         }
     }
-    //@@author
+    // @@author
 
     // @@author A0126623L
     public static EntryBook getSampleEntryBook() {
@@ -120,5 +130,5 @@ public class SampleEntries {
         loadEntryBookWithSampleData(entryBook);
         return entryBook;
     }
-    //@@author
+    // @@author
 }

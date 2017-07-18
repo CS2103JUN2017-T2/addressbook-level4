@@ -11,6 +11,8 @@ import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.entry.exceptions.EntryOverdueException;
+import seedu.multitasky.model.entry.exceptions.OverlappingAndOverdueEventException;
 import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 
 // @@author A0132788U-reused
@@ -59,6 +61,10 @@ public class CompleteByFindCommand extends CompleteCommand {
                 throw new AssertionError("The target entry cannot be missing");
             } catch (OverlappingEventException oee) {
                 throw new AssertionError("Overlap should not happen for complete command.");
+            } catch (EntryOverdueException e) {
+                throw new AssertionError("Overdue should not apply to complete command.");
+            } catch (OverlappingAndOverdueEventException e) {
+                throw new AssertionError("Overlap and overdue should not apply to complete command.");
             }
             // refresh list view after updating.
             model.updateAllFilteredLists(history.getPrevKeywords(), history.getPrevStartDate(),

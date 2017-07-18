@@ -21,9 +21,9 @@ public class ClearCommandTest extends EntryBookGuiTest {
         assertClearAllCommandSuccess();
     }
 
-    /**********************************
-     * Adding after clearing the list *
-     *********************************/
+    /*************************************
+     * Adding after clearing all entries *
+     *************************************/
     @Test
     public void clear_addEventAfterClearAll_success() {
         assertClearAllCommandSuccess();
@@ -41,6 +41,30 @@ public class ClearCommandTest extends EntryBookGuiTest {
     @Test
     public void clear_addFloatingTaskAfterClearAll_success() {
         assertClearAllCommandSuccess();
+        commandBox.runCommand(CommandUtil.getAddFloatingTaskCommand(SampleEntries.CLEAN));
+        assertTrue(floatingTaskListPanel.isListMatching(SampleEntries.CLEAN));
+    }
+
+    /********************************************
+     * Adding after clearing all active entries *
+     ********************************************/
+    @Test
+    public void clear_addEventAfterClearActive_success() {
+        assertClearActiveCommandSuccess();
+        commandBox.runCommand(CommandUtil.getAddEventCommand(SampleEntries.CAT));
+        assertTrue(eventListPanel.isListMatching(SampleEntries.CAT));
+    }
+
+    @Test
+    public void clear_addDeadlineAfterClearActive_success() {
+        assertClearActiveCommandSuccess();
+        commandBox.runCommand(CommandUtil.getAddDeadlineCommand(SampleEntries.SUBMISSION));
+        assertTrue(deadlineListPanel.isListMatching(SampleEntries.SUBMISSION));
+    }
+
+    @Test
+    public void clear_addFloatingTaskAfterClearActive_success() {
+        assertClearActiveCommandSuccess();
         commandBox.runCommand(CommandUtil.getAddFloatingTaskCommand(SampleEntries.CLEAN));
         assertTrue(floatingTaskListPanel.isListMatching(SampleEntries.CLEAN));
     }
@@ -125,5 +149,11 @@ public class ClearCommandTest extends EntryBookGuiTest {
         commandBox.runCommand(ClearCommand.COMMAND_WORD + " all");
         assertCleared();
         assertResultMessage("Entry book has been cleared!");
+    }
+
+    private void assertClearActiveCommandSuccess() {
+        commandBox.runCommand(ClearCommand.COMMAND_WORD);
+        assertCleared();
+        assertResultMessage(ClearCommand.MESSAGE_ACTIVE_SUCCESS);
     }
 }
