@@ -11,7 +11,7 @@ image::mattheuslee.jpg[width="150", align="left"]
 
 * Role: Team Leader
 * Components in charge of: https://github.com/CS2103JUN2017-T2/main/blob/master/docs/DeveloperGuide.adoc#ui-component[GUI], commons
-* Aspects/tools in charge of: Git, Deliverables and scheduling, Integration
+* Aspects/tools in charge of: Git, Deliverables and scheduling, GUI tests
 * Features implemented:
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#listing-all-entries-code-list-code[List entries]
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#autocomplete[Command Autocomplete] using https://github.com/CS2103JUN2017-T2/main/blob/master/docs/DeveloperGuide.adoc#261-powermatch[PowerMatch]
@@ -57,7 +57,7 @@ image::kevinlamkb.png[width="150", align="left"]
 image::akd13.png[width="150", align="left"]
 * Role: Developer
 * Components in charge of: https://github.com/CS2103JUN2017-T2/main/blob/master/docs/DeveloperGuide.adoc#storage-component[Storage]
-* Aspects/tools in charge of: Terminology and Style, SourceTree
+* Aspects/tools in charge of: Terminology and Style, SourceTree, Integration
 * Features implemented:
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#undo-changes-code-undo-code[Undo]
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#redo-changes-code-redo-code[Redo]
