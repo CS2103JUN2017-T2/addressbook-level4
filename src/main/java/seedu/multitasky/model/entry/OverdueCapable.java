@@ -2,7 +2,7 @@ package seedu.multitasky.model.entry;
 
 //@@author A0126623L
 /**
- * Interface for class that can become overdue.
+ * Interface for overdue behavior.
  * @author ChuaPingChan
  */
 public interface OverdueCapable {

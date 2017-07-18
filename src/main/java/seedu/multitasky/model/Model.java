@@ -45,7 +45,8 @@ public interface Model {
 
     /** Updates the state of a given entry.
      * @throws EntryOverdueException
-     * @throws OverlappingAndOverdueEventException */
+     * @throws OverlappingAndOverdueEventException
+     */
     void changeEntryState(ReadOnlyEntry entryToChange, Entry.State newState)
             throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException,
             OverlappingAndOverdueEventException, EntryOverdueException;
