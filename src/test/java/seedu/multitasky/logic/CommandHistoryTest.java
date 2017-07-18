@@ -16,7 +16,7 @@ public class CommandHistoryTest {
     }
 
     @Test
-    public void add() {
+    public void commandHistory_add_added() {
         final String validCommand = "clear";
         final String invalidCommand = "adds Task";
 
@@ -24,4 +24,5 @@ public class CommandHistoryTest {
         history.add(invalidCommand);
         assertEquals(Arrays.asList(validCommand, invalidCommand), history.getHistory());
     }
+
 }

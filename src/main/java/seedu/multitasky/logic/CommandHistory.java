@@ -78,22 +78,4 @@ public class CommandHistory {
         previousSearches = new ArrayList<>(Arrays.asList(searches));
     }
 
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("keywords: ");
-        for (String keyword : previousSearchKeywords) {
-            builder.append("<").append(keyword).append(">");
-        }
-        if (previousStartDate == null) {
-            builder.append(" startDate null");
-        }
-        if (previousEndDate == null) {
-            builder.append(" endDate null");
-        }
-        builder.append(" state: ").append(previousState.toString());
-        builder.append(" num searches: ").append(previousSearches.size());
-        return builder.toString();
-    }
-
 }
