@@ -96,7 +96,8 @@ public abstract class EditCommand extends Command {
      * {@code entryToEdit} edited with {@code editEntryDescriptor}.
      */
     protected static Entry createEditedEntry(ReadOnlyEntry entryToEdit,
-            EditEntryDescriptor editEntryDescriptor) throws CommandException {
+                                             EditEntryDescriptor editEntryDescriptor)
+            throws CommandException {
         assert entryToEdit != null;
 
         Name updatedName = editEntryDescriptor.getName().orElse(entryToEdit.getName());
@@ -109,6 +110,15 @@ public abstract class EditCommand extends Command {
                                                        .orElse(entryToEdit.getStartDateAndTime());
         Calendar updatedEndDate = editEntryDescriptor.getEndDate()
                                                      .orElse(entryToEdit.getEndDateAndTime());
+        // set calendars for comparison purposes
+        if (updatedStartDate != null) {
+            updatedStartDate.set(Calendar.SECOND, 0);
+            updatedStartDate.set(Calendar.MILLISECOND, 0);
+        }
+        if (updatedEndDate != null) {
+            updatedEndDate.set(Calendar.SECOND, 0);
+            updatedEndDate.set(Calendar.MILLISECOND, 0);
+        }
 
         if (editToFloating(updatedStartDate, updatedEndDate) // floating task cases
             // deadline but reset end date
@@ -122,21 +132,22 @@ public abstract class EditCommand extends Command {
                    // event with start date removed
                    || (editToEvent(updatedStartDate, updatedEndDate))
                       && editEntryDescriptor.hasResetStartDate()
-                   // event with startdate == enddate
-                   || (editToEvent(updatedStartDate, updatedEndDate))
-                      && updatedEndDate.compareTo(updatedStartDate) == 0
-                   || editToEvent(updatedStartDate, updatedEndDate)
-                      && editEntryDescriptor.hasResetStartDate()
+                   // event with end date removed
                    || editToEvent(updatedStartDate, updatedEndDate)
                       && editEntryDescriptor.hasResetEndDate()) {
-            updatedEndDate = updatedEndDate == null ? updatedStartDate : updatedEndDate;
+            updatedEndDate = (updatedEndDate == null) ? updatedStartDate : updatedEndDate;
             return new Deadline(updatedName, updatedEndDate, updatedTags);
 
-        } else if (editToEvent(updatedStartDate, updatedEndDate)
-                   && editEntryDescriptor.hasResetStartDate()) {
-            return new Deadline(updatedName, updatedStartDate, updatedTags);
+        } else if (editToEvent(updatedStartDate, updatedEndDate) // event with start date == end date
+                   && updatedEndDate.compareTo(updatedStartDate) == 0) {
+            // convert automatically to full day event
+            updatedStartDate.set(Calendar.HOUR, 0);
+            updatedStartDate.set(Calendar.MINUTE, 0);
+            updatedEndDate.set(Calendar.HOUR, 23);
+            updatedEndDate.set(Calendar.MINUTE, 59);
+            return new Event(updatedName, updatedStartDate, updatedEndDate, updatedTags);
 
-        } else if (editToEvent(updatedStartDate, updatedEndDate)) { //events cases
+        } else if (editToEvent(updatedStartDate, updatedEndDate)) { // normal events cases
             if (updatedEndDate.compareTo(updatedStartDate) < 0) { // edited to invalid end date
                 throw new CommandException(MESSAGE_ENDDATE_BEFORE_STARTDATE);
             }
@@ -152,7 +163,7 @@ public abstract class EditCommand extends Command {
 
     private static boolean editToDeadline(Calendar updatedStartDate, Calendar updatedEndDate) {
         return updatedStartDate == null && updatedEndDate != null
-                || updatedStartDate != null && updatedEndDate == null;
+               || updatedStartDate != null && updatedEndDate == null;
     }
 
     private static boolean editToFloating(Calendar updatedStartDate, Calendar updatedEndDate) {
@@ -179,7 +190,6 @@ public abstract class EditCommand extends Command {
     /**
      * Stores the details to edit the entry with. Each non-empty field value
      * will replace the corresponding field value of the entry.
-     *
      */
     public static class EditEntryDescriptor {
         private Name name;
