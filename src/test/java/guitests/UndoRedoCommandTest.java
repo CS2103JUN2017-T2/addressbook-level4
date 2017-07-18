@@ -5,6 +5,9 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import guitests.guihandles.EntryCardHandle;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import seedu.multitasky.logic.commands.RedoCommand;
 import seedu.multitasky.logic.commands.UndoCommand;
 import seedu.multitasky.model.entry.Entry;
@@ -19,14 +22,14 @@ public class UndoRedoCommandTest extends EntryBookGuiTest {
      * Nothing to undo/redo *
      ***********************/
     @Test
-    public void undo_noSnapshot_errorMessage() {
-        commandBox.runCommand(UndoCommand.COMMAND_WORD);
+    public void undo_shortcutNoSnapshot_errorMessage() {
+        commandBox.pressKeyCombination(new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN));
         assertResultMessage(UndoCommand.MESSAGE_FAILURE);
     }
 
     @Test
-    public void redo_noSnapshot_errorMessage() {
-        commandBox.runCommand(RedoCommand.COMMAND_WORD);
+    public void redo_shortcutNoSnapshot_errorMessage() {
+        commandBox.pressKeyCombination(new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN));
         assertResultMessage(RedoCommand.MESSAGE_FAILURE);
     }
 

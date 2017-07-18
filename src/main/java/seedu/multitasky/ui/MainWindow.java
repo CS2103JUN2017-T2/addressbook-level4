@@ -46,7 +46,6 @@ public class MainWindow extends UiPart<Region> {
 
     private Stage primaryStage;
     private Logic logic;
-    private Scene scene;
 
     // Independent Ui parts residing in this Ui container
     private EventListPanel eventListPanel;
@@ -94,7 +93,7 @@ public class MainWindow extends UiPart<Region> {
         setIcon(ICON);
         setWindowMinSize();
         setWindowDefaultSize(prefs);
-        scene = new Scene(getRoot());
+        Scene scene = new Scene(getRoot());
         primaryStage.setScene(scene);
 
         setAccelerators();
