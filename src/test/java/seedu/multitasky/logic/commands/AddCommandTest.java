@@ -220,7 +220,7 @@ public class AddCommandTest {
         }
 
         @Override
-        public void loadFilePath(String newFilePath) {
+        public void openFilePath(String newFilePath) {
             fail("This method should not be called.");
         }
 
