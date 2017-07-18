@@ -217,10 +217,7 @@ public class PowerMatch {
         ArrayList<String> matches = new ArrayList<>();
         for (String potentialMatch : potentialMatches) {
             if (potentialMatch.matches(regex)) {
-                //System.out.println(regex + " matches " + potentialMatch);
                 matches.add(potentialMatch);
-            } else {
-                //System.out.println(regex + " doesn't match " + potentialMatch);
             }
         }
         return filterMatches(matches);
