@@ -65,7 +65,7 @@ public class CommandHistoryTest {
 
     private void assertAll(CommandHistory history, Set<String> expectedKeywords, Calendar expectedStartDate,
                            Calendar expectedEndDate, Entry.State expectedState) {
-        assertEquals(history.getPrevSearch(), expectedKeywords);
+        assertEquals(history.getPrevKeywords(), expectedKeywords);
         assertEquals(history.getPrevStartDate(), expectedStartDate);
         assertEquals(history.getPrevEndDate(), expectedEndDate);
         assertEquals(history.getPrevState(), expectedState);

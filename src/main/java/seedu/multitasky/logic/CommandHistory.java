@@ -80,6 +80,7 @@ public class CommandHistory implements EditCommandHistory {
         previousEndDate = endDate;
         previousState = state;
         previousSearches = new ArrayList<>(Arrays.asList(searches));
+    }
 
     @Override
     public boolean hasEditHistory() {
