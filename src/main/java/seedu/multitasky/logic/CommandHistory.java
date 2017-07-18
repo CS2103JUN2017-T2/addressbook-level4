@@ -30,7 +30,7 @@ public class CommandHistory {
         previousState = Entry.State.ACTIVE;
         previousStartDate = null;
         previousEndDate = null;
-        previousSearches = new ArrayList<>();
+        previousSearches = new ArrayList<>(Arrays.asList(Model.LENIENT_SEARCHES));
     }
 
     /**
@@ -49,7 +49,7 @@ public class CommandHistory {
     }
 
     // @@author A0140633R
-    public Set<String> getPrevSearch() {
+    public Set<String> getPrevKeywords() {
         return previousSearchKeywords;
     }
 
@@ -65,17 +65,35 @@ public class CommandHistory {
         return previousEndDate;
     }
 
-    public Model.Search[] getPreviousSearches() {
+    public Model.Search[] getPrevSearches() {
         return previousSearches.toArray(new Model.Search[previousSearches.size()]);
     }
 
-    public void setPrevSearch(Set<String> searchKeywords, Calendar startDate, Calendar endDate, State nextState,
+    public void setPrevSearch(Set<String> searchKeywords, Calendar startDate, Calendar endDate, State state,
                               Model.Search... searches) {
         previousSearchKeywords = searchKeywords;
         previousStartDate = startDate;
         previousEndDate = endDate;
-        previousState = nextState;
+        previousState = state;
         previousSearches = new ArrayList<>(Arrays.asList(searches));
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("keywords: ");
+        for (String keyword : previousSearchKeywords) {
+            builder.append("<").append(keyword).append(">");
+        }
+        if (previousStartDate == null) {
+            builder.append(" startDate null");
+        }
+        if (previousEndDate == null) {
+            builder.append(" endDate null");
+        }
+        builder.append(" state: ").append(previousState.toString());
+        builder.append(" num searches: ").append(previousSearches.size());
+        return builder.toString();
     }
 
 }

@@ -243,30 +243,21 @@ public class ModelManager extends ComponentManager implements Model {
     // @@author A0126623L
     @Override
     public void updateAllFilteredListToShowAllActiveEntries() {
-        this.updateAllFilteredLists(new HashSet<String>(), null, null, Entry.State.ACTIVE, Search.AND);
+        this.updateAllFilteredLists(new HashSet<>(), null, null, Entry.State.ACTIVE, Search.AND);
     }
     // @@author
 
     // @@author A0126623L
     @Override
     public void updateAllFilteredListToShowAllArchivedEntries() {
-        this.updateAllFilteredLists(new HashSet<String>(), null, null, Entry.State.ARCHIVED, Search.AND);
-
-        /*this.updateFilteredEventList(new HashSet<String>(), null, null, Entry.State.ARCHIVED, Search.AND);
-        this.updateFilteredDeadlineList(new HashSet<String>(), null, null, Entry.State.ARCHIVED, Search.AND);
-        this.updateFilteredFloatingTaskList(new HashSet<String>(), null, null, Entry.State.ARCHIVED,
-                                            Search.AND);*/
+        this.updateAllFilteredLists(new HashSet<>(), null, null, Entry.State.ARCHIVED, Search.AND);
     }
     // @@author
 
     // @@author A0126623L
     @Override
     public void updateAllFilteredListToShowAllDeletedEntries() {
-        this.updateAllFilteredLists(new HashSet<String>(), null, null, Entry.State.DELETED, Search.AND);
-        /*this.updateFilteredEventList(new HashSet<String>(), null, null, Entry.State.DELETED, Search.AND);
-        this.updateFilteredDeadlineList(new HashSet<String>(), null, null, Entry.State.DELETED, Search.AND);
-        this.updateFilteredFloatingTaskList(new HashSet<String>(), null, null, Entry.State.DELETED,
-                                            Search.AND);*/
+        this.updateAllFilteredLists(new HashSet<>(), null, null, Entry.State.DELETED, Search.AND);
     }
 
     // @@author A0125586X
@@ -469,14 +460,12 @@ public class ModelManager extends ComponentManager implements Model {
         public boolean run(ReadOnlyEntry entry) {
             if ((state == null || entry.getState().equals(state))
                 && matchesNameAndTagKeywords(entry)) {
-                if (matchesNameAndTagKeywords(entry)) {
-                    if (entry instanceof FloatingTask
-                        || entry instanceof Deadline && isWithinRange(entry.getEndDateAndTime())
-                        || entry instanceof Event && isWithinRange(entry.getStartDateAndTime())) {
-                        return true;
-                    } else {
-                        assert false : "DateAndStatusQualifier::run received ReadOnlyEntry of unknown type";
-                    }
+                if (entry instanceof FloatingTask
+                    || entry instanceof Deadline && isWithinRange(entry.getEndDateAndTime())
+                    || entry instanceof Event && isWithinRange(entry.getStartDateAndTime())) {
+                    return true;
+                } else {
+                    assert false : "DateAndStatusQualifier::run received ReadOnlyEntry of unknown type";
                 }
             }
             return false;

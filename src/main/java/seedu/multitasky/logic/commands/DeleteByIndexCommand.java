@@ -45,8 +45,9 @@ public class DeleteByIndexCommand extends DeleteCommand {
             throw new AssertionError("Overlap should not happen for deletion.");
         }
         // refresh list view after updating.
-        model.updateAllFilteredLists(history.getPrevSearch(), history.getPrevStartDate(),
-                                     history.getPrevEndDate(), history.getPrevState());
+        model.updateAllFilteredLists(history.getPrevKeywords(), history.getPrevStartDate(),
+                                     history.getPrevEndDate(), history.getPrevState(),
+                                     history.getPrevSearches());
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, entryToDelete));
     }
