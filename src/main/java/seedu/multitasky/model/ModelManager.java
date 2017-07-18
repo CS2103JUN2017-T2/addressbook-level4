@@ -432,8 +432,8 @@ public class ModelManager extends ComponentManager implements Model {
          * @param search the type of search to use (AND, OR, POWER_AND, POWER_OR). cannot be null.
          */
         NameDateStateQualifier(Set<String> nameAndTagKeywords,
-                Calendar startDate, Calendar endDate,
-                Entry.State state, Search search) {
+                               Calendar startDate, Calendar endDate,
+                               Entry.State state, Search search) {
             assert nameAndTagKeywords != null : "nameAndTagKeywords for NameDateStateQualifier cannot be null";
             assert search != null : "search type for NameDateStateQualifier cannot be null";
 
@@ -534,7 +534,7 @@ public class ModelManager extends ComponentManager implements Model {
             } else if (endDate == null) {
                 return checkDate.compareTo(startDate) >= 0;
             } else {
-                return (checkDate.compareTo(startDate) <= 0) && (checkDate.compareTo(endDate) >= 0);
+                return (checkDate.compareTo(startDate) >= 0) && (checkDate.compareTo(endDate) <= 0);
             }
         }
         // @@author
