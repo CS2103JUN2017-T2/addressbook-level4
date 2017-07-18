@@ -88,7 +88,7 @@ public abstract class EditCommand extends Command {
     public EditCommand(EditEntryDescriptor editEntryDescriptor) {
         requireNonNull(editEntryDescriptor);
 
-        this.editEntryDescriptor = new EditEntryDescriptor(editEntryDescriptor);
+        this.editEntryDescriptor = editEntryDescriptor;
     }
 
     /**
@@ -220,11 +220,9 @@ public abstract class EditCommand extends Command {
             if (toCopy.getAddTags().isPresent()) {
                 this.addtags = toCopy.getAddTags().get();
             }
-
             if (toCopy.getStartDate().isPresent()) {
                 this.startDate = toCopy.getStartDate().get();
             }
-
             if (toCopy.getEndDate().isPresent()) {
                 this.endDate = toCopy.getEndDate().get();
             }

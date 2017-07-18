@@ -8,18 +8,21 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import seedu.multitasky.logic.commands.EditCommand.EditEntryDescriptor;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.Entry.State;
 
+// @@author A0140633R
 /**
  * Stores the history of commands executed, and also the keywords used in the previous filters of inner lists.
  */
-public class CommandHistory {
+public class CommandHistory implements EditCommandHistory {
     private ArrayList<String> userInputHistory;
     private Set<String> previousSearchKeywords;
     private State previousState;
     private Calendar previousStartDate;
     private Calendar previousEndDate;
+    private EditEntryDescriptor editEntryDescriptor;
 
     public CommandHistory() {
         userInputHistory = new ArrayList<>();
@@ -27,6 +30,7 @@ public class CommandHistory {
         previousState = Entry.State.ACTIVE;
         previousStartDate = null;
         previousEndDate = null;
+        editEntryDescriptor = null;
     }
 
     /**
@@ -44,7 +48,6 @@ public class CommandHistory {
         return new ArrayList<>(userInputHistory);
     }
 
-    // @@author A0140633R
     public Set<String> getPrevSearch() {
         return previousSearchKeywords;
     }
@@ -66,6 +69,29 @@ public class CommandHistory {
         previousStartDate = startDate;
         previousEndDate = endDate;
         previousState = prevState;
+    }
+
+    @Override
+    public boolean hasEditHistory() {
+        if (editEntryDescriptor == null) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void resetEditHistory() {
+        editEntryDescriptor = null;
+    }
+
+    @Override
+    public EditEntryDescriptor getEditHistory() {
+        return editEntryDescriptor;
+    }
+
+    @Override
+    public void setEditHistory(EditEntryDescriptor editEntryDescriptor) {
+        this.editEntryDescriptor = editEntryDescriptor;
     }
 
 }

@@ -23,6 +23,7 @@ import java.util.Set;
 
 import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.commons.exceptions.IllegalValueException;
+import seedu.multitasky.logic.EditCommandHistory;
 import seedu.multitasky.logic.commands.EditByFindCommand;
 import seedu.multitasky.logic.commands.EditByIndexCommand;
 import seedu.multitasky.logic.commands.EditCommand;
@@ -43,7 +44,7 @@ public class EditCommandParser {
      *
      * @throws ParseException if the user input does not conform the expected format
      */
-    public EditCommand parse(String args) throws ParseException {
+    public EditCommand parse(String args, EditCommandHistory history) throws ParseException {
         requireNonNull(args);
         argMultimap = ArgumentTokenizer.tokenize(args, ParserUtil.toPrefixArray(EditCommand.VALID_PREFIXES));
         EditEntryDescriptor editEntryDescriptor = new EditEntryDescriptor();
@@ -56,24 +57,29 @@ public class EditCommandParser {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
         }
 
-        // initialise edit descriptor
-        Prefix startDatePrefix = null;
-        Prefix endDatePrefix = null;
-        if (hasStartDatePrefix()) {
-            startDatePrefix = ParserUtil.getLastPrefix(args, PREFIX_FROM, PREFIX_AT, PREFIX_ON);
-            if (argMultimap.getValue(startDatePrefix).get().equals("")) { //indicates reset
-                editEntryDescriptor.setResetStartDate(true);
-                startDatePrefix = null; // prevent parsing of date since it will throw exception there
+        if (!history.hasEditHistory()) {
+            // initialise edit descriptor
+            Prefix startDatePrefix = null;
+            Prefix endDatePrefix = null;
+            if (hasStartDatePrefix()) {
+                startDatePrefix = ParserUtil.getLastPrefix(args, PREFIX_FROM, PREFIX_AT, PREFIX_ON);
+                if (argMultimap.getValue(startDatePrefix).get().equals("")) { // indicates reset
+                    editEntryDescriptor.setResetStartDate(true);
+                    startDatePrefix = null; // prevent parsing of date since it will throw exception there
+                }
             }
-        }
-        if (hasEndDatePrefix()) {
-            endDatePrefix = ParserUtil.getLastPrefix(args, PREFIX_BY, PREFIX_TO);
-            if (argMultimap.getValue(endDatePrefix).get().equals("")) { //indicates reset
-                editEntryDescriptor.setResetEndDate(true);
-                endDatePrefix = null; // prevent parsing of date since it will throw exception there
+            if (hasEndDatePrefix()) {
+                endDatePrefix = ParserUtil.getLastPrefix(args, PREFIX_BY, PREFIX_TO);
+                if (argMultimap.getValue(endDatePrefix).get().equals("")) { // indicates reset
+                    editEntryDescriptor.setResetEndDate(true);
+                    endDatePrefix = null; // prevent parsing of date since it will throw exception there
+                }
             }
+            initEntryEditor(argMultimap, editEntryDescriptor, startDatePrefix, endDatePrefix);
+        } else { // load up editEntryDescriptor from previous try
+            editEntryDescriptor = history.getEditHistory();
+            history.resetEditHistory();
         }
-        initEntryEditor(argMultimap, editEntryDescriptor, startDatePrefix, endDatePrefix);
 
         if (hasIndexFlag(argMultimap)) { // edit by index
             try {
