@@ -12,8 +12,6 @@ import seedu.multitasky.logic.parser.exceptions.ParseException;
  */
 public class ClearCommandParser {
 
-    private ArgumentMultimap argumentMultimap;
-
     // @@author A0126623L
     /** Parses the given arguments in the context of a clear command.
      *
@@ -22,6 +20,7 @@ public class ClearCommandParser {
      * @throws ParseException if the user input does not conform to the expected format
      */
     public ClearCommand parse(String args) throws ParseException {
+
         String trimmedArgs = args.trim();
 
         if (trimmedArgs.isEmpty()) {
@@ -32,8 +31,8 @@ public class ClearCommandParser {
          * TODO modify ArgumentTokenizer to be able to detect without needing a whitespace in front of
          * trimmedArgs
          */
-        argumentMultimap = ArgumentTokenizer.tokenize(" " + trimmedArgs,
-                                                      toPrefixArray(ClearCommand.VALID_PREFIXES));
+        ArgumentMultimap argumentMultimap = ArgumentTokenizer.tokenize(" " + trimmedArgs,
+                                                                       toPrefixArray(ClearCommand.VALID_PREFIXES));
 
         ArrayList<String> prefixesPresent = argumentMultimap.getPresentPrefixes(ClearCommand.VALID_PREFIXES);
         if (!hasValidPrefixNumber(prefixesPresent)) {
