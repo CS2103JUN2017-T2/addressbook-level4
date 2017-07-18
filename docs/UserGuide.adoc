@@ -257,7 +257,7 @@ Format: `save ./filepath.xml`
 * Filepath will be saved in the same directory if it starts with `./`.
 * Full path of the file should be specified.
 * Parent folder of filepath should exist.
-* Filepath should end with .xml.
+* Filepath should end with `.xml`.
 * Filename should be unique and should not already exist.
 ****
 
@@ -280,7 +280,7 @@ Format: `open ./filepath.xml`
 * Filepath will be saved in the same directory if it starts with `./`.
 * Full path of the file should be specified.
 * File should exist.
-* Filepath should contain MultiTasky readable XML data.
+* Filepath should contain XML data which is readable by MultiTasky.
 ****
 
 Examples:
@@ -448,7 +448,9 @@ ____
 * *Delete* : `delete [KEYWORD_1 KEYWORD_2...] | [event | deadline | float INDEX] `
 ** e.g. `delete pasta dinner`
 * *History* : `history`
-* *Clear* : `clear [archive | bin | all]`
 * *Undo* : `undo`
 * *Redo* : `redo`
+* *Save* : `save ./newfile.xml`
+* *Open* : `open ./getdata.xml`
+* *Clear* : `clear [archive | bin | all]`
 * *Exit* : `exit`

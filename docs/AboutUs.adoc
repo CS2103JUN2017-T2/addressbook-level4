@@ -57,15 +57,17 @@ image::kevinlamkb.png[width="150", align="left"]
 image::akd13.png[width="150", align="left"]
 * Role: Developer
 * Components in charge of: https://github.com/CS2103JUN2017-T2/main/blob/master/docs/DeveloperGuide.adoc#storage-component[Storage]
-* Aspects/tools in charge of: Terminology and Style, SourceTree
+* Aspects/tools in charge of: Terminology and Style, SourceTree, Integration
 * Features implemented:
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#undo-changes-code-undo-code[Undo]
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#redo-changes-code-redo-code[Redo]
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#completing-a-task-code-complete-code[Complete a task]
-** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#set-storage-path-code-set-code[Set Storage path]
+** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#save-storage-path-code-save-code[Save Storage path]
+** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#open-data-from-file-code-open-code[Open data from file]
 * Code written: https://github.com/CS2103JUN2017-T2/main/blob/master/collated/main/A0132788U.md[functional code], https://github.com/CS2103JUN2017-T2/main/blob/master/collated/test/A0132788U.md[test code] and https://github.com/CS2103JUN2017-T2/main/blob/master/collated/docs/A0132788U.md[documentation]
 * Other major contributions:
 ** Make initial UI mockup.
+** Create 50 sample entries required for given milestones.
 
 '''
 
