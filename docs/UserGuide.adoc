@@ -94,7 +94,7 @@ To add a full day event, simply use the same start datetime and end datetime. e.
 Examples:
 
 * `add dinner with parents from friday 6pm to friday 9pm tag family`
-* `add go to the gym from monday 10am to monday 11am tag exercise, activities`
+* `add go to the gym from monday 10am to monday 11am tag exercise activities`
 * `add project submission by 5/7/2017 10:00 tag school`
 * `add write novel tag bucketlist`
 * `add clean up room`
@@ -131,6 +131,7 @@ Format: `list [archive | bin | all] [reverse | upcoming] [from START_DATE_TIME] 
 ****
 
 Examples:
+
 * `list`
 * `list to 10pm today`
 * `list upcoming`
