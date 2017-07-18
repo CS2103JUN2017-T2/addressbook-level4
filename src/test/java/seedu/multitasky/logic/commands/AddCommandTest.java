@@ -220,6 +220,16 @@ public class AddCommandTest {
             fail("This method should not be called.");
         }
 
+        @Override
+        public void openFilePath(String newFilePath) {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void clearStateSpecificEntries(State state) {
+            fail("This method should not be called.");
+        }
+
     }
 
     /**

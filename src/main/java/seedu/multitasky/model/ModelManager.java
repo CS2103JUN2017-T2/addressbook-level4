@@ -14,9 +14,11 @@ import seedu.multitasky.commons.core.ComponentManager;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
-import seedu.multitasky.commons.events.model.FilePathChangedEvent;
 import seedu.multitasky.commons.events.storage.EntryBookToRedoEvent;
 import seedu.multitasky.commons.events.storage.EntryBookToUndoEvent;
+import seedu.multitasky.commons.events.storage.FilePathChangedEvent;
+import seedu.multitasky.commons.events.storage.LoadDataFromFilePathEvent;
+import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.commons.util.PowerMatch;
 import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.Entry;
@@ -77,50 +79,18 @@ public class ModelManager extends ComponentManager implements Model {
         return _entryBook;
     }
 
-    /** Raises an event to indicate the model has changed */
-    private void indicateEntryBookChanged() {
-        raise(new EntryBookChangedEvent(_entryBook));
-    }
+    // =========== List Level Operations ===========
 
-    // @@author A0132788U
-    /** Raises an event when undo is entered by user and resets data to previous state for updating the UI */
-    private void indicateUndoAction() throws NothingToUndoException {
-        EntryBookToUndoEvent undoEvent;
-        raise(undoEvent = new EntryBookToUndoEvent(_entryBook, ""));
-        if (undoEvent.getMessage().equals("undo successful")) {
-            _entryBook.resetData(undoEvent.getData());
-        } else {
-            throw new NothingToUndoException("");
-        }
-    }
-
-    /** Raises an event when redo is entered by user and resets data to next state for updating the UI */
-    private void indicateRedoAction() throws NothingToRedoException {
-        EntryBookToRedoEvent redoEvent;
-        raise(redoEvent = new EntryBookToRedoEvent(_entryBook, ""));
-        if (redoEvent.getMessage().equals("redo successful")) {
-            _entryBook.resetData(redoEvent.getData());
-        } else {
-            throw new NothingToRedoException("");
-        }
-    }
+    // @@author A0126623L
 
     @Override
-    public void undoPreviousAction() throws NothingToUndoException {
-        indicateUndoAction();
-    }
-
-    @Override
-    public void redoPreviousAction() throws NothingToRedoException {
-        indicateRedoAction();
-    }
-
-    /** Raises an event when new file path is entered by user */
-    @Override
-    public void changeFilePath(String newFilePath) {
-        raise(new FilePathChangedEvent(_entryBook, newFilePath));
+    public void clearStateSpecificEntries(Entry.State state) {
+        _entryBook.clearStateSpecificEntries(state);
+        indicateEntryBookChanged();
     }
     // @@author
+
+    // =========== Entry Level Operations ===========
 
     @Override
     public synchronized void deleteEntry(ReadOnlyEntry target)
@@ -206,7 +176,7 @@ public class ModelManager extends ComponentManager implements Model {
     // @@author A0126623L
     @Override
     public UnmodifiableObservableList<ReadOnlyEntry> getActiveList() {
-        return new UnmodifiableObservableList<>(_entryBook.getActiveList());
+        return new UnmodifiableObservableList<>(_entryBook.getAllEntries());
     }
 
     // @@author A0126623L
@@ -553,7 +523,7 @@ public class ModelManager extends ComponentManager implements Model {
         public String toString() {
             StringBuilder builder = new StringBuilder();
             builder.append("NameDateStateQualifier: ")
-                   .append("keywords = ");
+                    .append("keywords = ");
             for (String keyword : nameAndTagKeywords) {
                 builder.append(keyword).append(", ");
             }
@@ -573,5 +543,65 @@ public class ModelManager extends ComponentManager implements Model {
             return builder.toString();
         }
     }
+
+    // ========== Event Raising Methods ==========
+
+    /** Raises an event to indicate the model has changed */
+    private void indicateEntryBookChanged() {
+        raise(new EntryBookChangedEvent(_entryBook));
+    }
+
+    // @@author A0132788U
+    /** Raises an event when undo is entered by user and resets data to previous state for updating the UI */
+    private void indicateUndoAction() throws NothingToUndoException {
+        EntryBookToUndoEvent undoEvent;
+        raise(undoEvent = new EntryBookToUndoEvent(_entryBook, ""));
+        if (undoEvent.getMessage().equals("undo successful")) {
+            _entryBook.resetData(undoEvent.getData());
+        } else {
+            throw new NothingToUndoException("");
+        }
+    }
+
+    /** Raises an event when redo is entered by user and resets data to next state for updating the UI */
+    private void indicateRedoAction() throws NothingToRedoException {
+        EntryBookToRedoEvent redoEvent;
+        raise(redoEvent = new EntryBookToRedoEvent(_entryBook, ""));
+        if (redoEvent.getMessage().equals("redo successful")) {
+            _entryBook.resetData(redoEvent.getData());
+        } else {
+            throw new NothingToRedoException("");
+        }
+    }
+
+    @Override
+    public void undoPreviousAction() throws NothingToUndoException {
+        indicateUndoAction();
+    }
+
+    @Override
+    public void redoPreviousAction() throws NothingToRedoException {
+        indicateRedoAction();
+    }
+
+    /** Raises an event when new file path is entered by user */
+    @Override
+    public void changeFilePath(String newFilePath) {
+        raise(new FilePathChangedEvent(_entryBook, newFilePath));
+    }
+
+    /** Raises an event when filepath to load data from is entered by user */
+    @Override
+    public void openFilePath(String newFilePath) throws IllegalValueException {
+        LoadDataFromFilePathEvent event;
+        raise(event = new LoadDataFromFilePathEvent(_entryBook, newFilePath, ""));
+        if (event.getMessage().equals("open successful")) {
+            _entryBook.resetData(event.getData());
+            indicateEntryBookChanged();
+        } else {
+            throw new IllegalValueException("load unsuccessful");
+        }
+    }
+    // @@author
 
 }

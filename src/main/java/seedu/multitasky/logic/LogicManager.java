@@ -10,6 +10,7 @@ import seedu.multitasky.logic.commands.CommandResult;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.logic.parser.Parser;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
+import seedu.multitasky.model.LogicUserPrefs;
 import seedu.multitasky.model.Model;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
@@ -23,9 +24,11 @@ public class LogicManager extends ComponentManager implements Logic {
     private final Model model;
     private final CommandHistory history;
     private final Parser parser;
+    private final LogicUserPrefs userprefs;
 
-    public LogicManager(Model model) {
+    public LogicManager(Model model, LogicUserPrefs userprefs) {
         this.model = model;
+        this.userprefs = userprefs;
         this.history = new CommandHistory();
         this.parser = new Parser();
     }
@@ -35,7 +38,7 @@ public class LogicManager extends ComponentManager implements Logic {
     public CommandResult execute(String commandText) throws CommandException, ParseException, DuplicateEntryException {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
         try {
-            Command command = parser.parseCommand(commandText);
+            Command command = parser.parseCommand(commandText, userprefs, history);
             logger.info("User input successfully parsed into Command!");
             command.setData(model, history);
             return command.execute();

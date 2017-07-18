@@ -40,8 +40,9 @@ public abstract class EditCommand extends Command {
             + " " + CliSyntax.PREFIX_TO + " DATE" + "]" + "]"
             + " [" + CliSyntax.PREFIX_TAG + " TAGS..." + "]" + "\n"
             + "All possible flags for Edit : 'name', 'tag','by', 'from', 'to', 'at', 'on', 'event',"
-            + " 'deadline', 'float'" + "\n"
-            + "Note: Existing values will be overwritten by the input values.";
+            + " 'deadline', 'float', 'addtag" + "\n"
+            + "Note: Existing values will be overwritten by the input values. "
+            + "Use addtag to add on to previous tag values";
 
 
     public static final String MESSAGE_SUCCESS = "Target entry: " + Messages.MESSAGE_ENTRY_DESCRIPTION
@@ -60,7 +61,7 @@ public abstract class EditCommand extends Command {
             + " " + CliSyntax.PREFIX_TO + " DATE" + "]" + "]"
             + " [" + CliSyntax.PREFIX_TAG + " TAGS..." + "]" + "\n"
             + "All possible flags for Edit : 'name', 'tag', 'by', 'from', 'to', 'at', 'event',"
-            + " 'deadline', 'float'" + "\n";
+            + " 'deadline', 'float', 'addtag'";
 
     public static final String MESSAGE_DUPLICATE_ENTRY = "This entry already exists in the task manager.";
 
@@ -75,7 +76,8 @@ public abstract class EditCommand extends Command {
                                                    CliSyntax.PREFIX_AT.toString(),
                                                    CliSyntax.PREFIX_ON.toString(),
                                                    CliSyntax.PREFIX_TO.toString(),
-                                                   CliSyntax.PREFIX_TAG.toString()};
+                                                   CliSyntax.PREFIX_TAG.toString(),
+                                                   CliSyntax.PREFIX_ADDTAG.toString()};
 
     protected final EditEntryDescriptor editEntryDescriptor;
     protected ReadOnlyEntry entryToEdit;
@@ -86,7 +88,7 @@ public abstract class EditCommand extends Command {
     public EditCommand(EditEntryDescriptor editEntryDescriptor) {
         requireNonNull(editEntryDescriptor);
 
-        this.editEntryDescriptor = new EditEntryDescriptor(editEntryDescriptor);
+        this.editEntryDescriptor = editEntryDescriptor;
     }
 
     /**
@@ -94,15 +96,29 @@ public abstract class EditCommand extends Command {
      * {@code entryToEdit} edited with {@code editEntryDescriptor}.
      */
     protected static Entry createEditedEntry(ReadOnlyEntry entryToEdit,
-            EditEntryDescriptor editEntryDescriptor) throws CommandException {
+                                             EditEntryDescriptor editEntryDescriptor)
+            throws CommandException {
         assert entryToEdit != null;
 
         Name updatedName = editEntryDescriptor.getName().orElse(entryToEdit.getName());
         Set<Tag> updatedTags = editEntryDescriptor.getTags().orElse(entryToEdit.getTags());
+        if (editEntryDescriptor.getAddTags().isPresent()) {
+            editEntryDescriptor.getAddTags().get().addAll(entryToEdit.getTags());
+            updatedTags = editEntryDescriptor.getAddTags().get();
+        }
         Calendar updatedStartDate = editEntryDescriptor.getStartDate()
                                                        .orElse(entryToEdit.getStartDateAndTime());
         Calendar updatedEndDate = editEntryDescriptor.getEndDate()
                                                      .orElse(entryToEdit.getEndDateAndTime());
+        // set calendars for comparison purposes
+        if (updatedStartDate != null) {
+            updatedStartDate.set(Calendar.SECOND, 0);
+            updatedStartDate.set(Calendar.MILLISECOND, 0);
+        }
+        if (updatedEndDate != null) {
+            updatedEndDate.set(Calendar.SECOND, 0);
+            updatedEndDate.set(Calendar.MILLISECOND, 0);
+        }
 
         if (editToFloating(updatedStartDate, updatedEndDate) // floating task cases
             // deadline but reset end date
@@ -116,21 +132,22 @@ public abstract class EditCommand extends Command {
                    // event with start date removed
                    || (editToEvent(updatedStartDate, updatedEndDate))
                       && editEntryDescriptor.hasResetStartDate()
-                   // event with startdate == enddate
-                   || (editToEvent(updatedStartDate, updatedEndDate))
-                      && updatedEndDate.compareTo(updatedStartDate) == 0
-                   || editToEvent(updatedStartDate, updatedEndDate)
-                      && editEntryDescriptor.hasResetStartDate()
+                   // event with end date removed
                    || editToEvent(updatedStartDate, updatedEndDate)
                       && editEntryDescriptor.hasResetEndDate()) {
-            updatedEndDate = updatedEndDate == null ? updatedStartDate : updatedEndDate;
+            updatedEndDate = (updatedEndDate == null) ? updatedStartDate : updatedEndDate;
             return new Deadline(updatedName, updatedEndDate, updatedTags);
 
-        } else if (editToEvent(updatedStartDate, updatedEndDate)
-                   && editEntryDescriptor.hasResetStartDate()) {
-            return new Deadline(updatedName, updatedStartDate, updatedTags);
+        } else if (editToEvent(updatedStartDate, updatedEndDate) // event with start date == end date
+                   && updatedEndDate.compareTo(updatedStartDate) == 0) {
+            // convert automatically to full day event
+            updatedStartDate.set(Calendar.HOUR, 0);
+            updatedStartDate.set(Calendar.MINUTE, 0);
+            updatedEndDate.set(Calendar.HOUR, 23);
+            updatedEndDate.set(Calendar.MINUTE, 59);
+            return new Event(updatedName, updatedStartDate, updatedEndDate, updatedTags);
 
-        } else if (editToEvent(updatedStartDate, updatedEndDate)) { //events cases
+        } else if (editToEvent(updatedStartDate, updatedEndDate)) { // normal events cases
             if (updatedEndDate.compareTo(updatedStartDate) < 0) { // edited to invalid end date
                 throw new CommandException(MESSAGE_ENDDATE_BEFORE_STARTDATE);
             }
@@ -146,7 +163,7 @@ public abstract class EditCommand extends Command {
 
     private static boolean editToDeadline(Calendar updatedStartDate, Calendar updatedEndDate) {
         return updatedStartDate == null && updatedEndDate != null
-                || updatedStartDate != null && updatedEndDate == null;
+               || updatedStartDate != null && updatedEndDate == null;
     }
 
     private static boolean editToFloating(Calendar updatedStartDate, Calendar updatedEndDate) {
@@ -173,11 +190,11 @@ public abstract class EditCommand extends Command {
     /**
      * Stores the details to edit the entry with. Each non-empty field value
      * will replace the corresponding field value of the entry.
-     *
      */
     public static class EditEntryDescriptor {
         private Name name;
         private Set<Tag> tags;
+        private Set<Tag> addtags;
         private Calendar startDate;
         private Calendar endDate;
         private boolean resetStartDate;
@@ -186,6 +203,7 @@ public abstract class EditCommand extends Command {
         public EditEntryDescriptor() {
             name = null;
             tags = null;
+            addtags = null;
             startDate = null;
             endDate = null;
             resetStartDate = false;
@@ -198,6 +216,9 @@ public abstract class EditCommand extends Command {
             }
             if (toCopy.getTags().isPresent()) {
                 this.tags = toCopy.getTags().get();
+            }
+            if (toCopy.getAddTags().isPresent()) {
+                this.addtags = toCopy.getAddTags().get();
             }
             if (toCopy.getStartDate().isPresent()) {
                 this.startDate = toCopy.getStartDate().get();
@@ -213,7 +234,7 @@ public abstract class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(this.name, this.tags, this.startDate, this.endDate)
+            return CollectionUtil.isAnyNonNull(this.name, this.tags, this.startDate, this.endDate, this.addtags)
                     || resetStartDate || resetEndDate;
         }
 
@@ -233,6 +254,10 @@ public abstract class EditCommand extends Command {
             return Optional.ofNullable(tags);
         }
 
+        public Optional<Set<Tag>> getAddTags() {
+            return Optional.ofNullable(addtags);
+        }
+
         public boolean hasResetStartDate() {
             return resetStartDate;
         }
@@ -243,6 +268,10 @@ public abstract class EditCommand extends Command {
 
         public void setTags(Set<Tag> tags) {
             this.tags = tags;
+        }
+
+        public void setAddTags(Set<Tag> addtags) {
+            this.addtags = addtags;
         }
 
         public void setName(Name name) {
@@ -279,9 +308,11 @@ public abstract class EditCommand extends Command {
 
             // state check
             EditEntryDescriptor e = (EditEntryDescriptor) other;
-            return getName().equals(e.getName()) && getTags().equals(e.getTags())
+            return getName().equals(e.getName())
+                   && getTags().equals(e.getTags()) && getAddTags().equals(e.getAddTags())
                    && getStartDate().equals(e.getStartDate()) && getEndDate().equals(e.getEndDate())
-                   && (hasResetStartDate() == e.hasResetStartDate()) && (hasResetEndDate() == e.hasResetEndDate());
+                   && (hasResetStartDate() == e.hasResetStartDate())
+                   && (hasResetEndDate() == e.hasResetEndDate());
         }
     }
 

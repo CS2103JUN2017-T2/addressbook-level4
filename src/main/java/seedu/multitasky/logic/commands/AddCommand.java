@@ -27,6 +27,7 @@ public class AddCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "New entry added:" + "\n"
                                                  + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s";
+
     public static final String MESSAGE_SUCCESS_WITH_OVERLAP_ALERT = "New entry added:" + "\n"
             + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
             + "Alert: New entry %1$s overlaps with existing event(s).";
@@ -37,6 +38,8 @@ public class AddCommand extends Command {
                                                    CliSyntax.PREFIX_ON.toString(),
                                                    CliSyntax.PREFIX_TO.toString(),
                                                    CliSyntax.PREFIX_TAG.toString()};
+
+    public static final String MESSAGE_INVALID_CONFIG_DURATION = "default addDuration cannot be zero or negative!";
 
     public static final String MESSAGE_ENDDATE_BEFORE_STARTDATE = "Can not have end date before start date!";
 

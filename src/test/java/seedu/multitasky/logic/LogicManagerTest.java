@@ -80,7 +80,7 @@ public class LogicManagerTest {
     @Before
     public void setUp() {
         model = new ModelManager();
-        logic = new LogicManager(model);
+        logic = new LogicManager(model, new UserPrefs());
         EventsCenter.getInstance().registerHandler(this);
 
         latestSavedEntryBook = new EntryBook(model.getEntryBook()); // last saved assumed to be up to date
