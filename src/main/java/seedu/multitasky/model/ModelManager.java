@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -265,6 +266,36 @@ public class ModelManager extends ComponentManager implements Model {
         }
     }
 
+    // @@author A0125586X
+    @Override
+    public void updateAllFilteredLists(Set<String> keywords, Calendar startDate, Calendar endDate,
+                                       List<Entry.State> states, Search... searches) {
+        NameDateStateQualifier qualifier;
+        for (Search search : searches) {
+            if (search == Search.POWER_AND || search == Search.POWER_OR) {
+                for (PowerMatch.Level level : PowerMatch.Level.values()) {
+                    qualifier = new NameDateStateQualifier(keywords, startDate, endDate, states, search, level);
+                    updateFilteredEventList(new PredicateExpression(qualifier));
+                    updateFilteredDeadlineList(new PredicateExpression(qualifier));
+                    updateFilteredFloatingTaskList(new PredicateExpression(qualifier));
+                    if ((getFilteredEventList().size() + getFilteredDeadlineList().size()
+                        + getFilteredFloatingTaskList().size()) > 0) {
+                        break; // No need to search further
+                    }
+                }
+            } else {
+                qualifier = new NameDateStateQualifier(keywords, startDate, endDate, states, search, null);
+                updateFilteredEventList(new PredicateExpression(qualifier));
+                updateFilteredDeadlineList(new PredicateExpression(qualifier));
+                updateFilteredFloatingTaskList(new PredicateExpression(qualifier));
+                if ((getFilteredEventList().size() + getFilteredDeadlineList().size()
+                    + getFilteredFloatingTaskList().size()) > 0) {
+                    break; // No need to search further
+                }
+            }
+        }
+    }
+
     // @@author A0126623L
     private void updateFilteredEventList(Expression expression) {
         _filteredEventList.setPredicate(expression::satisfies);
@@ -391,6 +422,7 @@ public class ModelManager extends ComponentManager implements Model {
         protected Calendar startDate;
         protected Calendar endDate;
         protected Entry.State state;
+        protected Entry.State state2;
         protected Search search;
         protected PowerMatch.Level level;
 
@@ -425,15 +457,43 @@ public class ModelManager extends ComponentManager implements Model {
             this.startDate = startDate;
             this.endDate = endDate;
             this.state = state;
+            this.state2 = null;
             this.search = search;
             this.level = level;
 
             dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT);
         }
 
+        /**
+         * Alternative constructor that allows for multiple states.
+         */
+        NameDateStateQualifier(Set<String> nameAndTagKeywords,
+                               Calendar startDate, Calendar endDate,
+                               List<Entry.State> states, Search search, PowerMatch.Level level) {
+            if (nameAndTagKeywords == null) {
+                throw new AssertionError("nameAndTagKeywords for NameDateStateQualifier cannot be null");
+            }
+            if (search == null) {
+                throw new AssertionError("search type for NameDateStateQualifier cannot be null");
+            }
+            if ((search == Search.POWER_AND || search == Search.POWER_OR) && level == null) {
+                throw new AssertionError("PowerMatch level cannot be null");
+            }
+
+            this.nameAndTagKeywords = nameAndTagKeywords;
+            this.startDate = startDate;
+            this.endDate = endDate;
+            this.state = states.get(0);
+            this.state2 = states.get(1);
+            this.search = search;
+            this.level = level;
+        }
+
         @Override
         public boolean run(ReadOnlyEntry entry) {
-            if ((state == null || entry.getState().equals(state))
+            if (((state == null && state2 == null)
+                || (state != null && entry.getState().equals(state))
+                || (state2 != null && entry.getState().equals(state2)))
                 && matchesNameAndTagKeywords(entry)) {
                 if (entry instanceof FloatingTask
                     || entry instanceof Deadline && isWithinRange(entry.getEndDateAndTime())

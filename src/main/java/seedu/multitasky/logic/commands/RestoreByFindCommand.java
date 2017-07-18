@@ -98,14 +98,12 @@ public class RestoreByFindCommand extends RestoreCommand {
     private List<ReadOnlyEntry> collateArchivedAndDeletedEntries() {
 
         List<ReadOnlyEntry> allList = new ArrayList<>();
-        // Filter and collate archived entries that matches keywords
-        model.updateAllFilteredLists(keywords, null, null, Entry.State.ARCHIVED, Model.STRICT_SEARCHES);
-        allList.addAll(model.getFilteredDeadlineList());
-        allList.addAll(model.getFilteredEventList());
-        allList.addAll(model.getFilteredFloatingTaskList());
+        List<Entry.State> states = new ArrayList<>();
+        states.add(Entry.State.ARCHIVED);
+        states.add(Entry.State.DELETED);
 
-        // Filter and collate deleted entries that matches keywords
-        model.updateAllFilteredLists(keywords, null, null, Entry.State.DELETED, Model.STRICT_SEARCHES);
+        // Filter and collate archived and deleted entries that matches keywords
+        model.updateAllFilteredLists(keywords, null, null, states, Model.STRICT_SEARCHES);
         allList.addAll(model.getFilteredDeadlineList());
         allList.addAll(model.getFilteredEventList());
         allList.addAll(model.getFilteredFloatingTaskList());

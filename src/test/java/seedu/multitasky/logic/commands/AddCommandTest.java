@@ -6,6 +6,7 @@ import static org.junit.Assert.fail;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Rule;
@@ -156,6 +157,12 @@ public class AddCommandTest {
         @Override
         public void updateAllFilteredLists(Set<String> keywords, Calendar startDate, Calendar endDate,
                                            Entry.State state, Search... searches) {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void updateAllFilteredLists(Set<String> keywords, Calendar startDate, Calendar endDate,
+                                           List<Entry.State> state, Search... searches) {
             fail("This method should not be called.");
         }
 

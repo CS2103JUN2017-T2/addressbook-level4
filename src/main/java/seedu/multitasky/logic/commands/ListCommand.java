@@ -125,7 +125,7 @@ public class ListCommand extends Command {
             break;
         case ALL:
             commandResultBuilder.append(MESSAGE_ALL_SUCCESS);
-            model.updateAllFilteredLists(MATCH_ALL_KEYWORDS, startDate, endDate, null,
+            model.updateAllFilteredLists(MATCH_ALL_KEYWORDS, startDate, endDate, (Entry.State) null,
                                          Model.LENIENT_SEARCHES);
             raise(new ListTypeUpdateEvent(null));
             history.setPrevSearch(MATCH_ALL_KEYWORDS, startDate, endDate, null,
