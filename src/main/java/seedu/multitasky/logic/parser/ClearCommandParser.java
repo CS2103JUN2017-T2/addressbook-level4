@@ -28,11 +28,12 @@ public class ClearCommandParser {
             return new ClearCommand();
         }
 
-        ArgumentMultimap argumentMultimap = ArgumentTokenizer.tokenize("preamble " + trimmedArgs,
-                                                                       toPrefixArray(ClearCommand.VALID_PREFIXES));
-
-        // argumentMultimap = ArgumentTokenizer.tokenize(trimmedArgs,
-        // toPrefixArray(ClearCommand.VALID_PREFIXES));
+        /*
+         * TODO modify ArgumentTokenizer to be able to detect without needing a whitespace in front of
+         * trimmedArgs
+         */
+        argumentMultimap = ArgumentTokenizer.tokenize(" " + trimmedArgs,
+                                                      toPrefixArray(ClearCommand.VALID_PREFIXES));
 
         ArrayList<String> prefixesPresent = argumentMultimap.getPresentPrefixes(ClearCommand.VALID_PREFIXES);
         if (!hasValidPrefixNumber(prefixesPresent)) {
