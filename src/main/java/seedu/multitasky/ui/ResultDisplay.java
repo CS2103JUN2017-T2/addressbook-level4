@@ -18,7 +18,7 @@ import seedu.multitasky.commons.events.ui.ResultStyleChangeEvent;
  */
 public class ResultDisplay extends UiPart<Region> {
 
-    private static final String FAILURE_STYLE = "-fx-background-color: red; -fx-text-fill: red;";
+    private static final String FAILURE_STYLE = "-fx-background-color: yellow; -fx-text-fill: yellow;";
     private static final String SUCCESS_STYLE = "-fx-background-color: derive(#1d1d1d, 20%) -fx-text-fill: white;";
 
     private static final Logger logger = LogsCenter.getLogger(ResultDisplay.class);
