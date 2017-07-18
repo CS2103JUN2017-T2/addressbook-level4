@@ -31,13 +31,13 @@ public class AddCommand extends Command {
                                                  + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s";
     public static final String MESSAGE_SUCCESS_WITH_OVERLAP_ALERT = "New entry added:" + "\n"
             + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
-            + "Alert: New entry %1$s overlaps with existing event(s).";
+            + "Alert: New entry overlaps with existing event(s).";
     public static final String MESSAGE_SUCCESS_WITH_OVERDUE_ALERT = "New entry added:" + "\n"
             + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
-            + "Alert: New entry %1$s is overdue.";
+            + "Alert: New entry is overdue.";
     public static final String MESSAGE_SUCCESS_WITH_OVERLAP_AND_OVERDUE_ALERT = "New entry added:" + "\n"
             + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
-            + "Alert: New entry %1$s is overdue and overlaps with existing event(s).";
+            + "Alert: New entry is overdue and overlaps with existing event(s).";
 
     public static final String[] VALID_PREFIXES = {CliSyntax.PREFIX_FROM.toString(),
                                                    CliSyntax.PREFIX_BY.toString(),
