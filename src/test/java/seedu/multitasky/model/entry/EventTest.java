@@ -164,7 +164,7 @@ public class EventTest {
 
         // Make an event fully overlapped with event1.
         Entry eventFullyOverlapped = EntryBuilder.build(event1);
-        assertTrue(event1.hasOverlappingTime(eventWithEndTimeOverlapped));
+        assertTrue(event1.hasOverlappingTime(eventFullyOverlapped));
 
         try {
             // Make an event that doesn't overlap with event1.
@@ -205,9 +205,9 @@ public class EventTest {
             // Future event
             // Overdue event
             Entry futureEvent = EntryBuilder.build(new Name("eventSample"),
-                                                    Calendar.getInstance(),
-                                                    Calendar.getInstance(),
-                                                    "tag1");
+                                                   Calendar.getInstance(),
+                                                   Calendar.getInstance(),
+                                                   "tag1");
             futureEvent.getEndDateAndTime().add(Calendar.YEAR, offsetAmount + 1);
             futureEvent.getStartDateAndTime().add(Calendar.YEAR, offsetAmount);
             assertFalse(((Event) futureEvent).isOverdue());
