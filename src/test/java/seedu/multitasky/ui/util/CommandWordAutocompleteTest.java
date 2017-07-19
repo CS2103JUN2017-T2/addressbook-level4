@@ -66,7 +66,7 @@ public class CommandWordAutocompleteTest {
     }
 
     private void assertAutocomplete(TextAutocomplete textAutoComplete, String input, String expected) {
-        assertStringEquals(textAutoComplete.autocomplete(input), expected.toString());
+        assertStringEquals(textAutoComplete.autocomplete(input), expected);
     }
 
     private void assertStringEquals(String actual, String expected) {
