@@ -301,8 +301,7 @@ public class MainWindow extends UiPart<Region> {
 
     @Subscribe
     private void handleListTypeUpdateEvent(ListTypeUpdateEvent event) {
-        stateCurrentlyShown.setText(String.format(Messages.MESSAGE_CURRENTLY_DISPLAYING,
-                                    stateToString(event.state)));
+        stateCurrentlyShown.setText(String.format(Messages.MESSAGE_CURRENTLY_DISPLAYING, event.state));
     }
 
 }

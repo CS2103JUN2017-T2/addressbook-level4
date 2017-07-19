@@ -1,7 +1,6 @@
 package seedu.multitasky.commons.events.ui;
 
 import seedu.multitasky.commons.events.BaseEvent;
-import seedu.multitasky.model.entry.Entry;
 
 // @@author A0125586X
 /**
@@ -9,9 +8,9 @@ import seedu.multitasky.model.entry.Entry;
  */
 public class ListTypeUpdateEvent extends BaseEvent {
 
-    public final Entry.State state;
+    public final String state;
 
-    public ListTypeUpdateEvent(Entry.State state) {
+    public ListTypeUpdateEvent(String state) {
         this.state = state;
     }
 

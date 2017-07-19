@@ -103,7 +103,7 @@ public class ListCommand extends Command {
             commandResultBuilder.append(MESSAGE_ARCHIVE_SUCCESS);
             model.updateAllFilteredLists(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.ARCHIVED,
                                          Model.LENIENT_SEARCHES);
-            raise(new ListTypeUpdateEvent(Entry.State.ARCHIVED));
+            raise(new ListTypeUpdateEvent("archive"));
             history.setPrevSearch(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.ARCHIVED,
                                   Model.LENIENT_SEARCHES);
             break;
@@ -111,7 +111,7 @@ public class ListCommand extends Command {
             commandResultBuilder.append(MESSAGE_BIN_SUCCESS);
             model.updateAllFilteredLists(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.DELETED,
                                          Model.LENIENT_SEARCHES);
-            raise(new ListTypeUpdateEvent(Entry.State.DELETED));
+            raise(new ListTypeUpdateEvent("bin"));
             history.setPrevSearch(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.DELETED,
                                   Model.LENIENT_SEARCHES);
             break;
@@ -119,7 +119,7 @@ public class ListCommand extends Command {
             commandResultBuilder.append(MESSAGE_ACTIVE_SUCCESS);
             model.updateAllFilteredLists(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.ACTIVE,
                                          Model.LENIENT_SEARCHES);
-            raise(new ListTypeUpdateEvent(Entry.State.ACTIVE));
+            raise(new ListTypeUpdateEvent("active"));
             history.setPrevSearch(MATCH_ALL_KEYWORDS, startDate, endDate, Entry.State.ACTIVE,
                                   Model.LENIENT_SEARCHES);
             break;
@@ -127,7 +127,7 @@ public class ListCommand extends Command {
             commandResultBuilder.append(MESSAGE_ALL_SUCCESS);
             model.updateAllFilteredLists(MATCH_ALL_KEYWORDS, startDate, endDate, (Entry.State) null,
                                          Model.LENIENT_SEARCHES);
-            raise(new ListTypeUpdateEvent(null));
+            raise(new ListTypeUpdateEvent("all"));
             history.setPrevSearch(MATCH_ALL_KEYWORDS, startDate, endDate, null,
                                   Model.LENIENT_SEARCHES);
             break;
