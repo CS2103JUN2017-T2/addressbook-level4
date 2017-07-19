@@ -52,7 +52,6 @@ public class MainWindow extends UiPart<Region> {
     private EventListPanel eventListPanel;
     private DeadlineListPanel deadlineListPanel;
     private FloatingTaskListPanel floatingTaskListPanel;
-    private Config config;
     private UserPrefs prefs;
 
     @FXML
@@ -86,7 +85,6 @@ public class MainWindow extends UiPart<Region> {
         // Set dependencies
         this.primaryStage = primaryStage;
         this.logic = logic;
-        this.config = config;
         this.prefs = prefs;
 
         // Configure the UI

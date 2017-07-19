@@ -4,8 +4,11 @@ import java.util.logging.Logger;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.events.ui.NewResultAvailableEvent;
@@ -14,10 +17,12 @@ import seedu.multitasky.logic.Logic;
 import seedu.multitasky.logic.commands.CommandResult;
 import seedu.multitasky.logic.commands.ListCommand;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
+import seedu.multitasky.logic.commands.util.CommandUtil;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.ui.util.CommandAutocomplete;
 import seedu.multitasky.ui.util.CommandHistory;
+import seedu.multitasky.ui.util.TextAutocomplete;
 
 //@@author A0125586X
 /**
@@ -33,7 +38,7 @@ public class CommandBox extends UiPart<Region> {
     private final Logger logger = LogsCenter.getLogger(CommandBox.class);
     private final Logic logic;
 
-    private CommandAutocomplete commandAutocomplete;
+    private TextAutocomplete autocomplete;
     private CommandHistory commandHistory;
 
     @FXML
@@ -43,9 +48,11 @@ public class CommandBox extends UiPart<Region> {
         super(FXML);
         this.logic = logic;
         commandHistory = new CommandHistory(getRoot(), commandTextField);
-        commandAutocomplete = new CommandAutocomplete(getRoot(), commandTextField);
+        autocomplete = new CommandAutocomplete(CommandUtil.COMMAND_WORDS, CommandUtil.COMMAND_KEYWORDS,
+                                               CommandUtil.PREFIX_ONLY_COMMANDS);
         setCommandTextFieldFocus();
         onlyShowActiveEntries();
+        setupCommandAutocompleteShortcut();
         registerAsAnEventHandler(this);
     }
 
@@ -100,6 +107,32 @@ public class CommandBox extends UiPart<Region> {
     }
 
     /**
+     * Executes an initial list command to show all active entries.
+     */
+    private void onlyShowActiveEntries() {
+        try {
+            logic.execute(ListCommand.COMMAND_WORD);
+        } catch (Exception e) {
+            throw new AssertionError("Initial list of active entries cannot throw exceptions");
+        }
+    }
+
+    /**
+     * Sets up the {@code TAB} key as the autocomplete keyboard shortcut.
+     */
+    private void setupCommandAutocompleteShortcut() {
+        getRoot().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.TAB) {
+                    event.consume();
+                    setText(autocomplete.autocomplete(commandTextField.getText().trim()));
+                }
+            }
+        });
+    }
+
+    /**
      * Sets the command box style to indicate a successful command.
      */
     private void setStyleToIndicateCommandSuccess() {
@@ -118,12 +151,12 @@ public class CommandBox extends UiPart<Region> {
         raise(new ResultStyleChangeEvent(false));
     }
 
-    private void onlyShowActiveEntries() {
-        try {
-            logic.execute(ListCommand.COMMAND_WORD);
-        } catch (Exception e) {
-            assert false : "Initial list of active entries cannot throw exceptions";
-        }
+    /**
+     * Sets the command box text and positions the cursor at the end of the text.
+     */
+    private void setText(String text) {
+        commandTextField.setText(text);
+        commandTextField.positionCaret(commandTextField.getText().length());
     }
 
 }

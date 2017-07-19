@@ -24,10 +24,15 @@ public class PowerMatch {
     public enum Level { LEVEL_0, LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4, LEVEL_5, LEVEL_6 };
 
     public static final int PERMUTATION_MATCH_MAX_ALLOWED_LENGTH = 8;
+    public static final int MISSING_CHAR_MATCH_MIN_ALLOWED_LENGTH = 3;
     public static final int MISSING_CHAR_MATCH_MAX_ALLOWED_LENGTH = 7;
+    public static final int WRONG_EXTRA_CHAR_1_MATCH_MIN_ALLOWED_LENGTH = 4;
     public static final int WRONG_EXTRA_CHAR_1_MATCH_MAX_ALLOWED_LENGTH = 6;
+    public static final int WRONG_EXTRA_CHAR_2_MATCH_MIN_ALLOWED_LENGTH = 5;
     public static final int WRONG_EXTRA_CHAR_2_MATCH_MAX_ALLOWED_LENGTH = 6;
+    public static final int WRONG_EXTRA_CHAR_3_MATCH_MIN_ALLOWED_LENGTH = 6;
     public static final int WRONG_EXTRA_CHAR_3_MATCH_MAX_ALLOWED_LENGTH = 6;
+    public static final int ACRONYM_PERMUTATION_MATCH_MIN_ALLOWED_LENGTH = 1;
     public static final int ACRONYM_PERMUTATION_MATCH_MAX_ALLOWED_LENGTH = 6;
 
     public static final String REGEX_ANY_NON_WHITESPACE = "((\\S?)+)";
@@ -110,7 +115,8 @@ public class PowerMatch {
             }
             break;
         case LEVEL_2:
-            if (input.length() <= MISSING_CHAR_MATCH_MAX_ALLOWED_LENGTH) {
+            if (input.length() >= MISSING_CHAR_MATCH_MIN_ALLOWED_LENGTH
+                && input.length() <= MISSING_CHAR_MATCH_MAX_ALLOWED_LENGTH) {
                 match = getMissingCharMatch(keyword, potentialMatches);
                 if (match != null) {
                     return match;
@@ -118,7 +124,8 @@ public class PowerMatch {
             }
             break;
         case LEVEL_3:
-            if (input.length() <= WRONG_EXTRA_CHAR_1_MATCH_MAX_ALLOWED_LENGTH) {
+            if (input.length() >= WRONG_EXTRA_CHAR_1_MATCH_MIN_ALLOWED_LENGTH
+                && input.length() <= WRONG_EXTRA_CHAR_1_MATCH_MAX_ALLOWED_LENGTH) {
                 match = getWrongExtraCharMatch(1, keyword, potentialMatches);
                 if (match != null) {
                     return match;
@@ -126,7 +133,8 @@ public class PowerMatch {
             }
             break;
         case LEVEL_4:
-            if (input.length() <= WRONG_EXTRA_CHAR_2_MATCH_MAX_ALLOWED_LENGTH) {
+            if (input.length() >= WRONG_EXTRA_CHAR_2_MATCH_MIN_ALLOWED_LENGTH
+                && input.length() <= WRONG_EXTRA_CHAR_2_MATCH_MAX_ALLOWED_LENGTH) {
                 match = getWrongExtraCharMatch(2, keyword, potentialMatches);
                 if (match != null) {
                     return match;
@@ -134,7 +142,8 @@ public class PowerMatch {
             }
             break;
         case LEVEL_5:
-            if (input.length() <= WRONG_EXTRA_CHAR_3_MATCH_MAX_ALLOWED_LENGTH) {
+            if (input.length() >= WRONG_EXTRA_CHAR_3_MATCH_MIN_ALLOWED_LENGTH
+                && input.length() <= WRONG_EXTRA_CHAR_3_MATCH_MAX_ALLOWED_LENGTH) {
                 match = getWrongExtraCharMatch(3, keyword, potentialMatches);
                 if (match != null) {
                     return match;
@@ -142,7 +151,8 @@ public class PowerMatch {
             }
             break;
         case LEVEL_6:
-            if (input.length() <= ACRONYM_PERMUTATION_MATCH_MAX_ALLOWED_LENGTH) {
+            if (input.length() >= ACRONYM_PERMUTATION_MATCH_MIN_ALLOWED_LENGTH
+                && input.length() <= ACRONYM_PERMUTATION_MATCH_MAX_ALLOWED_LENGTH) {
                 match = getAcronymPermutationMatch(keyword, potentialMatches);
                 if (match != null) {
                     return match;
@@ -150,9 +160,8 @@ public class PowerMatch {
             }
             break;
         default:
-            throw new AssertionError("Unknown PowerMatch level");
+            return null;
         }
-
         return null;
     }
 
@@ -195,7 +204,7 @@ public class PowerMatch {
             return keyword.length() <= ACRONYM_PERMUTATION_MATCH_MAX_ALLOWED_LENGTH
                 && getAcronymPermutationMatch(keyword, potentialMatch) != null;
         default:
-            throw new AssertionError("Unknown PowerMatch level");
+            return false;
         }
     }
 

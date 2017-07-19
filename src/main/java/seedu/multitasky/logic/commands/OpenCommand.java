@@ -23,6 +23,9 @@ public class OpenCommand extends Command {
                                                + "Format: "
                                                + COMMAND_WORD + " /filepath/filename.xml\n" + "Example: " + COMMAND_WORD
                                                + SAMPLE_FILEPATH;
+
+    public static final String[] VALID_PREFIXES = new String[] {};
+
     private final String filepath;
 
     public OpenCommand(String filePath) {

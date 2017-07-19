@@ -99,22 +99,22 @@ public class PowerMatchTest {
      ********************/
     @Test
     public void powerMatch_matchLevel2Missing_match() {
-        assertTrue(PowerMatch.match(PowerMatch.Level.LEVEL_2, "ac", "abcxyz").equals("abcxyz"));
+        assertTrue(PowerMatch.match(PowerMatch.Level.LEVEL_2, "acx", "abcxyz").equals("abcxyz"));
     }
 
     @Test
     public void powerMatch_matchLevel2Missing_noMatch() {
-        assertTrue(PowerMatch.match(PowerMatch.Level.LEVEL_2, "ac", "xyzxyz") == null);
+        assertTrue(PowerMatch.match(PowerMatch.Level.LEVEL_2, "acx", "xyzxyz") == null);
     }
 
     @Test
     public void powerMatch_isMatchLevel2Missing_match() {
-        assertTrue(PowerMatch.isMatch(PowerMatch.Level.LEVEL_2, "ac", "abcxyz"));
+        assertTrue(PowerMatch.isMatch(PowerMatch.Level.LEVEL_2, "acx", "abcxyz"));
     }
 
     @Test
     public void powerMatch_isMatchLevel2Missing_noMatch() {
-        assertFalse(PowerMatch.isMatch(PowerMatch.Level.LEVEL_2, "ac", "xyzxyz"));
+        assertFalse(PowerMatch.isMatch(PowerMatch.Level.LEVEL_2, "acx", "xyzxyz"));
     }
 
     /***************************
