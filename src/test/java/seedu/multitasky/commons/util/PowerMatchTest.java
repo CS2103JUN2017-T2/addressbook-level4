@@ -75,8 +75,13 @@ public class PowerMatchTest {
      * Level 1 - permutation *
      ************************/
     @Test
-    public void powerMatch_matchLevel1Permutation_match() {
+    public void powerMatch_matchLevel1PermutationSubstring_match() {
         assertTrue(PowerMatch.match(PowerMatch.Level.LEVEL_1, "acb", "abcxyz").equals("abcxyz"));
+    }
+
+    @Test
+    public void powerMatch_matchLevel1PermutationPrefix_match() {
+        assertTrue(PowerMatch.match(PowerMatch.Level.LEVEL_1, "acb", "abcxyz", "xyzabc").equals("abcxyz"));
     }
 
     @Test
@@ -177,6 +182,11 @@ public class PowerMatchTest {
     }
 
     @Test
+    public void powerMatch_matchWrongExtra3_match() {
+        assertTrue(PowerMatch.match("adbecf", "xyzxyz") == null);
+    }
+
+    @Test
     public void powerMatch_isMatchLevel5WrongExtra3_match() {
         assertTrue(PowerMatch.isMatch(PowerMatch.Level.LEVEL_5, "adbecf", "abcxyz"));
     }
@@ -219,12 +229,17 @@ public class PowerMatchTest {
     }
 
     @Test
-    public void powerMatch_match_noMatches() {
+    public void powerMatch_matchHighestLevel_noMatches() {
         assertTrue(PowerMatch.match(PowerMatch.HIGHEST_LEVEL, "abcdef", "lmnopq") == null);
     }
 
     @Test
-    public void powerMatch_isMatch_noMatches() {
+    public void powerMatch_match_noMatches() {
+        assertTrue(PowerMatch.match("abcdef", "lmnopq") == null);
+    }
+
+    @Test
+    public void powerMatch_isMatchHighestLevel_noMatches() {
         assertFalse(PowerMatch.isMatch(PowerMatch.HIGHEST_LEVEL, "abcdef", "lmnopq"));
     }
 
