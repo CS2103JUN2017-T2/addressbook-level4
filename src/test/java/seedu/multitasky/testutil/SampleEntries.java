@@ -244,6 +244,11 @@ public class SampleEntries {
     }
     // @@author
 
+    public static void main(String[] args) {
+        EntryBook entryBook = new EntryBook();
+        SampleEntries.loadEntryBookWithSampleData(entryBook);
+    }
+
     // @@author A0126623L
     private static void loadEntryBookWithSampleActiveEntries(EntryBook entryBook) {
         for (Entry entry : getSampleActiveEntries()) {
@@ -266,7 +271,7 @@ public class SampleEntries {
     private static void loadEntryBookWithSampleArchivedEntries(EntryBook entryBook) {
         for (Entry entry : getSampleArchivedEntries()) {
             try {
-                entryBook.addEntry(EntryBuilder.build(entry));
+                entryBook.addEntry(entry);
             } catch (OverlappingEventException oee) {
                 // Do nothing. OverlappingEventException is to be expected here.
             } catch (OverlappingAndOverdueEventException e) {
@@ -284,7 +289,7 @@ public class SampleEntries {
     private static void loadEntryBookWithSampleDeletedEntries(EntryBook entryBook) {
         for (Entry entry : getSampleDeletedEntries()) {
             try {
-                entryBook.addEntry(EntryBuilder.build(entry));
+                entryBook.addEntry(entry);
             } catch (OverlappingEventException oee) {
                 // Do nothing. OverlappingEventException is to be expected here.
             } catch (OverlappingAndOverdueEventException e) {
