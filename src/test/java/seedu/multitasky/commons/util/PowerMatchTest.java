@@ -186,39 +186,16 @@ public class PowerMatchTest {
         assertFalse(PowerMatch.isMatch(PowerMatch.Level.LEVEL_5, "adbecf", "xyzxyz"));
     }
 
-    /*********************************
-     * Level 6 - acronym permutation *
-     ********************************/
-    @Test
-    public void powerMatch_matchLevel6AcronymPermutation_match() {
-        assertTrue(PowerMatch.match(PowerMatch.Level.LEVEL_6, "abcd", "aefbghcid").equals("aefbghcid"));
-    }
-
-    @Test
-    public void powerMatch_matchLevel6AcronymPermutation_noMatch() {
-        assertTrue(PowerMatch.match(PowerMatch.Level.LEVEL_6, "abcd", "xyzxyz") == null);
-    }
-
-    @Test
-    public void powerMatch_isMatchLevel6AcronymPermutation_match() {
-        assertTrue(PowerMatch.isMatch(PowerMatch.Level.LEVEL_6, "abcd", "aefbghcid"));
-    }
-
-    @Test
-    public void powerMatch_isMatchLevel6AcronymPermutation_noMatch() {
-        assertFalse(PowerMatch.isMatch(PowerMatch.Level.LEVEL_6, "abcd", "xyzxyz"));
-    }
-
     /*******************
      * Null conditions *
      ******************/
     @Test
     public void powerMatch_matchNullEmptyArguments_nullResult() {
         assertTrue(PowerMatch.match(null, null, (String[]) null) == null);
-        assertTrue(PowerMatch.match(PowerMatch.Level.LEVEL_6, null, (String[]) null) == null);
-        assertTrue(PowerMatch.match(PowerMatch.Level.LEVEL_6, null) == null);
-        assertTrue(PowerMatch.match(PowerMatch.Level.LEVEL_6, "", "xyz", "abc") == null);
-        assertTrue(PowerMatch.match(PowerMatch.Level.LEVEL_6, "abc", (String[]) null) == null);
+        assertTrue(PowerMatch.match(PowerMatch.HIGHEST_LEVEL, null, (String[]) null) == null);
+        assertTrue(PowerMatch.match(PowerMatch.HIGHEST_LEVEL, null) == null);
+        assertTrue(PowerMatch.match(PowerMatch.HIGHEST_LEVEL, "", "xyz", "abc") == null);
+        assertTrue(PowerMatch.match(PowerMatch.HIGHEST_LEVEL, "abc", (String[]) null) == null);
         assertTrue(PowerMatch.match(null, (String[]) null) == null);
         assertTrue(PowerMatch.match(null) == null);
         assertTrue(PowerMatch.match("abc", (String[]) null) == null);
@@ -226,29 +203,29 @@ public class PowerMatchTest {
 
     @Test
     public void powerMatch_isMatchNullArguments_falseResult() {
-        assertFalse(PowerMatch.isMatch(PowerMatch.Level.LEVEL_6, null, null));
-        assertFalse(PowerMatch.isMatch(PowerMatch.Level.LEVEL_6, null, ""));
+        assertFalse(PowerMatch.isMatch(PowerMatch.HIGHEST_LEVEL, null, null));
+        assertFalse(PowerMatch.isMatch(PowerMatch.HIGHEST_LEVEL, null, ""));
     }
 
     @Test
     public void powerMatch_matchEmptyInputOnePotential_notNullResult() {
-        assertTrue(PowerMatch.match(PowerMatch.Level.LEVEL_6, "", "xyzabc").equals("xyzabc"));
+        assertTrue(PowerMatch.match(PowerMatch.HIGHEST_LEVEL, "", "xyzabc").equals("xyzabc"));
         assertTrue(PowerMatch.match("", "xyzabc").equals("xyzabc"));
     }
 
     @Test
     public void powerMatch_isMatchEmptyInput_trueResult() {
-        assertTrue(PowerMatch.isMatch(PowerMatch.Level.LEVEL_6, "", "xyzabcxyz"));
+        assertTrue(PowerMatch.isMatch(PowerMatch.HIGHEST_LEVEL, "", "xyzabcxyz"));
     }
 
     @Test
     public void powerMatch_match_noMatches() {
-        assertTrue(PowerMatch.match(PowerMatch.Level.LEVEL_6, "abcdef", "lmnopq") == null);
+        assertTrue(PowerMatch.match(PowerMatch.HIGHEST_LEVEL, "abcdef", "lmnopq") == null);
     }
 
     @Test
     public void powerMatch_isMatch_noMatches() {
-        assertFalse(PowerMatch.isMatch(PowerMatch.Level.LEVEL_6, "abcdef", "lmnopq"));
+        assertFalse(PowerMatch.isMatch(PowerMatch.HIGHEST_LEVEL, "abcdef", "lmnopq"));
     }
 
 }
