@@ -16,10 +16,13 @@ import static seedu.multitasky.logic.parser.ParserUtil.MESSAGE_FAIL_PARSE_DATE;
 import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_DATE_11_JULY_17;
 import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_DATE_12_JULY_17;
 import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_DATE_20_DEC_17;
+import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_DATE_TIME_12_JULY_6PM;
+import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_DATE_TIME_12_JULY_9PM;
 import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_NAME_CLEAN;
 import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_NAME_MEETING;
 import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_TAG_FRIEND;
 import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_TAG_URGENT;
+import static seedu.multitasky.testutil.EditCommandTestUtil.VALID_TIME_9PM;
 import static seedu.multitasky.testutil.SampleEntries.INDEX_FIRST_ENTRY;
 import static seedu.multitasky.testutil.SampleEntries.INDEX_SECOND_ENTRY;
 import static seedu.multitasky.testutil.SampleEntries.INDEX_THIRD_ENTRY;
@@ -52,6 +55,8 @@ public class EditCommandParserTest {
     private static final String NAME_DESC_CLEAN = " " + PREFIX_NAME + " " + VALID_NAME_CLEAN;
     private static final String NAME_DESC_MEETING = " " + PREFIX_NAME + " " + VALID_NAME_MEETING;
     private static final String DATE_DESC_START_12JULY = " " + PREFIX_FROM + " " + VALID_DATE_12_JULY_17;
+    private static final String DATE_TIME_DESC_START_12JULY6PM = " " + PREFIX_FROM + " " + VALID_DATE_TIME_12_JULY_6PM;
+    private static final String TIME_DESC_END_9PM = " " + PREFIX_TO + " " + VALID_TIME_9PM;
     private static final String DATE_DESC_END_12JULY = " " + PREFIX_TO + " " + VALID_DATE_12_JULY_17;
     private static final String DATE_DESC_END_11JULY = " " + PREFIX_BY + " " + VALID_DATE_11_JULY_17;
     private static final String DATE_DESC_END_20DEC = " " + PREFIX_BY + " " + VALID_DATE_20_DEC_17;
@@ -162,7 +167,6 @@ public class EditCommandParserTest {
 
         assertParseSuccess(userInput, expectedCommand);
     }
-    // @@author
 
     @Test
     public void parse_byIndexSomeFieldsSpecified_success() throws Exception {
@@ -179,6 +183,14 @@ public class EditCommandParserTest {
         userInput = PREFIX_DESC_FLOAT + targetIndex.getOneBased() + DATE_DESC_START_12JULY + DATE_DESC_END_12JULY;
         descriptor = new EditEntryDescriptorBuilder().withStartDate(VALID_DATE_12_JULY_17)
                                                      .withEndDate(VALID_DATE_12_JULY_17).build();
+        expectedCommand = new EditByIndexCommand(targetIndex, PREFIX_EVENT, descriptor);
+        assertParseSuccess(userInput, expectedCommand);
+
+        // full start date time given but only end time. parser should infer month, date fields from start date.
+        userInput = PREFIX_DESC_FLOAT + targetIndex.getOneBased() + DATE_TIME_DESC_START_12JULY6PM
+                    + TIME_DESC_END_9PM;
+        descriptor = new EditEntryDescriptorBuilder().withStartDate(VALID_DATE_TIME_12_JULY_6PM)
+                                                     .withEndDate(VALID_DATE_TIME_12_JULY_9PM).build();
         expectedCommand = new EditByIndexCommand(targetIndex, PREFIX_EVENT, descriptor);
         assertParseSuccess(userInput, expectedCommand);
     }
