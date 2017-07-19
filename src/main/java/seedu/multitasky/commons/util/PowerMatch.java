@@ -27,9 +27,9 @@ public class PowerMatch {
     public static final int PERMUTATION_MATCH_MAX_ALLOWED_LENGTH = 8;
     public static final int MISSING_CHAR_MATCH_MIN_ALLOWED_LENGTH = 3;
     public static final int MISSING_CHAR_MATCH_MAX_ALLOWED_LENGTH = 7;
-    public static final int WRONG_EXTRA_CHAR_1_MATCH_MIN_ALLOWED_LENGTH = 5;
+    public static final int WRONG_EXTRA_CHAR_1_MATCH_MIN_ALLOWED_LENGTH = 4;
     public static final int WRONG_EXTRA_CHAR_1_MATCH_MAX_ALLOWED_LENGTH = 6;
-    public static final int WRONG_EXTRA_CHAR_2_MATCH_MIN_ALLOWED_LENGTH = 6;
+    public static final int WRONG_EXTRA_CHAR_2_MATCH_MIN_ALLOWED_LENGTH = 5;
     public static final int WRONG_EXTRA_CHAR_2_MATCH_MAX_ALLOWED_LENGTH = 6;
     public static final int WRONG_EXTRA_CHAR_3_MATCH_MIN_ALLOWED_LENGTH = 6;
     public static final int WRONG_EXTRA_CHAR_3_MATCH_MAX_ALLOWED_LENGTH = 6;
