@@ -100,8 +100,9 @@ public class AddCommandParser {
                 Prefix startDatePrefix = requireNonNull(ParserUtil.getLastPrefix(
                         args, PREFIX_FROM, PREFIX_ON, PREFIX_AT));
                 Prefix endDatePrefix = requireNonNull(ParserUtil.getLastPrefix(args, PREFIX_TO, PREFIX_BY));
-                endDate = ParserUtil.parseDate(argMultimap.getValue(endDatePrefix).get());
                 startDate = ParserUtil.parseDate(argMultimap.getValue(startDatePrefix).get());
+                endDate = ParserUtil.parseExtendedDate(argMultimap.getValue(startDatePrefix).get(),
+                                                       argMultimap.getValue(endDatePrefix).get());
 
                 // check for special cases of date
                 endDate.set(Calendar.SECOND, 0);
@@ -112,9 +113,9 @@ public class AddCommandParser {
                     throw new ParseException(AddCommand.MESSAGE_ENDDATE_BEFORE_STARTDATE);
                 } else if (endDate.compareTo(startDate) == 0) {
                     // convert automatically to full day event
-                    startDate.set(Calendar.HOUR, 0);
+                    startDate.set(Calendar.HOUR_OF_DAY, 0);
                     startDate.set(Calendar.MINUTE, 0);
-                    endDate.set(Calendar.HOUR, 23);
+                    endDate.set(Calendar.HOUR_OF_DAY, 23);
                     endDate.set(Calendar.MINUTE, 59);
                     ReadOnlyEntry entry = new Event(name, startDate, endDate, tagList);
 
