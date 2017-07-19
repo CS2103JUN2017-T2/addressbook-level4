@@ -31,7 +31,6 @@ import seedu.multitasky.logic.commands.RedoCommand;
 import seedu.multitasky.logic.commands.SaveCommand;
 import seedu.multitasky.logic.commands.UndoCommand;
 import seedu.multitasky.model.UserPrefs;
-import seedu.multitasky.model.entry.Entry;
 
 //@@author A0125586X
 /**
@@ -182,8 +181,7 @@ public class MainWindow extends UiPart<Region> {
 
 
     void fillInnerParts() {
-        stateCurrentlyShown.setText(String.format(Messages.MESSAGE_CURRENTLY_DISPLAYING,
-                                    stateToString(Entry.State.ACTIVE)));
+        stateCurrentlyShown.setText(String.format(Messages.MESSAGE_CURRENTLY_DISPLAYING, "active"));
 
         eventListPanel = new EventListPanel(logic.getFilteredEventList());
         eventListPanelPlaceholder.getChildren().add(eventListPanel.getRoot());
@@ -207,27 +205,6 @@ public class MainWindow extends UiPart<Region> {
 
     void hide() {
         primaryStage.hide();
-    }
-
-    /**
-     * To format the state in a form that is consistent with command syntax.
-     * ARCHIVED -> archive
-     * DELETED -> bin
-     */
-    private String stateToString(Entry.State state) {
-        if (state == null) {
-            return "all";
-        }
-        switch (state) {
-        case ACTIVE:
-            return "active";
-        case ARCHIVED:
-            return "archive";
-        case DELETED:
-            return "bin";
-        default:
-            return "error";
-        }
     }
 
     private void setTitle(String appTitle) {
