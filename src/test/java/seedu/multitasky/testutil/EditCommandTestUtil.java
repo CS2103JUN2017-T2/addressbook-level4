@@ -13,6 +13,9 @@ public class EditCommandTestUtil {
     public static final String VALID_TAG_URGENT = "urgent";
     public static final String VALID_TAG_FRIEND = "friend";
     public static final String VALID_DATE_12_JULY_17 = "12 july 17";
+    public static final String VALID_DATE_TIME_12_JULY_6PM = "12 july 6pm";
+    public static final String VALID_TIME_9PM = "9pm";
+    public static final String VALID_DATE_TIME_12_JULY_9PM = "12 july 9pm";
     public static final String VALID_DATE_11_JULY_17 = "11 july 17";
     public static final String VALID_DATE_20_DEC_17 = "12 dec 17";
 

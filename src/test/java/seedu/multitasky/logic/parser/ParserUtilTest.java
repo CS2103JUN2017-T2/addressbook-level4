@@ -26,7 +26,7 @@ import seedu.multitasky.model.tag.Tag;
 
 // @@author A0140633R
 /**
- * Contains tests for ParserUtil methods used by the parser classes.
+ * Contains unit tests for ParserUtil methods used by the parser classes.
  */
 // @@author
 public class ParserUtilTest {
@@ -36,6 +36,7 @@ public class ParserUtilTest {
     private static final String VALID_TAG_1 = "with_friends";
     private static final String VALID_TAG_2 = "priority";
     private static final String VALID_DATE = "12/1/17 18:30:00";
+    private static final String VALID_DATE_2 = "12/1/17 19:00:00";
     private static final Prefix VALID_PREFIX_TAG = CliSyntax.PREFIX_TAG;
     private static final Prefix VALID_PREFIX_FLOAT = CliSyntax.PREFIX_FLOATINGTASK;
 
@@ -180,6 +181,20 @@ public class ParserUtilTest {
         Date expectedDate = sdf.parse(VALID_DATE);
         expectedCalendar.setTime(expectedDate);
         Optional<Calendar> actualCalendar = ParserUtil.parseDate(Optional.of(VALID_DATE));
+
+        assertTrue(expectedCalendar.compareTo(actualCalendar.get()) == 0);
+    }
+
+    @Test
+    public void parseExtendedDate_validValue_returnsCalendar() throws Exception {
+        Calendar expectedCalendar = new GregorianCalendar();
+        // following MM/dd/yy format of prettyTime dependency.
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy HH:mm:ss");
+        sdf.setLenient(false);
+        Date expectedDate = sdf.parse(VALID_DATE_2);
+        expectedCalendar.setTime(expectedDate);
+        Optional<Calendar> actualCalendar = ParserUtil.parseExtendedDate(Optional.of(VALID_DATE),
+                                                                         Optional.of(VALID_DATE_2));
 
         assertTrue(expectedCalendar.compareTo(actualCalendar.get()) == 0);
     }

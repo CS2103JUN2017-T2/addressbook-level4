@@ -28,6 +28,8 @@ import seedu.multitasky.model.UserPrefs;
 public class AddCommandParserTest {
     private static final String VALID_DATE_17JULY = "17 july 2017";
     private static final String VALID_DATE_20JULY = "20 july 2017";
+    private static final String VALID_DATE_TIME_25JULY6PM = "25 july 6pm";
+    private static final String VALID_TIME_9PM = "9pm";
     private static final String INVALID_DATE = "end of time";
 
     @Rule
@@ -88,6 +90,11 @@ public class AddCommandParserTest {
         command = parser.parse(" a special event with only end date " + PREFIX_TO + " " + VALID_DATE_17JULY, userprefs);
         assertTrue(command instanceof AddCommand);
 
+        // both start and end date given but end date only has time fields
+        command = parser.parse(" an event with end date infered to be same date as start date "
+                               + PREFIX_FROM + " " + VALID_DATE_TIME_25JULY6PM + " " + PREFIX_TO
+                               + " " + VALID_TIME_9PM, userprefs);
+        assertTrue(command instanceof AddCommand);
     }
 
     public void parse_invalidArgsFollowedByValidArgs_returnsAddCommand() throws Exception {

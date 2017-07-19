@@ -67,10 +67,9 @@ public class ParserUtil {
     /**
      * Parses a {@code Optional<String> name} into an {@code Optional<Calendar>} if {@code name} is present.
      */
-
     public static Optional<Calendar> parseDate(Optional<String> inputArgs) throws IllegalValueException {
         requireNonNull(inputArgs);
-        return inputArgs.isPresent() ? Optional.of(parseDate(inputArgs.get())) // overload old method
+        return inputArgs.isPresent() ? Optional.of(parseDate(inputArgs.get()))
                                      : Optional.empty();
     }
 
@@ -82,18 +81,50 @@ public class ParserUtil {
     public static Calendar parseDate(String args) throws ParseException {
         PrettyTimeParser ptp = new PrettyTimeParser();
         Calendar calendar = new GregorianCalendar();
-        try {
-            List<Date> dates = ptp.parse(args);
-            if (dates.size() != 1) {
-                throw new ParseException(String.format(MESSAGE_FAIL_PARSE_DATE, args));
-            }
-            Date date = dates.get(0);
-            calendar.setTime(date);
-            return calendar;
-        } catch (Exception e) {
-            // double exception catching as a fail-safe
+
+        List<Date> dates = ptp.parse(args);
+        if (dates.size() != 1) {
             throw new ParseException(String.format(MESSAGE_FAIL_PARSE_DATE, args));
         }
+        Date date = dates.get(0);
+        calendar.setTime(date);
+        return calendar;
+
+    }
+
+    /**
+     * Parses a {@code Optional<String> name} into an {@code Optional<Calendar>} if both {@code firstArgs}
+     * & {@code secondArgs} is present.
+     */
+    public static Optional<Calendar> parseExtendedDate(Optional<String> firstArgs,
+            Optional<String> secondArgs) throws IllegalValueException {
+        return firstArgs.isPresent() && secondArgs.isPresent()
+                ? Optional.of(parseExtendedDate(firstArgs.get(), secondArgs.get())) : Optional.empty();
+    }
+
+    /**
+     * converts second arguments into Calendar using required missing Date fields (such as month) taken from the
+     * first date parameters.
+     * first date arguments should be valid
+     * @throws IllegalValueException if either input args String cannot be parsed into a Date.
+     */
+    public static Calendar parseExtendedDate(String firstDateArgs, String secondDateArgs) throws ParseException {
+        String combinedDateArgs = firstDateArgs.trim() + " to " + secondDateArgs.trim();
+        PrettyTimeParser ptp = new PrettyTimeParser();
+        Calendar calendar = new GregorianCalendar();
+
+        List<Date> dates = ptp.parse(firstDateArgs);
+        if (dates.size() != 1) {
+            throw new ParseException(String.format(MESSAGE_FAIL_PARSE_DATE, firstDateArgs));
+        }
+        dates = ptp.parse(combinedDateArgs);
+        if (dates.size() != 2) {
+            throw new ParseException(String.format(MESSAGE_FAIL_PARSE_DATE, secondDateArgs));
+        }
+        Date secondDate = dates.get(1);
+        calendar.setTime(secondDate);
+        return calendar;
+
     }
     // @@author
 

@@ -3,7 +3,6 @@ package seedu.multitasky.logic.commands;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
 import static seedu.multitasky.testutil.EditCommandTestUtil.DESC_CLEAN;
 import static seedu.multitasky.testutil.EditCommandTestUtil.DESC_MEETING;
@@ -18,22 +17,18 @@ import static seedu.multitasky.testutil.SampleEntries.INDEX_FIRST_ENTRY;
 import static seedu.multitasky.testutil.SampleEntries.INDEX_SECOND_ENTRY;
 
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 
 import seedu.multitasky.commons.util.PowerMatch;
 import seedu.multitasky.logic.CommandHistory;
 import seedu.multitasky.logic.commands.EditCommand.EditEntryDescriptor;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
+import seedu.multitasky.logic.parser.ParserUtil;
 import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.Model;
 import seedu.multitasky.model.ModelManager;
@@ -62,8 +57,8 @@ public class EditByFindCommandTest {
         ReadOnlyEntry targetEntry = model.getFilteredEventList().get(0);
         String searchString = targetEntry.getName().fullName;
         HashSet<String> keywords = new HashSet<>(Arrays.asList(searchString.split("\\s+")));
-        Entry editedEntry = EntryBuilder.build(VALID_NAME_CLEAN, parseDate(VALID_DATE_12_JULY_17),
-                parseDate(VALID_DATE_20_DEC_17), VALID_TAG_URGENT, VALID_TAG_FRIEND);
+        Entry editedEntry = EntryBuilder.build(VALID_NAME_CLEAN, ParserUtil.parseDate(VALID_DATE_12_JULY_17),
+                ParserUtil.parseDate(VALID_DATE_20_DEC_17), VALID_TAG_URGENT, VALID_TAG_FRIEND);
         EditEntryDescriptor descriptor = new EditEntryDescriptorBuilder(editedEntry)
                 .withName(VALID_NAME_CLEAN).withStartDate(VALID_DATE_12_JULY_17).withEndDate(VALID_DATE_20_DEC_17)
                 .withTags(VALID_TAG_URGENT, VALID_TAG_FRIEND).build();
@@ -73,7 +68,7 @@ public class EditByFindCommandTest {
         Model expectedModel = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
         try {
             expectedModel.updateEntry(expectedModel.getFilteredEventList().get(INDEX_FIRST_ENTRY.getZeroBased()),
-                                  editedEntry);
+                                      editedEntry);
         } catch (EntryOverdueException eoe) {
             // Do nothing. Accept overdue entries in test.
         }
@@ -90,7 +85,7 @@ public class EditByFindCommandTest {
         ReadOnlyEntry targetEntry = model.getFilteredDeadlineList().get(0);
         String searchString = targetEntry.getName().fullName;
         HashSet<String> keywords = new HashSet<>(Arrays.asList(searchString.split("\\s+")));
-        Entry editedEntry = EntryBuilder.build(VALID_NAME_CLEAN, parseDate(VALID_DATE_11_JULY_17),
+        Entry editedEntry = EntryBuilder.build(VALID_NAME_CLEAN, ParserUtil.parseDate(VALID_DATE_11_JULY_17),
                                                VALID_TAG_URGENT, VALID_TAG_FRIEND);
         EditEntryDescriptor descriptor = new EditEntryDescriptorBuilder(editedEntry)
                 .withName(VALID_NAME_CLEAN).withEndDate(VALID_DATE_11_JULY_17)
@@ -101,7 +96,7 @@ public class EditByFindCommandTest {
         Model expectedModel = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
         try {
             expectedModel.updateEntry(expectedModel.getFilteredDeadlineList().get(INDEX_FIRST_ENTRY.getZeroBased()),
-                                  editedEntry);
+                                      editedEntry);
         } catch (EntryOverdueException eoe) {
             // Do nothing. Accept overdue entries in test.
         }
@@ -123,7 +118,8 @@ public class EditByFindCommandTest {
         editedEntry.setName(new Name(VALID_NAME_MEETING));
         editedEntry.setTags(entryInFilteredList.getTags());
         EditCommand editCommand = prepareCommand(model, keywords,
-                new EditEntryDescriptorBuilder().withName(VALID_NAME_MEETING).build());
+                                                 new EditEntryDescriptorBuilder().withName(VALID_NAME_MEETING)
+                                                                                 .build());
         String expectedMessage = String.format(EditByFindCommand.MESSAGE_SUCCESS, entryInFilteredList, editedEntry);
         Model expectedModel = new ModelManager(new EntryBook(model.getEntryBook()), new UserPrefs());
 
@@ -155,14 +151,14 @@ public class EditByFindCommandTest {
         thrown.expect(CommandException.class);
         thrown.expectMessage(EditByFindCommand.MESSAGE_NO_ENTRIES);
 
-        String searchString = "asdfasdf";
+        String searchString = "a random string";
         HashSet<String> keywords = new HashSet<>(Arrays.asList(searchString.split("\\s+")));
         EditEntryDescriptor editEntryDescriptor = new EditEntryDescriptor();
         EditCommand editCommand = prepareCommand(model, keywords, editEntryDescriptor);
 
         editCommand.execute();
     }
-    // @@author A0140633R
+    // @@author
 
     @Test
     public void equals() {
@@ -214,25 +210,6 @@ public class EditByFindCommandTest {
                                              PowerMatch.Level.LEVEL_0);
 
         assertTrue(model.getFilteredFloatingTaskList().size() == 1);
-    }
-
-    /**
-     * Converts date to a calendar
-     */
-    private Calendar parseDate(String args) throws Exception {
-        PrettyTimeParser ptp = new PrettyTimeParser();
-        Calendar calendar = new GregorianCalendar();
-        try {
-            List<Date> dates = ptp.parse(args);
-            Date date = dates.get(0);
-            calendar.setTime(date);
-            return calendar;
-
-        } catch (Exception e) {
-            // double exception catching as a fail-safe
-            fail("should not give invalid dates to parse");
-            return null;
-        }
     }
 
 }

@@ -69,7 +69,7 @@ public class EditByIndexCommandTest {
         CommandResult result = editCommand.execute();
         try {
             expectedModel.updateEntry(expectedModel.getFilteredEventList().get(INDEX_FIRST_ENTRY.getZeroBased()),
-                                  editedEntry);
+                                      editedEntry);
         } catch (EntryOverdueException eoe) {
             // Do nothing. Accept overdue entries in test.
         }

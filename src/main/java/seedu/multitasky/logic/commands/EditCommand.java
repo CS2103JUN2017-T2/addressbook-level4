@@ -150,9 +150,9 @@ public abstract class EditCommand extends Command {
         } else if (editToEvent(updatedStartDate, updatedEndDate) // event with start date == end date
                    && updatedEndDate.compareTo(updatedStartDate) == 0) {
             // convert automatically to full day event
-            updatedStartDate.set(Calendar.HOUR, 0);
+            updatedStartDate.set(Calendar.HOUR_OF_DAY, 0);
             updatedStartDate.set(Calendar.MINUTE, 0);
-            updatedEndDate.set(Calendar.HOUR, 23);
+            updatedEndDate.set(Calendar.HOUR_OF_DAY, 23);
             updatedEndDate.set(Calendar.MINUTE, 59);
             return new Event(updatedName, updatedStartDate, updatedEndDate, updatedTags);
 

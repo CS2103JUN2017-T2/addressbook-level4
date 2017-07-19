@@ -117,14 +117,16 @@ public class EditCommandParser {
                 ParserUtil.parseDate(argMultimap.getValue(startDatePrefix))
                           .ifPresent(editEntryDescriptor::setStartDate);
             }
-            if (endDatePrefix != null) {
+            if (startDatePrefix != null && endDatePrefix != null) {
+                ParserUtil.parseExtendedDate(argMultimap.getValue(startDatePrefix),
+                                             argMultimap.getValue(endDatePrefix))
+                          .ifPresent(editEntryDescriptor::setEndDate);
+            } else if (startDatePrefix == null && endDatePrefix != null) {
                 ParserUtil.parseDate(argMultimap.getValue(endDatePrefix))
                           .ifPresent(editEntryDescriptor::setEndDate);
             }
-            parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG))
-                      .ifPresent(editEntryDescriptor::setTags);
-            parseTagsForEdit(argMultimap.getAllValues(PREFIX_ADDTAG))
-                      .ifPresent(editEntryDescriptor::setAddTags);
+            parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editEntryDescriptor::setTags);
+            parseTagsForEdit(argMultimap.getAllValues(PREFIX_ADDTAG)).ifPresent(editEntryDescriptor::setAddTags);
         } catch (IllegalValueException ive) {
             throw new ParseException(ive.getMessage(), ive);
         }

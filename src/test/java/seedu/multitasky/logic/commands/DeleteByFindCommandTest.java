@@ -54,7 +54,7 @@ public class DeleteByFindCommandTest {
     }
 
     @Test
-    public void execute_noEntryFoundUnfilteredList_returnsNoEntriesMessage() throws Exception {
+    public void execute_noEntryFoundUnfilteredList_throwsCommandException() throws Exception {
         thrown.expect(CommandException.class);
         thrown.expectMessage(DeleteByFindCommand.MESSAGE_NO_ENTRIES);
 
@@ -66,7 +66,7 @@ public class DeleteByFindCommandTest {
     }
 
     @Test
-    public void execute_multipleEntriesFoundFilteredList_returnsMultipleEntriesMessage() throws Exception {
+    public void execute_multipleEntriesFoundFilteredList_throwsCommandException() throws Exception {
         thrown.expect(CommandException.class);
         thrown.expectMessage(DeleteByFindCommand.MESSAGE_MULTIPLE_ENTRIES);
 
@@ -88,7 +88,7 @@ public class DeleteByFindCommandTest {
         ReadOnlyEntry entryToDelete = model.getFilteredFloatingTaskList()
                                            .get(INDEX_FIRST_ENTRY.getZeroBased());
 
-        String searchString = entryToDelete.getName().fullName.replaceAll("\\\\", "");
+        String searchString = entryToDelete.getName().fullName;
         HashSet<String> keywords = new HashSet<>(Arrays.asList(searchString.split("\\s+")));
 
         DeleteCommand deleteCommand = prepareCommand(model, keywords);

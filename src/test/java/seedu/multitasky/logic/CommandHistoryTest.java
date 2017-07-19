@@ -25,16 +25,7 @@ public class CommandHistoryTest {
     }
 
     @Test
-    public void init_success() {
-        Calendar expectedStartDate = null;
-        Calendar expectedEndDate = null;
-        Set<String> expectedKeywords = new HashSet<String>();
-        Entry.State expectedState = Entry.State.ACTIVE;
-        assertAll(history, expectedKeywords, expectedStartDate, expectedEndDate, expectedState);
-    }
-
-    @Test
-    public void commandHistory_add_success() {
+    public void add_anyCommand_success() {
         final String validCommand = "clear";
         final String invalidCommand = "adds Task";
 
@@ -50,7 +41,11 @@ public class CommandHistoryTest {
         Set<String> keywords = new HashSet<String>(Arrays.asList("new keywords"));
         Entry.State state = Entry.State.ARCHIVED;
         history.setPrevSearch(keywords, startDate, endDate, state);
-        assertAll(history, keywords, startDate, endDate, state);
+
+        assertEquals(history.getPrevKeywords(), keywords);
+        assertEquals(history.getPrevStartDate(), startDate);
+        assertEquals(history.getPrevEndDate(), endDate);
+        assertEquals(history.getPrevState(), state);
     }
 
     @Test
@@ -61,14 +56,6 @@ public class CommandHistoryTest {
         history.setEditHistory(editEntryDescriptor);
         assertTrue(history.hasEditHistory());
         assertEquals(history.getEditHistory(), editEntryDescriptor);
-    }
-
-    private void assertAll(CommandHistory history, Set<String> expectedKeywords, Calendar expectedStartDate,
-                           Calendar expectedEndDate, Entry.State expectedState) {
-        assertEquals(history.getPrevKeywords(), expectedKeywords);
-        assertEquals(history.getPrevStartDate(), expectedStartDate);
-        assertEquals(history.getPrevEndDate(), expectedEndDate);
-        assertEquals(history.getPrevState(), expectedState);
     }
 
 }
