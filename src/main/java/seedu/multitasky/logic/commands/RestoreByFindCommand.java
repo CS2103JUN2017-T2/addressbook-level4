@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import seedu.multitasky.commons.core.EventsCenter;
+import seedu.multitasky.commons.events.BaseEvent;
+import seedu.multitasky.commons.events.ui.ListTypeUpdateEvent;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.logic.parser.CliSyntax;
 import seedu.multitasky.model.Model;
@@ -96,14 +99,12 @@ public class RestoreByFindCommand extends RestoreCommand {
      * @return List of matched entries
      */
     private List<ReadOnlyEntry> collateArchivedAndDeletedEntries() {
-
         List<ReadOnlyEntry> allList = new ArrayList<>();
-        List<Entry.State> states = new ArrayList<>();
-        states.add(Entry.State.ARCHIVED);
-        states.add(Entry.State.DELETED);
 
         // Filter and collate archived and deleted entries that matches keywords
-        model.updateAllFilteredLists(keywords, null, null, states, Model.STRICT_SEARCHES);
+        model.updateAllFilteredLists(keywords, null, null, Entry.State.ARCHIVED, Entry.State.DELETED,
+                                     Model.STRICT_SEARCHES);
+        raise(new ListTypeUpdateEvent("archive and bin"));
         allList.addAll(model.getFilteredDeadlineList());
         allList.addAll(model.getFilteredEventList());
         allList.addAll(model.getFilteredFloatingTaskList());
@@ -112,4 +113,7 @@ public class RestoreByFindCommand extends RestoreCommand {
     }
     // @@author
 
+    private void raise(BaseEvent event) {
+        EventsCenter.getInstance().post(event);
+    }
 }

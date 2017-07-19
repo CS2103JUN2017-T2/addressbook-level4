@@ -61,14 +61,16 @@ public class FindCommand extends Command {
         switch (findType) {
         case ARCHIVE:
             state = Entry.State.ARCHIVED;
+            raise(new ListTypeUpdateEvent("archive"));
             break;
         case BIN:
             state = Entry.State.DELETED;
+            raise(new ListTypeUpdateEvent("bin"));
             break;
         default:
             state = Entry.State.ACTIVE;
+            raise(new ListTypeUpdateEvent("active"));
         }
-        raise(new ListTypeUpdateEvent(state));
         // Update all 3 lists with new search parameters until at least 1 result is found.
         model.updateAllFilteredLists(keywords, startDate, endDate, state, Model.LENIENT_SEARCHES);
         // Save parameters of the search

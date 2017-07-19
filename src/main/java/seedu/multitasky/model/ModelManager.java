@@ -3,6 +3,8 @@ package seedu.multitasky.model;
 import static seedu.multitasky.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -240,36 +242,21 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void updateAllFilteredLists(Set<String> keywords, Calendar startDate, Calendar endDate,
                                        Entry.State state, Search... searches) {
-        NameDateStateQualifier qualifier;
-        for (Search search : searches) {
-            if (search == Search.POWER_AND || search == Search.POWER_OR) {
-                for (PowerMatch.Level level : PowerMatch.Level.values()) {
-                    qualifier = new NameDateStateQualifier(keywords, startDate, endDate, state, search, level);
-                    updateFilteredEventList(new PredicateExpression(qualifier));
-                    updateFilteredDeadlineList(new PredicateExpression(qualifier));
-                    updateFilteredFloatingTaskList(new PredicateExpression(qualifier));
-                    if ((getFilteredEventList().size() + getFilteredDeadlineList().size()
-                        + getFilteredFloatingTaskList().size()) > 0) {
-                        break; // No need to search further
-                    }
-                }
-            } else {
-                qualifier = new NameDateStateQualifier(keywords, startDate, endDate, state, search, null);
-                updateFilteredEventList(new PredicateExpression(qualifier));
-                updateFilteredDeadlineList(new PredicateExpression(qualifier));
-                updateFilteredFloatingTaskList(new PredicateExpression(qualifier));
-                if ((getFilteredEventList().size() + getFilteredDeadlineList().size()
-                    + getFilteredFloatingTaskList().size()) > 0) {
-                    break; // No need to search further
-                }
-            }
-        }
+        List<Entry.State> states = new ArrayList<>(Arrays.asList(new Entry.State[]{ state, null }));
+        updateAllFilteredLists(keywords, startDate, endDate, states, searches);
     }
 
     // @@author A0125586X
     @Override
     public void updateAllFilteredLists(Set<String> keywords, Calendar startDate, Calendar endDate,
-                                       List<Entry.State> states, Search... searches) {
+                                       Entry.State state, Entry.State state2, Search... searches) {
+        List<Entry.State> states = new ArrayList<>(Arrays.asList(new Entry.State[]{ state, state2 }));
+        updateAllFilteredLists(keywords, startDate, endDate, states, searches);
+    }
+
+    // @@author A0125586X
+    private void updateAllFilteredLists(Set<String> keywords, Calendar startDate, Calendar endDate,
+                                        List<Entry.State> states, Search... searches) {
         NameDateStateQualifier qualifier;
         for (Search search : searches) {
             if (search == Search.POWER_AND || search == Search.POWER_OR) {
@@ -421,8 +408,7 @@ public class ModelManager extends ComponentManager implements Model {
         protected Set<String> nameAndTagKeywords;
         protected Calendar startDate;
         protected Calendar endDate;
-        protected Entry.State state;
-        protected Entry.State state2;
+        protected List<Entry.State> states;
         protected Search search;
         protected PowerMatch.Level level;
 
@@ -433,41 +419,14 @@ public class ModelManager extends ComponentManager implements Model {
          *
          * @param nameAndTagKeywords the keywords to match against the entry's name and tags. cannot be null.
          * @param startDate the earliest date that will produce a match. if it is null then
-         *            there is no lower limit on the entry's date.
-         * @param endDate the latest date that will produce a match. if it is null then
-         *            there is no upper limit on the entry's date.
-         * @param state the required state to match against the entry's state. if it is null
-         *            then entries of any state will match.
-         * @param search the type of search to use (AND, OR, POWER_AND, POWER_OR). cannot be null.
+         *                  there is no lower limit on the entry's date.
+         * @param endDate   the latest date that will produce a match. if it is null then
+         *                  there is no upper limit on the entry's date.
+         * @param states    the required states to match against the entry's state. if it is null or empty
+         *                  then entries of any state will match.
+         * @param search    the type of search to use (AND, OR, POWER_AND, POWER_OR). cannot be null.
          */
-        NameDateStateQualifier(Set<String> nameAndTagKeywords,
-                               Calendar startDate, Calendar endDate,
-                               Entry.State state, Search search, PowerMatch.Level level) {
-            if (nameAndTagKeywords == null) {
-                throw new AssertionError("nameAndTagKeywords for NameDateStateQualifier cannot be null");
-            }
-            if (search == null) {
-                throw new AssertionError("search type for NameDateStateQualifier cannot be null");
-            }
-            if ((search == Search.POWER_AND || search == Search.POWER_OR) && level == null) {
-                throw new AssertionError("PowerMatch level cannot be null");
-            }
-
-            this.nameAndTagKeywords = nameAndTagKeywords;
-            this.startDate = startDate;
-            this.endDate = endDate;
-            this.state = state;
-            this.state2 = null;
-            this.search = search;
-            this.level = level;
-
-            dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT);
-        }
-
-        /**
-         * Alternative constructor that allows for multiple states.
-         */
-        NameDateStateQualifier(Set<String> nameAndTagKeywords,
+        public NameDateStateQualifier(Set<String> nameAndTagKeywords,
                                Calendar startDate, Calendar endDate,
                                List<Entry.State> states, Search search, PowerMatch.Level level) {
             if (nameAndTagKeywords == null) {
@@ -479,22 +438,34 @@ public class ModelManager extends ComponentManager implements Model {
             if ((search == Search.POWER_AND || search == Search.POWER_OR) && level == null) {
                 throw new AssertionError("PowerMatch level cannot be null");
             }
+            if (states == null) {
+                throw new AssertionError("States list cannot be null");
+            }
+            if (states.size() != 2) {
+                throw new AssertionError("Number of state arguments to match must be 2");
+            }
 
             this.nameAndTagKeywords = nameAndTagKeywords;
             this.startDate = startDate;
             this.endDate = endDate;
-            this.state = states.get(0);
-            this.state2 = states.get(1);
+            this.states = states;
             this.search = search;
             this.level = level;
         }
 
+        /**
+         * Alternative constructor for just a single state
+         */
+        public NameDateStateQualifier(Set<String> nameAndTagKeywords,
+                                      Calendar startDate, Calendar endDate,
+                                      Entry.State state, Search search, PowerMatch.Level level) {
+            this(nameAndTagKeywords, startDate, endDate,
+                 (List<Entry.State>) new ArrayList<>(Arrays.asList(new Entry.State[] { state, null })), search, level);
+        }
+
         @Override
         public boolean run(ReadOnlyEntry entry) {
-            if (((state == null && state2 == null)
-                || (state != null && entry.getState().equals(state))
-                || (state2 != null && entry.getState().equals(state2)))
-                && matchesNameAndTagKeywords(entry)) {
+            if (matchesState(entry) && matchesNameAndTagKeywords(entry)) {
                 if (entry instanceof FloatingTask
                     || entry instanceof Deadline && isWithinRange(entry.getEndDateAndTime())
                     || entry instanceof Event && isWithinRange(entry.getStartDateAndTime())) {
@@ -504,6 +475,12 @@ public class ModelManager extends ComponentManager implements Model {
                 }
             }
             return false;
+        }
+
+        protected boolean matchesState(ReadOnlyEntry entry) {
+            return ((states.get(0) == null && states.get(1) == null)
+                    || ((states.get(0) != null && entry.getState().equals(states.get(0)))
+                    ||  (states.get(1) != null && entry.getState().equals(states.get(1)))));
         }
 
         protected boolean matchesNameAndTagKeywords(ReadOnlyEntry entry) {
@@ -604,7 +581,10 @@ public class ModelManager extends ComponentManager implements Model {
             } else {
                 builder.append(dateFormat.format(endDate));
             }
-            builder.append(", state = ").append(state.toString());
+            builder.append(", states =");
+            for (Entry.State state : states) {
+                builder.append(state.toString());
+            }
             return builder.toString();
         }
     }

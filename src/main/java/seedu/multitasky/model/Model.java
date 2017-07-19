@@ -2,7 +2,6 @@ package seedu.multitasky.model;
 
 import java.util.Calendar;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Set;
 
 import seedu.multitasky.commons.core.UnmodifiableObservableList;
@@ -126,10 +125,10 @@ public interface Model {
     /**
      * Updates the filter of all entry lists to filter by the given keywords,
      * date range and state. Attempts all the different searches in order until it has at least 1 result.
-     * Allows for multiple states to be shown at the same time.
+     * Allows for two states to be shown at the same time.
      */
     void updateAllFilteredLists(Set<String> keywords, Calendar startDate, Calendar endDate,
-                                List<Entry.State> states, Search... searches);
+                                Entry.State state, Entry.State state2, Search... searches);
 
     /**
      * Updates the filter of the filtered event list to filter by the given keywords,
