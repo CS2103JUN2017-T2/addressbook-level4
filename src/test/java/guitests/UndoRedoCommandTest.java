@@ -38,7 +38,7 @@ public class UndoRedoCommandTest extends EntryBookGuiTest {
      ************************/
     @Test
     public void undoRedo_addEvents_success() {
-        Entry[] currentList = SampleEntries.getSampleEvents();
+        Entry[] currentList = SampleEntries.getSampleActiveEvents();
         Entry[] startingList = currentList.clone();
         Entry entryToAdd = SampleEntries.MOVIE;
         commandBox.runCommand(CommandUtil.getAddEventCommand(entryToAdd));

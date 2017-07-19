@@ -89,7 +89,7 @@ public class ClearCommandTest extends EntryBookGuiTest {
         char[] commandWord = ClearCommand.COMMAND_WORD.toCharArray();
         commandWord[0] = Character.toUpperCase(commandWord[0]);
         commandBox.runCommand(String.copyValueOf(commandWord));
-        assertCleared();
+        assertCurrentlyViewedPanelCleared();
     }
 
     @Test
@@ -97,7 +97,7 @@ public class ClearCommandTest extends EntryBookGuiTest {
         char[] commandWord = ClearCommand.COMMAND_WORD.toCharArray();
         commandWord[commandWord.length - 1] = Character.toUpperCase(commandWord[commandWord.length - 1]);
         commandBox.runCommand(String.copyValueOf(commandWord));
-        assertCleared();
+        assertCurrentlyViewedPanelCleared();
     }
 
     @Test
@@ -105,14 +105,14 @@ public class ClearCommandTest extends EntryBookGuiTest {
         char[] commandWord = ClearCommand.COMMAND_WORD.toCharArray();
         commandWord[commandWord.length / 2] = Character.toUpperCase(commandWord[commandWord.length / 2]);
         commandBox.runCommand(String.copyValueOf(commandWord));
-        assertCleared();
+        assertCurrentlyViewedPanelCleared();
     }
 
     @Test
     public void clear_allCharUppercase_success() {
         String commandWord = ClearCommand.COMMAND_WORD.toUpperCase();
         commandBox.runCommand(commandWord);
-        assertCleared();
+        assertCurrentlyViewedPanelCleared();
     }
 
     @Test
@@ -139,7 +139,7 @@ public class ClearCommandTest extends EntryBookGuiTest {
         assertCommandBox(input);
     }
 
-    private void assertCleared() {
+    private void assertCurrentlyViewedPanelCleared() {
         assertTrue(eventListPanel.isEmpty());
         assertTrue(deadlineListPanel.isEmpty());
         assertTrue(floatingTaskListPanel.isEmpty());
@@ -147,13 +147,25 @@ public class ClearCommandTest extends EntryBookGuiTest {
 
     private void assertClearAllCommandSuccess() {
         commandBox.runCommand(ClearCommand.COMMAND_WORD + " all");
-        assertCleared();
-        assertResultMessage("Entry book has been cleared!");
+        assertCurrentlyViewedPanelCleared();
+        assertResultMessage(ClearCommand.MESSAGE_ALL_SUCCESS);
     }
 
     private void assertClearActiveCommandSuccess() {
         commandBox.runCommand(ClearCommand.COMMAND_WORD);
-        assertCleared();
+        assertCurrentlyViewedPanelCleared();
         assertResultMessage(ClearCommand.MESSAGE_ACTIVE_SUCCESS);
+    }
+
+    private void assertClearArchiveCommandSuccess() {
+        commandBox.runCommand(ClearCommand.COMMAND_WORD + " archive");
+        assertCurrentlyViewedPanelCleared();
+        assertResultMessage(ClearCommand.MESSAGE_ARCHIVE_SUCCESS);
+    }
+
+    private void assertClearBinCommandSuccess() {
+        commandBox.runCommand(ClearCommand.COMMAND_WORD);
+        assertCurrentlyViewedPanelCleared();
+        assertResultMessage(ClearCommand.MESSAGE_BIN_SUCCESS);
     }
 }
