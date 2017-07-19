@@ -270,7 +270,7 @@ public class EditCommandParserTest {
         // assumes editEntry has been saved in history
         history.setEditHistory(EditCommandTestUtil.DESC_MEETING);
 
-        String userInput = searchString + NAME_DESC_CLEAN;
+        String userInput = searchString;
         EditEntryDescriptor descriptor = history.getEditHistory();
         EditCommand expectedCommand = new EditByFindCommand(keywordSet, descriptor);
         assertParseSuccess(userInput, expectedCommand);
