@@ -162,7 +162,7 @@ public class EntryBookTest {
 
     // @@author A0126623L
     @Test
-    public void setAllEntriesList_sampleEntryBook_success() {
+    public void setAllEntriesList_validSampleEntryBook_success() {
         try {
             EntryBook entryBookToSet = new EntryBook();
             EntryBook expectedEntryBook = EntryBookTest.getSampleEntryBook();
@@ -202,19 +202,60 @@ public class EntryBookTest {
             entryBookUnderTest.updateEntry(targetEntryToEdit, editedEntry);
             assertTrue(editedEntry.equals(targetEntryToEdit));
 
-        } catch (DuplicateEntryException e) {
-            e.printStackTrace();
-        } catch (IllegalValueException e) {
-            e.printStackTrace();
-        } catch (EntryNotFoundException e) {
-            e.printStackTrace();
-        } catch (OverlappingEventException e) {
-            e.printStackTrace();
-        } catch (OverlappingAndOverdueEventException e) {
-            e.printStackTrace();
-        } catch (EntryOverdueException e) {
+        } catch (Exception e) {
+            fail("Should not result in any exceptions here.");
+        }
+    }
+    // @@author
+
+    // @@author A0126623L
+    @Test(expected = OverlappingAndOverdueEventException.class)
+    public void updateEntryTest_validEditedOverlappingAndOverdueEvent_success()
+            throws OverlappingAndOverdueEventException {
+        try {
+            EntryBook entryBookUnderTest;
+            entryBookUnderTest = EntryBookTest.getSampleEntryBook();
+
+            ReadOnlyEntry targetEntryToEdit = entryBookUnderTest.getEventList().get(0);
+
+            // Create edited Entry
+            Entry editedEntry = EntryBuilder.build(targetEntryToEdit);
+            editedEntry.setName(new Name("modifiedName"));
+            try {
+                entryBookUnderTest.updateEntry(targetEntryToEdit, editedEntry);
+            } finally {
+                assertTrue(editedEntry.equals(targetEntryToEdit));
+            }
+        } catch (EntryNotFoundException | EntryOverdueException
+                 | IllegalValueException | OverlappingEventException e) {
             e.printStackTrace();
         }
     }
+    // @@author
+    // TODO: Add cases for overdue OR overlapping events.
 
+    // @@author A0126623L
+    @Test(expected = EntryOverdueException.class)
+    public void updateEntryTest_validEditedOverdueDeadline_success()
+            throws EntryOverdueException {
+        try {
+            EntryBook entryBookUnderTest;
+            entryBookUnderTest = EntryBookTest.getSampleEntryBook();
+
+            ReadOnlyEntry targetEntryToEdit = entryBookUnderTest.getDeadlineList().get(0);
+
+            // Create edited Entry
+            Entry editedEntry = EntryBuilder.build(targetEntryToEdit);
+            editedEntry.setName(new Name("modifiedName"));
+            try {
+                entryBookUnderTest.updateEntry(targetEntryToEdit, editedEntry);
+            } finally {
+                assertTrue(editedEntry.equals(targetEntryToEdit));
+            }
+        } catch (EntryNotFoundException | OverlappingAndOverdueEventException
+                 | IllegalValueException | OverlappingEventException e) {
+            e.printStackTrace();
+        }
+    }
+    // @@author
 }
