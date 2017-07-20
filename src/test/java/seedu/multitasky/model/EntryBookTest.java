@@ -27,6 +27,7 @@ import seedu.multitasky.model.entry.exceptions.EntryOverdueException;
 import seedu.multitasky.model.entry.exceptions.OverlappingAndOverdueEventException;
 import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 import seedu.multitasky.model.util.EntryBuilder;
+import seedu.multitasky.testutil.SampleEntries;
 
 public class EntryBookTest {
 
@@ -258,4 +259,23 @@ public class EntryBookTest {
         }
     }
     // @@author
+
+    // @@author A0126623L
+    @Test
+    public void clearStateSpecificEntriesTest_clearActiveEntries_success() {
+        EntryBook entryBookUnderTest = SampleEntries.getSampleEntryBook();
+        entryBookUnderTest.clearStateSpecificEntries(Entry.State.ACTIVE);
+
+        List<ReadOnlyEntry> allEntries = entryBookUnderTest.getAllEntries();
+        boolean activeEntriesPresent = false;
+
+        for (ReadOnlyEntry e : allEntries) {
+            if (e.isActive()) {
+                activeEntriesPresent = true;
+            }
+        }
+        assertFalse(activeEntriesPresent);
+    }
+    // @@author
+
 }
