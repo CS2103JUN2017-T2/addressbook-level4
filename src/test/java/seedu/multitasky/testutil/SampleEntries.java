@@ -236,21 +236,8 @@ public class SampleEntries {
     /**
      * Adds sample entries to the provided EntryBook
      */
-    public static void loadEntryBookWithSampleData(EntryBook entryBook) {
+    public static void loadEntryBookWithSampleActiveEntries(EntryBook entryBook) {
         Objects.requireNonNull(entryBook);
-        loadEntryBookWithSampleActiveEntries(entryBook);
-        loadEntryBookWithSampleArchivedEntries(entryBook);
-        loadEntryBookWithSampleDeletedEntries(entryBook);
-    }
-    // @@author
-
-    public static void main(String[] args) {
-        EntryBook entryBook = new EntryBook();
-        SampleEntries.loadEntryBookWithSampleData(entryBook);
-    }
-
-    // @@author A0126623L
-    private static void loadEntryBookWithSampleActiveEntries(EntryBook entryBook) {
         for (Entry entry : getSampleActiveEntries()) {
             try {
                 entryBook.addEntry(EntryBuilder.build(entry));
@@ -269,6 +256,7 @@ public class SampleEntries {
 
     // @@author A0126623L
     private static void loadEntryBookWithSampleArchivedEntries(EntryBook entryBook) {
+        Objects.requireNonNull(entryBook);
         for (Entry entry : getSampleArchivedEntries()) {
             try {
                 entryBook.addEntry(entry);
@@ -287,6 +275,7 @@ public class SampleEntries {
 
     // @@author A0126623L
     private static void loadEntryBookWithSampleDeletedEntries(EntryBook entryBook) {
+        Objects.requireNonNull(entryBook);
         for (Entry entry : getSampleDeletedEntries()) {
             try {
                 entryBook.addEntry(entry);
@@ -304,9 +293,26 @@ public class SampleEntries {
     // @@author
 
     // @@author A0126623L
+    /**
+     * @return an {@code EntryBook} with active sample events, deadlines and floating tasks.
+     */
+    public static EntryBook getSampleEntryBookWithActiveEntries() {
+        EntryBook entryBook = new EntryBook();
+        loadEntryBookWithSampleActiveEntries(entryBook);
+        return entryBook;
+    }
+    // @@author
+
+    // @@author A0126623L
+    /**
+     * @return  an {@code EntryBook} with sample events, deadlines and floating tasks
+     *          of various states (i.e. active, archived, deleted).
+     */
     public static EntryBook getSampleEntryBook() {
         EntryBook entryBook = new EntryBook();
-        loadEntryBookWithSampleData(entryBook);
+        loadEntryBookWithSampleActiveEntries(entryBook);
+        loadEntryBookWithSampleArchivedEntries(entryBook);
+        loadEntryBookWithSampleDeletedEntries(entryBook);
         return entryBook;
     }
     // @@author

@@ -28,7 +28,7 @@ import seedu.multitasky.testutil.SampleEntries;
  */
 public class CompleteCommandTest {
 
-    private Model model = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
+    private Model model = new ModelManager(SampleEntries.getSampleEntryBookWithActiveEntries(), new UserPrefs());
 
     @Test
     public void execute_validIndexUnfilteredList_success() throws Exception {

@@ -27,7 +27,7 @@ import seedu.multitasky.testutil.SampleEntries;
  */
 public class DeleteByIndexCommandTest {
 
-    private Model model = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
+    private Model model = new ModelManager(SampleEntries.getSampleEntryBookWithActiveEntries(), new UserPrefs());
 
     @Test
     public void execute_validIndexUnfilteredList_success() throws Exception {
@@ -37,7 +37,7 @@ public class DeleteByIndexCommandTest {
 
         String expectedMessage = String.format(DeleteCommand.MESSAGE_SUCCESS, entryToDelete);
 
-        ModelManager expectedModel = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
+        ModelManager expectedModel = new ModelManager(SampleEntries.getSampleEntryBookWithActiveEntries(), new UserPrefs());
         expectedModel.changeEntryState(entryToDelete, Entry.State.DELETED);
         expectedModel.updateAllFilteredListToShowAllActiveEntries();
 
