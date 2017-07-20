@@ -60,8 +60,7 @@ public class FloatingTask extends Entry {
     public boolean isSameStateAs(ReadOnlyEntry other) {
         return (other instanceof FloatingTask // instanceof handles nulls
                 && this.getName().equals(other.getName())
-                && this.getState().equals(other.getState())
-                && this.getTags().equals(other.getTags()));
+                && this.getState().equals(other.getState()));
     }
     // @@author
 
@@ -77,7 +76,7 @@ public class FloatingTask extends Entry {
         final StringBuilder builder = new StringBuilder();
 
         // TODO: Include state in string?
-        builder.append(getName()).append(" Tags: ");
+        builder.append(getName()).append(", Tags: ");
         getTags().forEach(builder::append);
         return builder.toString();
     }

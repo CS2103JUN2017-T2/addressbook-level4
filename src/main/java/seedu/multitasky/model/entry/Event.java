@@ -102,8 +102,7 @@ public class Event extends Entry implements OverdueCapable {
         return (other instanceof Event && this.getName().equals(other.getName()) // instanceof handles nulls
                 && this.getStartDateAndTime().equals(other.getStartDateAndTime())
                 && this.getEndDateAndTime().equals(other.getEndDateAndTime())
-                && this.getState().equals(other.getState())
-                && this.getTags().equals(other.getTags()));
+                && this.getState().equals(other.getState()));
     }
 
     // @@author A0126623L
@@ -152,11 +151,11 @@ public class Event extends Entry implements OverdueCapable {
 
         // TODO: Include state in string?
         builder.append(getName())
-               .append(" Start: ")
+               .append(", Start: ")
                .append(dateFormatter.format(getStartDateAndTime().getTime()))
-               .append(" End: ")
+               .append(", End: ")
                .append(dateFormatter.format(getEndDateAndTime().getTime()))
-               .append(" Tags: ");
+               .append(", Tags: ");
         getTags().forEach(builder::append);
         return builder.toString();
     }

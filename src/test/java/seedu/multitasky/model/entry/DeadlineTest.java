@@ -40,7 +40,7 @@ public class DeadlineTest {
                 new Deadline(new Name("SampleName1"), calendar1, TagSetBuilder.getTagSet("tag1")),
                 new Deadline(new Name("SampleName2"), calendar1, TagSetBuilder.getTagSet("tag1")),
                 new Deadline(new Name("SampleName1"), calendar2, TagSetBuilder.getTagSet("tag1")),
-                new Deadline(new Name("SampleName1"), calendar1, TagSetBuilder.getTagSet("tag2"))
+                new Deadline(new Name("SampleName3"), calendar1, TagSetBuilder.getTagSet("tag2"))
             };
         } catch (Exception e) {
             fail("Deadline array initialisation failed.");
@@ -107,7 +107,7 @@ public class DeadlineTest {
     @Test
     public void toStringTest() {
         assertEquals("Deadline formatting is wrong",
-                     "SampleName1 Deadline: Jul 7, 2017 6:30 PM Tags: [tag1]",
+                     "SampleName1, Deadline: Jul 7, 2017 6:30 PM, Tags: [tag1]",
                      deadline1.toString());
     }
 
