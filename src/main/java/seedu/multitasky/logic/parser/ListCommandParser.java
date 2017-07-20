@@ -1,7 +1,6 @@
 package seedu.multitasky.logic.parser;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Optional;
 
@@ -22,11 +21,10 @@ public class ListCommandParser {
      * @throws ParseException if the user input does not confirm to the expected format
      */
     public ListCommand parse(String args) throws ParseException {
-        String trimmedArgs = args.trim();
-
-        if (trimmedArgs.isEmpty()) {
+        if (args == null || args.trim().isEmpty()) {
             return new ListCommand();
         }
+        String trimmedArgs = args.trim();
         // Preamble is necessary due to how ArgumentTokenizer works
         ArgumentMultimap argumentMultimap = ArgumentTokenizer.tokenize("preamble " + trimmedArgs,
                                                                 ParserUtil.toPrefixArray(ListCommand.VALID_PREFIXES));
@@ -59,10 +57,6 @@ public class ListCommandParser {
     }
 
     private boolean hasValidPrefixCombination(ArrayList<String> prefixes) {
-        // Cannot have any unknown prefixes
-        if (!Arrays.asList(ListCommand.VALID_PREFIXES).containsAll(prefixes)) {
-            return false;
-        }
         // Check for invalid flag combinations
         if (prefixes.contains(CliSyntax.PREFIX_ARCHIVE.toString())
             && prefixes.contains(CliSyntax.PREFIX_BIN.toString())) {

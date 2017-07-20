@@ -2,9 +2,9 @@ package seedu.multitasky.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.List;
 
 import seedu.multitasky.commons.core.EventsCenter;
 import seedu.multitasky.commons.events.BaseEvent;
@@ -71,7 +71,7 @@ public class ListCommand extends Command {
         ordering = Ordering.DEFAULT;
     }
 
-    public ListCommand(Calendar startDate, Calendar endDate, ArrayList<String> prefixes) {
+    public ListCommand(Calendar startDate, Calendar endDate, List<String> prefixes) {
         this.startDate = startDate;
         this.endDate = endDate;
 
@@ -153,6 +153,18 @@ public class ListCommand extends Command {
         default:
             throw new AssertionError("Unknown list command ordering type");
         }
+    }
+
+    public boolean equals(ListCommand other) {
+        return other != null
+            && (this == other
+            || (this.showType.equals(other.showType)
+                && this.ordering.equals(other.ordering)
+                && ((this.startDate != null && this.startDate.equals(other.startDate))
+                    || (this.startDate == null && other.startDate == null))
+                && ((this.endDate != null && this.endDate.equals(other.endDate))
+                    || (this.endDate == null && other.endDate == null))));
+
     }
 
     private void raise(BaseEvent event) {

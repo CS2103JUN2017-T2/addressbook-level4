@@ -20,8 +20,6 @@ import seedu.multitasky.model.entry.ReadOnlyEntry;
  */
 public abstract class EntryCard extends UiPart<Region> {
 
-    private static final String FXML = "EntryCard.fxml";
-
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
      * As a consequence, UI elements' variable names cannot be set to such keywords
@@ -47,13 +45,6 @@ public abstract class EntryCard extends UiPart<Region> {
 
     protected DateFormat dateFormat;
     protected PrettyTime prettyTime;
-
-    public EntryCard(ReadOnlyEntry entry, int displayedIndex) {
-        super(FXML);
-        initAll(entry, displayedIndex);
-        dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT);
-        prettyTime = new PrettyTime();
-    }
 
     public EntryCard(String fxml, ReadOnlyEntry entry, int displayedIndex) {
         super(fxml);

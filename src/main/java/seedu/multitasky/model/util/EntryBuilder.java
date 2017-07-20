@@ -45,17 +45,15 @@ public class EntryBuilder {
      */
     public static Entry build(final ReadOnlyEntry entryToCopy) {
         Objects.requireNonNull(entryToCopy);
-        Entry entry;
+        Entry entry = null;
         if (entryToCopy instanceof Event) {
             entry = new Event(entryToCopy);
         } else if (entryToCopy instanceof Deadline) {
             entry = new Deadline(entryToCopy);
         } else if (entryToCopy instanceof FloatingTask) {
             entry = new FloatingTask(entryToCopy);
-        } else {
-            entry = null;
-            throw new AssertionError("entryToCopy must be Event, Deadline or FloatingTask");
         }
+
         return entry;
     }
 
