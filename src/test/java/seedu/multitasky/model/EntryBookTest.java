@@ -266,15 +266,95 @@ public class EntryBookTest {
         EntryBook entryBookUnderTest = SampleEntries.getSampleEntryBook();
         entryBookUnderTest.clearStateSpecificEntries(Entry.State.ACTIVE);
 
-        List<ReadOnlyEntry> allEntries = entryBookUnderTest.getAllEntries();
-        boolean activeEntriesPresent = false;
-
-        for (ReadOnlyEntry e : allEntries) {
-            if (e.isActive()) {
-                activeEntriesPresent = true;
-            }
-        }
+        boolean activeEntriesPresent = entriesOfSpecificStatePresent(entryBookUnderTest,
+                                                                     Entry.State.ACTIVE);
         assertFalse(activeEntriesPresent);
+    }
+    // @@author
+
+    // @@author A0126623L
+    @Test
+    public void clearStateSpecificEntriesTest_clearArchivedEntries_success() {
+        EntryBook entryBookUnderTest = SampleEntries.getSampleEntryBook();
+        boolean archivedEntriesPresent = entriesOfSpecificStatePresent(entryBookUnderTest,
+                                                                       Entry.State.ARCHIVED);
+        assertTrue(archivedEntriesPresent);
+
+        entryBookUnderTest.clearStateSpecificEntries(Entry.State.ARCHIVED);
+
+        archivedEntriesPresent = entriesOfSpecificStatePresent(entryBookUnderTest,
+                                                               Entry.State.ARCHIVED);
+        assertFalse(archivedEntriesPresent);
+    }
+    // @@author
+
+    // @@author A0126623L
+    @Test
+    public void clearStateSpecificEntriesTest_clearDeletedEntries_success() {
+        EntryBook entryBookUnderTest = SampleEntries.getSampleEntryBook();
+        boolean deletedEntriesPresent = entriesOfSpecificStatePresent(entryBookUnderTest,
+                                                                      Entry.State.DELETED);
+        assertTrue(deletedEntriesPresent);
+
+        entryBookUnderTest.clearStateSpecificEntries(Entry.State.DELETED);
+
+        deletedEntriesPresent = entriesOfSpecificStatePresent(entryBookUnderTest,
+                                                              Entry.State.DELETED);
+        assertFalse(deletedEntriesPresent);
+    }
+    // @@author
+
+    // @@author A0126623L
+    private boolean entriesOfSpecificStatePresent(ReadOnlyEntryBook entryBook, Entry.State targetState) {
+        List<ReadOnlyEntry> allEntries = entryBook.getAllEntries();
+
+        switch (targetState) {
+        case ACTIVE:
+            for (ReadOnlyEntry e : allEntries) {
+                if (e.isActive()) {
+                    return true;
+                }
+            }
+            break;
+        case ARCHIVED:
+            for (ReadOnlyEntry e : allEntries) {
+                if (e.isArchived()) {
+                    return true;
+                }
+            }
+            break;
+        case DELETED:
+            for (ReadOnlyEntry e : allEntries) {
+                if (e.isDeleted()) {
+                    return true;
+                }
+            }
+            break;
+        default:
+            break;
+        }
+        return false;
+    }
+    // @@author
+
+    // @@author A0126623L
+    @Test
+    public void changeEntryStateTest_changeActiveToDeleted_success() {
+        EntryBook entryBookUnderTest = SampleEntries.getSampleEntryBookWithActiveEntries();
+        assertFalse(this.entriesOfSpecificStatePresent(entryBookUnderTest, Entry.State.DELETED));
+
+        Entry eventToChange = (Entry) entryBookUnderTest.getEventList().get(0);
+        Entry deadlineToChange = (Entry) entryBookUnderTest.getDeadlineList().get(0);
+
+        try {
+            entryBookUnderTest.changeEntryState(eventToChange, Entry.State.ARCHIVED);
+            assert (this.entriesOfSpecificStatePresent(entryBookUnderTest, Entry.State.ARCHIVED));
+            entryBookUnderTest.changeEntryState(deadlineToChange, Entry.State.DELETED);
+            assert (this.entriesOfSpecificStatePresent(entryBookUnderTest, Entry.State.DELETED));
+        } catch (DuplicateEntryException | EntryNotFoundException | OverlappingEventException
+                 | OverlappingAndOverdueEventException | EntryOverdueException e) {
+            // These specific set of exceptions an be ignored in this test.
+        }
     }
     // @@author
 

@@ -26,21 +26,21 @@ public class EditCommandTest extends EntryBookGuiTest {
      *******************/
     @Test
     public void edit_firstEventByIndex_success() {
-        Entry[] currentList = SampleEntries.getSampleEvents();
+        Entry[] currentList = SampleEntries.getSampleActiveEvents();
         Index targetIndex = SampleEntries.INDEX_FIRST_ENTRY;
         assertEditEventByIndexSuccess(targetIndex, currentList, SampleEntries.OPENING);
     }
 
     @Test
     public void edit_firstDeadlineByIndex_success() {
-        Entry[] currentList = SampleEntries.getSampleDeadlines();
+        Entry[] currentList = SampleEntries.getSampleActiveDeadlines();
         Index targetIndex = SampleEntries.INDEX_FIRST_ENTRY;
         assertEditDeadlineByIndexSuccess(targetIndex, currentList, SampleEntries.UPGRADE);
     }
 
     @Test
     public void edit_firstFloatingTaskByIndex_success() {
-        Entry[] currentList = SampleEntries.getSampleFloatingTasks();
+        Entry[] currentList = SampleEntries.getSampleActiveFloatingTasks();
         Index targetIndex = SampleEntries.INDEX_FIRST_ENTRY;
         assertEditFloatingTaskByIndexSuccess(targetIndex, currentList, SampleEntries.SELL);
     }
@@ -50,13 +50,13 @@ public class EditCommandTest extends EntryBookGuiTest {
      **************************/
     @Test
     public void edit_eventKeyword_success() {
-        Entry[] currentList = SampleEntries.getSampleEvents();
+        Entry[] currentList = SampleEntries.getSampleActiveEvents();
         assertEditEventByKeywordSuccess("dinner", currentList, SampleEntries.DINNER, SampleEntries.OPENING);
     }
 
     @Test
     public void edit_deadlineKeyword_success() {
-        Entry[] currentList = SampleEntries.getSampleDeadlines();
+        Entry[] currentList = SampleEntries.getSampleActiveDeadlines();
         assertEditDeadlineByKeywordSuccess("tax", currentList, SampleEntries.TAX, SampleEntries.UPGRADE);
     }
 

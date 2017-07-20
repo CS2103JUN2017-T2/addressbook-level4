@@ -33,7 +33,7 @@ public class DeleteByFindCommandTest {
 
     @Test
     public void execute_validKeywordsUnfilteredList_success() throws Exception {
-        Model model = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
+        Model model = new ModelManager(SampleEntries.getSampleEntryBookWithActiveEntries(), new UserPrefs());
 
         ReadOnlyEntry entryToDelete = model.getFilteredFloatingTaskList()
                                            .get(INDEX_FIRST_ENTRY.getZeroBased());
@@ -58,7 +58,7 @@ public class DeleteByFindCommandTest {
         thrown.expect(CommandException.class);
         thrown.expectMessage(DeleteByFindCommand.MESSAGE_NO_ENTRIES);
 
-        Model model = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
+        Model model = new ModelManager(SampleEntries.getSampleEntryBookWithActiveEntries(), new UserPrefs());
         String searchString = "randomstring";
         HashSet<String> keywords = new HashSet<>(Arrays.asList(searchString.split("\\s+")));
         DeleteCommand deleteCommand = prepareCommand(model, keywords);
@@ -70,7 +70,7 @@ public class DeleteByFindCommandTest {
         thrown.expect(CommandException.class);
         thrown.expectMessage(DeleteByFindCommand.MESSAGE_MULTIPLE_ENTRIES);
 
-        Model model = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
+        Model model = new ModelManager(SampleEntries.getSampleEntryBookWithActiveEntries(), new UserPrefs());
         String searchString = "try to find";
         HashSet<String> keywords = new HashSet<>(Arrays.asList(searchString.split("\\s+")));
         model.addEntry(EntryBuilder.build(searchString + " 1", "first_tag"));
@@ -82,7 +82,7 @@ public class DeleteByFindCommandTest {
 
     @Test
     public void execute_validKeywordsFilteredList_success() throws Exception {
-        Model model = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
+        Model model = new ModelManager(SampleEntries.getSampleEntryBookWithActiveEntries(), new UserPrefs());
 
         showFirstEntryOnly(model);
         ReadOnlyEntry entryToDelete = model.getFilteredFloatingTaskList()
