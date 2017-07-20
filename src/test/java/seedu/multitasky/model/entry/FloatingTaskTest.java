@@ -39,7 +39,7 @@ public class FloatingTaskTest {
                 new FloatingTask(new Name("SampleName1"), TagSetBuilder.getTagSet("tag1")),
                 new FloatingTask(new Name("SampleName1"), TagSetBuilder.getTagSet("tag1")),
                 new FloatingTask(new Name("SampleName2"), TagSetBuilder.getTagSet("tag1")),
-                new FloatingTask(new Name("SampleName1"), TagSetBuilder.getTagSet("tag2"))
+                new FloatingTask(new Name("SampleName3"), TagSetBuilder.getTagSet("tag2"))
             };
         } catch (Exception e) {
             fail("FloatingTask array initialisation failed.");
@@ -98,7 +98,7 @@ public class FloatingTaskTest {
     @Test
     public void toStringTest() {
         assertEquals("FloatingTask formatting is wrong",
-                     "SampleName1 Tags: [tag1]",
+                     "SampleName1, Tags: [tag1]",
                      floatingTask1.toString());
     }
 

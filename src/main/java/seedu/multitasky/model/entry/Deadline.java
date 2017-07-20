@@ -87,8 +87,7 @@ public class Deadline extends Entry implements OverdueCapable {
         return (other instanceof Deadline
                 && this.getName().equals(other.getName()) // instanceof handles nulls
                 && this.getEndDateAndTime().equals(other.getEndDateAndTime())
-                && this.getState().equals(other.getState())
-                && this.getTags().equals(other.getTags()));
+                && this.getState().equals(other.getState()));
     }
     // @@author
 
@@ -117,9 +116,9 @@ public class Deadline extends Entry implements OverdueCapable {
 
         // TODO: Include state in string?
         builder.append(getName())
-               .append(" Deadline: ")
+               .append(", Deadline: ")
                .append(dateFormatter.format(getEndDateAndTime().getTime()))
-               .append(" Tags: ");
+               .append(", Tags: ");
         getTags().forEach(builder::append);
         return builder.toString();
     }

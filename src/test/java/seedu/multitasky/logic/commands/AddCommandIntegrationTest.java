@@ -23,7 +23,7 @@ public class AddCommandIntegrationTest {
 
     @Before
     public void setUp() {
-        model = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
+        model = new ModelManager(SampleEntries.getSampleEntryBookWithActiveEntries(), new UserPrefs());
     }
 
     @Test

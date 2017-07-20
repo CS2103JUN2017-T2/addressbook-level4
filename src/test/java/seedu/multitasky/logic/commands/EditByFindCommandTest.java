@@ -49,7 +49,7 @@ public class EditByFindCommandTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    private Model model = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
+    private Model model = new ModelManager(SampleEntries.getSampleEntryBookWithActiveEntries(), new UserPrefs());
 
     // @@author A0140633R
     @Test
@@ -65,7 +65,7 @@ public class EditByFindCommandTest {
         EditCommand editCommand = prepareCommand(model, keywords, descriptor);
         String expectedMessage = String.format(EditByFindCommand.MESSAGE_SUCCESS_WITH_OVERDUE_ALERT,
                                                targetEntry, editedEntry);
-        Model expectedModel = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
+        Model expectedModel = new ModelManager(SampleEntries.getSampleEntryBookWithActiveEntries(), new UserPrefs());
         try {
             expectedModel.updateEntry(expectedModel.getFilteredEventList().get(INDEX_FIRST_ENTRY.getZeroBased()),
                                       editedEntry);
@@ -93,7 +93,7 @@ public class EditByFindCommandTest {
         EditCommand editCommand = prepareCommand(model, keywords, descriptor);
         String expectedMessage = String.format(EditByFindCommand.MESSAGE_SUCCESS_WITH_OVERDUE_ALERT,
                                                targetEntry, editedEntry);
-        Model expectedModel = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
+        Model expectedModel = new ModelManager(SampleEntries.getSampleEntryBookWithActiveEntries(), new UserPrefs());
         try {
             expectedModel.updateEntry(expectedModel.getFilteredDeadlineList().get(INDEX_FIRST_ENTRY.getZeroBased()),
                                       editedEntry);

@@ -6,6 +6,7 @@ import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.logic.commands.AddCommand;
 import seedu.multitasky.logic.commands.DeleteCommand;
 import seedu.multitasky.logic.commands.EditCommand;
+import seedu.multitasky.logic.commands.ListCommand;
 import seedu.multitasky.logic.parser.CliSyntax;
 import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.Entry;
@@ -172,5 +173,41 @@ public class CommandUtil {
         }
         return builder.toString();
     }
+
+    // @@author A0126623L
+    /**
+     * Returns an list command string for listing active entries.
+     */
+    public static String getListCommand() {
+        return ListCommand.MESSAGE_ACTIVE_SUCCESS;
+    }
+    // @@ author
+
+    // @@author A0126623L
+    /**
+     * Returns an list command string for listing archive.
+     */
+    public static String getListArchiveCommand() {
+        return ListCommand.MESSAGE_ACTIVE_SUCCESS + " archive";
+    }
+    // @@ author
+
+    // @@author A0126623L
+    /**
+     * Returns an list command string for listing bin.
+     */
+    public static String getListBinCommand() {
+        return ListCommand.MESSAGE_ACTIVE_SUCCESS + " bin";
+    }
+    // @@ author
+
+    // @@author A0126623L
+    /**
+     * Returns an list command string for listing all entries.
+     */
+    public static String getListAllCommand() {
+        return ListCommand.MESSAGE_ACTIVE_SUCCESS + " all";
+    }
+    // @@ author
 
 }

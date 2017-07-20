@@ -51,7 +51,7 @@ public class EventTest {
                           TagSetBuilder.getTagSet("tag1")),
                 new Event(new Name("SampleName1"), calendar1, calendar3,
                           TagSetBuilder.getTagSet("tag1")),
-                new Event(new Name("SampleName1"), calendar1, calendar2,
+                new Event(new Name("SampleName3"), calendar1, calendar2,
                           TagSetBuilder.getTagSet("tag2"))
             };
         } catch (Exception e) {
@@ -112,7 +112,7 @@ public class EventTest {
     @Test
     public void toStringTest() {
         assertEquals("Event formatting is wrong",
-                     "SampleName1 Start: Jul 7, 2017 6:30 PM End: Jul 8, 2017 6:30 PM Tags: [tag1]",
+                     "SampleName1, Start: Jul 7, 2017 6:30 PM, End: Jul 8, 2017 6:30 PM, Tags: [tag1]",
                      event1.toString());
     }
 

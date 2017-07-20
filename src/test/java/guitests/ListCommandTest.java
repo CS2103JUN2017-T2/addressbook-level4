@@ -22,9 +22,9 @@ public class ListCommandTest extends EntryBookGuiTest {
     @Test
     public void list_active_showEverything() {
         commandBox.runCommand(ListCommand.COMMAND_WORD);
-        assertTrue(eventListPanel.isListMatching(SampleEntries.getSampleEvents()));
-        assertTrue(deadlineListPanel.isListMatching(SampleEntries.getSampleDeadlines()));
-        assertTrue(floatingTaskListPanel.isListMatching(SampleEntries.getSampleFloatingTasks()));
+        assertTrue(eventListPanel.isListMatching(SampleEntries.getSampleActiveEvents()));
+        assertTrue(deadlineListPanel.isListMatching(SampleEntries.getSampleActiveDeadlines()));
+        assertTrue(floatingTaskListPanel.isListMatching(SampleEntries.getSampleActiveFloatingTasks()));
     }
 
     @Test
@@ -49,15 +49,15 @@ public class ListCommandTest extends EntryBookGuiTest {
     @Test
     public void list_activeReverse_success() {
         commandBox.runCommand(ListCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_REVERSE);
-        assertTrue(eventListPanel.isListMatching(reverse(SampleEntries.getSampleEvents())));
-        assertTrue(deadlineListPanel.isListMatching(reverse(SampleEntries.getSampleDeadlines())));
-        assertTrue(floatingTaskListPanel.isListMatching(SampleEntries.getSampleFloatingTasks()));
+        assertTrue(eventListPanel.isListMatching(reverse(SampleEntries.getSampleActiveEvents())));
+        assertTrue(deadlineListPanel.isListMatching(reverse(SampleEntries.getSampleActiveDeadlines())));
+        assertTrue(floatingTaskListPanel.isListMatching(SampleEntries.getSampleActiveFloatingTasks()));
     }
 
     @Test
     public void list_activeUpcoming_success() {
         commandBox.runCommand(ListCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_UPCOMING);
-        assertTrue(floatingTaskListPanel.isListMatching(SampleEntries.getSampleFloatingTasks()));
+        assertTrue(floatingTaskListPanel.isListMatching(SampleEntries.getSampleActiveFloatingTasks()));
     }
 
     /*****************************************
@@ -66,7 +66,7 @@ public class ListCommandTest extends EntryBookGuiTest {
     @Test
     public void list_deleteEvent_listedInBin() {
         Index index = SampleEntries.INDEX_FIRST_ENTRY;
-        Entry[] currentList = SampleEntries.getSampleEvents();
+        Entry[] currentList = SampleEntries.getSampleActiveEvents();
         Entry entryToDelete = currentList[index.getZeroBased()];
         commandBox.runCommand(CommandUtil.getDeleteEventByIndexCommand(index));
         commandBox.runCommand(ListCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_BIN);
@@ -76,7 +76,7 @@ public class ListCommandTest extends EntryBookGuiTest {
     @Test
     public void list_deleteDeadline_listedInBin() {
         Index index = SampleEntries.INDEX_FIRST_ENTRY;
-        Entry[] currentList = SampleEntries.getSampleDeadlines();
+        Entry[] currentList = SampleEntries.getSampleActiveDeadlines();
         Entry entryToDelete = currentList[index.getZeroBased()];
         commandBox.runCommand(CommandUtil.getDeleteDeadlineByIndexCommand(index));
         commandBox.runCommand(ListCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_BIN);
@@ -86,7 +86,7 @@ public class ListCommandTest extends EntryBookGuiTest {
     @Test
     public void list_deleteFloatingTask_listedInBin() {
         Index index = SampleEntries.INDEX_FIRST_ENTRY;
-        Entry[] currentList = SampleEntries.getSampleFloatingTasks();
+        Entry[] currentList = SampleEntries.getSampleActiveFloatingTasks();
         Entry entryToDelete = currentList[index.getZeroBased()];
         commandBox.runCommand(CommandUtil.getDeleteFloatingTaskByIndexCommand(index));
         commandBox.runCommand(ListCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_BIN);
