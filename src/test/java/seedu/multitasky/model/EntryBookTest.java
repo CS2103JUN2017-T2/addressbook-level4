@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.DeadlineList;
 import seedu.multitasky.model.entry.DeadlineListTest;
@@ -18,12 +19,14 @@ import seedu.multitasky.model.entry.EventListTest;
 import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.FloatingTaskList;
 import seedu.multitasky.model.entry.FloatingTaskListTest;
+import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 import seedu.multitasky.model.entry.exceptions.EntryOverdueException;
 import seedu.multitasky.model.entry.exceptions.OverlappingAndOverdueEventException;
 import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
+import seedu.multitasky.model.util.EntryBuilder;
 
 public class EntryBookTest {
 
@@ -156,5 +159,62 @@ public class EntryBookTest {
         }
     }
     // @@author
+
+    // @@author A0126623L
+    @Test
+    public void setAllEntriesList_sampleEntryBook_success() {
+        try {
+            EntryBook entryBookToSet = new EntryBook();
+            EntryBook expectedEntryBook = EntryBookTest.getSampleEntryBook();
+            assertFalse(entryBookToSet.equals(expectedEntryBook));
+
+            entryBookToSet.resetData(expectedEntryBook);
+            assertTrue(entryBookToSet.equals(expectedEntryBook));
+        } catch (DuplicateEntryException e) {
+            e.printStackTrace();
+        }
+    }
+    // @@author
+
+    // @@author A0126623L
+    @Test(expected = NullPointerException.class)
+    public void setAllEntries_null_nullPointerExceptionThrown() {
+        EntryBook entryBookToSet = new EntryBook();
+        EntryBook entryBookUsedForReset = null;
+        assertFalse(entryBookToSet.equals(entryBookUsedForReset));
+
+        entryBookToSet.resetData(entryBookUsedForReset);
+        fail("Should not reach here. Reset data should fail.");
+    }
+    // @@author
+
+    // @@author A0126623L
+    @Test
+    public void updateEntryTest_validEditedFloatingTask_success() {
+        try {
+            EntryBook entryBookUnderTest = EntryBookTest.getSampleEntryBook();
+            ReadOnlyEntry targetEntryToEdit = entryBookUnderTest.getFloatingTaskList().get(0);
+
+            // Create edited Entry
+            Entry editedEntry = EntryBuilder.build(targetEntryToEdit);
+            editedEntry.setName(new Name("modifiedName"));
+
+            entryBookUnderTest.updateEntry(targetEntryToEdit, editedEntry);
+            assertTrue(editedEntry.equals(targetEntryToEdit));
+
+        } catch (DuplicateEntryException e) {
+            e.printStackTrace();
+        } catch (IllegalValueException e) {
+            e.printStackTrace();
+        } catch (EntryNotFoundException e) {
+            e.printStackTrace();
+        } catch (OverlappingEventException e) {
+            e.printStackTrace();
+        } catch (OverlappingAndOverdueEventException e) {
+            e.printStackTrace();
+        } catch (EntryOverdueException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
