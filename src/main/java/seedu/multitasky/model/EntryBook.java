@@ -333,7 +333,7 @@ public class EntryBook implements ReadOnlyEntryBook {
      *
      * @param entryToRemove
      * @return boolean
-     * @throws DuplicateEntryException, EntryNotFoundException
+     * @throws EntryNotFoundException
      */
     public boolean removeEntry(ReadOnlyEntry entryToRemove) throws EntryNotFoundException {
         return (_allEntriesList.remove(entryToRemove) && removeFromEntrySubtypeList(entryToRemove));
