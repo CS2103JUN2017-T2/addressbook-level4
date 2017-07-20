@@ -17,18 +17,22 @@ import java.util.HashSet;
  * LEVEL_3: 1 wrong/extra character match
  * LEVEL_4: 2 wrong/extra characters match
  * LEVEL_5: 3 wrong/extra characters match
- * LEVEL_6: acronym permutation match
  */
 public class PowerMatch {
 
-    public enum Level { LEVEL_0, LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4, LEVEL_5, LEVEL_6 };
+    public enum Level { LEVEL_0, LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4, LEVEL_5 };
+
+    public static final Level HIGHEST_LEVEL = Level.LEVEL_5;
 
     public static final int PERMUTATION_MATCH_MAX_ALLOWED_LENGTH = 8;
+    public static final int MISSING_CHAR_MATCH_MIN_ALLOWED_LENGTH = 3;
     public static final int MISSING_CHAR_MATCH_MAX_ALLOWED_LENGTH = 7;
+    public static final int WRONG_EXTRA_CHAR_1_MATCH_MIN_ALLOWED_LENGTH = 4;
     public static final int WRONG_EXTRA_CHAR_1_MATCH_MAX_ALLOWED_LENGTH = 6;
+    public static final int WRONG_EXTRA_CHAR_2_MATCH_MIN_ALLOWED_LENGTH = 5;
     public static final int WRONG_EXTRA_CHAR_2_MATCH_MAX_ALLOWED_LENGTH = 6;
+    public static final int WRONG_EXTRA_CHAR_3_MATCH_MIN_ALLOWED_LENGTH = 6;
     public static final int WRONG_EXTRA_CHAR_3_MATCH_MAX_ALLOWED_LENGTH = 6;
-    public static final int ACRONYM_PERMUTATION_MATCH_MAX_ALLOWED_LENGTH = 6;
 
     public static final String REGEX_ANY_NON_WHITESPACE = "((\\S?)+)";
     public static final String REGEX_ANY_PRESENT_NON_WHITESPACE = "(\\S+)";
@@ -110,7 +114,8 @@ public class PowerMatch {
             }
             break;
         case LEVEL_2:
-            if (input.length() <= MISSING_CHAR_MATCH_MAX_ALLOWED_LENGTH) {
+            if (input.length() >= MISSING_CHAR_MATCH_MIN_ALLOWED_LENGTH
+                && input.length() <= MISSING_CHAR_MATCH_MAX_ALLOWED_LENGTH) {
                 match = getMissingCharMatch(keyword, potentialMatches);
                 if (match != null) {
                     return match;
@@ -118,7 +123,8 @@ public class PowerMatch {
             }
             break;
         case LEVEL_3:
-            if (input.length() <= WRONG_EXTRA_CHAR_1_MATCH_MAX_ALLOWED_LENGTH) {
+            if (input.length() >= WRONG_EXTRA_CHAR_1_MATCH_MIN_ALLOWED_LENGTH
+                && input.length() <= WRONG_EXTRA_CHAR_1_MATCH_MAX_ALLOWED_LENGTH) {
                 match = getWrongExtraCharMatch(1, keyword, potentialMatches);
                 if (match != null) {
                     return match;
@@ -126,7 +132,8 @@ public class PowerMatch {
             }
             break;
         case LEVEL_4:
-            if (input.length() <= WRONG_EXTRA_CHAR_2_MATCH_MAX_ALLOWED_LENGTH) {
+            if (input.length() >= WRONG_EXTRA_CHAR_2_MATCH_MIN_ALLOWED_LENGTH
+                && input.length() <= WRONG_EXTRA_CHAR_2_MATCH_MAX_ALLOWED_LENGTH) {
                 match = getWrongExtraCharMatch(2, keyword, potentialMatches);
                 if (match != null) {
                     return match;
@@ -134,25 +141,17 @@ public class PowerMatch {
             }
             break;
         case LEVEL_5:
-            if (input.length() <= WRONG_EXTRA_CHAR_3_MATCH_MAX_ALLOWED_LENGTH) {
+            if (input.length() >= WRONG_EXTRA_CHAR_3_MATCH_MIN_ALLOWED_LENGTH
+                && input.length() <= WRONG_EXTRA_CHAR_3_MATCH_MAX_ALLOWED_LENGTH) {
                 match = getWrongExtraCharMatch(3, keyword, potentialMatches);
                 if (match != null) {
                     return match;
                 }
             }
             break;
-        case LEVEL_6:
-            if (input.length() <= ACRONYM_PERMUTATION_MATCH_MAX_ALLOWED_LENGTH) {
-                match = getAcronymPermutationMatch(keyword, potentialMatches);
-                if (match != null) {
-                    return match;
-                }
-            }
-            break;
         default:
-            throw new AssertionError("Unknown PowerMatch level");
+            return null;
         }
-
         return null;
     }
 
@@ -180,22 +179,23 @@ public class PowerMatch {
             return keyword.length() <= PERMUTATION_MATCH_MAX_ALLOWED_LENGTH
                 && getPermutationMatch(keyword, potentialMatch) != null;
         case LEVEL_2:
-            return keyword.length() <= MISSING_CHAR_MATCH_MAX_ALLOWED_LENGTH
+            return keyword.length() >= MISSING_CHAR_MATCH_MIN_ALLOWED_LENGTH
+                && keyword.length() <= MISSING_CHAR_MATCH_MAX_ALLOWED_LENGTH
                 && getMissingCharMatch(keyword, potentialMatch) != null;
         case LEVEL_3:
-            return keyword.length() <= WRONG_EXTRA_CHAR_1_MATCH_MAX_ALLOWED_LENGTH
+            return keyword.length() >= WRONG_EXTRA_CHAR_1_MATCH_MIN_ALLOWED_LENGTH
+                && keyword.length() <= WRONG_EXTRA_CHAR_1_MATCH_MAX_ALLOWED_LENGTH
                 && getWrongExtraCharMatch(1, keyword, potentialMatch) != null;
         case LEVEL_4:
-            return keyword.length() <= WRONG_EXTRA_CHAR_2_MATCH_MAX_ALLOWED_LENGTH
+            return keyword.length() >= WRONG_EXTRA_CHAR_2_MATCH_MIN_ALLOWED_LENGTH
+                && keyword.length() <= WRONG_EXTRA_CHAR_2_MATCH_MAX_ALLOWED_LENGTH
                 && getWrongExtraCharMatch(2, keyword, potentialMatch) != null;
         case LEVEL_5:
-            return keyword.length() <= WRONG_EXTRA_CHAR_3_MATCH_MAX_ALLOWED_LENGTH
+            return keyword.length() >= WRONG_EXTRA_CHAR_3_MATCH_MIN_ALLOWED_LENGTH
+                && keyword.length() <= WRONG_EXTRA_CHAR_3_MATCH_MAX_ALLOWED_LENGTH
                 && getWrongExtraCharMatch(3, keyword, potentialMatch) != null;
-        case LEVEL_6:
-            return keyword.length() <= ACRONYM_PERMUTATION_MATCH_MAX_ALLOWED_LENGTH
-                && getAcronymPermutationMatch(keyword, potentialMatch) != null;
         default:
-            throw new AssertionError("Unknown PowerMatch level");
+            return false;
         }
     }
 
@@ -264,12 +264,6 @@ public class PowerMatch {
     private static String getWrongExtraCharMatch(int numChars, final String keyword,
                                                  final String... potentialMatches) {
         final ArrayList<String> permutations = getWrongExtraPermutations(keyword, numChars);
-        return getRegexMatch(permutations, potentialMatches);
-    }
-
-    private static String getAcronymPermutationMatch(final String keyword,
-                                                     final String... potentialMatches) {
-        final ArrayList<String> permutations = getAcronymPermutations(keyword);
         return getRegexMatch(permutations, potentialMatches);
     }
 
@@ -381,24 +375,6 @@ public class PowerMatch {
             }
         }
         return new ArrayList<>(permutations);
-    }
-
-    private static ArrayList<String> getAcronymPermutations(final String keyword) {
-        HashSet<String> permutationsSet = new HashSet<>();
-        ArrayList<String> chars = new ArrayList<>(Arrays.asList(keyword.split("")));
-        generateUniquePermutations(chars, 0, keyword.length() - 1, permutationsSet);
-        ArrayList<String> permutations = new ArrayList<>();
-        for (String permutation : permutationsSet) {
-            String[] permutationChars = permutation.split("");
-            StringBuilder acronymPermutation = new StringBuilder();
-            acronymPermutation.append(REGEX_ANY_NON_WHITESPACE);
-            for (String permutationChar : permutationChars) {
-                acronymPermutation.append(permutationChar);
-                acronymPermutation.append(REGEX_ANY_NON_WHITESPACE);
-            }
-            permutations.add(acronymPermutation.toString());
-        }
-        return permutations;
     }
 
     private static void generateUniquePermutations(ArrayList<String> chars, int i, int permutationLength,

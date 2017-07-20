@@ -21,6 +21,9 @@ public class SaveCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Saves entrybook data to given filepath\n" + "Format: "
                                                + COMMAND_WORD + " newfilepath.xml\n" + "Example: " + COMMAND_WORD
                                                + SAMPLE_FILEPATH;
+
+    public static final String[] VALID_PREFIXES = new String[] {};
+
     private final String newFilePath;
 
     public SaveCommand(String newFilePath) {
