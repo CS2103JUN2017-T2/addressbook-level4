@@ -53,10 +53,10 @@ public class Comparators {
         @Override
         public int compare(ReadOnlyEntry entry1, ReadOnlyEntry entry2) {
             if (!(entry1 instanceof Deadline)) {
-                throw new AssertionError("Event comparator must receive Deadline object as argument");
+                throw new AssertionError("Deadline comparator must receive Deadline object as argument");
             }
             if (!(entry2 instanceof Deadline)) {
-                throw new AssertionError("Event comparator must receive Deadline object as argument");
+                throw new AssertionError("Deadline comparator must receive Deadline object as argument");
             }
             // Order by increasing ending(deadline) date and time
             return entry1.getEndDateAndTime().compareTo(entry2.getEndDateAndTime());
@@ -69,10 +69,12 @@ public class Comparators {
     public static final Comparator<ReadOnlyEntry> FLOATING_TASK_DEFAULT = new Comparator<ReadOnlyEntry>() {
         @Override
         public int compare(ReadOnlyEntry entry1, ReadOnlyEntry entry2) {
-            assert entry1 instanceof FloatingTask : "FloatingTask comparator must receive FloatingTask"
-                                                    + "object as argument";
-            assert entry2 instanceof FloatingTask : "FloatingTask comparator must receive FloatingTask"
-                                                    + "object as argument";
+            if (!(entry1 instanceof FloatingTask)) {
+                throw new AssertionError("FloatingTask comparator must receive FloatingTask object as argument");
+            }
+            if (!(entry2 instanceof FloatingTask)) {
+                throw new AssertionError("FloatingTask comparator must receive FloatingTask object as argument");
+            }
             // No re-ordering of floating tasks
             return 0;
         }
@@ -84,40 +86,46 @@ public class Comparators {
     public static final Comparator<ReadOnlyEntry> EVENT_REVERSE = new Comparator<ReadOnlyEntry>() {
         @Override
         public int compare(ReadOnlyEntry entry1, ReadOnlyEntry entry2) {
-            assert entry1 instanceof Event : "Event comparator must receive Event"
-                                             + "object as argument";
-            assert entry2 instanceof Event : "Event comparator must receive Event"
-                                             + "object as argument";
+            if (!(entry1 instanceof Event)) {
+                throw new AssertionError("Event comparator must receive Event object as argument");
+            }
+            if (!(entry2 instanceof Event)) {
+                throw new AssertionError("Event comparator must receive Event object as argument");
+            }
             // Order by increasing starting date and time
             return entry2.getStartDateAndTime().compareTo(entry1.getStartDateAndTime());
         }
     };
 
     /**
-     * Default ordering for deadlines is by ending date and time, latest first
+     * Reverse ordering for deadlines is by ending date and time, latest first
      */
     public static final Comparator<ReadOnlyEntry> DEADLINE_REVERSE = new Comparator<ReadOnlyEntry>() {
         @Override
         public int compare(ReadOnlyEntry entry1, ReadOnlyEntry entry2) {
-            assert entry1 instanceof Deadline : "Deadline comparator must receive Deadline"
-                                                + "object as argument";
-            assert entry2 instanceof Deadline : "Event comparator must receive Deadline"
-                                                + "object as argument";
+            if (!(entry1 instanceof Deadline)) {
+                throw new AssertionError("Deadline comparator must receive Deadline object as argument");
+            }
+            if (!(entry2 instanceof Deadline)) {
+                throw new AssertionError("Deadline comparator must receive Deadline object as argument");
+            }
             // Order by increasing ending(deadline) date and time
             return entry2.getEndDateAndTime().compareTo(entry1.getEndDateAndTime());
         }
     };
 
     /**
-     * Default ordering for floating tasks is the order in which they were added, earliest first
+     * Reverse ordering for floating tasks is the order in which they were added, earliest first
      */
     public static final Comparator<ReadOnlyEntry> FLOATING_TASK_REVERSE = new Comparator<ReadOnlyEntry>() {
         @Override
         public int compare(ReadOnlyEntry entry1, ReadOnlyEntry entry2) {
-            assert entry1 instanceof FloatingTask : "FloatingTask comparator must receive FloatingTask"
-                                                    + "object as argument";
-            assert entry2 instanceof FloatingTask : "FloatingTask comparator must receive FloatingTask"
-                                                    + "object as argument";
+            if (!(entry1 instanceof FloatingTask)) {
+                throw new AssertionError("FloatingTask comparator must receive FloatingTask object as argument");
+            }
+            if (!(entry2 instanceof FloatingTask)) {
+                throw new AssertionError("FloatingTask comparator must receive FloatingTask object as argument");
+            }
             // No re-ordering of floating tasks
             return 0;
         }
@@ -130,10 +138,12 @@ public class Comparators {
     public static final Comparator<ReadOnlyEntry> EVENT_UPCOMING = new Comparator<ReadOnlyEntry>() {
         @Override
         public int compare(ReadOnlyEntry entry1, ReadOnlyEntry entry2) {
-            assert entry1 instanceof Event : "Event comparator must receive Event"
-                                             + "object as argument";
-            assert entry2 instanceof Event : "Event comparator must receive Event"
-                                             + "object as argument";
+            if (!(entry1 instanceof Event)) {
+                throw new AssertionError("Event comparator must receive Event object as argument");
+            }
+            if (!(entry2 instanceof Event)) {
+                throw new AssertionError("Event comparator must receive Event object as argument");
+            }
             Calendar currentTime = new GregorianCalendar();
             currentTime.setTime(new Date());
             if (entry1.getStartDateAndTime().before(currentTime)) {
@@ -161,10 +171,12 @@ public class Comparators {
     public static final Comparator<ReadOnlyEntry> DEADLINE_UPCOMING = new Comparator<ReadOnlyEntry>() {
         @Override
         public int compare(ReadOnlyEntry entry1, ReadOnlyEntry entry2) {
-            assert entry1 instanceof Deadline : "Deadline comparator must receive Deadline"
-                                                + "object as argument";
-            assert entry2 instanceof Deadline : "Deadline comparator must receive Deadline"
-                                                + "object as argument";
+            if (!(entry1 instanceof Deadline)) {
+                throw new AssertionError("Deadline comparator must receive Deadline object as argument");
+            }
+            if (!(entry2 instanceof Deadline)) {
+                throw new AssertionError("Deadline comparator must receive Deadline object as argument");
+            }
             Calendar currentTime = new GregorianCalendar();
             currentTime.setTime(new Date());
             if (entry1.getEndDateAndTime().before(currentTime)) {

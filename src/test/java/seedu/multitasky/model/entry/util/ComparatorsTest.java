@@ -88,13 +88,13 @@ public class ComparatorsTest {
     @Test
     public void comparators_entryDefaultMismatchType2_exceptionThrown() {
         thrown.expect(AssertionError.class);
-        Comparators.ENTRY_DEFAULT.compare(upcomingDeadline, floatingTask1);
+        Comparators.ENTRY_DEFAULT.compare(upcomingEvent, floatingTask1);
     }
 
     @Test
     public void comparators_entryDefaultMismatchType3_exceptionThrown() {
         thrown.expect(AssertionError.class);
-        Comparators.ENTRY_DEFAULT.compare(upcomingEvent, floatingTask1);
+        Comparators.ENTRY_DEFAULT.compare(floatingTask1, upcomingDeadline);
     }
 
     @Test
@@ -122,13 +122,19 @@ public class ComparatorsTest {
     @Test
     public void comparators_eventDefaultMismatchType2_exceptionThrown() {
         thrown.expect(AssertionError.class);
-        Comparators.EVENT_DEFAULT.compare(upcomingDeadline, floatingTask1);
+        Comparators.EVENT_DEFAULT.compare(upcomingEvent, floatingTask1);
     }
 
     @Test
     public void comparators_eventDefaultMismatchType3_exceptionThrown() {
         thrown.expect(AssertionError.class);
-        Comparators.EVENT_DEFAULT.compare(upcomingEvent, floatingTask1);
+        Comparators.EVENT_DEFAULT.compare(upcomingDeadline, upcomingEvent);
+    }
+
+    @Test
+    public void comparators_eventDefaultMismatchType4_exceptionThrown() {
+        thrown.expect(AssertionError.class);
+        Comparators.EVENT_DEFAULT.compare(floatingTask1, upcomingEvent);
     }
 
     @Test
@@ -150,7 +156,7 @@ public class ComparatorsTest {
     @Test
     public void comparators_deadlineDefaultMismatchType1_exceptionThrown() {
         thrown.expect(AssertionError.class);
-        Comparators.DEADLINE_DEFAULT.compare(upcomingEvent, upcomingDeadline);
+        Comparators.DEADLINE_DEFAULT.compare(upcomingDeadline, upcomingEvent);
     }
 
     @Test
@@ -162,7 +168,13 @@ public class ComparatorsTest {
     @Test
     public void comparators_deadlineDefaultMismatchType3_exceptionThrown() {
         thrown.expect(AssertionError.class);
-        Comparators.DEADLINE_DEFAULT.compare(upcomingEvent, floatingTask1);
+        Comparators.DEADLINE_DEFAULT.compare(upcomingEvent, upcomingDeadline);
+    }
+
+    @Test
+    public void comparators_deadlineDefaultMismatchType4_exceptionThrown() {
+        thrown.expect(AssertionError.class);
+        Comparators.DEADLINE_DEFAULT.compare(floatingTask1, upcomingDeadline);
     }
 
     @Test
@@ -176,6 +188,265 @@ public class ComparatorsTest {
         assertAfter(Comparators.DEADLINE_DEFAULT, upcomingDeadline, overdueDeadline);
         assertAfter(Comparators.DEADLINE_DEFAULT, futureDeadline, upcomingDeadline);
         assertAfter(Comparators.DEADLINE_DEFAULT, futureDeadline, overdueDeadline);
+    }
+
+    /***********************************
+     * Default FloatingTask Comparator *
+     **********************************/
+    @Test
+    public void comparators_floatingTaskDefaultMismatchType1_exceptionThrown() {
+        thrown.expect(AssertionError.class);
+        Comparators.FLOATING_TASK_DEFAULT.compare(upcomingEvent, floatingTask1);
+    }
+
+    @Test
+    public void comparators_floatingTaskDefaultMismatchType2_exceptionThrown() {
+        thrown.expect(AssertionError.class);
+        Comparators.FLOATING_TASK_DEFAULT.compare(upcomingDeadline, floatingTask1);
+    }
+
+    @Test
+    public void comparators_floatingTaskDefaultMismatchType3_exceptionThrown() {
+        thrown.expect(AssertionError.class);
+        Comparators.FLOATING_TASK_DEFAULT.compare(floatingTask1, upcomingEvent);
+    }
+
+    @Test
+    public void comparators_floatingTaskDefaultMismatchType4_exceptionThrown() {
+        thrown.expect(AssertionError.class);
+        Comparators.FLOATING_TASK_DEFAULT.compare(floatingTask1, upcomingDeadline);
+    }
+
+    @Test
+    public void comparators_floatingTaskDefault_correctOrdering() {
+        assertEqual(Comparators.FLOATING_TASK_DEFAULT, floatingTask1, floatingTask2);
+        assertEqual(Comparators.FLOATING_TASK_DEFAULT, floatingTask2, floatingTask1);
+    }
+
+    /****************************
+     * Reverse Event Comparator *
+     ***************************/
+    @Test
+    public void comparators_eventReverseMismatchType1_exceptionThrown() {
+        thrown.expect(AssertionError.class);
+        Comparators.EVENT_REVERSE.compare(upcomingEvent, upcomingDeadline);
+    }
+
+    @Test
+    public void comparators_eventReverseMismatchType2_exceptionThrown() {
+        thrown.expect(AssertionError.class);
+        Comparators.EVENT_REVERSE.compare(upcomingEvent, floatingTask1);
+    }
+
+    @Test
+    public void comparators_eventReverseMismatchType3_exceptionThrown() {
+        thrown.expect(AssertionError.class);
+        Comparators.EVENT_REVERSE.compare(upcomingDeadline, upcomingEvent);
+    }
+
+    @Test
+    public void comparators_eventReverseMismatchType4_exceptionThrown() {
+        thrown.expect(AssertionError.class);
+        Comparators.EVENT_REVERSE.compare(floatingTask1, upcomingEvent);
+    }
+
+    @Test
+    public void comparators_eventReverse_correctOrdering() {
+        assertAfter(Comparators.EVENT_REVERSE, overdueEvent, upcomingEvent);
+        assertAfter(Comparators.EVENT_REVERSE, upcomingEvent, futureEvent);
+        assertAfter(Comparators.EVENT_REVERSE, overdueEvent, futureEvent);
+        assertEqual(Comparators.EVENT_REVERSE, overdueEvent, overdueEvent);
+        assertEqual(Comparators.EVENT_REVERSE, upcomingEvent, upcomingEvent);
+        assertEqual(Comparators.EVENT_REVERSE, futureEvent, futureEvent);
+        assertBefore(Comparators.EVENT_REVERSE, upcomingEvent, overdueEvent);
+        assertBefore(Comparators.EVENT_REVERSE, futureEvent, upcomingEvent);
+        assertBefore(Comparators.EVENT_REVERSE, futureEvent, overdueEvent);
+    }
+
+    /*******************************
+     * Reverse Deadline Comparator *
+     ******************************/
+    @Test
+    public void comparators_deadlineReverseMismatchType1_exceptionThrown() {
+        thrown.expect(AssertionError.class);
+        Comparators.DEADLINE_REVERSE.compare(upcomingDeadline, upcomingEvent);
+    }
+
+    @Test
+    public void comparators_deadlineReverseMismatchType2_exceptionThrown() {
+        thrown.expect(AssertionError.class);
+        Comparators.DEADLINE_REVERSE.compare(upcomingDeadline, floatingTask1);
+    }
+
+    @Test
+    public void comparators_deadlineReverseMismatchType3_exceptionThrown() {
+        thrown.expect(AssertionError.class);
+        Comparators.DEADLINE_REVERSE.compare(upcomingEvent, upcomingDeadline);
+    }
+
+    @Test
+    public void comparators_deadlineReverseMismatchType4_exceptionThrown() {
+        thrown.expect(AssertionError.class);
+        Comparators.DEADLINE_REVERSE.compare(floatingTask1, upcomingDeadline);
+    }
+
+    @Test
+    public void comparators_deadlineReverse_correctOrdering() {
+        assertAfter(Comparators.DEADLINE_REVERSE, overdueDeadline, upcomingDeadline);
+        assertAfter(Comparators.DEADLINE_REVERSE, upcomingDeadline, futureDeadline);
+        assertAfter(Comparators.DEADLINE_REVERSE, overdueDeadline, futureDeadline);
+        assertEqual(Comparators.DEADLINE_REVERSE, overdueDeadline, overdueDeadline);
+        assertEqual(Comparators.DEADLINE_REVERSE, upcomingDeadline, upcomingDeadline);
+        assertEqual(Comparators.DEADLINE_REVERSE, futureDeadline, futureDeadline);
+        assertBefore(Comparators.DEADLINE_REVERSE, upcomingDeadline, overdueDeadline);
+        assertBefore(Comparators.DEADLINE_REVERSE, futureDeadline, upcomingDeadline);
+        assertBefore(Comparators.DEADLINE_REVERSE, futureDeadline, overdueDeadline);
+    }
+
+    /***********************************
+     * Reverse FloatingTask Comparator *
+     **********************************/
+    @Test
+    public void comparators_floatingTaskReverseMismatchType1_exceptionThrown() {
+        thrown.expect(AssertionError.class);
+        Comparators.FLOATING_TASK_REVERSE.compare(upcomingEvent, floatingTask1);
+    }
+
+    @Test
+    public void comparators_floatingTaskReverseMismatchType2_exceptionThrown() {
+        thrown.expect(AssertionError.class);
+        Comparators.FLOATING_TASK_REVERSE.compare(upcomingDeadline, floatingTask1);
+    }
+
+    @Test
+    public void comparators_floatingTaskReverseMismatchType3_exceptionThrown() {
+        thrown.expect(AssertionError.class);
+        Comparators.FLOATING_TASK_REVERSE.compare(floatingTask1, upcomingEvent);
+    }
+
+    @Test
+    public void comparators_floatingTaskReverseMismatchType4_exceptionThrown() {
+        thrown.expect(AssertionError.class);
+        Comparators.FLOATING_TASK_REVERSE.compare(floatingTask1, upcomingDeadline);
+    }
+
+    @Test
+    public void comparators_floatingTaskReverse_correctOrdering() {
+        assertEqual(Comparators.FLOATING_TASK_REVERSE, floatingTask1, floatingTask2);
+        assertEqual(Comparators.FLOATING_TASK_REVERSE, floatingTask2, floatingTask1);
+    }
+
+    /*****************************
+     * Upcoming Event Comparator *
+     ****************************/
+    @Test
+    public void comparators_eventUpcomingMismatchType1_exceptionThrown() {
+        thrown.expect(AssertionError.class);
+        Comparators.EVENT_UPCOMING.compare(upcomingEvent, upcomingDeadline);
+    }
+
+    @Test
+    public void comparators_eventUpcomingMismatchType2_exceptionThrown() {
+        thrown.expect(AssertionError.class);
+        Comparators.EVENT_UPCOMING.compare(upcomingEvent, floatingTask1);
+    }
+
+    @Test
+    public void comparators_eventUpcomingMismatchType3_exceptionThrown() {
+        thrown.expect(AssertionError.class);
+        Comparators.EVENT_UPCOMING.compare(upcomingDeadline, upcomingEvent);
+    }
+
+    @Test
+    public void comparators_eventUpcomingMismatchType4_exceptionThrown() {
+        thrown.expect(AssertionError.class);
+        Comparators.EVENT_UPCOMING.compare(floatingTask1, upcomingEvent);
+    }
+
+    @Test
+    public void comparators_eventUpcoming_correctOrdering() {
+        assertAfter(Comparators.EVENT_UPCOMING, overdueEvent, upcomingEvent);
+        assertAfter(Comparators.EVENT_UPCOMING, overdueEvent, futureEvent);
+        assertAfter(Comparators.EVENT_UPCOMING, futureEvent, upcomingEvent);
+        assertEqual(Comparators.EVENT_UPCOMING, overdueEvent, overdueEvent);
+        assertEqual(Comparators.EVENT_UPCOMING, upcomingEvent, upcomingEvent);
+        assertEqual(Comparators.EVENT_UPCOMING, futureEvent, futureEvent);
+        assertBefore(Comparators.EVENT_UPCOMING, upcomingEvent, overdueEvent);
+        assertBefore(Comparators.EVENT_UPCOMING, futureEvent, overdueEvent);
+        assertBefore(Comparators.EVENT_UPCOMING, upcomingEvent, futureEvent);
+    }
+
+    /********************************
+     * Upcoming Deadline Comparator *
+     *******************************/
+    @Test
+    public void comparators_deadlineUpcomingMismatchType1_exceptionThrown() {
+        thrown.expect(AssertionError.class);
+        Comparators.DEADLINE_UPCOMING.compare(upcomingDeadline, upcomingEvent);
+    }
+
+    @Test
+    public void comparators_deadlineUpcomingMismatchType2_exceptionThrown() {
+        thrown.expect(AssertionError.class);
+        Comparators.DEADLINE_UPCOMING.compare(upcomingDeadline, floatingTask1);
+    }
+
+    @Test
+    public void comparators_deadlineUpcomingMismatchType3_exceptionThrown() {
+        thrown.expect(AssertionError.class);
+        Comparators.DEADLINE_UPCOMING.compare(upcomingEvent, upcomingDeadline);
+    }
+
+    @Test
+    public void comparators_deadlineUpcomingMismatchType4_exceptionThrown() {
+        thrown.expect(AssertionError.class);
+        Comparators.DEADLINE_UPCOMING.compare(floatingTask1, upcomingDeadline);
+    }
+
+    @Test
+    public void comparators_deadlineUpcoming_correctOrdering() {
+        assertAfter(Comparators.DEADLINE_UPCOMING, overdueDeadline, upcomingDeadline);
+        assertAfter(Comparators.DEADLINE_UPCOMING, futureDeadline, upcomingDeadline);
+        assertAfter(Comparators.DEADLINE_UPCOMING, overdueDeadline, futureDeadline);
+        assertEqual(Comparators.DEADLINE_UPCOMING, overdueDeadline, overdueDeadline);
+        assertEqual(Comparators.DEADLINE_UPCOMING, upcomingDeadline, upcomingDeadline);
+        assertEqual(Comparators.DEADLINE_UPCOMING, futureDeadline, futureDeadline);
+        assertBefore(Comparators.DEADLINE_UPCOMING, upcomingDeadline, overdueDeadline);
+        assertBefore(Comparators.DEADLINE_UPCOMING, upcomingDeadline, futureDeadline);
+        assertBefore(Comparators.DEADLINE_UPCOMING, futureDeadline, overdueDeadline);
+    }
+
+    /************************************
+     * Upcoming FloatingTask Comparator *
+     ***********************************/
+    @Test
+    public void comparators_floatingTaskUpcomingMismatchType1_exceptionThrown() {
+        thrown.expect(AssertionError.class);
+        Comparators.FLOATING_TASK_UPCOMING.compare(upcomingEvent, floatingTask1);
+    }
+
+    @Test
+    public void comparators_floatingTaskUpcomingMismatchType2_exceptionThrown() {
+        thrown.expect(AssertionError.class);
+        Comparators.FLOATING_TASK_UPCOMING.compare(upcomingDeadline, floatingTask1);
+    }
+
+    @Test
+    public void comparators_floatingTaskUpcomingMismatchType3_exceptionThrown() {
+        thrown.expect(AssertionError.class);
+        Comparators.FLOATING_TASK_UPCOMING.compare(floatingTask1, upcomingEvent);
+    }
+
+    @Test
+    public void comparators_floatingTaskUpcomingMismatchType4_exceptionThrown() {
+        thrown.expect(AssertionError.class);
+        Comparators.FLOATING_TASK_UPCOMING.compare(floatingTask1, upcomingDeadline);
+    }
+
+    @Test
+    public void comparators_floatingTaskUpcoming_correctOrdering() {
+        assertEqual(Comparators.FLOATING_TASK_UPCOMING, floatingTask1, floatingTask2);
+        assertEqual(Comparators.FLOATING_TASK_UPCOMING, floatingTask2, floatingTask1);
     }
 
     private void assertBefore(Comparator<ReadOnlyEntry> comparator, ReadOnlyEntry entry1, ReadOnlyEntry entry2) {
