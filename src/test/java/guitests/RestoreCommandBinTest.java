@@ -11,8 +11,6 @@ import org.junit.Test;
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.commons.exceptions.IllegalValueException;
-import seedu.multitasky.logic.commands.AddCommand;
-import seedu.multitasky.logic.commands.DeleteCommand;
 import seedu.multitasky.logic.commands.RestoreByFindCommand;
 import seedu.multitasky.logic.commands.RestoreCommand;
 import seedu.multitasky.logic.parser.CliSyntax;
@@ -148,24 +146,26 @@ public class RestoreCommandBinTest extends EntryBookGuiTest {
     @Test
     public void restore_overdueDeadline_throwEntryOverdueException() {
         try {
-            Entry overdueDeadline = EntryBuilder.build("Write tests", Calendar.getInstance(), "MultiTasky");
-            assertTrue(overdueDeadline instanceof Deadline);
-            int randomOverdueYear = 2000;
-            overdueDeadline.getEndDateAndTime().set(Calendar.YEAR, randomOverdueYear);
-            assertTrue(((Deadline) overdueDeadline).isOverdue());
+            Entry overdueDeadline = createOverdueDeadline();
 
             commandBox.runCommand(CommandUtil.getAddDeadlineCommand(overdueDeadline));
-            assertResultMessage(String.format(AddCommand.MESSAGE_SUCCESS_WITH_OVERDUE_ALERT,
-                                              overdueDeadline.getName()));
             commandBox.runCommand(CommandUtil.getDeleteByFullNameCommand(overdueDeadline));
-            assertResultMessage(String.format(DeleteCommand.MESSAGE_SUCCESS, overdueDeadline));
             commandBox.runCommand(CommandUtil.getRestoreByFullNameCommand(overdueDeadline));
-            assertTrue(overdueDeadline.isActive());
             assertResultMessage(String.format(RestoreByFindCommand.MESSAGE_SUCCESS_WITH_OVERDUE_ALERT,
                                               overdueDeadline.getName()));
         } catch (IllegalValueException e) {
             fail("IllegalValueException should not be thrown here, or something is wrong.");
         }
+    }
+
+    private Entry createOverdueDeadline() throws IllegalValueException {
+        Entry overdueDeadline;
+        overdueDeadline = EntryBuilder.build("Write tests", Calendar.getInstance(), "MultiTasky");
+        assertTrue(overdueDeadline instanceof Deadline);
+        int randomOverdueYear = 2000;
+        overdueDeadline.getEndDateAndTime().set(Calendar.YEAR, randomOverdueYear);
+        assertTrue(((Deadline) overdueDeadline).isOverdue());
+        return overdueDeadline;
     }
 
     // @@author A0126623L-reused
