@@ -1,7 +1,6 @@
 package seedu.multitasky.storage;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -121,44 +120,17 @@ public class StorageManager extends ComponentManager implements Storage {
     }
 
     /**
-     * Loads data from the previous SnapshotPath for Undo action.
-     *
-     * @throws Exception
-     */
-    public EntryBook loadUndoData() throws Exception {
-        try {
-            ReadOnlyEntryBook undoData = XmlFileStorage
-                    .loadDataFromSaveFile(new File(getPreviousEntryBookSnapshotPath()));
-            return new EntryBook(undoData);
-        } catch (Exception e) {
-            throw new Exception("Nothing to Undo!");
-        }
-    }
-
-    /**
-     * Loads data from the next SnapshotPath for Redo action.
-     *
-     * @throws Exception
-     */
-    public EntryBook loadRedoData() throws Exception {
-        try {
-            ReadOnlyEntryBook redoData = XmlFileStorage
-                    .loadDataFromSaveFile(new File(getNextEntryBookSnapshotPath()));
-            return new EntryBook(redoData);
-        } catch (Exception e) {
-            throw new Exception("Nothing to Redo!");
-        }
-    }
-
-    /**
      * Loads data from the given file.
      *
-     * @throws FileNotFoundException
      * @throws Exception
      */
-    public EntryBook loadDataFromFile(String filepath) throws DataConversionException, FileNotFoundException {
-        ReadOnlyEntryBook dataFromFile = XmlFileStorage.loadDataFromSaveFile(new File(filepath));
-        return new EntryBook(dataFromFile);
+    public EntryBook loadDataFromFile(String filepath) throws Exception {
+        try {
+            ReadOnlyEntryBook dataFromFile = XmlFileStorage.loadDataFromSaveFile(new File(filepath));
+            return new EntryBook(dataFromFile);
+        } catch (Exception e) {
+            throw new Exception("Nothing to load from!");
+        }
     }
 
     /**
@@ -203,7 +175,7 @@ public class StorageManager extends ComponentManager implements Storage {
     public void handleEntryBookToUndoEvent(EntryBookToUndoEvent event) throws Exception {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "Load previous snapshot"));
         try {
-            EntryBook entry = loadUndoData();
+            EntryBook entry = loadDataFromFile(getPreviousEntryBookSnapshotPath());
             saveEntryBook(entry);
             event.setData(entry);
             event.setMessage("undo successful");
@@ -226,7 +198,7 @@ public class StorageManager extends ComponentManager implements Storage {
     public void handleEntryBookToRedoEvent(EntryBookToRedoEvent event) throws Exception {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "Load next snapshot"));
         try {
-            EntryBook entry = loadRedoData();
+            EntryBook entry = loadDataFromFile(getNextEntryBookSnapshotPath());
             saveEntryBook(entry);
             event.setData(entry);
             event.setMessage("redo successful");
