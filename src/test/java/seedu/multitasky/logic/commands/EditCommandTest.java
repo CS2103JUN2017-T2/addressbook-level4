@@ -82,6 +82,23 @@ public class EditCommandTest {
     }
 
     @Test
+    public void execute_editEventToFloating_success() throws Exception {
+        ReadOnlyEntry targetEntry = model.getFilteredEventList().get(INDEX_FIRST_ENTRY.getZeroBased());
+        Entry editedEntry = EditCommandTestUtil.FLOATINGTASK_DOG;
+        EditEntryDescriptor descriptor = new EditEntryDescriptorBuilder(editedEntry)
+                .withResetStartDate().withResetEndDate().build();
+        EditCommand editCommand = prepareCommand(INDEX_FIRST_ENTRY, PREFIX_EVENT, descriptor);
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, targetEntry, editedEntry);
+        Model expectedModel = new ModelManager(SampleEntries.getSampleEntryBookWithActiveEntries(),
+                                               new UserPrefs());
+        expectedModel.updateEntry(targetEntry, editedEntry);
+        CommandResult result = editCommand.execute();
+
+        assertEquals(expectedMessage, result.feedbackToUser);
+        assertEquals(expectedModel, model);
+    }
+
+    @Test
     public void execute_editDeadlineToFullDayEvent_success() throws Exception {
         ReadOnlyEntry targetEntry = model.getFilteredDeadlineList().get(INDEX_FIRST_ENTRY.getZeroBased());
         Entry editedEntry = EditCommandTestUtil.EVENT_FULLDAY;

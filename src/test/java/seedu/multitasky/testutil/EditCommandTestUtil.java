@@ -17,6 +17,7 @@ public class EditCommandTestUtil {
     public static final String VALID_NAME_CLEAN = "Clean the house";
     public static final String VALID_NAME_MEETING = "Meet the boss";
     public static final String VALID_NAME_BOWLING = "go and play bowling";
+    public static final String VALID_NAME_DOG = "walk the dog";
     public static final String VALID_NAME_EXAM = "final exams";
     public static final String VALID_NAME_FULLDAY = "work for 24/7";
     public static final String VALID_TAG_URGENT = "urgent";
@@ -42,6 +43,7 @@ public class EditCommandTestUtil {
     public static final Entry EVENT_FULLDAY;
     public static final Entry EVENT_FULLDAY_CORRECTED;
     public static final Entry DEADLINE_EXAM;
+    public static final Entry FLOATINGTASK_DOG;
 
 
     static {
@@ -70,6 +72,8 @@ public class EditCommandTestUtil {
                                                VALID_CALENDAR_4_1,
                                                VALID_CALENDAR_4_2,
                                                "tags");
+
+            FLOATINGTASK_DOG = EntryBuilder.build(VALID_NAME_DOG);
 
         } catch (IllegalValueException ive) {
             throw new AssertionError("Method should not fail.");
