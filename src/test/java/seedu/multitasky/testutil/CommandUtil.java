@@ -4,6 +4,7 @@ import java.util.Calendar;
 
 import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.logic.commands.AddCommand;
+import seedu.multitasky.logic.commands.ClearCommand;
 import seedu.multitasky.logic.commands.CompleteCommand;
 import seedu.multitasky.logic.commands.DeleteCommand;
 import seedu.multitasky.logic.commands.EditCommand;
@@ -220,6 +221,42 @@ public class CommandUtil {
      */
     public static String getListAllCommand() {
         return ListCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_ALL;
+    }
+    // @@ author
+
+    // @@author A0126623L
+    /**
+     * Returns a clear command string for clearing active entries.
+     */
+    public static String getClearCommand() {
+        return ClearCommand.COMMAND_WORD;
+    }
+    // @@ author
+
+    // @@author A0126623L
+    /**
+     * Returns a clear command string for clearing archive.
+     */
+    public static String getClearArchiveCommand() {
+        return ClearCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_ARCHIVE;
+    }
+    // @@ author
+
+    // @@author A0126623L
+    /**
+     * Returns a clear command string for clearing bin.
+     */
+    public static String getClearBinCommand() {
+        return ClearCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_BIN;
+    }
+    // @@ author
+
+    // @@author A0126623L
+    /**
+     * Returns a clear command string for clearing all entries.
+     */
+    public static String getClearAllCommand() {
+        return ClearCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_ALL;
     }
     // @@ author
 

@@ -308,6 +308,20 @@ public class SampleEntries {
      * @return  an {@code EntryBook} with sample events, deadlines and floating tasks
      *          of various states (i.e. active, archived, deleted).
      */
+    public static EntryBook getSampleEntryBookEntries() {
+        EntryBook entryBook = new EntryBook();
+        loadEntryBookWithSampleActiveEntries(entryBook);
+        loadEntryBookWithSampleArchivedEntries(entryBook);
+        loadEntryBookWithSampleDeletedEntries(entryBook);
+        return entryBook;
+    }
+    // @@author
+
+    // @@author A0126623L
+    /**
+     * @return  an {@code EntryBook} with sample events, deadlines and floating tasks
+     *          of various states (i.e. active, archived, deleted).
+     */
     public static EntryBook getSampleEntryBook() {
         EntryBook entryBook = new EntryBook();
         loadEntryBookWithSampleActiveEntries(entryBook);

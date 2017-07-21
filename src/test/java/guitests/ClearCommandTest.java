@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.logic.commands.ClearCommand;
-import seedu.multitasky.logic.commands.ListCommand;
 import seedu.multitasky.testutil.CommandUtil;
 import seedu.multitasky.testutil.SampleEntries;
 
@@ -256,7 +255,7 @@ public class ClearCommandTest extends EntryBookGuiTest {
     }
 
     private void assertClearAllCommandSuccess() {
-        commandBox.runCommand(ClearCommand.COMMAND_WORD + " all");
+        commandBox.runCommand(CommandUtil.getClearAllCommand());
         assertCurrentlyViewedPanelCleared();
         assertResultMessage(ClearCommand.MESSAGE_ALL_SUCCESS);
     }
@@ -267,8 +266,8 @@ public class ClearCommandTest extends EntryBookGuiTest {
      * Executes {@code list}, followed by {@code clear}
      */
     private void assertClearActiveCommandSuccess() {
-        commandBox.runCommand(ListCommand.COMMAND_WORD);
-        commandBox.runCommand(ClearCommand.COMMAND_WORD);
+        commandBox.runCommand(CommandUtil.getListCommand());
+        commandBox.runCommand(CommandUtil.getClearCommand());
         assertCurrentlyViewedPanelCleared();
         assertResultMessage(ClearCommand.MESSAGE_ACTIVE_SUCCESS);
     }
@@ -279,8 +278,8 @@ public class ClearCommandTest extends EntryBookGuiTest {
      * Executes {@code list archive}, followed by {@code clear archive}
      */
     private void assertClearArchiveCommandSuccess() {
-        commandBox.runCommand(ListCommand.COMMAND_WORD + " archive");
-        commandBox.runCommand(ClearCommand.COMMAND_WORD + " archive");
+        commandBox.runCommand(CommandUtil.getListArchiveCommand());
+        commandBox.runCommand(CommandUtil.getClearArchiveCommand());
         assertCurrentlyViewedPanelCleared();
         assertResultMessage(ClearCommand.MESSAGE_ARCHIVE_SUCCESS);
     }
@@ -291,8 +290,8 @@ public class ClearCommandTest extends EntryBookGuiTest {
      * Executes {@code list bin}, followed by {@code clear bin}
      */
     private void assertClearBinCommandSuccess() {
-        commandBox.runCommand(ListCommand.COMMAND_WORD + " bin");
-        commandBox.runCommand(ClearCommand.COMMAND_WORD + " bin");
+        commandBox.runCommand(CommandUtil.getListBinCommand());
+        commandBox.runCommand(CommandUtil.getClearBinCommand());
         assertCurrentlyViewedPanelCleared();
         assertResultMessage(ClearCommand.MESSAGE_BIN_SUCCESS);
     }
