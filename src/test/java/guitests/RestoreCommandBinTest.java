@@ -157,7 +157,7 @@ public class RestoreCommandBinTest extends EntryBookGuiTest {
 
             commandBox.runCommand(CommandUtil.getAddDeadlineCommand(overdueDeadline));
             assertResultMessage(String.format(AddCommand.MESSAGE_SUCCESS_WITH_OVERDUE_ALERT,
-                                              overdueDeadline));
+                                              overdueDeadline.getName()));
             commandBox.runCommand(CommandUtil.getDeleteByFullNameCommand(overdueDeadline));
             assertResultMessage(String.format(DeleteCommand.MESSAGE_SUCCESS, overdueDeadline));
             commandBox.runCommand(CommandUtil.getRestoreByFullNameCommand(overdueDeadline));
