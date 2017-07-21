@@ -55,7 +55,7 @@ public class CompleteCommandTest extends EntryBookGuiTest {
      **************************/
     @Test
     public void complete_firstDeadline_success() {
-        Entry[] currentList = SampleEntries.getSampleDeadlines();
+        Entry[] currentList = SampleEntries.getSampleActiveDeadlines();
         Entry entryToComplete = currentList[0];
         commandBox.runCommand(CompleteCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_DEADLINE + " 1");
         assertResultMessage(String.format(CompleteCommand.MESSAGE_SUCCESS, entryToComplete));
@@ -63,7 +63,7 @@ public class CompleteCommandTest extends EntryBookGuiTest {
 
     @Test
     public void complete_invalidIndex_failure() {
-        Entry[] currentList = SampleEntries.getSampleEvents();
+        Entry[] currentList = SampleEntries.getSampleActiveEvents();
         int index = currentList.length + 1;
         commandBox.runCommand(CompleteCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_EVENT + " " + index);
         assertResultMessage(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
