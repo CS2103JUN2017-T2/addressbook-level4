@@ -1,4 +1,4 @@
-package seedu.multitasky.commons.util;
+package seedu.multitasky.commons.util.match;
 
 import java.util.ArrayList;
 import java.util.Arrays;

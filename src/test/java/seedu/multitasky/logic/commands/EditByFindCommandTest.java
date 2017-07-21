@@ -24,7 +24,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import seedu.multitasky.commons.util.PowerMatch;
+import seedu.multitasky.commons.util.match.PowerMatch;
 import seedu.multitasky.logic.CommandHistory;
 import seedu.multitasky.logic.commands.EditCommand.EditEntryDescriptor;
 import seedu.multitasky.logic.commands.exceptions.CommandException;

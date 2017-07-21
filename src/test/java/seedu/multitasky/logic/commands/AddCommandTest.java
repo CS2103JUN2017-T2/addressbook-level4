@@ -14,7 +14,7 @@ import org.junit.rules.ExpectedException;
 
 import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.commons.exceptions.IllegalValueException;
-import seedu.multitasky.commons.util.PowerMatch;
+import seedu.multitasky.commons.util.match.PowerMatch;
 import seedu.multitasky.logic.CommandHistory;
 import seedu.multitasky.model.Model;
 import seedu.multitasky.model.ReadOnlyEntryBook;

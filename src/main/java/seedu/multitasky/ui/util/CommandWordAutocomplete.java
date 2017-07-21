@@ -3,7 +3,7 @@ package seedu.multitasky.ui.util;
 import java.util.Arrays;
 import java.util.List;
 
-import seedu.multitasky.commons.util.PowerMatch;
+import seedu.multitasky.commons.util.match.PowerMatch;
 
 // @@author A0125586X
 /**

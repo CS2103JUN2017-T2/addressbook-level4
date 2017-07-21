@@ -28,7 +28,7 @@ import com.google.common.eventbus.Subscribe;
 import seedu.multitasky.commons.core.EventsCenter;
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
 import seedu.multitasky.commons.events.ui.ShowHelpRequestEvent;
-import seedu.multitasky.commons.util.PowerMatch;
+import seedu.multitasky.commons.util.match.PowerMatch;
 import seedu.multitasky.logic.commands.AddCommand;
 import seedu.multitasky.logic.commands.Command;
 import seedu.multitasky.logic.commands.CommandResult;

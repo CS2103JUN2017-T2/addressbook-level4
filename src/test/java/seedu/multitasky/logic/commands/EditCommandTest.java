@@ -17,7 +17,7 @@ import org.junit.Test;
 
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.commons.core.index.Index;
-import seedu.multitasky.commons.util.PowerMatch;
+import seedu.multitasky.commons.util.match.PowerMatch;
 import seedu.multitasky.logic.CommandHistory;
 import seedu.multitasky.logic.commands.EditCommand.EditEntryDescriptor;
 import seedu.multitasky.model.Model;

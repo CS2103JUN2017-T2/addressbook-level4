@@ -22,7 +22,7 @@ import seedu.multitasky.commons.events.storage.EntryBookToUndoEvent;
 import seedu.multitasky.commons.events.storage.FilePathChangedEvent;
 import seedu.multitasky.commons.events.storage.LoadDataFromFilePathEvent;
 import seedu.multitasky.commons.exceptions.IllegalValueException;
-import seedu.multitasky.commons.util.PowerMatch;
+import seedu.multitasky.commons.util.match.PowerMatch;
 import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.Event;

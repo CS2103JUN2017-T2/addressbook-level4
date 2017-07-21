@@ -6,7 +6,7 @@ import java.util.Set;
 
 import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.commons.exceptions.IllegalValueException;
-import seedu.multitasky.commons.util.PowerMatch;
+import seedu.multitasky.commons.util.match.PowerMatch;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;

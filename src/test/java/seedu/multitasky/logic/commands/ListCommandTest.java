@@ -9,7 +9,7 @@ import java.util.HashSet;
 import org.junit.Before;
 import org.junit.Test;
 
-import seedu.multitasky.commons.util.PowerMatch;
+import seedu.multitasky.commons.util.match.PowerMatch;
 import seedu.multitasky.logic.CommandHistory;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
 import seedu.multitasky.model.Model;
