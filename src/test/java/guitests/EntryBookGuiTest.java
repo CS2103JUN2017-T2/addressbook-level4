@@ -85,8 +85,7 @@ public abstract class EntryBookGuiTest {
         EventsCenter.clearSubscribers();
         FxToolkit.setupApplication(() -> new TestApp(this::getInitialData, getDataFileLocation()));
         FxToolkit.showStage();
-        while (!stage.isShowing())
-            ;
+        while (!stage.isShowing());
         mainGui.focusOnMainApp();
     }
 
@@ -95,7 +94,6 @@ public abstract class EntryBookGuiTest {
      * Return null to use the data in the file specified in {@link #getDataFileLocation()}
      */
     protected EntryBook getInitialData() {
-        // return SampleEntries.getSampleEntryBookWithActiveEntries();
         return SampleEntries.getSampleEntryBook();
     }
 
