@@ -17,9 +17,9 @@ import seedu.multitasky.commons.events.storage.EntryBookToUndoEvent;
 import seedu.multitasky.commons.events.storage.FilePathChangedEvent;
 import seedu.multitasky.commons.events.storage.LoadDataFromFilePathEvent;
 import seedu.multitasky.commons.exceptions.DataConversionException;
-import seedu.multitasky.model.ConfigurableUserPrefs;
 import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.ReadOnlyEntryBook;
+import seedu.multitasky.model.StorageUserPrefs;
 import seedu.multitasky.model.UserPrefs;
 
 /**
@@ -30,10 +30,10 @@ public class StorageManager extends ComponentManager implements Storage {
     private static final Logger logger = LogsCenter.getLogger(StorageManager.class);
     private EntryBookStorage entryBookStorage;
     private UserPrefsStorage userPrefsStorage;
-    private ConfigurableUserPrefs userPrefs;
+    private StorageUserPrefs userPrefs;
 
     public StorageManager(EntryBookStorage entryBookStorage, UserPrefsStorage userPrefsStorage,
-            ConfigurableUserPrefs userPrefs) {
+            StorageUserPrefs userPrefs) {
         super();
         this.entryBookStorage = entryBookStorage;
         this.userPrefsStorage = userPrefsStorage;

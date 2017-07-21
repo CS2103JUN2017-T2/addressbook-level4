@@ -8,7 +8,7 @@ import seedu.multitasky.commons.core.GuiSettings;
  * Represents User's preferences.
  */
 // @@author A0132788U
-public class UserPrefs implements ConfigurableUserPrefs {
+public class UserPrefs implements LogicUserPrefs, StorageUserPrefs {
     /** Index to maintain snapshot file number */
     private static int index = 0;
     /** Snapshot file path without index and xml */
