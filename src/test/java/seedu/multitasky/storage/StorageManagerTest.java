@@ -14,7 +14,6 @@ import org.junit.rules.TemporaryFolder;
 
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
 import seedu.multitasky.commons.events.storage.DataSavingExceptionEvent;
-import seedu.multitasky.commons.util.FileUtil;
 import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.ReadOnlyEntryBook;
 import seedu.multitasky.model.UserPrefs;
@@ -23,7 +22,6 @@ import seedu.multitasky.testutil.SampleEntries;
 
 public class StorageManagerTest {
 
-    private static final String TEST_DATA_FOLDER = FileUtil.getPath("./src/test/data/StorageManagerTest/");
     @Rule
     public TemporaryFolder testFolder = new TemporaryFolder();
 
@@ -42,14 +40,6 @@ public class StorageManagerTest {
 
     private String getTempFilePath(String fileName) {
         return testFolder.getRoot().getPath() + fileName;
-    }
-
-    private String addToTestDataPathIfNotNull(String prefsFileInTestDataFolder) {
-        return prefsFileInTestDataFolder != null ? TEST_DATA_FOLDER + prefsFileInTestDataFolder : null;
-    }
-
-    private void saveEntryBook(ReadOnlyEntryBook entryBook, String filePath) throws IOException {
-        new XmlEntryBookStorage(filePath).saveEntryBook(entryBook, addToTestDataPathIfNotNull(filePath));
     }
 
     /***************************
