@@ -8,7 +8,7 @@ import seedu.multitasky.commons.core.GuiSettings;
  * Represents User's preferences.
  */
 // @@author A0132788U
-public class UserPrefs implements LogicUserPrefs {
+public class UserPrefs implements ConfigurableUserPrefs {
     /** Index to maintain snapshot file number */
     private static int index = 0;
     /** Snapshot file path without index and xml */
@@ -34,50 +34,6 @@ public class UserPrefs implements LogicUserPrefs {
 
     public void setGuiSettings(double width, double height, int x, int y) {
         guiSettings = new GuiSettings(width, height, x, y);
-    }
-
-    public String getEntryBookFilePath() {
-        return entryBookFilePath;
-    }
-
-    public void setEntryBookFilePath(String entryBookFilePath) {
-        this.entryBookFilePath = entryBookFilePath;
-    }
-
-    /**
-     * The getter and setter for the snapshot file path
-     */
-    public static String getEntryBookSnapshotPath() {
-        return entryBookSnapshotPath;
-    }
-
-    public static void setEntryBookSnapshotPath(String entryBookSnapshotPath) {
-        UserPrefs.entryBookSnapshotPath = entryBookSnapshotPath;
-    }
-
-    /**
-     * Methods to update the indices when files are created during mutation/deleted during exit
-     */
-    public static void incrementIndexByOne() {
-        index++;
-    }
-
-    public static void decrementIndexByOne() {
-        index--;
-    }
-
-    public static int getIndex() {
-        return index;
-    }
-
-    public static void setIndex(int index) {
-        UserPrefs.index = index;
-    }
-
-
-    @Override
-    public int getDurationHour() {
-        return defaultDurationHour;
     }
 
     public String getEntryBookName() {
@@ -117,4 +73,53 @@ public class UserPrefs implements LogicUserPrefs {
         return sb.toString();
     }
 
+    // @@author A0132788U
+    // ================ Storage UserPrefs methods ==============================
+
+    @Override
+    public String getEntryBookFilePath() {
+        return entryBookFilePath;
+    }
+
+    @Override
+    public void setEntryBookFilePath(String entryBookFilePath) {
+        this.entryBookFilePath = entryBookFilePath;
+    }
+
+    /**
+     * The getter and setter for the snapshot file path
+     */
+    public static String getEntryBookSnapshotPath() {
+        return entryBookSnapshotPath;
+    }
+
+    public static void setEntryBookSnapshotPath(String entryBookSnapshotPath) {
+        UserPrefs.entryBookSnapshotPath = entryBookSnapshotPath;
+    }
+
+    /**
+     * Methods to update the indices when files are created during mutation/deleted during exit
+     */
+    public static void incrementIndexByOne() {
+        index++;
+    }
+
+    public static void decrementIndexByOne() {
+        index--;
+    }
+
+    public static int getIndex() {
+        return index;
+    }
+
+    public static void setIndex(int index) {
+        UserPrefs.index = index;
+    }
+
+    // @@author A0140633R
+    // ================ Logic UserPrefs methods ==============================
+    @Override
+    public int getDurationHour() {
+        return defaultDurationHour;
+    }
 }
