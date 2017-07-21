@@ -192,7 +192,7 @@ public class CommandUtil {
      * Returns an list command string for listing active entries.
      */
     public static String getListCommand() {
-        return ListCommand.MESSAGE_ACTIVE_SUCCESS;
+        return ListCommand.COMMAND_WORD;
     }
     // @@ author
 
@@ -201,7 +201,7 @@ public class CommandUtil {
      * Returns an list command string for listing archive.
      */
     public static String getListArchiveCommand() {
-        return ListCommand.MESSAGE_ACTIVE_SUCCESS + " " + CliSyntax.PREFIX_ARCHIVE;
+        return ListCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_ARCHIVE;
     }
     // @@ author
 
@@ -210,7 +210,7 @@ public class CommandUtil {
      * Returns an list command string for listing bin.
      */
     public static String getListBinCommand() {
-        return ListCommand.MESSAGE_ACTIVE_SUCCESS + " " + CliSyntax.PREFIX_BIN;
+        return ListCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_BIN;
     }
     // @@ author
 
@@ -219,7 +219,7 @@ public class CommandUtil {
      * Returns an list command string for listing all entries.
      */
     public static String getListAllCommand() {
-        return ListCommand.MESSAGE_ACTIVE_SUCCESS + " " + CliSyntax.PREFIX_ALL;
+        return ListCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_ALL;
     }
     // @@ author
 
