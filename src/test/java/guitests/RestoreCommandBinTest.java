@@ -1,16 +1,26 @@
 package guitests;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.Calendar;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.commons.core.index.Index;
+import seedu.multitasky.commons.exceptions.IllegalValueException;
+import seedu.multitasky.logic.commands.AddCommand;
+import seedu.multitasky.logic.commands.DeleteCommand;
 import seedu.multitasky.logic.commands.RestoreByFindCommand;
 import seedu.multitasky.logic.commands.RestoreCommand;
 import seedu.multitasky.logic.parser.CliSyntax;
+import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
+import seedu.multitasky.model.util.EntryBuilder;
 import seedu.multitasky.testutil.CommandUtil;
 import seedu.multitasky.testutil.SampleEntries;
 import seedu.multitasky.testutil.TestUtil;
@@ -29,21 +39,21 @@ public class RestoreCommandBinTest extends EntryBookGuiTest {
     /**********************
      * Restoring by Index *
      *********************/
-    @Test
+    @Ignore
     public void restore_firstEventByIndex_success() {
         Entry[] currentList = SampleEntries.getSampleDeletedEvents();
         Index targetIndex = SampleEntries.INDEX_FIRST_ENTRY;
         assertRestoreEventByIndexSuccess(targetIndex, currentList);
     }
 
-    @Test
+    @Ignore
     public void restore_lastEventByIndex_success() {
         Entry[] currentList = SampleEntries.getSampleDeletedEvents();
         Index targetIndex = Index.fromOneBased(currentList.length);
         assertRestoreEventByIndexSuccess(targetIndex, currentList);
     }
 
-    @Test
+    @Ignore
     public void restore_invalidEventIndex_errorMessage() {
         Entry[] currentList = SampleEntries.getSampleDeletedEvents();
         Index targetIndex = Index.fromOneBased(currentList.length + 1);
@@ -51,21 +61,21 @@ public class RestoreCommandBinTest extends EntryBookGuiTest {
         assertResultMessage(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
     }
 
-    @Test
+    @Ignore
     public void restore_firstDeadlineByIndex_success() {
         Entry[] currentList = SampleEntries.getSampleDeletedDeadlines();
         Index targetIndex = SampleEntries.INDEX_FIRST_ENTRY;
         assertRestoreDeadlineByIndexSuccess(targetIndex, currentList);
     }
 
-    @Test
+    @Ignore
     public void restore_lastDeadlineByIndex_success() {
         Entry[] currentList = SampleEntries.getSampleDeletedDeadlines();
         Index targetIndex = Index.fromOneBased(currentList.length);
         assertRestoreDeadlineByIndexSuccess(targetIndex, currentList);
     }
 
-    @Test
+    @Ignore
     public void restore_invalidDeadlineIndex_errorMessage() {
         Entry[] currentList = SampleEntries.getSampleDeletedDeadlines();
         Index targetIndex = Index.fromOneBased(currentList.length + 1);
@@ -73,21 +83,21 @@ public class RestoreCommandBinTest extends EntryBookGuiTest {
         assertResultMessage(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
     }
 
-    @Test
+    @Ignore
     public void restore_firstFloatingTaskByIndex_success() {
         Entry[] currentList = SampleEntries.getSampleDeletedFloatingTasks();
         Index targetIndex = SampleEntries.INDEX_FIRST_ENTRY;
         assertRestoreFloatingTaskByIndexSuccess(targetIndex, currentList);
     }
 
-    @Test
+    @Ignore
     public void restore_lastFloatingTaskByIndex_success() {
         Entry[] currentList = SampleEntries.getSampleDeletedFloatingTasks();
         Index targetIndex = Index.fromOneBased(currentList.length);
         assertRestoreFloatingTaskByIndexSuccess(targetIndex, currentList);
     }
 
-    @Test
+    @Ignore
     public void restore_invalidFloatingTaskIndex_errorMessage() {
         Entry[] currentList = SampleEntries.getSampleDeletedFloatingTasks();
         Index targetIndex = Index.fromOneBased(currentList.length + 1);
@@ -98,7 +108,7 @@ public class RestoreCommandBinTest extends EntryBookGuiTest {
     /************************
      * Restoring by Keyword *
      ************************/
-    @Test
+    @Ignore
     public void restore_eventKeyword_success() {
         Entry[] currentList = SampleEntries.getSampleDeletedEvents();
         Entry entryToRestore = SampleEntries.GYM;
@@ -106,7 +116,7 @@ public class RestoreCommandBinTest extends EntryBookGuiTest {
         assertEventRestoredByKeyword(entryToRestore, currentList);
     }
 
-    @Test
+    @Ignore
     public void restore_deadlineKeyword_success() {
         Entry[] currentList = SampleEntries.getSampleDeletedDeadlines();
         Entry entryToRestore = SampleEntries.APPOINTMENT;
@@ -114,7 +124,7 @@ public class RestoreCommandBinTest extends EntryBookGuiTest {
         assertDeadlineRestoredByKeyword(entryToRestore, currentList);
     }
 
-    @Test
+    @Ignore
     public void restore_floatingTaskKeyword_success() {
         Entry[] currentList = SampleEntries.getSampleDeletedFloatingTasks();
         Entry entryToRestore = SampleEntries.BAKE;
@@ -122,10 +132,48 @@ public class RestoreCommandBinTest extends EntryBookGuiTest {
         assertFloatingTaskRestoredByKeyword(entryToRestore, currentList);
     }
 
+    // @@author A0126623L
+    /********************************
+     * Restore Command's Exceptions *
+     ********************************/
+
+    @Ignore
+    public void restore_duplicateFloatingTask_throwDuplicateEntryException() {
+        Entry entryToRestore = SampleEntries.BAKE;
+        Entry duplicatedActiveEntry = EntryBuilder.build(entryToRestore);
+        commandBox.runCommand(CommandUtil.getAddFloatingTaskCommand(duplicatedActiveEntry));
+        commandBox.runCommand(RestoreCommand.COMMAND_WORD + " baking");
+        assertResultMessage(DuplicateEntryException.MESSAGE);
+    }
+
+    @Test
+    public void restore_overdueDeadline_throwEntryOverdueException() {
+        try {
+            Entry overdueDeadline = EntryBuilder.build("Write tests", Calendar.getInstance(), "MultiTasky");
+            assertTrue(overdueDeadline instanceof Deadline);
+            int randomOverdueYear = 2000;
+            overdueDeadline.getEndDateAndTime().set(Calendar.YEAR, randomOverdueYear);
+            assertTrue(((Deadline) overdueDeadline).isOverdue());
+
+            commandBox.runCommand(CommandUtil.getAddDeadlineCommand(overdueDeadline));
+            assertResultMessage(String.format(AddCommand.MESSAGE_SUCCESS_WITH_OVERDUE_ALERT,
+                                              overdueDeadline));
+            commandBox.runCommand(CommandUtil.getDeleteByFullNameCommand(overdueDeadline));
+            assertResultMessage(String.format(DeleteCommand.MESSAGE_SUCCESS, overdueDeadline));
+            commandBox.runCommand(CommandUtil.getRestoreByFullNameCommand(overdueDeadline));
+            assertTrue(overdueDeadline.isActive());
+            assertResultMessage(String.format(RestoreByFindCommand.MESSAGE_SUCCESS_WITH_OVERDUE_ALERT,
+                                              overdueDeadline.getName()));
+        } catch (IllegalValueException e) {
+            fail("IllegalValueException should not be thrown here, or something is wrong.");
+        }
+    }
+
+    // @@author A0126623L-reused
     /**************************************
      * Different types of invalid wording *
      **************************************/
-    @Test
+    @Ignore
     public void restore_unknownCommandName_errorMessage() {
         commandBox.runCommand(RestoreCommand.COMMAND_WORD.substring(0, RestoreCommand.COMMAND_WORD.length()
                                                                        - 1));
@@ -135,7 +183,7 @@ public class RestoreCommandBinTest extends EntryBookGuiTest {
         assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
     }
 
-    @Test
+    @Ignore
     public void restore_invalidCommandFormat_errorMessage() {
         commandBox.runCommand(RestoreCommand.COMMAND_WORD);
         assertResultMessage(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
@@ -150,34 +198,34 @@ public class RestoreCommandBinTest extends EntryBookGuiTest {
      * which should be suitable to test for all types since the type of task
      * doesn't affect the parsing of the command word.
      */
-    @Test
+    @Ignore
     public void restore_firstCharUppercase_success() {
         char[] commandWord = RestoreCommand.COMMAND_WORD.toCharArray();
         commandWord[0] = Character.toUpperCase(commandWord[0]);
         assertRestoreWithCommandWord(String.copyValueOf(commandWord));
     }
 
-    @Test
+    @Ignore
     public void restore_lastCharUppercase_success() {
         char[] commandWord = RestoreCommand.COMMAND_WORD.toCharArray();
         commandWord[commandWord.length - 1] = Character.toUpperCase(commandWord[commandWord.length - 1]);
         assertRestoreWithCommandWord(String.copyValueOf(commandWord));
     }
 
-    @Test
+    @Ignore
     public void restore_middleCharUppercase_success() {
         char[] commandWord = RestoreCommand.COMMAND_WORD.toCharArray();
         commandWord[commandWord.length / 2] = Character.toUpperCase(commandWord[commandWord.length / 2]);
         assertRestoreWithCommandWord(String.copyValueOf(commandWord));
     }
 
-    @Test
+    @Ignore
     public void restore_allCharUppercase_success() {
         String commandWord = RestoreCommand.COMMAND_WORD.toUpperCase();
         assertRestoreWithCommandWord(commandWord);
     }
 
-    @Test
+    @Ignore
     public void restore_tabAutocomplete_success() {
         for (int i = 3; i < RestoreCommand.COMMAND_WORD.length(); ++i) {
             assertRestoreTabAutocomplete(RestoreCommand.COMMAND_WORD.substring(0, i));

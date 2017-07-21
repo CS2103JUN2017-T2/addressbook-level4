@@ -421,7 +421,17 @@ public class EntryBook implements ReadOnlyEntryBook {
             }
 
         } else if (entryToChange instanceof Deadline) {
+            // Checks if there will be overlapping deadline after entryToChange is set to active.
+            Entry prospectiveEntry = EntryBuilder.build(entryToChange);
+            prospectiveEntry.setState(newState);
+            boolean deadlineIsDue = newState.equals(Entry.State.ACTIVE)
+                                    && ((Deadline) prospectiveEntry).isOverdue();
+
             _deadlineList.changeEntryState(entryToChange, newState);
+
+            if (deadlineIsDue) {
+                throw new EntryOverdueException();
+            }
         } else {
             assert (entryToChange instanceof FloatingTask);
             _floatingTaskList.changeEntryState(entryToChange, newState);
