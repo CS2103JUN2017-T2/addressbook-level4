@@ -29,7 +29,7 @@ public class UndoRedoCommandTest extends EntryBookGuiTest {
 
     @Test
     public void redo_shortcutNoSnapshot_errorMessage() {
-        commandBox.pressKeyCombination(new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN));
+        commandBox.pressKeyCombination(new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_DOWN));
         assertResultMessage(RedoCommand.MESSAGE_FAILURE);
     }
 
