@@ -113,7 +113,6 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
                 return p.toModelType();
             } catch (Exception e) {
                 e.printStackTrace();
-                // TODO: better error handling
                 return null;
             }
         }).collect(Collectors.toCollection(FXCollections::observableArrayList));
@@ -127,7 +126,6 @@ public class XmlSerializableEntryBook implements ReadOnlyEntryBook {
                 return t.toModelType();
             } catch (IllegalValueException e) {
                 e.printStackTrace();
-                // TODO: better error handling
                 return null;
             }
         }).collect(Collectors.toCollection(FXCollections::observableArrayList));
