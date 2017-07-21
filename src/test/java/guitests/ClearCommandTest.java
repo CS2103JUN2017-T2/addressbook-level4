@@ -149,7 +149,7 @@ public class ClearCommandTest extends EntryBookGuiTest {
     public void clear_completeEventAfterClearBin_success() {
         assertClearBinCommandSuccess();
         commandBox.runCommand(CommandUtil.getAddEventCommand(SampleEntries.CAT));
-        commandBox.runCommand(CommandUtil.getDeleteEventByFullNameCommand(SampleEntries.CAT));
+        commandBox.runCommand(CommandUtil.getDeleteByFullNameCommand(SampleEntries.CAT));
         commandBox.runCommand(CommandUtil.getListBinCommand());
         assertTrue(eventListPanel.isListMatching(SampleEntries.CAT));
     }
@@ -160,7 +160,7 @@ public class ClearCommandTest extends EntryBookGuiTest {
     public void clear_completeDeadlineAfterClearBin_success() {
         assertClearBinCommandSuccess();
         commandBox.runCommand(CommandUtil.getAddDeadlineCommand(SampleEntries.SUBMISSION));
-        commandBox.runCommand(CommandUtil.getDeleteEventByFullNameCommand(SampleEntries.SUBMISSION));
+        commandBox.runCommand(CommandUtil.getDeleteByFullNameCommand(SampleEntries.SUBMISSION));
         commandBox.runCommand(CommandUtil.getListBinCommand());
         assertTrue(deadlineListPanel.isListMatching(SampleEntries.SUBMISSION));
     }
@@ -171,7 +171,7 @@ public class ClearCommandTest extends EntryBookGuiTest {
     public void clear_completeFloatingTaskAfterClearBin_success() {
         assertClearBinCommandSuccess();
         commandBox.runCommand(CommandUtil.getAddFloatingTaskCommand(SampleEntries.CLEAN));
-        commandBox.runCommand(CommandUtil.getDeleteEventByFullNameCommand(SampleEntries.CLEAN));
+        commandBox.runCommand(CommandUtil.getDeleteByFullNameCommand(SampleEntries.CLEAN));
         commandBox.runCommand(CommandUtil.getListBinCommand());
         assertTrue(floatingTaskListPanel.isListMatching(SampleEntries.CLEAN));
     }

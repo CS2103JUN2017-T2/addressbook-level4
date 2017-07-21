@@ -48,7 +48,7 @@ public class CommandUtil {
     /**
      * Returns a delete command string for deleting by an entry's full name.
      */
-    public static String getDeleteEventByFullNameCommand(ReadOnlyEntry entry) {
+    public static String getDeleteByFullNameCommand(ReadOnlyEntry entry) {
         return DeleteCommand.COMMAND_WORD + " " + entry.getName().toString();
     }
 
@@ -73,7 +73,18 @@ public class CommandUtil {
     public static String getDeleteFloatingTaskByIndexCommand(Index index) {
         return DeleteCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_FLOATINGTASK + " " + index.getOneBased();
     }
+    // @@author
 
+    // @@author A0126623L
+    /**
+     * Returns a delete command string for deleting by an entry's full name.
+     */
+    public static String getRestoreEventByFullNameCommand(ReadOnlyEntry entry) {
+        return DeleteCommand.COMMAND_WORD + " " + entry.getName().toString();
+    }
+    // @@author
+
+    // @@author A0125586X
     /**
      * Returns an edit command string for editing an event by index.
      */
