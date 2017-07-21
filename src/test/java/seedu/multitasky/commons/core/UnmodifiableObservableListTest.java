@@ -85,7 +85,7 @@ public class UnmodifiableObservableListTest {
 
     private class BasicListChangeListener implements ListChangeListener<Integer> {
         @Override
-        public void onChanged(javafx.collections.ListChangeListener.Change<? extends Integer> c) {
+        public void onChanged(Change<? extends Integer> c) {
         }
     }
 
