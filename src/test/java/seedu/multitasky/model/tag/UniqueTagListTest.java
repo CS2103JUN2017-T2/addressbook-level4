@@ -188,7 +188,8 @@ public class UniqueTagListTest {
     @Test
     public void uniqueTagList_equals_false() throws Exception {
         UniqueTagList list = new UniqueTagList("tag1", "tag2");
-        assertFalse(list.equals(null));
+        UniqueTagList list2 = null;
+        assertFalse(list.equals(list2));
     }
 
     // @@author A0125586X
