@@ -37,10 +37,6 @@ public class CompleteByFindCommand extends CompleteCommand {
         this.keywords = keywords;
     }
 
-    public Set<String> getKeywords() {
-        return keywords;
-    }
-
     @Override
     public CommandResult execute() throws CommandException, DuplicateEntryException {
 

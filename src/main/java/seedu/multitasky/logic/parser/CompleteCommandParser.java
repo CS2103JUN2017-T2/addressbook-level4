@@ -22,10 +22,6 @@ import seedu.multitasky.logic.parser.exceptions.ParseException;
 public class CompleteCommandParser {
     private ArgumentMultimap argMultimap;
 
-    public ArgumentMultimap getArgMultimap() {
-        return argMultimap;
-    }
-
     /**
      * Parses the given {@code String} of arguments in the context of the CompleteCommand and returns a
      * CompleteCommand object for execution.
