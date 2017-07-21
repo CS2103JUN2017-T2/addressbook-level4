@@ -21,7 +21,6 @@ import guitests.guihandles.MainMenuHandle;
 import guitests.guihandles.MainWindowHandle;
 import guitests.guihandles.ResultDisplayHandle;
 import guitests.guihandles.StatusBarFooterHandle;
-
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import seedu.multitasky.TestApp;
@@ -43,8 +42,8 @@ public abstract class EntryBookGuiTest {
     public TestName name = new TestName();
 
     /*
-     *   Handles to GUI elements present at the start up are created in advance
-     *   for easy access from child classes.
+     * Handles to GUI elements present at the start up are created in advance
+     * for easy access from child classes.
      */
     protected MainWindowHandle mainGui;
     protected MainMenuHandle mainMenu;
@@ -86,7 +85,8 @@ public abstract class EntryBookGuiTest {
         EventsCenter.clearSubscribers();
         FxToolkit.setupApplication(() -> new TestApp(this::getInitialData, getDataFileLocation()));
         FxToolkit.showStage();
-        while (!stage.isShowing());
+        while (!stage.isShowing())
+            ;
         mainGui.focusOnMainApp();
     }
 
@@ -95,7 +95,8 @@ public abstract class EntryBookGuiTest {
      * Return null to use the data in the file specified in {@link #getDataFileLocation()}
      */
     protected EntryBook getInitialData() {
-        return SampleEntries.getSampleEntryBookWithActiveEntries();
+        // return SampleEntries.getSampleEntryBookWithActiveEntries();
+        return SampleEntries.getSampleEntryBook();
     }
 
     /**
@@ -156,7 +157,8 @@ public abstract class EntryBookGuiTest {
     }
 
     public void raise(BaseEvent e) {
-        //JUnit doesn't run its test cases on the UI thread. Platform.runLater is used to post event on the UI thread.
+        // JUnit doesn't run its test cases on the UI thread. Platform.runLater is used to post event on the
+        // UI thread.
         Platform.runLater(() -> EventsCenter.getInstance().post(e));
     }
 }

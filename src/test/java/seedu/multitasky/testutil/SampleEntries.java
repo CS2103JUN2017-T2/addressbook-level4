@@ -78,7 +78,7 @@ public class SampleEntries {
                                      new GregorianCalendar(2017, Calendar.SEPTEMBER, 11, 15, 00),
                                      "health");
             GYM.setState(Entry.State.DELETED);
-            PAINT = EntryBuilder.build("Buy grocery",
+            PAINT = EntryBuilder.build("Attend painting workshop",
                                        new GregorianCalendar(2017, Calendar.NOVEMBER, 21, 14, 00),
                                        new GregorianCalendar(2017, Calendar.NOVEMBER, 21, 16, 00),
                                        "hobby");
@@ -179,7 +179,7 @@ public class SampleEntries {
     // @@author A0126623L
     public static Entry[] getSampleArchivedEvents() {
         return new Entry[] {
-            ASSIGNMENT, SHOPPING
+            ASSIGNMENT
         };
     }
     // @@author
@@ -187,7 +187,7 @@ public class SampleEntries {
     // @@author A0126623L
     public static Entry[] getSampleArchivedDeadlines() {
         return new Entry[] {
-            QUIZ, REGISTRATION
+            QUIZ
         };
     }
     // @@author
@@ -195,7 +195,7 @@ public class SampleEntries {
     // @@author A0126623L
     public static Entry[] getSampleArchivedFloatingTasks() {
         return new Entry[] {
-            EXERCISE, BOOK
+            EXERCISE
         };
     }
     // @@author
@@ -211,7 +211,7 @@ public class SampleEntries {
     // @@author A0126623L
     public static Entry[] getSampleDeletedEvents() {
         return new Entry[] {
-            GYM, PAINT
+            GYM
         };
     }
     // @@author
@@ -219,7 +219,7 @@ public class SampleEntries {
     // @@author A0126623L
     public static Entry[] getSampleDeletedDeadlines() {
         return new Entry[] {
-            APPOINTMENT, EMAIL
+            APPOINTMENT
         };
     }
     // @@author
@@ -227,7 +227,7 @@ public class SampleEntries {
     // @@author A0126623L
     public static Entry[] getSampleDeletedFloatingTasks() {
         return new Entry[] {
-            BAKE, SING
+            BAKE
         };
     }
     // @@author
@@ -299,20 +299,6 @@ public class SampleEntries {
     public static EntryBook getSampleEntryBookWithActiveEntries() {
         EntryBook entryBook = new EntryBook();
         loadEntryBookWithSampleActiveEntries(entryBook);
-        return entryBook;
-    }
-    // @@author
-
-    // @@author A0126623L
-    /**
-     * @return  an {@code EntryBook} with sample events, deadlines and floating tasks
-     *          of various states (i.e. active, archived, deleted).
-     */
-    public static EntryBook getSampleEntryBookEntries() {
-        EntryBook entryBook = new EntryBook();
-        loadEntryBookWithSampleActiveEntries(entryBook);
-        loadEntryBookWithSampleArchivedEntries(entryBook);
-        loadEntryBookWithSampleDeletedEntries(entryBook);
         return entryBook;
     }
     // @@author
