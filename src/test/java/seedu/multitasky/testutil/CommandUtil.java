@@ -81,7 +81,7 @@ public class CommandUtil {
      * Returns a delete command string for deleting by an entry's full name.
      */
     public static String getRestoreByFullNameCommand(ReadOnlyEntry entry) {
-        return DeleteCommand.COMMAND_WORD + " " + entry.getName().toString();
+        return RestoreCommand.COMMAND_WORD + " " + entry.getName().toString();
     }
     // @@author
 
