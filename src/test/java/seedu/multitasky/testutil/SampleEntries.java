@@ -105,7 +105,7 @@ public class SampleEntries {
             REGISTRATION = EntryBuilder.build("Register for marathon",
                                               new GregorianCalendar(2017, Calendar.NOVEMBER, 19, 10, 0),
                                               "health");
-            ASSIGNMENT.setState(Entry.State.ARCHIVED);
+            REGISTRATION.setState(Entry.State.ARCHIVED);
             // Deadlines (bin)
             APPOINTMENT = EntryBuilder.build("Make health check appointment",
                                              new GregorianCalendar(2017, Calendar.APRIL, 16, 00, 00),
@@ -130,7 +130,7 @@ public class SampleEntries {
             SELL = EntryBuilder.build("Sell old things",
                                       "sale", "clutter");
             // Floating Tasks (archive)
-            EXERCISE = EntryBuilder.build("Go Jogging",
+            EXERCISE = EntryBuilder.build("Go jogging",
                                           "health");
             EXERCISE.setState(Entry.State.ARCHIVED);
             BOOK = EntryBuilder.build("Read books",

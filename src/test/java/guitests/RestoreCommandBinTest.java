@@ -16,16 +16,16 @@ import seedu.multitasky.testutil.SampleEntries;
 import seedu.multitasky.testutil.TestUtil;
 
 // @@author A0126623L-reused
-public class RestoreCommandTest extends EntryBookGuiTest {
+public class RestoreCommandBinTest extends EntryBookGuiTest {
 
     // @@author A0126623L
     @Before
-    public void listDeletedEntries() {
+    public void setUp() {
         commandBox.runCommand(CommandUtil.getListBinCommand());
     }
     // @@author
 
-    // @@author A0126623L reused
+    // @@author A0126623L-reused
     /**********************
      * Restoring by Index *
      *********************/
