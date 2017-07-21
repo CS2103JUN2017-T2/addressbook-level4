@@ -20,13 +20,13 @@ public class CompleteCommandTest extends EntryBookGuiTest {
      **************************/
 
     @Test
-    public void complete_noArgsEmptyCompleteCommand_failure() {
+    public void complete_noArgsEmptyCompleteCommand_error() {
         commandBox.runCommand(CompleteCommand.COMMAND_WORD);
         assertResultMessage(String.format(MESSAGE_INVALID_COMMAND_FORMAT, CompleteCommand.MESSAGE_USAGE));
     }
 
     @Test
-    public void complete_invalidFlagCombination_failure() {
+    public void complete_invalidFlagCombination_error() {
         commandBox.runCommand(CompleteCommand.COMMAND_WORD + " "
                               + CliSyntax.PREFIX_FLOATINGTASK + " "
                               + CliSyntax.PREFIX_DEADLINE);
@@ -44,7 +44,7 @@ public class CompleteCommandTest extends EntryBookGuiTest {
     }
 
     @Test
-    public void complete_nonIntegerIndexTypeString_failure() {
+    public void complete_nonIntegerIndexTypeString_error() {
         String stringIndex = "RANDOM";
         commandBox.runCommand(CompleteCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_FLOATINGTASK + " " + stringIndex);
         assertResultMessage(ParserUtil.MESSAGE_INVALID_INDEX);
@@ -62,7 +62,7 @@ public class CompleteCommandTest extends EntryBookGuiTest {
     }
 
     @Test
-    public void complete_invalidIndex_failure() {
+    public void complete_invalidIndex_error() {
         Entry[] currentList = SampleEntries.getSampleActiveEvents();
         int index = currentList.length + 1;
         commandBox.runCommand(CompleteCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_EVENT + " " + index);
@@ -81,13 +81,13 @@ public class CompleteCommandTest extends EntryBookGuiTest {
     }
 
     @Test
-    public void complete_noEntriesExist_failure() {
+    public void complete_noEntriesExist_error() {
         commandBox.runCommand(CompleteCommand.COMMAND_WORD + " doesn't exist");
         assertResultMessage(CompleteByFindCommand.MESSAGE_NO_ENTRIES);
     }
 
     @Test
-    public void complete_multipleEntriesExist_failure() {
+    public void complete_multipleEntriesExist_error() {
         commandBox.runCommand(CompleteCommand.COMMAND_WORD + " cook");
         assertResultMessage(CompleteByFindCommand.MESSAGE_MULTIPLE_ENTRIES);
     }
