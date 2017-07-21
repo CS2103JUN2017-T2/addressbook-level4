@@ -9,10 +9,12 @@ import java.io.IOException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
 import seedu.multitasky.commons.events.storage.DataSavingExceptionEvent;
+import seedu.multitasky.commons.util.FileUtil;
 import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.ReadOnlyEntryBook;
 import seedu.multitasky.model.UserPrefs;
@@ -21,8 +23,12 @@ import seedu.multitasky.testutil.SampleEntries;
 
 public class StorageManagerTest {
 
+    private static final String TEST_DATA_FOLDER = FileUtil.getPath("./src/test/data/StorageManagerTest/");
     @Rule
     public TemporaryFolder testFolder = new TemporaryFolder();
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     private StorageManager storageManager;
 
@@ -38,36 +44,51 @@ public class StorageManagerTest {
         return testFolder.getRoot().getPath() + fileName;
     }
 
-    @Test
-    public void prefsReadSave() throws Exception {
-        /*
-         * Note: This is an integration test that verifies the StorageManager is properly wired to the
-         * {@link JsonUserPrefsStorage} class.
-         * More extensive testing of UserPref saving/reading is done in {@link JsonUserPrefsStorageTest} class.
-         */
-        UserPrefs original = new UserPrefs();
-        original.setGuiSettings(300, 600, 4, 6);
-        storageManager.saveUserPrefs(original);
-        UserPrefs retrieved = storageManager.readUserPrefs().get();
-        assertEquals(original, retrieved);
+    private String addToTestDataPathIfNotNull(String prefsFileInTestDataFolder) {
+        return prefsFileInTestDataFolder != null ? TEST_DATA_FOLDER + prefsFileInTestDataFolder : null;
     }
 
-    @Test
-    public void entryBookReadSave() throws Exception {
-        /*
-         * Note: This is an integration test that verifies the StorageManager is properly wired to the
-         * {@link XmlEntryBookStorage} class.
-         * More extensive testing of UserPref saving/reading is done in {@link XmlEntryBookStorageTest} class.
-         */
-        EntryBook original = SampleEntries.getSampleEntryBookWithActiveEntries();
-        storageManager.saveEntryBook(original);
-        ReadOnlyEntryBook retrieved = storageManager.readEntryBook().get();
-        assertEquals(original, new EntryBook(retrieved));
+    private void saveEntryBook(ReadOnlyEntryBook entryBook, String filePath) throws IOException {
+        new XmlEntryBookStorage(filePath).saveEntryBook(entryBook, addToTestDataPathIfNotNull(filePath));
     }
 
+    /***************************
+     * Unit Tests *
+     **************************/
     @Test
     public void getEntryBookFilePath() {
         assertNotNull(storageManager.getEntryBookFilePath());
+    }
+
+    @Test
+    public void getUserPrefsFilePath() {
+        assertNotNull(storageManager.getUserPrefsFilePath());
+    }
+
+    @Test
+    public void getEntryBookSnapshotPath() {
+        assertNotNull(storageManager.getEntryBookSnapshotPath());
+    }
+
+    @Test
+    public void setEntryBookFilePath() {
+        storageManager.setEntryBookFilePath("default.xml");
+        assertEquals(storageManager.getEntryBookFilePath(), "default.xml");
+    }
+
+    @Test
+    public void getPreviousEntryBookSnapshotPath() {
+        assertNotNull(StorageManager.getPreviousEntryBookSnapshotPath());
+    }
+
+    @Test
+    public void getNextEntryBookSnapshotPath() {
+        assertNotNull(StorageManager.getNextEntryBookSnapshotPath());
+    }
+
+    @Test
+    public void setEntryBookSnapshotPathAndUpdateIndex() {
+        assertNotNull(storageManager.setEntryBookSnapshotPathAndUpdateIndex());
     }
 
     @Test
@@ -95,4 +116,33 @@ public class StorageManagerTest {
         }
     }
 
+    /***************************
+     * Integration Tests *
+     **************************/
+    @Test
+    public void prefsReadSave() throws Exception {
+        /*
+         * Note: This is an integration test that verifies the StorageManager is properly wired to the
+         * {@link JsonUserPrefsStorage} class.
+         * More extensive testing of UserPref saving/reading is done in {@link JsonUserPrefsStorageTest} class.
+         */
+        UserPrefs original = new UserPrefs();
+        original.setGuiSettings(300, 600, 4, 6);
+        storageManager.saveUserPrefs(original);
+        UserPrefs retrieved = storageManager.readUserPrefs().get();
+        assertEquals(original, retrieved);
+    }
+
+    @Test
+    public void entryBookReadSave() throws Exception {
+        /*
+         * Note: This is an integration test that verifies the StorageManager is properly wired to the
+         * {@link XmlEntryBookStorage} class.
+         * More extensive testing of UserPref saving/reading is done in {@link XmlEntryBookStorageTest} class.
+         */
+        EntryBook original = SampleEntries.getSampleEntryBookWithActiveEntries();
+        storageManager.saveEntryBook(original);
+        ReadOnlyEntryBook retrieved = storageManager.readEntryBook().get();
+        assertEquals(original, new EntryBook(retrieved));
+    }
 }

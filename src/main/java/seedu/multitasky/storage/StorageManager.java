@@ -120,6 +120,21 @@ public class StorageManager extends ComponentManager implements Storage {
     }
 
     /**
+     * Gets the filepath of the most current snapshot xml file and increments index by one.
+     */
+    public String setEntryBookSnapshotPathAndUpdateIndex() {
+        UserPrefs.incrementIndexByOne();
+        return getEntryBookSnapshotPath();
+    }
+
+    /**
+     * Saves the entryBookSnapshot at the file path given by above method.
+     */
+    public void saveEntryBookSnapshot(ReadOnlyEntryBook entryBook) throws IOException {
+        saveEntryBook(entryBook, setEntryBookSnapshotPathAndUpdateIndex());
+    }
+
+    /**
      * Loads data from the given file.
      *
      * @throws Exception
@@ -131,22 +146,6 @@ public class StorageManager extends ComponentManager implements Storage {
         } catch (Exception e) {
             throw new Exception("Nothing to load from!");
         }
-    }
-
-    /**
-     * Gets the filepath of the most current snapshot xml file and increments index by one.
-     */
-    public String setEntryBookSnapshotPathAndUpdateIndex() {
-        UserPrefs.incrementIndexByOne();
-        String snapshotPath = getEntryBookSnapshotPath();
-        return snapshotPath;
-    }
-
-    /**
-     * Saves the entryBookSnapshot at the file path given by above method.
-     */
-    public void saveEntryBookSnapshot(ReadOnlyEntryBook entryBook) throws IOException {
-        saveEntryBook(entryBook, setEntryBookSnapshotPathAndUpdateIndex());
     }
 
     /**
