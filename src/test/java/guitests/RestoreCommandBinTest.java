@@ -110,7 +110,7 @@ public class RestoreCommandBinTest extends EntryBookGuiTest {
         Entry[] currentList = SampleEntries.getSampleDeletedEvents();
         Entry entryToRestore = SampleEntries.GYM;
         commandBox.runCommand(RestoreCommand.COMMAND_WORD + " gym");
-        assertEventRestoredByKeyword(entryToRestore, currentList);
+        assertEventRestoredNormally(entryToRestore, currentList);
     }
 
     @Test
@@ -118,7 +118,7 @@ public class RestoreCommandBinTest extends EntryBookGuiTest {
         Entry[] currentList = SampleEntries.getSampleDeletedDeadlines();
         Entry entryToRestore = SampleEntries.APPOINTMENT;
         commandBox.runCommand(RestoreCommand.COMMAND_WORD + " appointment");
-        assertDeadlineRestoredByKeyword(entryToRestore, currentList);
+        assertDeadlineRestored(entryToRestore, currentList);
     }
 
     @Test
@@ -126,7 +126,7 @@ public class RestoreCommandBinTest extends EntryBookGuiTest {
         Entry[] currentList = SampleEntries.getSampleDeletedFloatingTasks();
         Entry entryToRestore = SampleEntries.BAKE;
         commandBox.runCommand(RestoreCommand.COMMAND_WORD + " baking");
-        assertFloatingTaskRestoredByKeyword(entryToRestore, currentList);
+        assertFloatingTaskRestoredNormally(entryToRestore, currentList);
     }
 
     // @@author A0126623L
@@ -144,7 +144,7 @@ public class RestoreCommandBinTest extends EntryBookGuiTest {
     }
 
     @Test
-    public void restore_overdueDeadline_throwEntryOverdueException() {
+    public void restore_overdueDeadline_overdueEntryAlertDisplayed() {
         try {
             Entry overdueDeadline = createOverdueDeadline();
 
@@ -246,7 +246,7 @@ public class RestoreCommandBinTest extends EntryBookGuiTest {
         Entry entryToRestore = currentList[targetIndex.getZeroBased()];
         commandBox.runCommand(commandWord + " " + CliSyntax.PREFIX_FLOATINGTASK
                               + " " + targetIndex.getOneBased());
-        assertFloatingTaskRestored(entryToRestore, currentList);
+        assertFloatingTaskRestoredNormally(entryToRestore, currentList);
     }
 
     /**
@@ -256,7 +256,7 @@ public class RestoreCommandBinTest extends EntryBookGuiTest {
     private void assertRestoreEventByIndexSuccess(Index index, final Entry[] currentList) {
         Entry entryToRestore = currentList[index.getZeroBased()];
         commandBox.runCommand(CommandUtil.getRestoreEventByIndexCommand(index));
-        assertEventRestored(entryToRestore, currentList);
+        assertEventRestoredNormally(entryToRestore, currentList);
     }
 
     /**
@@ -276,17 +276,12 @@ public class RestoreCommandBinTest extends EntryBookGuiTest {
     private void assertRestoreFloatingTaskByIndexSuccess(Index index, final Entry[] currentList) {
         Entry entryToRestore = currentList[index.getZeroBased()];
         commandBox.runCommand(CommandUtil.getRestoreFloatingTaskByIndexCommand(index));
-        assertFloatingTaskRestored(entryToRestore, currentList);
+        assertFloatingTaskRestoredNormally(entryToRestore, currentList);
     }
 
-    private void assertEventRestored(Entry entryRestored, final Entry[] currentList) {
+    private void assertEventRestoredNormally(Entry entryRestored, final Entry[] currentList) {
         assertEventRemovedFromList(entryRestored, currentList);
         assertResultMessage(String.format(RestoreCommand.MESSAGE_SUCCESS, entryRestored));
-    }
-
-    private void assertEventRestoredByKeyword(Entry entryRestored, final Entry[] currentList) {
-        assertEventRemovedFromList(entryRestored, currentList);
-        assertResultMessage(String.format(RestoreByFindCommand.MESSAGE_SUCCESS, entryRestored));
     }
 
     private void assertDeadlineRestored(Entry entryRestored, final Entry[] currentList) {
@@ -294,19 +289,9 @@ public class RestoreCommandBinTest extends EntryBookGuiTest {
         assertResultMessage(String.format(RestoreCommand.MESSAGE_SUCCESS, entryRestored));
     }
 
-    private void assertDeadlineRestoredByKeyword(Entry entryRestored, final Entry[] currentList) {
-        assertDeadlineRemovedFromList(entryRestored, currentList);
-        assertResultMessage(String.format(RestoreByFindCommand.MESSAGE_SUCCESS, entryRestored));
-    }
-
-    private void assertFloatingTaskRestored(Entry entryRestored, final Entry[] currentList) {
+    private void assertFloatingTaskRestoredNormally(Entry entryRestored, final Entry[] currentList) {
         assertFloatingTaskRemovedFromList(entryRestored, currentList);
         assertResultMessage(String.format(RestoreCommand.MESSAGE_SUCCESS, entryRestored));
-    }
-
-    private void assertFloatingTaskRestoredByKeyword(Entry entryRestored, final Entry[] currentList) {
-        assertFloatingTaskRemovedFromList(entryRestored, currentList);
-        assertResultMessage(String.format(RestoreByFindCommand.MESSAGE_SUCCESS, entryRestored));
     }
 
     private void assertEventRemovedFromList(Entry entryRestored, final Entry[] currentList) {
