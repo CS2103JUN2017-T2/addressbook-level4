@@ -34,7 +34,7 @@ import seedu.multitasky.testutil.SampleEntries;
  */
 public class EditCommandTest {
 
-    private Model model = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
+    private Model model = new ModelManager(SampleEntries.getSampleEntryBookWithActiveEntries(), new UserPrefs());
 
     @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() throws Exception {
@@ -43,7 +43,7 @@ public class EditCommandTest {
         EditEntryDescriptor descriptor = new EditEntryDescriptorBuilder(editedEntry).build();
         EditCommand editCommand = prepareCommand(INDEX_FIRST_ENTRY, descriptor);
         String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, targetEntry, editedEntry);
-        Model expectedModel = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
+        Model expectedModel = new ModelManager(SampleEntries.getSampleEntryBookWithActiveEntries(), new UserPrefs());
         expectedModel.updateEntry(targetEntry, editedEntry);
         CommandResult result = editCommand.execute();
 

@@ -95,7 +95,7 @@ public abstract class EntryBookGuiTest {
      * Return null to use the data in the file specified in {@link #getDataFileLocation()}
      */
     protected EntryBook getInitialData() {
-        return SampleEntries.getSampleEntryBook();
+        return SampleEntries.getSampleEntryBookWithActiveEntries();
     }
 
     /**

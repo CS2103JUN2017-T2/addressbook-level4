@@ -60,7 +60,7 @@ public class AddCommandTest extends EntryBookGuiTest {
      **************************/
     @Test
     public void add_eventsToExistingList_success() {
-        Entry[] currentList = SampleEntries.getSampleEvents();
+        Entry[] currentList = SampleEntries.getSampleActiveEvents();
         Entry entryToAdd = SampleEntries.MOVIE;
         currentList = assertAddEvent(entryToAdd, currentList);
 
@@ -70,7 +70,7 @@ public class AddCommandTest extends EntryBookGuiTest {
 
     @Test
     public void add_deadlinesToExistingList_success() {
-        Entry[] currentList = SampleEntries.getSampleDeadlines();
+        Entry[] currentList = SampleEntries.getSampleActiveDeadlines();
         Entry entryToAdd = SampleEntries.SUBMISSION;
         currentList = assertAddDeadline(entryToAdd, currentList);
 
@@ -80,7 +80,7 @@ public class AddCommandTest extends EntryBookGuiTest {
 
     @Test
     public void add_floatingTaskToExistingList_success() {
-        Entry[] currentList = SampleEntries.getSampleFloatingTasks();
+        Entry[] currentList = SampleEntries.getSampleActiveFloatingTasks();
         Entry entryToAdd = SampleEntries.SPECTACLES;
         currentList = assertAddFloatingTask(entryToAdd, currentList);
 
@@ -105,7 +105,6 @@ public class AddCommandTest extends EntryBookGuiTest {
         commandBox.runCommand(AddCommand.COMMAND_WORD);
         assertResultMessage(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
     }
-
 
     @Test
     public void add_invalidEntryName_errorMessage() {
@@ -181,7 +180,7 @@ public class AddCommandTest extends EntryBookGuiTest {
      * Helps with the testing of command words with different character cases
      */
     private void assertAddWithCommandWord(String commandWord) {
-        Entry[] currentList = SampleEntries.getSampleFloatingTasks();
+        Entry[] currentList = SampleEntries.getSampleActiveFloatingTasks();
         Entry entryToAdd = SampleEntries.SPECTACLES;
         commandBox.runCommand(commandWord + " " + CommandUtil.getFloatingTaskDetails(entryToAdd));
         assertFloatingTaskAdded(entryToAdd, currentList);
@@ -216,8 +215,8 @@ public class AddCommandTest extends EntryBookGuiTest {
      */
     private void assertCleared() {
         commandBox.runCommand(ClearCommand.COMMAND_WORD);
-        //commandBox.runCommand(ClearCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_ARCHIVE);
-        //commandBox.runCommand(ClearCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_BIN);
+        // commandBox.runCommand(ClearCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_ARCHIVE);
+        // commandBox.runCommand(ClearCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_BIN);
         assertTrue(eventListPanel.isEmpty());
         assertTrue(deadlineListPanel.isEmpty());
         assertTrue(floatingTaskListPanel.isEmpty());

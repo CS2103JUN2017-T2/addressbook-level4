@@ -20,7 +20,7 @@ public class ClearCommandTest {
 
     @Test
     public void execute_nonEmptyEntryBook_success() {
-        Model model = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
+        Model model = new ModelManager(SampleEntries.getSampleEntryBookWithActiveEntries(), new UserPrefs());
         assertCommandSuccess(model);
     }
 

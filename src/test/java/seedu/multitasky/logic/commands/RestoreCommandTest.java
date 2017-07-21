@@ -30,7 +30,7 @@ import seedu.multitasky.testutil.SampleEntries;
 */
 public class RestoreCommandTest {
 
-    private Model model = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
+    private Model model = new ModelManager(SampleEntries.getSampleEntryBookWithActiveEntries(), new UserPrefs());
 
     @Test
     public void execute_validIndexUnfilteredList_success() throws Exception {
@@ -40,7 +40,8 @@ public class RestoreCommandTest {
 
         String expectedMessage = String.format(RestoreCommand.MESSAGE_SUCCESS, entryToRestore);
 
-        ModelManager expectedModel = new ModelManager(SampleEntries.getSampleEntryBook(), new UserPrefs());
+        ModelManager expectedModel = new ModelManager(SampleEntries.getSampleEntryBookWithActiveEntries(),
+                                                      new UserPrefs());
         model.changeEntryState(entryToRestore, Entry.State.DELETED);
         expectedModel.updateAllFilteredListToShowAllActiveEntries();
 

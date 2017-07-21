@@ -59,7 +59,7 @@ public class StorageManagerTest {
          * {@link XmlEntryBookStorage} class.
          * More extensive testing of UserPref saving/reading is done in {@link XmlEntryBookStorageTest} class.
          */
-        EntryBook original = SampleEntries.getSampleEntryBook();
+        EntryBook original = SampleEntries.getSampleEntryBookWithActiveEntries();
         storageManager.saveEntryBook(original);
         ReadOnlyEntryBook retrieved = storageManager.readEntryBook().get();
         assertEquals(original, new EntryBook(retrieved));

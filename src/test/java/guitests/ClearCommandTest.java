@@ -20,10 +20,36 @@ public class ClearCommandTest extends EntryBookGuiTest {
         assertClearAllCommandSuccess();
         assertClearAllCommandSuccess();
     }
+    // @@author
+
+    // @@author A0126623L
+    @Test
+    public void clearActive_emptyList_success() {
+        assertClearActiveCommandSuccess();
+        assertClearActiveCommandSuccess();
+    }
+    // @@author
+
+    // @@author A0126623L
+    @Test
+    public void clearArchive_emptyList_success() {
+        assertClearArchiveCommandSuccess();
+        assertClearArchiveCommandSuccess();
+    }
+    // @@author
+
+    // @@author A0126623L
+    @Test
+    public void clearBin_emptyList_success() {
+        assertClearBinCommandSuccess();
+        assertClearBinCommandSuccess();
+    }
+    // @@author
 
     /*************************************
      * Adding after clearing all entries *
      *************************************/
+    // @@author A0125586X
     @Test
     public void clear_addEventAfterClearAll_success() {
         assertClearAllCommandSuccess();
@@ -44,34 +70,117 @@ public class ClearCommandTest extends EntryBookGuiTest {
         commandBox.runCommand(CommandUtil.getAddFloatingTaskCommand(SampleEntries.CLEAN));
         assertTrue(floatingTaskListPanel.isListMatching(SampleEntries.CLEAN));
     }
+    // @@author
 
     /********************************************
      * Adding after clearing all active entries *
      ********************************************/
+    // @@author A0126623L
     @Test
     public void clear_addEventAfterClearActive_success() {
         assertClearActiveCommandSuccess();
         commandBox.runCommand(CommandUtil.getAddEventCommand(SampleEntries.CAT));
+        commandBox.runCommand(CommandUtil.getListCommand());
         assertTrue(eventListPanel.isListMatching(SampleEntries.CAT));
     }
+    // @@author
 
+    // @@author A0126623L
     @Test
     public void clear_addDeadlineAfterClearActive_success() {
         assertClearActiveCommandSuccess();
         commandBox.runCommand(CommandUtil.getAddDeadlineCommand(SampleEntries.SUBMISSION));
+        commandBox.runCommand(CommandUtil.getListCommand());
         assertTrue(deadlineListPanel.isListMatching(SampleEntries.SUBMISSION));
     }
+    // @@author
 
+    // @@author A0126623L
     @Test
     public void clear_addFloatingTaskAfterClearActive_success() {
         assertClearActiveCommandSuccess();
         commandBox.runCommand(CommandUtil.getAddFloatingTaskCommand(SampleEntries.CLEAN));
+        commandBox.runCommand(CommandUtil.getListCommand());
         assertTrue(floatingTaskListPanel.isListMatching(SampleEntries.CLEAN));
     }
+    // @@author
+
+    /*********************************
+     * Adding after clearing archive *
+     *********************************/
+    // @@author A0126623L
+    @Test
+    public void clear_completeEventAfterClearArchive_success() {
+        assertClearArchiveCommandSuccess();
+        commandBox.runCommand(CommandUtil.getAddEventCommand(SampleEntries.CAT));
+        commandBox.runCommand(CommandUtil.getCompleteByFullNameCommand(SampleEntries.CAT));
+        commandBox.runCommand(CommandUtil.getListArchiveCommand());
+        assertTrue(eventListPanel.isListMatching(SampleEntries.CAT));
+    }
+    // @@author
+
+    // @@author A0126623L
+    @Test
+    public void clear_completeDeadlineAfterClearArchive_success() {
+        assertClearArchiveCommandSuccess();
+        commandBox.runCommand(CommandUtil.getAddDeadlineCommand(SampleEntries.SUBMISSION));
+        commandBox.runCommand(CommandUtil.getCompleteByFullNameCommand(SampleEntries.SUBMISSION));
+        commandBox.runCommand(CommandUtil.getListArchiveCommand());
+        assertTrue(deadlineListPanel.isListMatching(SampleEntries.SUBMISSION));
+    }
+    // @@author
+
+    // @@author A0126623L
+    @Test
+    public void clear_completeFloatingTaskAfterClearArchive_success() {
+        assertClearArchiveCommandSuccess();
+        commandBox.runCommand(CommandUtil.getAddFloatingTaskCommand(SampleEntries.CLEAN));
+        commandBox.runCommand(CommandUtil.getCompleteByFullNameCommand(SampleEntries.CLEAN));
+        commandBox.runCommand(CommandUtil.getListArchiveCommand());
+        assertTrue(floatingTaskListPanel.isListMatching(SampleEntries.CLEAN));
+    }
+    // @@author
+
+    /*****************************
+     * Adding after clearing bin *
+     *****************************/
+    // @@author A0126623L
+    @Test
+    public void clear_completeEventAfterClearBin_success() {
+        assertClearBinCommandSuccess();
+        commandBox.runCommand(CommandUtil.getAddEventCommand(SampleEntries.CAT));
+        commandBox.runCommand(CommandUtil.getDeleteByFullNameCommand(SampleEntries.CAT));
+        commandBox.runCommand(CommandUtil.getListBinCommand());
+        assertTrue(eventListPanel.isListMatching(SampleEntries.CAT));
+    }
+    // @@author
+
+    // @@author A0126623L
+    @Test
+    public void clear_completeDeadlineAfterClearBin_success() {
+        assertClearBinCommandSuccess();
+        commandBox.runCommand(CommandUtil.getAddDeadlineCommand(SampleEntries.SUBMISSION));
+        commandBox.runCommand(CommandUtil.getDeleteByFullNameCommand(SampleEntries.SUBMISSION));
+        commandBox.runCommand(CommandUtil.getListBinCommand());
+        assertTrue(deadlineListPanel.isListMatching(SampleEntries.SUBMISSION));
+    }
+    // @@author
+
+    // @@author A0126623L
+    @Test
+    public void clear_completeFloatingTaskAfterClearBin_success() {
+        assertClearBinCommandSuccess();
+        commandBox.runCommand(CommandUtil.getAddFloatingTaskCommand(SampleEntries.CLEAN));
+        commandBox.runCommand(CommandUtil.getDeleteByFullNameCommand(SampleEntries.CLEAN));
+        commandBox.runCommand(CommandUtil.getListBinCommand());
+        assertTrue(floatingTaskListPanel.isListMatching(SampleEntries.CLEAN));
+    }
+    // @@author
 
     /**************************************
      * Different types of invalid wording *
      **************************************/
+    // @@author A0125586X
     @Test
     public void clear_unknownCommandName_errorMessage() {
         commandBox.runCommand(ClearCommand.COMMAND_WORD.substring(0, ClearCommand.COMMAND_WORD.length() - 1));
@@ -89,7 +198,7 @@ public class ClearCommandTest extends EntryBookGuiTest {
         char[] commandWord = ClearCommand.COMMAND_WORD.toCharArray();
         commandWord[0] = Character.toUpperCase(commandWord[0]);
         commandBox.runCommand(String.copyValueOf(commandWord));
-        assertCleared();
+        assertCurrentlyViewedPanelCleared();
     }
 
     @Test
@@ -97,7 +206,7 @@ public class ClearCommandTest extends EntryBookGuiTest {
         char[] commandWord = ClearCommand.COMMAND_WORD.toCharArray();
         commandWord[commandWord.length - 1] = Character.toUpperCase(commandWord[commandWord.length - 1]);
         commandBox.runCommand(String.copyValueOf(commandWord));
-        assertCleared();
+        assertCurrentlyViewedPanelCleared();
     }
 
     @Test
@@ -105,14 +214,14 @@ public class ClearCommandTest extends EntryBookGuiTest {
         char[] commandWord = ClearCommand.COMMAND_WORD.toCharArray();
         commandWord[commandWord.length / 2] = Character.toUpperCase(commandWord[commandWord.length / 2]);
         commandBox.runCommand(String.copyValueOf(commandWord));
-        assertCleared();
+        assertCurrentlyViewedPanelCleared();
     }
 
     @Test
     public void clear_allCharUppercase_success() {
         String commandWord = ClearCommand.COMMAND_WORD.toUpperCase();
         commandBox.runCommand(commandWord);
-        assertCleared();
+        assertCurrentlyViewedPanelCleared();
     }
 
     @Test
@@ -139,21 +248,52 @@ public class ClearCommandTest extends EntryBookGuiTest {
         assertCommandBox(input);
     }
 
-    private void assertCleared() {
+    private void assertCurrentlyViewedPanelCleared() {
         assertTrue(eventListPanel.isEmpty());
         assertTrue(deadlineListPanel.isEmpty());
         assertTrue(floatingTaskListPanel.isEmpty());
     }
 
     private void assertClearAllCommandSuccess() {
-        commandBox.runCommand(ClearCommand.COMMAND_WORD + " all");
-        assertCleared();
-        assertResultMessage("Entry book has been cleared!");
+        commandBox.runCommand(CommandUtil.getClearAllCommand());
+        assertCurrentlyViewedPanelCleared();
+        assertResultMessage(ClearCommand.MESSAGE_ALL_SUCCESS);
     }
+    // @@author
 
+    // @@A0126623L
+    /**
+     * Executes {@code list}, followed by {@code clear}
+     */
     private void assertClearActiveCommandSuccess() {
-        commandBox.runCommand(ClearCommand.COMMAND_WORD);
-        assertCleared();
+        commandBox.runCommand(CommandUtil.getListCommand());
+        commandBox.runCommand(CommandUtil.getClearCommand());
+        assertCurrentlyViewedPanelCleared();
         assertResultMessage(ClearCommand.MESSAGE_ACTIVE_SUCCESS);
     }
+    // @@author
+
+    // @@author A0126623L
+    /**
+     * Executes {@code list archive}, followed by {@code clear archive}
+     */
+    private void assertClearArchiveCommandSuccess() {
+        commandBox.runCommand(CommandUtil.getListArchiveCommand());
+        commandBox.runCommand(CommandUtil.getClearArchiveCommand());
+        assertCurrentlyViewedPanelCleared();
+        assertResultMessage(ClearCommand.MESSAGE_ARCHIVE_SUCCESS);
+    }
+    // @@author
+
+    // @@author A0126623L
+    /**
+     * Executes {@code list bin}, followed by {@code clear bin}
+     */
+    private void assertClearBinCommandSuccess() {
+        commandBox.runCommand(CommandUtil.getListBinCommand());
+        commandBox.runCommand(CommandUtil.getClearBinCommand());
+        assertCurrentlyViewedPanelCleared();
+        assertResultMessage(ClearCommand.MESSAGE_BIN_SUCCESS);
+    }
+    // @@author
 }

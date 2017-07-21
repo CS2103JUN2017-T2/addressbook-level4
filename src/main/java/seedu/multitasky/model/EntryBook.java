@@ -365,6 +365,7 @@ public class EntryBook implements ReadOnlyEntryBook {
 
         ArrayList<ReadOnlyEntry> entriesToRemove = new ArrayList<>();
 
+        // TODO by ChuaPingChan: Refactoring required - SLAP.
         for (ReadOnlyEntry readOnlyEntry : _allEntriesList) {
             if (readOnlyEntry.getState() == state) {
                 entriesToRemove.add(readOnlyEntry);

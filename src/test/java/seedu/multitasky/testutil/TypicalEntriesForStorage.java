@@ -34,7 +34,7 @@ public class TypicalEntriesForStorage {
     }
 
     public static void loadEntryBookWithSampleData(EntryBook entryBook) throws DuplicateEntryException {
-        for (Entry entry : SampleEntries.getSampleFloatingTasks()) {
+        for (Entry entry : SampleEntries.getSampleActiveFloatingTasks()) {
             try {
                 entryBook.addEntry(new FloatingTask(entry));
             } catch (OverlappingEventException oee) {

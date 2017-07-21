@@ -4,13 +4,17 @@ import java.util.Calendar;
 
 import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.logic.commands.AddCommand;
+import seedu.multitasky.logic.commands.ClearCommand;
+import seedu.multitasky.logic.commands.CompleteCommand;
 import seedu.multitasky.logic.commands.DeleteCommand;
 import seedu.multitasky.logic.commands.EditCommand;
+import seedu.multitasky.logic.commands.ListCommand;
 import seedu.multitasky.logic.parser.CliSyntax;
 import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.Event;
 import seedu.multitasky.model.entry.FloatingTask;
+import seedu.multitasky.model.entry.ReadOnlyEntry;
 
 // @@author A0125586X
 /**
@@ -38,7 +42,17 @@ public class CommandUtil {
     public static String getAddFloatingTaskCommand(Entry entry) {
         return AddCommand.COMMAND_WORD + " " + getFloatingTaskDetails(entry);
     }
+    // @@author
 
+    // @@author A0126623L
+    /**
+     * Returns a delete command string for deleting by an entry's full name.
+     */
+    public static String getDeleteByFullNameCommand(ReadOnlyEntry entry) {
+        return DeleteCommand.COMMAND_WORD + " " + entry.getName().toString();
+    }
+
+    // @@author A0125586X
     /**
      * Returns a delete command string for deleting an event by index.
      */
@@ -59,7 +73,18 @@ public class CommandUtil {
     public static String getDeleteFloatingTaskByIndexCommand(Index index) {
         return DeleteCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_FLOATINGTASK + " " + index.getOneBased();
     }
+    // @@author
 
+    // @@author A0126623L
+    /**
+     * Returns a delete command string for deleting by an entry's full name.
+     */
+    public static String getRestoreEventByFullNameCommand(ReadOnlyEntry entry) {
+        return DeleteCommand.COMMAND_WORD + " " + entry.getName().toString();
+    }
+    // @@author
+
+    // @@author A0125586X
     /**
      * Returns an edit command string for editing an event by index.
      */
@@ -80,7 +105,8 @@ public class CommandUtil {
      * Returns an edit command string for editing a floating task by index.
      */
     public static String getEditFloatingTaskByIndexCommand(Index index, Entry editedEntry) {
-        return EditCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_FLOATINGTASK + " " + index.getOneBased() + " "
+        return EditCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_FLOATINGTASK + " " + index.getOneBased()
+               + " "
                + CliSyntax.PREFIX_NAME + " " + getFloatingTaskDetails(editedEntry);
     }
 
@@ -157,7 +183,7 @@ public class CommandUtil {
         assert calendar != null;
         StringBuilder builder = new StringBuilder();
         // Currently prettyTime parses date strings in MM/DD/YY format
-        builder.append(calendar.get(Calendar.MONTH) + 1).append("/") // +1 due to MONTH being 0-based (JAN = 0)
+        builder.append(calendar.get(Calendar.MONTH) + 1).append("/") // MONTH being 0-based (JAN = 0)
                .append(calendar.get(Calendar.DAY_OF_MONTH)).append("/")
                .append(calendar.get(Calendar.YEAR)).append(" ");
         if (calendar.get(Calendar.HOUR_OF_DAY) < 10) {
@@ -172,5 +198,113 @@ public class CommandUtil {
         }
         return builder.toString();
     }
+
+    // @@author A0126623L
+    /**
+     * Returns an list command string for listing active entries.
+     */
+    public static String getListCommand() {
+        return ListCommand.COMMAND_WORD;
+    }
+    // @@ author
+
+    // @@author A0126623L
+    /**
+     * Returns an list command string for listing archive.
+     */
+    public static String getListArchiveCommand() {
+        return ListCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_ARCHIVE;
+    }
+    // @@ author
+
+    // @@author A0126623L
+    /**
+     * Returns an list command string for listing bin.
+     */
+    public static String getListBinCommand() {
+        return ListCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_BIN;
+    }
+    // @@ author
+
+    // @@author A0126623L
+    /**
+     * Returns an list command string for listing all entries.
+     */
+    public static String getListAllCommand() {
+        return ListCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_ALL;
+    }
+    // @@ author
+
+    // @@author A0126623L
+    /**
+     * Returns a clear command string for clearing active entries.
+     */
+    public static String getClearCommand() {
+        return ClearCommand.COMMAND_WORD;
+    }
+    // @@ author
+
+    // @@author A0126623L
+    /**
+     * Returns a clear command string for clearing archive.
+     */
+    public static String getClearArchiveCommand() {
+        return ClearCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_ARCHIVE;
+    }
+    // @@ author
+
+    // @@author A0126623L
+    /**
+     * Returns a clear command string for clearing bin.
+     */
+    public static String getClearBinCommand() {
+        return ClearCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_BIN;
+    }
+    // @@ author
+
+    // @@author A0126623L
+    /**
+     * Returns a clear command string for clearing all entries.
+     */
+    public static String getClearAllCommand() {
+        return ClearCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_ALL;
+    }
+    // @@ author
+
+    // @@author A0126623L
+    /**
+     * Returns an complete command string for complete by matching an entry's full name.
+     */
+    public static String getCompleteByFullNameCommand(Entry entry) {
+        return CompleteCommand.COMMAND_WORD + " " + entry.getName().toString();
+    }
+    // @@ author
+
+    // @@author A0126623L
+    /**
+     * Returns an list command string for listing all entries.
+     */
+    public static String getCompleteEventByIndexCommand(int index) {
+        return CompleteCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_EVENT + " " + index;
+    }
+    // @@ author
+
+    // @@author A0126623L
+    /**
+     * Returns an list command string for listing all entries.
+     */
+    public static String getCompleteDeadlineByIndexCommand(int index) {
+        return CompleteCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_DEADLINE + " " + index;
+    }
+    // @@ author
+
+    // @@author A0126623L
+    /**
+     * Returns an list command string for listing all entries.
+     */
+    public static String getCompleteFloatingTaskByIndexCommand(int index) {
+        return CompleteCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_FLOATINGTASK + " " + index;
+    }
+    // @@ author
 
 }
