@@ -13,7 +13,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.events.ui.NewResultAvailableEvent;
-import seedu.multitasky.commons.events.ui.ResultStyleChangeEvent;
 import seedu.multitasky.logic.Logic;
 import seedu.multitasky.logic.commands.CommandResult;
 import seedu.multitasky.logic.commands.ListCommand;
@@ -24,6 +23,7 @@ import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.ui.util.CommandAutocomplete;
 import seedu.multitasky.ui.util.CommandHistory;
 import seedu.multitasky.ui.util.TextAutocomplete;
+import seedu.multitasky.ui.util.TextHistory;
 
 //@@author A0125586X
 /**
@@ -44,23 +44,27 @@ public class CommandBox extends UiPart<Region> {
     private final Logic logic;
 
     private TextAutocomplete autocomplete;
-    private CommandHistory commandHistory;
+    private TextHistory commandHistory;
+
+    private ResultDisplay resultDisplay;
 
     @FXML
     private TextField commandTextField;
 
     private Date tabPressTime;
 
-    public CommandBox(Logic logic) {
+    public CommandBox(Logic logic, ResultDisplay resultDisplay) {
         super(FXML);
         this.logic = logic;
-        commandHistory = new CommandHistory(getRoot(), commandTextField);
+        this.resultDisplay = resultDisplay;
         autocomplete = new CommandAutocomplete(CommandUtil.COMMAND_WORDS, CommandUtil.COMMAND_KEYWORDS,
                                                CommandUtil.PREFIX_ONLY_COMMANDS);
+        commandHistory = new CommandHistory();
         tabPressTime = new Date();
         setCommandTextFieldFocus();
         onlyShowActiveEntries();
         setupCommandAutocompleteShortcut();
+        setupCommandHistoryShortcuts();
         registerAsAnEventHandler(this);
     }
 
@@ -97,7 +101,7 @@ public class CommandBox extends UiPart<Region> {
 
     @FXML
     private void handleCommandInputChanged() {
-        commandHistory.saveCommand();
+        commandHistory.save(getText());
         executeCommand(commandTextField.getText().trim());
         commandTextField.setText("");
     }
@@ -142,6 +146,25 @@ public class CommandBox extends UiPart<Region> {
                     } else {
                         setText(autocomplete.autocomplete(commandTextField.getText().trim()));
                     }
+                    setText(autocomplete.autocomplete(getText()));
+                }
+            }
+        });
+    }
+
+    /**
+     * Sets up the {@code UP} and {@code DOWN} arrow keys as shortcuts for the command history.
+     */
+    private void setupCommandHistoryShortcuts() {
+        getRoot().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.UP || event.getCode() == KeyCode.KP_UP) {
+                    event.consume();
+                    setText(commandHistory.getPrevious(getText()));
+                } else if (event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.KP_DOWN) {
+                    event.consume();
+                    setText(commandHistory.getNext(getText()));
                 }
             }
         });
@@ -164,18 +187,25 @@ public class CommandBox extends UiPart<Region> {
      */
     private void setStyleToIndicateCommandSuccess() {
         commandTextField.getStyleClass().remove(ERROR_STYLE_CLASS);
-        raise(new ResultStyleChangeEvent(true));
+        resultDisplay.setStyleToIndicateCommandSuccess();
     }
 
     /**
-     * Sets the command box style to indicate a failed command.
+     * Sets the result display style to indicate a failed command.
      */
     private void setStyleToIndicateCommandFailure() {
         ObservableList<String> styleClass = commandTextField.getStyleClass();
         if (!styleClass.contains(ERROR_STYLE_CLASS)) {
             styleClass.add(ERROR_STYLE_CLASS);
         }
-        raise(new ResultStyleChangeEvent(false));
+        resultDisplay.setStyleToIndicateCommandFailure();
+    }
+
+    /**
+     * Returns the text currently entered into the command box.
+     */
+    private String getText() {
+        return commandTextField.getText().trim();
     }
 
     /**
