@@ -25,7 +25,7 @@ public class MiscEntryList extends EntryList {
 
     // @@author A0126623L
     /**
-     * Sets EventList to contain the reference to the entries in the given list.
+     * Sets MiscEntryList to contain the reference to the entries in the given list.
      */
     public void setEntries(List<? extends ReadOnlyEntry> entries) throws DuplicateEntryException {
         final MiscEntryList replacement = new MiscEntryList();

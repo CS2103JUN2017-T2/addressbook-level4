@@ -19,7 +19,6 @@ public class DeadlineListTest {
     private DeadlineList deadlineList1, deadlineList2, deadlineList3;
     private Deadline[] sampleDeadlineArray = DeadlineTest.getSampleDeadlineArray();
 
-    // @@author A0126623L
     /**
      * Copies the deadlines in the given deadlines collection into an Deadline List.
      *
@@ -36,7 +35,6 @@ public class DeadlineListTest {
         return deadlineList;
     }
 
-    // @@author A0126623L
     /**
      * Copies all the elements of a given deadline list into a new deadline list
      *
@@ -58,7 +56,6 @@ public class DeadlineListTest {
         }
     }
 
-    // @@author A0126623L
     /**
      * Generates an array of 3 DeadlineList samples.
      * The first two deadlines are meaningfully equivalent, the third one is unique.
@@ -88,12 +85,11 @@ public class DeadlineListTest {
         deadlineList3 = listOfDeadlineList[2];
     }
 
-    // @@author A0126623L
     /**
      * Tests if sample entries used in this test class are considered equal when necessary.
      */
     @Test
-    public void millisecondsDiffShouldNotBeConsideredDifferent() {
+    public void equals_millisecondsDifference_consideredEqual() {
         /*
          * Because of the way they are instantiated, the start time of
          * the deadlines of sampleDeadlineArray's and deadlineList1's first deadline
@@ -109,7 +105,7 @@ public class DeadlineListTest {
      * Dependent on the correct functioning of the contains method.
      */
     @Test
-    public void addAndContainsTest() {
+    public void add_sampleDeadline_success() {
         DeadlineList deadlineListUnderTest = new DeadlineList();
 
         try {
@@ -127,7 +123,7 @@ public class DeadlineListTest {
 
     // @@author A0126623L
     @Test(expected = DuplicateEntryException.class)
-    public void addTest_duplicateDeadline_throwDuplicateEntryException() throws DuplicateEntryException {
+    public void add_duplicateDeadline_throwDuplicateEntryException() throws DuplicateEntryException {
         DeadlineList deadlineListUnderTest = DeadlineListTest.copyDeadlineList(deadlineList1);
         Deadline copiedDeadline = (Deadline) EntryBuilder.build(deadlineListUnderTest.asObservableList()
                                                                                      .get(0));
@@ -136,7 +132,7 @@ public class DeadlineListTest {
 
     // @@author A0126623L
     @Test
-    public void equalsTest() {
+    public void equals_variousSampleDeadlines_success() {
         DeadlineList dummyDeadlineList = DeadlineListTest.copyDeadlineList(deadlineList2);
         assertTrue(deadlineList1.equals(deadlineList2));
         assertTrue(deadlineList1.equals(dummyDeadlineList));
@@ -149,7 +145,7 @@ public class DeadlineListTest {
 
     // @@author A0126623L
     @Test
-    public void removeTest() throws EntryNotFoundException {
+    public void remove_removeSampleDeadline_success() throws EntryNotFoundException {
         DeadlineList deadlineListToTest = DeadlineListTest.copyDeadlineList(deadlineList1);
 
         deadlineListToTest.remove(sampleDeadlineArray[0]);
@@ -158,8 +154,8 @@ public class DeadlineListTest {
     }
 
     // @@author A0126623L
-    @Test(expected = Exception.class)
-    public void removeTest_returnEntryNotFoundException() throws EntryNotFoundException {
+    @Test(expected = EntryNotFoundException.class)
+    public void remove_nonExistentEntry_returnEntryNotFoundException() throws EntryNotFoundException {
         DeadlineList deadlineListUnderTest = DeadlineListTest.copyDeadlineList(deadlineList1);
 
         deadlineListUnderTest.remove(sampleDeadlineArray[3]);
@@ -167,7 +163,7 @@ public class DeadlineListTest {
 
     // @@author A0126623L
     @Test
-    public void updateEntryAndEqualsTest() throws EntryNotFoundException {
+    public void update_updateSampleDeadline_success() throws EntryNotFoundException {
         DeadlineList deadlineListToTest = DeadlineListTest.copyDeadlineList(deadlineList1);
         assertTrue(deadlineListToTest.equals(deadlineList1));
         assertFalse(deadlineListToTest.contains(sampleDeadlineArray[3]));
@@ -183,11 +179,8 @@ public class DeadlineListTest {
     }
 
     // @@author A0126623L
-    /**
-     * Note: This test method relies on the correct functioning of the equals() method.
-     */
     @Test
-    public void setEntriesTest_newDeadlineList_equalsMethodReturnsFalse() {
+    public void setEntries_newDeadlineList_equalsMethodReturnsFalse() {
         DeadlineList deadlineListToTest = DeadlineListTest.copyDeadlineList(deadlineList3);
         assertTrue(deadlineListToTest.equals(deadlineList3));
 

@@ -94,7 +94,7 @@ public class EventListTest {
      * Tests if sample entries used in this test class are considered equal when necessary.
      */
     @Test
-    public void millisecondsDiffShouldNotBeConsideredDifferent() {
+    public void equals_millisecondsDifference_consideredEqual() {
         /*
          * Because of the way they are instantiated, the start time of
          * the events of sampleEventArray's and eventList1's first event
@@ -110,7 +110,7 @@ public class EventListTest {
      * Dependent on the correct functioning of the contains method.
      */
     @Test
-    public void addAndContainsTest() {
+    public void add_sampleEvent_success() {
         EventList eventListUnderTest = new EventList();
 
         try {
@@ -128,7 +128,7 @@ public class EventListTest {
 
     // @@author A0126623L
     @Test(expected = DuplicateEntryException.class)
-    public void addTest_duplicateEvent_throwDuplicateEntryException() throws DuplicateEntryException {
+    public void add_duplicateEvent_throwDuplicateEntryException() throws DuplicateEntryException {
         EventList eventListUnderTest = EventListTest.copyEventList(eventList1);
         Event copiedEvent = (Event) EntryBuilder.build(eventListUnderTest.asObservableList().get(0));
         eventListUnderTest.add(copiedEvent);
@@ -136,7 +136,7 @@ public class EventListTest {
 
     // @@author A0126623L
     @Test
-    public void equalsTest() {
+    public void equals_variousSampleEvents_success() {
         EventList dummyEventList = EventListTest.copyEventList(eventList2);
         assertTrue(eventList1.equals(eventList2));
         assertTrue(eventList1.equals(dummyEventList));
@@ -149,7 +149,7 @@ public class EventListTest {
 
     // @@author A0126623L
     @Test
-    public void removeTest() throws EntryNotFoundException {
+    public void remove_removeSampleEvent_success() throws EntryNotFoundException {
         EventList eventListToTest = EventListTest.copyEventList(eventList1);
 
         eventListToTest.remove(sampleEventArray[0]);
@@ -159,7 +159,7 @@ public class EventListTest {
 
     // @@author A0126623L
     @Test(expected = Exception.class)
-    public void removeTest_returnEntryNotFoundException() throws EntryNotFoundException {
+    public void remove_nonExistentEntry_returnEntryNotFoundException() throws EntryNotFoundException {
         EventList eventListUnderTest = EventListTest.copyEventList(eventList1);
 
         eventListUnderTest.remove(sampleEventArray[3]);
@@ -167,7 +167,7 @@ public class EventListTest {
 
     // @@author A0126623L
     @Test
-    public void updateEntryAndEqualsTest() throws EntryNotFoundException {
+    public void update_updateSampleEvent_success() throws EntryNotFoundException {
         EventList eventListToTest = EventListTest.copyEventList(eventList1);
         assertTrue(eventListToTest.equals(eventList1));
         assertFalse(eventListToTest.contains(sampleEventArray[3]));
@@ -183,11 +183,8 @@ public class EventListTest {
     }
 
     // @@author A0126623L
-    /**
-     * Note: This test method relies on the correct functioning of the equals() method.
-     */
     @Test
-    public void setEntriesTest_newEventList_equalsMethodReturnsFalse() {
+    public void setEntries_newEventList_equalsMethodReturnsFalse() {
         EventList eventListToTest = EventListTest.copyEventList(eventList3);
         assertTrue(eventListToTest.equals(eventList3));
 
@@ -198,7 +195,7 @@ public class EventListTest {
 
     // @@author A0126623L
     @Test
-    public void hasOverlappingEventTest() {
+    public void hasOverlapping_overlappingAndNonOverlappingSampleEvents_success() {
         int offsetAmount = 1000;
 
         Entry overlappingEventToAdd = this.sampleEventArray[0];
@@ -218,7 +215,7 @@ public class EventListTest {
 
     // @@author A0126623L
     @Test
-    public void hasOverlappingEventAfterUpdateTest() {
+    public void hasOverlappingEventAfterUpdate_overlappingEventAfterUpdate_success() {
         Entry eventToManipulate = eventList1.asObservableList().get(0);
         eventToManipulate.setState(Entry.State.DELETED);
         assertTrue(eventList1.asObservableList().get(0).isDeleted());
