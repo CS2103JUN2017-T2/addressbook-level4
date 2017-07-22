@@ -164,7 +164,7 @@ public abstract class EntryList implements Iterable<Entry> {
     private ArrayList<Entry> createInternalListCopyWithoutTarget(ReadOnlyEntry target) {
         ArrayList<Entry> copiedInternalList = new ArrayList<Entry>();
         for (Entry e : internalList) {
-            if (!(e == target)) {
+            if (e != target) {
                 copiedInternalList.add(e);
             }
         }
