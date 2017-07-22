@@ -34,7 +34,6 @@ import seedu.multitasky.model.Model;
 import seedu.multitasky.model.ModelManager;
 import seedu.multitasky.model.UserPrefs;
 import seedu.multitasky.model.entry.Entry;
-import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.tag.Tag;
 import seedu.multitasky.model.util.EntryBuilder;
@@ -121,12 +120,12 @@ public class EditCommandTest {
     // @@author
 
     @Test
-    public void execute_editFloatingNameAddTag_success() throws Exception {
+    public void execute_editFloatingAddTag_success() throws Exception {
         ReadOnlyEntry targetEntry = model.getFilteredFloatingTaskList().get(INDEX_FIRST_ENTRY.getZeroBased());
         Set<Tag> newTagSet = new HashSet<Tag>();
         newTagSet.addAll(targetEntry.getTags());
         newTagSet.add(new Tag("extratag"));
-        Entry editedEntry = EntryBuilder.build(new Name("changed name"), newTagSet);
+        Entry editedEntry = EntryBuilder.build(targetEntry.getName(), newTagSet);
         EditEntryDescriptor descriptor = new EditEntryDescriptorBuilder(editedEntry).withAddTags("extratag").build();
         EditCommand editCommand = prepareCommand(INDEX_FIRST_ENTRY, PREFIX_FLOATINGTASK, descriptor);
         String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, targetEntry, editedEntry);

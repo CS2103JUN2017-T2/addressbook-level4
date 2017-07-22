@@ -132,12 +132,6 @@ public abstract class EntryList implements Iterable<Entry> {
 
         Entry entryToUpdate = internalList.get(index);
 
-        if (internalList.contains(editedEntry)) {
-            if (!isArchivedOrDeletedFloatingTask(editedEntry)) {
-                throw new DuplicateEntryException();
-            }
-        }
-
         entryToUpdate.resetData(editedEntry);
         // TODO: The code below is just a workaround to notify observers of the
         // updated entry.

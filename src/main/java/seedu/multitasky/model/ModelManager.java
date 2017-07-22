@@ -146,8 +146,8 @@ public class ModelManager extends ComponentManager implements Model {
             if (target.getClass().equals(editedEntry.getClass())) { // updating to same instance of entry
                 _entryBook.updateEntry(target, editedEntry);
             } else { // updating entry between lists
-                _entryBook.removeEntry(target);
                 _entryBook.addEntry(editedEntry);
+                _entryBook.removeEntry(target);
             }
         } catch (EntryNotFoundException | OverlappingEventException
                  | OverlappingAndOverdueEventException | EntryOverdueException e) {
