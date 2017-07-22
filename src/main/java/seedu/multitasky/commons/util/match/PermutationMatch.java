@@ -38,25 +38,4 @@ public class PermutationMatch implements Match {
         return permutations;
     }
 
-    private static ArrayList<String> getPermutations(final String keyword) {
-        HashSet<String> permutations = new HashSet<>();
-        ArrayList<String> chars = new ArrayList<>(Arrays.asList(keyword.split("")));
-        generateUniquePermutations(chars, 0, keyword.length() - 1, permutations);
-        return new ArrayList<String>(permutations);
-    }
-
-    private static void generateUniquePermutations(ArrayList<String> chars, int i, int permutationLength,
-                                                   HashSet<String> permutations) {
-        // Filled up the permutation to the specified length
-        if (i == permutationLength) {
-            permutations.add(MatchUtil.buildString(chars));
-        } else {
-            for (int j = i; j <= permutationLength; ++j) {
-                Collections.swap(chars, i, j);
-                generateUniquePermutations(chars, i + 1, permutationLength, permutations);
-                Collections.swap(chars, i, j);
-            }
-        }
-    }
-
 }
