@@ -126,7 +126,7 @@ public class EditCommandTest {
         newTagSet.addAll(targetEntry.getTags());
         newTagSet.add(new Tag("extratag"));
         Entry editedEntry = EntryBuilder.build(targetEntry.getName(), newTagSet);
-        EditEntryDescriptor descriptor = new EditEntryDescriptorBuilder(editedEntry).withAddTags("extratag").build();
+        EditEntryDescriptor descriptor = new EditEntryDescriptorBuilder(targetEntry).withAddTags("extratag").build();
         EditCommand editCommand = prepareCommand(INDEX_FIRST_ENTRY, PREFIX_FLOATINGTASK, descriptor);
         String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, targetEntry, editedEntry);
         Model expectedModel = new ModelManager(SampleEntries.getSampleEntryBookWithActiveEntries(), new UserPrefs());

@@ -133,7 +133,7 @@ public abstract class EntryList implements Iterable<Entry> {
 
         Entry entryToUpdate = internalList.get(index);
 
-        if (duplicatesPresentAfterEditing(target, editedEntry)) {
+        if (duplicatesPresentAfterEditing(entryToUpdate, editedEntry)) {
             if (!isArchivedOrDeletedFloatingTask(editedEntry)) {
                 throw new DuplicateEntryException();
             }
