@@ -21,8 +21,6 @@ public class XmlEntryBookStorage implements EntryBookStorage {
     private static final Logger logger = LogsCenter.getLogger(XmlEntryBookStorage.class);
 
     private String filePath;
-    private String snapshotPath;
-    private String previousSnapshotPath;
 
     public XmlEntryBookStorage(String filePath) {
         this.filePath = filePath;
@@ -36,15 +34,6 @@ public class XmlEntryBookStorage implements EntryBookStorage {
     @Override
     public void setEntryBookFilePath(String newFilePath) {
         filePath = newFilePath;
-    }
-
-    @Override
-    public String getEntryBookSnapshotPath() {
-        return snapshotPath;
-    }
-
-    public String getPreviousEntryBookSnapshotPath() {
-        return previousSnapshotPath;
     }
 
     @Override

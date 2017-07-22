@@ -69,14 +69,20 @@ public class StorageManagerTest {
     }
 
     @Test
+    public void setEntryBookFilePath() {
+        storageManager.setEntryBookFilePath("default.xml");
+        assertEquals(storageManager.getEntryBookFilePath(), "default.xml");
+    }
+
+    @Test
     public void getEntryBookSnapshotPath() {
         assertNotNull(storageManager.getEntryBookSnapshotPath());
     }
 
     @Test
-    public void setEntryBookFilePath() {
-        storageManager.setEntryBookFilePath("default.xml");
-        assertEquals(storageManager.getEntryBookFilePath(), "default.xml");
+    public void setIndex() {
+        StorageManager.setIndex(100);
+        assertEquals(StorageManager.getIndex(), 100);
     }
 
     @Test
