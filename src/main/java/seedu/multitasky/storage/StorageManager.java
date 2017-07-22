@@ -156,6 +156,7 @@ public class StorageManager extends ComponentManager implements Storage {
         }
     }
 
+    // ================ Event Handling methods ==============================
     /**
      * Saves the data to the entrybook at the filepath specified and also creates a snapshot in data/snapshots.
      */
