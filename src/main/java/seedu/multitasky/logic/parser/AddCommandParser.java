@@ -21,6 +21,7 @@ import seedu.multitasky.logic.commands.AddCommand;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
 import seedu.multitasky.model.LogicUserPrefs;
 import seedu.multitasky.model.entry.Deadline;
+import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.Event;
 import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.Name;
@@ -44,71 +45,47 @@ public class AddCommandParser {
         Calendar startDate = null;
         Calendar endDate = null;
 
-        // check for no args input
+        // show message usage if no args were given with command
         if (args.trim().isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
-        }
-
-        // check for empty name field
-        if (argMultimap.getPreamble().get().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
 
         if (isFloatingTask()) {
             try {
-                // parse entry details
-                Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
-                if (requiresSmartParsing(ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES))) {
-                    name = new Name(doSmartParsingPreamble(ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES)));
-                }
-                Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
-
-                ReadOnlyEntry entry = new FloatingTask(name, tagList);
+                Name name = doParseName();
+                Set<Tag> tagList = doParseTags();
+                Entry entry = new FloatingTask(name, tagList);
                 return new AddCommand(entry);
-
             } catch (IllegalValueException ive) {
                 throw new ParseException(ive.getMessage(), ive);
             }
 
         } else if (isDeadline()) {
             try {
-                // parse all entry details
-                Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
-                if (requiresSmartParsing(ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES))) {
-                    name = new Name(doSmartParsingPreamble(ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES)));
-                }
+                Name name = doParseName();
                 Prefix datePrefix = PREFIX_BY;
                 endDate = ParserUtil.parseDate(argMultimap.getValue(datePrefix).get());
-                Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
-
+                Set<Tag> tagList = doParseTags();
                 ReadOnlyEntry entry = new Deadline(name, endDate, tagList);
                 return new AddCommand(entry);
-
             } catch (IllegalValueException ive) {
                 throw new ParseException(ive.getMessage(), ive);
             }
 
         } else if (isEventStartEndVariant()) {
             try {
-                // parse entry details
-                Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
-                if (requiresSmartParsing(ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES))) {
-                    name = new Name(doSmartParsingPreamble(ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES)));
-                }
-                Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+                Name name = doParseName();
+                Set<Tag> tagList = doParseTags();
                 // only reads using flag indicated by the last occurrence of prefix.
-                Prefix startDatePrefix = requireNonNull(ParserUtil.getLastPrefix(
-                        args, PREFIX_FROM, PREFIX_ON, PREFIX_AT));
-                Prefix endDatePrefix = requireNonNull(ParserUtil.getLastPrefix(args, PREFIX_TO, PREFIX_BY));
+                Prefix startDatePrefix = requireNonNull(ParserUtil.getLastPrefix(args,
+                                                                                 PREFIX_FROM, PREFIX_ON, PREFIX_AT));
                 startDate = ParserUtil.parseDate(argMultimap.getValue(startDatePrefix).get());
+                Prefix endDatePrefix = requireNonNull(ParserUtil.getLastPrefix(args, PREFIX_TO, PREFIX_BY));
                 endDate = ParserUtil.parseExtendedDate(argMultimap.getValue(startDatePrefix).get(),
                                                        argMultimap.getValue(endDatePrefix).get());
 
                 // check for special cases of date
-                endDate.set(Calendar.SECOND, 0);
-                endDate.set(Calendar.MILLISECOND, 0);
-                startDate.set(Calendar.SECOND, 0);
-                startDate.set(Calendar.MILLISECOND, 0);
+                calibrateCalendarsForComparison(startDate, endDate);
                 if (endDate.compareTo(startDate) < 0) {
                     throw new ParseException(AddCommand.MESSAGE_ENDDATE_BEFORE_STARTDATE);
                 } else if (endDate.compareTo(startDate) == 0) {
@@ -131,11 +108,8 @@ public class AddCommandParser {
             }
         } else if (isEventStartOnlyVariant()) {
             try {
-                Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
-                if (requiresSmartParsing(ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES))) {
-                    name = new Name(doSmartParsingPreamble(ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES)));
-                }
-                Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+                Name name = doParseName();
+                Set<Tag> tagList = doParseTags();
                 // only reads using flag indicated by the last occurrence of prefix.
                 Prefix startDatePrefix = requireNonNull(
                         ParserUtil.getLastPrefix(args, PREFIX_FROM, PREFIX_ON, PREFIX_AT));
@@ -156,12 +130,8 @@ public class AddCommandParser {
             }
         } else if (isEventEndOnlyVariant()) {
             try {
-                Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
-                if (requiresSmartParsing(ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES))) {
-                    name =
-                         new Name(doSmartParsingPreamble(ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES)));
-                }
-                Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+                Name name = doParseName();
+                Set<Tag> tagList = doParseTags();
                 // this variant only accepts PREFIX_TO
                 Prefix endDatePrefix = PREFIX_TO;
                 endDate = ParserUtil.parseDate(argMultimap.getValue(endDatePrefix).get());
@@ -187,6 +157,35 @@ public class AddCommandParser {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                                                    AddCommand.MESSAGE_USAGE));
         }
+    }
+
+    /**
+     * method that sets input {@code Calendar} to be less precise in order to facilitate comparison
+     * @param startDate
+     * @param endDate
+     */
+    private void calibrateCalendarsForComparison(Calendar startDate, Calendar endDate) {
+        endDate.set(Calendar.SECOND, 0);
+        endDate.set(Calendar.MILLISECOND, 0);
+        startDate.set(Calendar.SECOND, 0);
+        startDate.set(Calendar.MILLISECOND, 0);
+    }
+
+    private Set<Tag> doParseTags() throws IllegalValueException {
+        return ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+    }
+
+    /**
+     * Parses name of entry from {@code ArgumentMultimap} initialized from input args.
+     * @throws IllegalValueException if name
+     */
+    private Name doParseName() throws IllegalValueException {
+        assert argMultimap != null;
+        Name name = ParserUtil.parseName(argMultimap.getPreamble()).get();
+        if (hasPrefixesMappedToMultipleValues(ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES))) {
+            name = new Name(appendExcessArgsToPreambleName(ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES)));
+        }
+        return name;
     }
 
     /**
@@ -225,7 +224,7 @@ public class AddCommandParser {
     /**
      * Returns true if flags present in argMultimap indicate to add an event entry by giving only
      * end date.
-     * MUST have /to only
+     * MUST have to only
      * Precondition : argumentMultimap within parser has been properly initialised beforehand.
      */
     private boolean isEventEndOnlyVariant() {
@@ -244,7 +243,11 @@ public class AddCommandParser {
                && (!ParserUtil.arePrefixesPresent(argMultimap, PREFIX_AT, PREFIX_ON, PREFIX_FROM, PREFIX_TO));
     }
 
-    private boolean requiresSmartParsing(Prefix...prefixes)  {
+    /**
+     * Method that goes through each Prefix in input {@code Prefix[]} and returns true if {@code ArgumentMultimap}
+     * has any key-value pairs that have multiple values per key
+     */
+    private boolean hasPrefixesMappedToMultipleValues(Prefix...prefixes)  {
         assert argMultimap != null;
         for (Prefix prefix : prefixes) {
             if (argMultimap.getAllValues(prefix).size() > 1) {
@@ -254,26 +257,39 @@ public class AddCommandParser {
         return false;
     }
 
-    private String doSmartParsingPreamble(Prefix...prefixes) {
+    /**
+     * Method that loops through all Prefixes in input {@code Prefix[]} and appends preamble and all the excess
+     * prefix + valid arguments contained in {@code ArgumentMultimap} to a {@code StringBuilder}, before returning it.
+     */
+    private String appendExcessArgsToPreambleName(Prefix...prefixes) {
         assert argMultimap != null;
-        PrettyTimeParser ptp = new PrettyTimeParser();
-        List<Date> dateList;
         StringBuilder builder = new StringBuilder();
         builder.append(argMultimap.getPreamble().get());
         for (Prefix prefix : prefixes) {
             List<String> argList = argMultimap.getAllValues(prefix);
             if (argList.size() > 1) {
-                for (int i = 0; i < argList.size() - 1; i++) {
-                    String args = argList.get(i);
-                    dateList = ptp.parse(args);
-                    if (dateList.size() < 1 && !args.equals("")) {
-                        builder.append(" ").append(prefix.toString())
-                        .append(" ").append(argList.get(i));
-                    }
-                }
+                appendAllExceptLastNonDateString(builder, prefix, argList);
             }
         }
         return builder.toString();
+    }
+
+    /**
+     * Method that loops through all but the last string in input {@code List<String>} and appends prefix + args to
+     * input {@code StringBuilder} if {@code PrettyTimeParser} fails to parse it.
+     */
+    private void appendAllExceptLastNonDateString(StringBuilder builder, Prefix prefix,
+                                     List<String> argList) {
+        List<Date> dateList;
+        PrettyTimeParser ptp = new PrettyTimeParser();
+        for (int i = 0; i < argList.size() - 1; i++) {
+            String args = argList.get(i);
+            dateList = ptp.parse(args);
+            if (dateList.size() < 1 && !args.equals("")) {
+                builder.append(" ").append(prefix.toString())
+                .append(" ").append(argList.get(i));
+            }
+        }
     }
 
 }

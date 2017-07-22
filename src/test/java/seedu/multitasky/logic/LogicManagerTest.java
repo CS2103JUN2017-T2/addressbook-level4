@@ -201,7 +201,7 @@ public class LogicManagerTest {
     @Test
     public void execute_addInvalidEntryData_parseException() {
         // add entry without name
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE);
+        String expectedMessage = Name.MESSAGE_NAME_CONSTRAINTS;
         assertParseException(AddCommand.COMMAND_WORD + " " + PREFIX_TAG + " tagging without name",
                              expectedMessage);
     }

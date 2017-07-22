@@ -59,7 +59,21 @@ public class ParserUtil {
         if (!name.isPresent()) {
             return Optional.empty();
         } else {
-            return Optional.of(new Name(name.get().replaceAll("\\" + CliSyntax.PREFIX_ESCAPE.toString(), "")));
+            return Optional.of(new Name(removeEscapeChar(name.get(), CliSyntax.PREFIX_ESCAPE.toString())));
+        }
+    }
+
+    /**
+     * method that removes string from input full string
+     * @param fullString
+     * @param stringToRemove
+     * @return fullString with stringToRemove removed
+     */
+    private static String removeEscapeChar(String fullString, String stringToRemove) {
+        if (!stringToRemove.equals("\\")) {
+            return fullString.replaceAll(stringToRemove, "");
+        } else {
+            return fullString.replaceAll("\\" + stringToRemove, "");
         }
     }
 
@@ -199,7 +213,7 @@ public class ParserUtil {
     /**
      * searches through the input string for for prefixes and returns the prefix that has the
      * last occurence
-     * returns null if not found
+     * @return last occuring prefix in input String among input {@code Prefix[]}, and returns {@code null} if not found
      */
     public static Prefix getLastPrefix(String stringToSearch, Prefix...prefixes) {
         // to deal with cases with prefix right at end or start
