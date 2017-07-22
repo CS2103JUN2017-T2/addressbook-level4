@@ -21,7 +21,7 @@ public class SubstringMatch implements Match {
     }
 
     private static String getRegex(final String input) {
-        return MatchUtil.REGEX_PRESENT_NON_WHITESPACE + input + MatchUtil.REGEX_PRESENT_NON_WHITESPACE;
+        return MatchUtil.REGEX_OPTIONAL_NON_WHITESPACE + input + MatchUtil.REGEX_OPTIONAL_NON_WHITESPACE;
     }
 
 }
