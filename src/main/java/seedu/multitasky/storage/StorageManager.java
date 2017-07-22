@@ -78,7 +78,6 @@ public class StorageManager extends ComponentManager implements Storage {
     /**
      * Gets the proper filepath of the current snapshot with index
      */
-    @Override
     public String getEntryBookSnapshotPath() {
         return userPrefs.getEntryBookSnapshotPath() + index + ".xml";
     }
