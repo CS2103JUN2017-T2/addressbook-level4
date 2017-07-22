@@ -11,7 +11,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.Region;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.events.ui.NewResultAvailableEvent;
-import seedu.multitasky.commons.events.ui.ResultStyleChangeEvent;
 
 /**
  * A ui for the status bar that is displayed at the header of the application.
@@ -35,11 +34,11 @@ public class ResultDisplay extends UiPart<Region> {
         registerAsAnEventHandler(this);
     }
 
-    private void setStyleToIndicateCommandSuccess() {
+    public void setStyleToIndicateCommandSuccess() {
         resultDisplay.setStyle(SUCCESS_STYLE);
     }
 
-    private void setStyleToIndicateCommandFailure() {
+    public void setStyleToIndicateCommandFailure() {
         resultDisplay.setStyle(FAILURE_STYLE);
     }
 
@@ -47,16 +46,6 @@ public class ResultDisplay extends UiPart<Region> {
     private void handleNewResultAvailableEvent(NewResultAvailableEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         displayed.setValue(event.message);
-    }
-
-    @Subscribe
-    private void handleResultStyleChangeEvent(ResultStyleChangeEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        if (event.isSuccess()) {
-            setStyleToIndicateCommandSuccess();
-        } else {
-            setStyleToIndicateCommandFailure();
-        }
     }
 
 }
