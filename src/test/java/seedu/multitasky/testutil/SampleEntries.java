@@ -331,7 +331,7 @@ public class SampleEntries {
     public static Entry createOverlappingEvent(Entry entryToOverlapWith) {
         Entry overlappingEventToAdd = EntryBuilder.build(entryToOverlapWith);
         try {
-            overlappingEventToAdd.setName(new Name("Overlapping event dummy name"));
+            overlappingEventToAdd.setName(new Name("Overlapping entry dummy name"));
             assertFalse(overlappingEventToAdd.equals(entryToOverlapWith));
         } catch (IllegalValueException e) {
             fail("Should not fail here.");
@@ -363,6 +363,6 @@ public class SampleEntries {
     public static Entry createOverdueDeadline() throws IllegalValueException {
         Calendar endDate = Calendar.getInstance();
         endDate.set(Calendar.YEAR, 2014);
-        return EntryBuilder.build("dummy overdue deadline name", endDate, "deadline");
+        return EntryBuilder.build("dummy overdue entry name", endDate, "deadline");
     }
 }
