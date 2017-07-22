@@ -2,42 +2,22 @@ package seedu.multitasky.model;
 
 //@@author A0132788U
 /**
- * Represents the default values in UserPrefs object that storage has access to.
+ * Represents the default values in UserPrefs object that Storage has access to.
  */
 public interface StorageUserPrefs {
 
+    /**
+     * The getter and setter for the file path (for save and open)
+     */
     public String getEntryBookFilePath();
 
     public void setEntryBookFilePath(String entryBookFilePath);
 
     /**
-     * The getter and setter for the snapshot file path
+     * The getter and setter for the snapshot file path (for undo and redo)
      */
-    public static String getEntryBookSnapshotPath() {
-        return UserPrefs.getEntryBookSnapshotPath();
-    }
+    public String getEntryBookSnapshotPath();
 
-    public static void setEntryBookSnapshotPath(String entryBookSnapshotPath) {
-        UserPrefs.setEntryBookSnapshotPath(entryBookSnapshotPath);
-    }
-
-    /**
-     * Methods to update the indices when files are created during mutation/deleted during exit
-     */
-    public static void incrementIndexByOne() {
-        UserPrefs.incrementIndexByOne();
-    }
-
-    public static void decrementIndexByOne() {
-        UserPrefs.decrementIndexByOne();
-    }
-
-    public static int getIndex() {
-        return UserPrefs.getIndex();
-    }
-
-    public static void setIndex(int index) {
-        UserPrefs.setIndex(index);
-    }
+    public void setEntryBookSnapshotPath(String entryBookSnapshotPath);
 
 }

@@ -7,15 +7,13 @@ import seedu.multitasky.commons.core.GuiSettings;
 /**
  * Represents User's preferences.
  */
-// @@author A0132788U
 public class UserPrefs implements LogicUserPrefs, StorageUserPrefs {
-    /** Index to maintain snapshot file number */
-    private static int index = 0;
-    /** Snapshot file path without index and xml */
-    private static String entryBookSnapshotPath = "data/snapshots/entrybook";
-    private GuiSettings guiSettings;
+
     private String entryBookName = "MyEntryBook";
     private String entryBookFilePath = "data/entrybook.xml";
+    /** Snapshot file path without index and xml */
+    private String entryBookSnapshotPath = "data/snapshots/entrybook";
+    private GuiSettings guiSettings;
     // @@author A0140633R
     private final int defaultDurationHour = 1;
     // @@author
@@ -72,7 +70,6 @@ public class UserPrefs implements LogicUserPrefs, StorageUserPrefs {
         sb.append("\nEntryBook name : " + entryBookName);
         return sb.toString();
     }
-
     // @@author A0132788U
     // ================ Storage UserPrefs methods ==============================
 
@@ -86,28 +83,14 @@ public class UserPrefs implements LogicUserPrefs, StorageUserPrefs {
         this.entryBookFilePath = entryBookFilePath;
     }
 
-    public static String getEntryBookSnapshotPath() {
+    @Override
+    public String getEntryBookSnapshotPath() {
         return entryBookSnapshotPath;
     }
 
-    public static void setEntryBookSnapshotPath(String entryBookSnapshotPath) {
-        UserPrefs.entryBookSnapshotPath = entryBookSnapshotPath;
-    }
-
-    public static void incrementIndexByOne() {
-        index++;
-    }
-
-    public static void decrementIndexByOne() {
-        index--;
-    }
-
-    public static int getIndex() {
-        return index;
-    }
-
-    public static void setIndex(int index) {
-        UserPrefs.index = index;
+    @Override
+    public void setEntryBookSnapshotPath(String entryBookSnapshotPath) {
+        this.entryBookSnapshotPath = entryBookSnapshotPath;
     }
 
     // @@author A0140633R

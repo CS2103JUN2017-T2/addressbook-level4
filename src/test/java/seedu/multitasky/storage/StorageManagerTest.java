@@ -81,12 +81,12 @@ public class StorageManagerTest {
 
     @Test
     public void getPreviousEntryBookSnapshotPath() {
-        assertNotNull(StorageManager.getPreviousEntryBookSnapshotPath());
+        assertNotNull(storageManager.getPreviousEntryBookSnapshotPath());
     }
 
     @Test
     public void getNextEntryBookSnapshotPath() {
-        assertNotNull(StorageManager.getNextEntryBookSnapshotPath());
+        assertNotNull(storageManager.getNextEntryBookSnapshotPath());
     }
 
     @Test
@@ -138,7 +138,7 @@ public class StorageManagerTest {
 
     @Test
     public void handleEntryBookToUndoEvent_failure() throws Exception {
-        StorageManager.setPreviousEntryBookSnapshotPath("dummyUndo");
+        storageManager.setPreviousEntryBookSnapshotPath("dummyUndo");
         EntryBookToUndoEvent event = new EntryBookToUndoEvent(new EntryBook(), "dummyUndo");
         storageManager.handleEntryBookToUndoEvent(event);
         assertEquals(event.getMessage(), "Nothing to undo");
@@ -155,7 +155,7 @@ public class StorageManagerTest {
 
     @Test
     public void handleEntryBookToRedoEvent_failure() throws Exception {
-        StorageManager.setNextEntryBookSnapshotPath("dummyRedo");
+        storageManager.setNextEntryBookSnapshotPath("dummyRedo");
         EntryBookToRedoEvent event = new EntryBookToRedoEvent(new EntryBook(), "dummyRedo");
         storageManager.handleEntryBookToRedoEvent(event);
         assertEquals(event.getMessage(), "Nothing to redo");
