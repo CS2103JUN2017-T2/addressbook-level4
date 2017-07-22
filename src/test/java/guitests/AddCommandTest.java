@@ -1,11 +1,13 @@
 package guitests;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 import guitests.guihandles.EntryCardHandle;
 import seedu.multitasky.commons.core.Messages;
+import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.logic.commands.AddCommand;
 import seedu.multitasky.logic.commands.ClearCommand;
 import seedu.multitasky.logic.parser.CliSyntax;
@@ -55,9 +57,9 @@ public class AddCommandTest extends EntryBookGuiTest {
         currentList = assertAddFloatingTask(entryToAdd, currentList);
     }
 
-    /***************************
-     * Adding an existing list *
-     **************************/
+    /******************************
+     * Adding to an existing list *
+     *****************************/
     @Test
     public void add_eventsToExistingList_success() {
         Entry[] currentList = SampleEntries.getSampleActiveEvents();
@@ -88,6 +90,40 @@ public class AddCommandTest extends EntryBookGuiTest {
         currentList = assertAddFloatingTask(entryToAdd, currentList);
     }
 
+    // @@author A0126623L
+    @Test
+    public void add_overlappingEventToExistingList_successWithAppropriateAlert() {
+        Entry overlappingEventToAdd = SampleEntries.createOverlappingEvent(SampleEntries.DINNER);
+        commandBox.runCommand(CommandUtil.getAddEventCommand(overlappingEventToAdd));
+        assertEquals(String.format(AddCommand.MESSAGE_SUCCESS_WITH_OVERLAP_ALERT,
+                                   overlappingEventToAdd.getName().toString()),
+                     resultDisplay.getText());
+    }
+
+    // @@author A0126623L
+    @Test
+    public void add_overlappingAndOverdueEventToExistingList_successWithAppropriateAlert()
+            throws IllegalValueException {
+        Entry firstOverdueEvent = SampleEntries.createOverdueEvent();
+        Entry secondOverdueEventThatOverlaps = SampleEntries.createOverlappingEvent(firstOverdueEvent);
+        commandBox.runCommand(CommandUtil.getAddEventCommand(firstOverdueEvent));
+        commandBox.runCommand(CommandUtil.getAddEventCommand(secondOverdueEventThatOverlaps));
+        assertEquals(String.format(AddCommand.MESSAGE_SUCCESS_WITH_OVERLAP_AND_OVERDUE_ALERT,
+                                   secondOverdueEventThatOverlaps.getName().toString()),
+                     resultDisplay.getText());
+    }
+
+    // @@author A0126623L
+    @Test
+    public void add_overdueDeadlineToExistingList_successWithAppropriateAlert() throws IllegalValueException {
+        Entry overdueDeadline = SampleEntries.createOverdueDeadline();
+        commandBox.runCommand(CommandUtil.getAddDeadlineCommand(overdueDeadline));
+        assertEquals(String.format(AddCommand.MESSAGE_SUCCESS_WITH_OVERDUE_ALERT,
+                                   overdueDeadline.getName().toString()),
+                     resultDisplay.getText());
+    }
+
+    // @@author A0125586X
     /**************************************
      * Different types of invalid wording *
      **************************************/

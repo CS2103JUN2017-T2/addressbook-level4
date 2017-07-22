@@ -1,12 +1,17 @@
 package seedu.multitasky.testutil;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Objects;
 
 import seedu.multitasky.commons.core.index.Index;
+import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryOverdueException;
 import seedu.multitasky.model.entry.exceptions.OverlappingAndOverdueEventException;
@@ -316,4 +321,48 @@ public class SampleEntries {
         return entryBook;
     }
     // @@author
+
+    // @@author A0126623L
+    /**
+     * Creates an overlapping event with the given {@code Event} by creating a copy
+     * of the given {@code Event} and changing the name.
+     * @return {@code Entry}
+     */
+    public static Entry createOverlappingEvent(Entry entryToOverlapWith) {
+        Entry overlappingEventToAdd = EntryBuilder.build(entryToOverlapWith);
+        try {
+            overlappingEventToAdd.setName(new Name("Overlapping event dummy name"));
+            assertFalse(overlappingEventToAdd.equals(entryToOverlapWith));
+        } catch (IllegalValueException e) {
+            fail("Should not fail here.");
+        }
+        return overlappingEventToAdd;
+    }
+
+    // @@author A0126623L
+    /**
+     * Creates a sample overdue {@code Event}.
+     * @return {@code Entry}
+     * @throws IllegalValueException
+     */
+    public static Entry createOverdueEvent() throws IllegalValueException {
+        Calendar startDate = Calendar.getInstance();
+        startDate.set(Calendar.YEAR, 2013);
+        Calendar endDate = Calendar.getInstance();
+        endDate.set(Calendar.YEAR, 2014);
+
+        return EntryBuilder.build("D&D", startDate, endDate, "party");
+    }
+
+    // @@author A0126623L
+    /**
+     * Creates a sample overdue {@code Deadline}.
+     * @return {@code Entry}
+     * @throws IllegalValueException
+     */
+    public static Entry createOverdueDeadline() throws IllegalValueException {
+        Calendar endDate = Calendar.getInstance();
+        endDate.set(Calendar.YEAR, 2014);
+        return EntryBuilder.build("dummy overdue deadline name", endDate, "deadline");
+    }
 }
