@@ -86,9 +86,6 @@ public class UserPrefs implements LogicUserPrefs, StorageUserPrefs {
         this.entryBookFilePath = entryBookFilePath;
     }
 
-    /**
-     * The getter and setter for the snapshot file path
-     */
     public static String getEntryBookSnapshotPath() {
         return entryBookSnapshotPath;
     }
@@ -97,9 +94,6 @@ public class UserPrefs implements LogicUserPrefs, StorageUserPrefs {
         UserPrefs.entryBookSnapshotPath = entryBookSnapshotPath;
     }
 
-    /**
-     * Methods to update the indices when files are created during mutation/deleted during exit
-     */
     public static void incrementIndexByOne() {
         index++;
     }
