@@ -41,13 +41,11 @@ public class CommandHistory implements TextHistory {
         if (commandPastStack.empty()) {
             return current;
         }
-        // This is the first time in this run that the user requested the previous command
-        if (commandFutureStack.empty()) {
-            // Save previously typed command first if it is different from the previous entered command
-            if (!commandPastStack.peek().equals(current)) {
-                commandFutureStack.push(current);
-                isUserPreviouslyTypedCommandSaved = true;
-            }
+        // This is the first time in this run that the user requested the previous command,
+        // Save previously typed command first if it is different from the previous entered command
+        if (commandFutureStack.empty() && !commandPastStack.peek().equals(current)) {
+            commandFutureStack.push(current);
+            isUserPreviouslyTypedCommandSaved = true;
         }
         // Retrieve the previous command
         commandFutureStack.push(commandPastStack.pop());
