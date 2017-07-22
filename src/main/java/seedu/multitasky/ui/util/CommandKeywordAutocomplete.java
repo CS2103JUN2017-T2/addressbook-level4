@@ -25,8 +25,8 @@ public class CommandKeywordAutocomplete implements TextAutocomplete {
 
     public String autocomplete(String input) {
         String match = null;
-        for (PowerMatch.Level level : PowerMatch.Level.values()) {
-            match = PowerMatch.match(level, input, commandKeywords.toArray(new String[numCommandKeywords]));
+        for (int level = PowerMatch.MIN_LEVEL; level <= PowerMatch.MAX_LEVEL; ++level) {
+            match = new PowerMatch().match(level, input, commandKeywords.toArray(new String[numCommandKeywords]));
             if (match != null) {
                 return match;
             }

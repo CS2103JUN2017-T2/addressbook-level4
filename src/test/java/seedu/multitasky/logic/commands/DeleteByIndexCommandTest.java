@@ -98,7 +98,7 @@ public class DeleteByIndexCommandTest {
         ReadOnlyEntry entry = model.getEntryBook().getFloatingTaskList().get(0);
         final String[] splitName = entry.getName().fullName.split("\\s+");
         model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList(splitName)), null, null, Entry.State.ACTIVE,
-                                             Model.Search.AND, PowerMatch.Level.LEVEL_0);
+                                             Model.Search.AND, PowerMatch.UNUSED);
 
         assert model.getFilteredFloatingTaskList().size() == 1;
     }

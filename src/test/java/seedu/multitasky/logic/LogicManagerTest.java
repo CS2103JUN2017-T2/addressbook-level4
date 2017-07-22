@@ -337,7 +337,7 @@ public class LogicManagerTest {
         Model expectedModel = new ModelManager(helper.generateEntryBook(fourEntrys), new UserPrefs());
         expectedModel.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList("key", "rAnDoM")),
                                                      null, null,
-                                                     Entry.State.ACTIVE, Model.Search.OR, PowerMatch.Level.LEVEL_0);
+                                                     Entry.State.ACTIVE, Model.Search.OR, PowerMatch.UNUSED);
         helper.addToModel(model, fourEntrys);
 
         assertCommandSuccess(FindCommand.COMMAND_WORD + " key rAnDoM",

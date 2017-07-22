@@ -1,7 +1,10 @@
 package seedu.multitasky.commons.util.match;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 // @@author A0125586X
@@ -53,6 +56,14 @@ public class MatchUtil {
     }
 
     /**
+     * Removes whitespace from an input string.
+     */
+    public static String removeWhitespace(final String input) {
+        ArrayList<String> words = new ArrayList<>(Arrays.asList(input.trim().split("\\s+")));
+        return buildString(words);
+    }
+
+    /**
      * Builds a string from a collection that can be iterated over
      */
     public static String buildString(final Collection<String> chars) {
@@ -64,6 +75,27 @@ public class MatchUtil {
             builder.append(string);
         }
         return builder.toString();
+    }
+
+    public static ArrayList<String> getPermutations(final String keyword) {
+        HashSet<String> permutations = new HashSet<>();
+        ArrayList<String> chars = new ArrayList<>(Arrays.asList(keyword.split("")));
+        generateUniquePermutations(chars, 0, keyword.length() - 1, permutations);
+        return new ArrayList<String>(permutations);
+    }
+
+    private static void generateUniquePermutations(ArrayList<String> chars, int i, int permutationLength,
+                                                   HashSet<String> permutations) {
+        // Filled up the permutation to the specified length
+        if (i == permutationLength) {
+            permutations.add(buildString(chars));
+        } else {
+            for (int j = i; j <= permutationLength; ++j) {
+                Collections.swap(chars, i, j);
+                generateUniquePermutations(chars, i + 1, permutationLength, permutations);
+                Collections.swap(chars, i, j);
+            }
+        }
     }
 
 }

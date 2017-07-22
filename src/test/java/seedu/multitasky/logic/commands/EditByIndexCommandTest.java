@@ -198,7 +198,7 @@ public class EditByIndexCommandTest {
         final String[] splitName = entry.getName().fullName.split("\\s+");
         model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList(splitName)),
                                              null, null, Entry.State.ACTIVE, Model.Search.AND,
-                                             PowerMatch.Level.LEVEL_0);
+                                             PowerMatch.UNUSED);
 
         assertTrue(model.getFilteredFloatingTaskList().size() == 1);
     }
