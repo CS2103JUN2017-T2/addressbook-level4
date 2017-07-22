@@ -6,8 +6,8 @@ package seedu.multitasky.commons.util.match;
  */
 public interface MatchLevelManager {
 
-    public static String match(final int level, final String input, final String... potentialMatches);
+    public String match(final int level, final String input, final String... potentialMatches);
 
-    public static boolean isMatch(final int level, final String input, final String potentialMatch);
+    public boolean isMatch(final int level, final String input, final String potentialMatch);
 
 }

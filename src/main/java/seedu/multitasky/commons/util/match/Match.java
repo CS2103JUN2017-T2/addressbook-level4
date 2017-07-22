@@ -6,8 +6,16 @@ package seedu.multitasky.commons.util.match;
  */
 public interface Match {
 
-    public static String match(final String input, final String... potentialMatches);
+    /**
+     * Attempts to find a single potential match for the input.
+     * If multiple matches are found, {@code null} is returned.
+     */
+    public String match(final String input, final String... potentialMatches);
 
-    public static boolean isMatch(final String input, final String potentialMatch);
+    /**
+     * Attempts to match the potential match with the input.
+     * @return if the input can be matched to the potential match.
+     */
+    public boolean isMatch(final String input, final String potentialMatch);
 
 }
