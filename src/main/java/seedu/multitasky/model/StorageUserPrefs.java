@@ -13,24 +13,31 @@ public interface StorageUserPrefs {
     /**
      * The getter and setter for the snapshot file path
      */
-    public static void getEntryBookSnapshotPath() {
+    public static String getEntryBookSnapshotPath() {
+        return UserPrefs.getEntryBookSnapshotPath();
     }
 
     public static void setEntryBookSnapshotPath(String entryBookSnapshotPath) {
+        UserPrefs.setEntryBookSnapshotPath(entryBookSnapshotPath);
     }
 
     /**
      * Methods to update the indices when files are created during mutation/deleted during exit
      */
     public static void incrementIndexByOne() {
+        UserPrefs.incrementIndexByOne();
     }
 
     public static void decrementIndexByOne() {
+        UserPrefs.decrementIndexByOne();
     }
 
-    public static void getIndex() {
+    public static int getIndex() {
+        return UserPrefs.getIndex();
     }
 
     public static void setIndex(int index) {
+        UserPrefs.setIndex(index);
     }
+
 }
