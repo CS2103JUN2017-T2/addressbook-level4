@@ -9,6 +9,7 @@ import seedu.multitasky.logic.commands.CompleteCommand;
 import seedu.multitasky.logic.commands.DeleteCommand;
 import seedu.multitasky.logic.commands.EditCommand;
 import seedu.multitasky.logic.commands.ListCommand;
+import seedu.multitasky.logic.commands.RestoreCommand;
 import seedu.multitasky.logic.parser.CliSyntax;
 import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.Entry;
@@ -79,8 +80,36 @@ public class CommandUtil {
     /**
      * Returns a delete command string for deleting by an entry's full name.
      */
-    public static String getRestoreEventByFullNameCommand(ReadOnlyEntry entry) {
-        return DeleteCommand.COMMAND_WORD + " " + entry.getName().toString();
+    public static String getRestoreByFullNameCommand(ReadOnlyEntry entry) {
+        return RestoreCommand.COMMAND_WORD + " " + entry.getName().toString();
+    }
+    // @@author
+
+    // @@author A0126623L
+    /**
+     * Returns a restore command string for restoring an event by index.
+     */
+    public static String getRestoreEventByIndexCommand(Index index) {
+        return RestoreCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_EVENT + " " + index.getOneBased();
+    }
+    // @@author
+
+    // @@author A0126623L
+    /**
+     * Returns a restore command string for restoring a deadline by index.
+     */
+    public static String getRestoreDeadlineByIndexCommand(Index index) {
+        return RestoreCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_DEADLINE + " " + index.getOneBased();
+    }
+    // @@author
+
+    // @@author A0126623L
+
+    /**
+     * Returns a restore command string for restoring a floating task by index.
+     */
+    public static String getRestoreFloatingTaskByIndexCommand(Index index) {
+        return RestoreCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_FLOATINGTASK + " " + index.getOneBased();
     }
     // @@author
 
