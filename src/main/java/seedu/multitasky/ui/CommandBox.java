@@ -23,6 +23,7 @@ import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.ui.util.CommandAutocomplete;
 import seedu.multitasky.ui.util.CommandHistory;
 import seedu.multitasky.ui.util.TextAutocomplete;
+import seedu.multitasky.ui.util.TextHistory;
 
 //@@author A0125586X
 /**
@@ -39,7 +40,7 @@ public class CommandBox extends UiPart<Region> {
     private final Logic logic;
 
     private TextAutocomplete autocomplete;
-    private CommandHistory commandHistory;
+    private TextHistory commandHistory;
 
     @FXML
     private TextField commandTextField;
@@ -47,12 +48,13 @@ public class CommandBox extends UiPart<Region> {
     public CommandBox(Logic logic) {
         super(FXML);
         this.logic = logic;
-        commandHistory = new CommandHistory(getRoot(), commandTextField);
         autocomplete = new CommandAutocomplete(CommandUtil.COMMAND_WORDS, CommandUtil.COMMAND_KEYWORDS,
                                                CommandUtil.PREFIX_ONLY_COMMANDS);
+        commandHistory = new CommandHistory();
         setCommandTextFieldFocus();
         onlyShowActiveEntries();
         setupCommandAutocompleteShortcut();
+        setupCommandHistoryShortcuts();
         registerAsAnEventHandler(this);
     }
 
@@ -89,7 +91,7 @@ public class CommandBox extends UiPart<Region> {
 
     @FXML
     private void handleCommandInputChanged() {
-        commandHistory.saveCommand();
+        commandHistory.save(getText());
         executeCommand(commandTextField.getText().trim());
         commandTextField.setText("");
     }
@@ -126,7 +128,25 @@ public class CommandBox extends UiPart<Region> {
             public void handle(KeyEvent event) {
                 if (event.getCode() == KeyCode.TAB) {
                     event.consume();
-                    setText(autocomplete.autocomplete(commandTextField.getText().trim()));
+                    setText(autocomplete.autocomplete(getText()));
+                }
+            }
+        });
+    }
+
+    /**
+     * Sets up the {@code UP} and {@code DOWN} arrow keys as shortcuts for the command history.
+     */
+    private void setupCommandHistoryShortcuts() {
+        getRoot().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.UP || event.getCode() == KeyCode.KP_UP) {
+                    event.consume();
+                    setText(commandHistory.getPrevious(getText()));
+                } else if (event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.KP_DOWN) {
+                    event.consume();
+                    setText(commandHistory.getNext(getText()));
                 }
             }
         });
@@ -149,6 +169,13 @@ public class CommandBox extends UiPart<Region> {
             styleClass.add(ERROR_STYLE_CLASS);
         }
         raise(new ResultStyleChangeEvent(false));
+    }
+
+    /**
+     * Returns the text currently entered into the command box.
+     */
+    private String getText() {
+        return commandTextField.getText().trim();
     }
 
     /**
