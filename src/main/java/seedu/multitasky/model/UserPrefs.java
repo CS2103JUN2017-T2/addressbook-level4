@@ -17,11 +17,12 @@ public class UserPrefs implements LogicUserPrefs {
     private String entryBookName = "MyEntryBook";
     private String entryBookFilePath = "data/entrybook.xml";
     // @@author A0140633R
-    private final int defaultDurationHour = 1;
+    private int defaultDurationHour;
     // @@author
 
     public UserPrefs() {
         this.setGuiSettings(500, 500, 0, 0);
+        this.setDurationHour();
     }
 
     public GuiSettings getGuiSettings() {
@@ -78,6 +79,10 @@ public class UserPrefs implements LogicUserPrefs {
     @Override
     public int getDurationHour() {
         return defaultDurationHour;
+    }
+
+    private void setDurationHour() {
+        this.defaultDurationHour = defaultDurationHour == 0 ? 1 : defaultDurationHour;
     }
 
     public String getEntryBookName() {
