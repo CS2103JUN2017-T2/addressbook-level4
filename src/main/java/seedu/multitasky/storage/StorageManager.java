@@ -65,7 +65,7 @@ public class StorageManager extends ComponentManager implements Storage {
 
     // @@author A0132788U
     /**
-     * Gets the proper filepath of the current snapshot with index
+     * Gets and sets the proper filepath of the current snapshot with index
      */
     @Override
     public String getEntryBookSnapshotPath() {
@@ -104,19 +104,27 @@ public class StorageManager extends ComponentManager implements Storage {
     // @@author A0132788U
     // ================ StorageManager methods ==============================
     /**
-     * Gets the proper filepath of the previous snapshot needed for undo
+     * Gets and sets the proper filepath of the previous snapshot needed for undo
      */
     public static String getPreviousEntryBookSnapshotPath() {
         UserPrefs.decrementIndexByOne();
         return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
     }
 
+    public static void setPreviousEntryBookSnapshotPath(String filepath) {
+        UserPrefs.setEntryBookSnapshotPath(filepath);
+    }
+
     /**
-     * Gets the proper filepath of the next snapshot needed for redo
+     * Gets and sets the proper filepath of the next snapshot needed for redo
      */
     public static String getNextEntryBookSnapshotPath() {
         UserPrefs.incrementIndexByOne();
         return UserPrefs.getEntryBookSnapshotPath() + UserPrefs.getIndex() + ".xml";
+    }
+
+    public static void setNextEntryBookSnapshotPath(String filepath) {
+        UserPrefs.setEntryBookSnapshotPath(filepath);
     }
 
     /**
@@ -178,10 +186,8 @@ public class StorageManager extends ComponentManager implements Storage {
             saveEntryBook(entry);
             event.setData(entry);
             event.setMessage("undo successful");
-        } catch (IOException e) {
-            raise(new DataSavingExceptionEvent(e));
         } catch (Exception e) {
-            event.setMessage(e.getMessage());
+            event.setMessage("Nothing to undo");
             UserPrefs.incrementIndexByOne();
         }
     }
@@ -201,27 +207,23 @@ public class StorageManager extends ComponentManager implements Storage {
             saveEntryBook(entry);
             event.setData(entry);
             event.setMessage("redo successful");
-        } catch (IOException e) {
-            raise(new DataSavingExceptionEvent(e));
         } catch (Exception e) {
-            event.setMessage(e.getMessage());
+            event.setMessage("Nothing to redo");
             UserPrefs.decrementIndexByOne();
         }
     }
 
     /**
      * Saves data of the entrybook at the filepath specified.
+     *
+     * @throws IOException
      */
     @Subscribe
-    public void handleFilePathChangedEvent(FilePathChangedEvent event) {
+    public void handleFilePathChangedEvent(FilePathChangedEvent event) throws IOException {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "File path changed, saving to file"));
-        try {
-            entryBookStorage.setEntryBookFilePath(event.getNewFilePath());
-            userPrefs.setEntryBookFilePath(event.getNewFilePath());
-            saveEntryBook(event.data, event.getNewFilePath());
-        } catch (IOException e) {
-            raise(new DataSavingExceptionEvent(e));
-        }
+        entryBookStorage.setEntryBookFilePath(event.getNewFilePath());
+        userPrefs.setEntryBookFilePath(event.getNewFilePath());
+        saveEntryBook(event.data, event.getNewFilePath());
     }
 
     /**
@@ -238,7 +240,7 @@ public class StorageManager extends ComponentManager implements Storage {
             event.setData(entry);
             event.setMessage("open successful");
         } catch (Exception e) {
-            event.setMessage(e.getMessage());
+            event.setMessage("Error in loading data!");
         }
     }
 

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- @@author A0132788U -->
+<entrybook>
+    <floatingTasks>
+        <name>Sample 2</name>
+        <state>ACTIVE</state>
+    </floatingTasks>
+    <floatingTasks>
+        <name>Sample 1</name>
+        <state>ACTIVE</state>
+    </floatingTasks>
+</entrybook>

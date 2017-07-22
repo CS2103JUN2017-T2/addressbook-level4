@@ -107,6 +107,7 @@ public class XmlAdaptedEntry {
     }
 
     private void setEntryState(Entry entry) {
+        assert state != null;
         switch (state) {
         case "ACTIVE":
             return;

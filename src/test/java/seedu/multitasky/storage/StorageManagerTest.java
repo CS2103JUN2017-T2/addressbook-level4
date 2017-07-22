@@ -14,13 +14,25 @@ import org.junit.rules.TemporaryFolder;
 
 import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
 import seedu.multitasky.commons.events.storage.DataSavingExceptionEvent;
+import seedu.multitasky.commons.events.storage.EntryBookToRedoEvent;
+import seedu.multitasky.commons.events.storage.EntryBookToUndoEvent;
+import seedu.multitasky.commons.events.storage.FilePathChangedEvent;
+import seedu.multitasky.commons.events.storage.LoadDataFromFilePathEvent;
+import seedu.multitasky.commons.util.FileUtil;
 import seedu.multitasky.model.EntryBook;
 import seedu.multitasky.model.ReadOnlyEntryBook;
+import seedu.multitasky.model.StorageUserPrefs;
 import seedu.multitasky.model.UserPrefs;
 import seedu.multitasky.testutil.EventsCollector;
 import seedu.multitasky.testutil.SampleEntries;
 
+// @@author A0132788U
+/**
+ * Unit tests for StorageManager operations
+ */
 public class StorageManagerTest {
+
+    private static final String TEST_DATA_FOLDER = FileUtil.getPath("./src/test/data/StorageManagerTest/");
 
     @Rule
     public TemporaryFolder testFolder = new TemporaryFolder();
@@ -34,7 +46,7 @@ public class StorageManagerTest {
     public void setUp() {
         XmlEntryBookStorage entryBookStorage = new XmlEntryBookStorage(getTempFilePath("ab"));
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(getTempFilePath("prefs"));
-        UserPrefs userPrefs = new UserPrefs();
+        StorageUserPrefs userPrefs = new UserPrefs();
         storageManager = new StorageManager(entryBookStorage, userPrefsStorage, userPrefs);
     }
 
@@ -81,6 +93,97 @@ public class StorageManagerTest {
         assertNotNull(storageManager.setEntryBookSnapshotPathAndUpdateIndex());
     }
 
+    @Test
+    public void saveEntryBook() throws IOException {
+        ReadOnlyEntryBook currentList = SampleEntries.getSampleEntryBook();
+        storageManager.saveEntryBook(currentList);
+        assertNotNull(storageManager.getEntryBookFilePath());
+    }
+
+    @Test
+    public void saveEntryBookSnapshot() throws IOException {
+        ReadOnlyEntryBook currentList = SampleEntries.getSampleEntryBook();
+        storageManager.saveEntryBookSnapshot(currentList);
+        assertNotNull(storageManager.setEntryBookSnapshotPathAndUpdateIndex());
+    }
+
+    @Test
+    public void loadDataFromFile_success() throws Exception {
+        assertTrue(readEntryBook("sample.xml").isPresent());
+        EntryBook loadedData = storageManager.loadDataFromFile("./src/test/data/StorageManagerTest/sample.xml");
+        assertNotNull(loadedData);
+    }
+
+    @Test
+    public void loadDataFromFile_error() throws Exception {
+        thrown.expect(Exception.class);
+        EntryBook loadedData = storageManager.loadDataFromFile("./src/test/data/StorageManagerTest/test.xml");
+    }
+
+    @Test
+    public void handleEntryBookChangedEvent_success() {
+        EntryBookChangedEvent event = new EntryBookChangedEvent(SampleEntries.getSampleEntryBook());
+        storageManager.handleEntryBookChangedEvent(event);
+        assertNotNull(event.data);
+    }
+
+    @Test
+    public void handleEntryBookToUndoEvent_success() throws Exception {
+        EntryBookToUndoEvent event = new EntryBookToUndoEvent(SampleEntries.getSampleEntryBook(), " ");
+        storageManager.handleEntryBookToUndoEvent(event);
+        assertNotNull(event.getData());
+    }
+
+    @Test
+    public void handleEntryBookToUndoEvent_failure() throws Exception {
+        StorageManager.setPreviousEntryBookSnapshotPath("dummy");
+        EntryBookToUndoEvent event = new EntryBookToUndoEvent(new EntryBook(), "dummy");
+        storageManager.handleEntryBookToUndoEvent(event);
+        assertEquals(event.getMessage(), "Nothing to undo");
+    }
+
+    @Test
+    public void handleEntryBookToRedoEvent_success() throws Exception {
+        EntryBookToUndoEvent eventUndo = new EntryBookToUndoEvent(SampleEntries.getSampleEntryBook(), " ");
+        storageManager.handleEntryBookToUndoEvent(eventUndo);
+        EntryBookToRedoEvent eventRedo = new EntryBookToRedoEvent(SampleEntries.getSampleEntryBook(), " ");
+        storageManager.handleEntryBookToRedoEvent(eventRedo);
+        assertNotNull(eventRedo.getData());
+    }
+
+    @Test
+    public void handleEntryBookToRedoEvent_failure() throws Exception {
+        StorageManager.setNextEntryBookSnapshotPath("dummy");
+        EntryBookToRedoEvent event = new EntryBookToRedoEvent(new EntryBook(), "dummy");
+        storageManager.handleEntryBookToRedoEvent(event);
+        assertEquals(event.getMessage(), "Nothing to redo");
+    }
+
+    @Test
+    public void handleFilePathChangedEvent_success() throws Exception {
+        FilePathChangedEvent event = new FilePathChangedEvent(SampleEntries.getSampleEntryBook(), "newfile.xml");
+        storageManager.handleFilePathChangedEvent(event);
+        assertEquals(storageManager.getEntryBookFilePath(), "newfile.xml");
+    }
+
+    @Test
+    public void handleLoadDataFromFilePathEvent_success() throws Exception {
+        LoadDataFromFilePathEvent event = new LoadDataFromFilePathEvent(SampleEntries.getSampleEntryBook(),
+                " ", " ");
+        event.setFilepath("./src/test/data/StorageManagerTest/sample.xml");
+        storageManager.handleLoadDataFromFilePathEvent(event);
+        assertEquals(event.getMessage(), "open successful");
+    }
+
+    @Test
+    public void handleLoadDataFromFilePathEvent_failure() throws Exception {
+        LoadDataFromFilePathEvent event = new LoadDataFromFilePathEvent(SampleEntries.getSampleEntryBook(),
+                "./src/test/data/StorageManagerTest/test.xml", " ");
+        storageManager.handleLoadDataFromFilePathEvent(event);
+        assertEquals(event.getMessage(), "Error in loading data!");
+    }
+
+    // @@author
     @Test
     public void handleEntryBookChangedEvent_exceptionThrown_eventRaised() throws IOException {
         // Create a StorageManager while injecting a stub that throws an exception when the save method is called
@@ -134,5 +237,23 @@ public class StorageManagerTest {
         storageManager.saveEntryBook(original);
         ReadOnlyEntryBook retrieved = storageManager.readEntryBook().get();
         assertEquals(original, new EntryBook(retrieved));
+    }
+
+    @Test
+    public void readEntryBook_nullFilePath_throwsNullPointerException() throws Exception {
+        thrown.expect(NullPointerException.class);
+        readEntryBook(null);
+    }
+
+    // @@author A0132788U
+    /***************************
+     * Helper Methods *
+     **************************/
+    private java.util.Optional<ReadOnlyEntryBook> readEntryBook(String filePath) throws Exception {
+        return new XmlEntryBookStorage(filePath).readEntryBook(addToTestDataPathIfNotNull(filePath));
+    }
+
+    private String addToTestDataPathIfNotNull(String prefsFileInTestDataFolder) {
+        return prefsFileInTestDataFolder != null ? TEST_DATA_FOLDER + prefsFileInTestDataFolder : null;
     }
 }
