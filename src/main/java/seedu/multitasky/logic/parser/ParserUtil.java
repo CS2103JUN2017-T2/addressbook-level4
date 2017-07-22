@@ -212,8 +212,8 @@ public class ParserUtil {
 
     /**
      * searches through the input string for for prefixes and returns the prefix that has the
-     * last occurence
-     * @return last occuring prefix in input String among input {@code Prefix[]}, and returns {@code null} if not found
+     * last occurrence
+     * @return last occurring prefix in input String among input {@code Prefix[]}, and returns {@code null} if not found
      */
     public static Prefix getLastPrefix(String stringToSearch, Prefix...prefixes) {
         // to deal with cases with prefix right at end or start

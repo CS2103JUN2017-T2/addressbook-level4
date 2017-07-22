@@ -2,6 +2,8 @@ package seedu.multitasky.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.multitasky.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_ARRAY_ENDDATE;
+import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_ARRAY_STARTDATE;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_AT;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_BY;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FROM;
@@ -42,8 +44,6 @@ public class AddCommandParser {
      */
     public AddCommand parse(String args, LogicUserPrefs userprefs) throws ParseException {
         argMultimap = ArgumentTokenizer.tokenize(args, ParserUtil.toPrefixArray(AddCommand.VALID_PREFIXES));
-        Calendar startDate = null;
-        Calendar endDate = null;
 
         // show message usage if no args were given with command
         if (args.trim().isEmpty()) {
@@ -54,6 +54,7 @@ public class AddCommandParser {
             try {
                 Name name = doParseName();
                 Set<Tag> tagList = doParseTags();
+
                 Entry entry = new FloatingTask(name, tagList);
                 return new AddCommand(entry);
             } catch (IllegalValueException ive) {
@@ -63,9 +64,9 @@ public class AddCommandParser {
         } else if (isDeadline()) {
             try {
                 Name name = doParseName();
-                Prefix datePrefix = PREFIX_BY;
-                endDate = ParserUtil.parseDate(argMultimap.getValue(datePrefix).get());
                 Set<Tag> tagList = doParseTags();
+                Calendar endDate = doParseDate(args, PREFIX_BY);
+
                 ReadOnlyEntry entry = new Deadline(name, endDate, tagList);
                 return new AddCommand(entry);
             } catch (IllegalValueException ive) {
@@ -76,54 +77,34 @@ public class AddCommandParser {
             try {
                 Name name = doParseName();
                 Set<Tag> tagList = doParseTags();
-                // only reads using flag indicated by the last occurrence of prefix.
-                Prefix startDatePrefix = requireNonNull(ParserUtil.getLastPrefix(args,
-                                                                                 PREFIX_FROM, PREFIX_ON, PREFIX_AT));
-                startDate = ParserUtil.parseDate(argMultimap.getValue(startDatePrefix).get());
-                Prefix endDatePrefix = requireNonNull(ParserUtil.getLastPrefix(args, PREFIX_TO, PREFIX_BY));
-                endDate = ParserUtil.parseExtendedDate(argMultimap.getValue(startDatePrefix).get(),
-                                                       argMultimap.getValue(endDatePrefix).get());
+                Calendar startDate = doParseDate(args, PREFIX_FROM, PREFIX_ON, PREFIX_AT);
+                Calendar endDate = doParseExtendedDate(args, PREFIX_ARRAY_STARTDATE, PREFIX_ARRAY_ENDDATE);
 
                 // check for special cases of date
                 calibrateCalendarsForComparison(startDate, endDate);
                 if (endDate.compareTo(startDate) < 0) {
                     throw new ParseException(AddCommand.MESSAGE_ENDDATE_BEFORE_STARTDATE);
                 } else if (endDate.compareTo(startDate) == 0) {
-                    // convert automatically to full day event
-                    startDate.set(Calendar.HOUR_OF_DAY, 0);
-                    startDate.set(Calendar.MINUTE, 0);
-                    endDate.set(Calendar.HOUR_OF_DAY, 23);
-                    endDate.set(Calendar.MINUTE, 59);
-                    ReadOnlyEntry entry = new Event(name, startDate, endDate, tagList);
+                    setToFullDay(startDate, endDate);
 
+                    ReadOnlyEntry entry = new Event(name, startDate, endDate, tagList);
                     return new AddCommand(entry);
                 } else { // end date is later than start date as it should be
                     ReadOnlyEntry entry = new Event(name, startDate, endDate, tagList);
-
                     return new AddCommand(entry);
                 }
-
             } catch (IllegalValueException ive) {
                 throw new ParseException(ive.getMessage(), ive);
             }
+
         } else if (isEventStartOnlyVariant()) {
             try {
                 Name name = doParseName();
                 Set<Tag> tagList = doParseTags();
-                // only reads using flag indicated by the last occurrence of prefix.
-                Prefix startDatePrefix = requireNonNull(
-                        ParserUtil.getLastPrefix(args, PREFIX_FROM, PREFIX_ON, PREFIX_AT));
-                startDate = ParserUtil.parseDate(argMultimap.getValue(startDatePrefix).get());
-                endDate = (Calendar) startDate.clone();
+                Calendar startDate = doParseDate(args, PREFIX_ARRAY_STARTDATE);
+                Calendar endDate = setUpEndDateWithDefaults(userprefs, startDate);
 
-                // get default duration from preferences.json file
-                int addDurationHour = userprefs.getDurationHour();
-                if (addDurationHour <= 0) {
-                    throw new ParseException(AddCommand.MESSAGE_INVALID_CONFIG_DURATION);
-                }
-                endDate.add(Calendar.HOUR_OF_DAY, addDurationHour);
                 ReadOnlyEntry entry = new Event(name, startDate, endDate, tagList);
-
                 return new AddCommand(entry);
             } catch (IllegalValueException ive) {
                 throw new ParseException(ive.getMessage(), ive);
@@ -132,10 +113,8 @@ public class AddCommandParser {
             try {
                 Name name = doParseName();
                 Set<Tag> tagList = doParseTags();
-                // this variant only accepts PREFIX_TO
-                Prefix endDatePrefix = PREFIX_TO;
-                endDate = ParserUtil.parseDate(argMultimap.getValue(endDatePrefix).get());
-                startDate = (Calendar) endDate.clone();
+                Calendar endDate = doParseDate(args, PREFIX_TO);
+                Calendar startDate = (Calendar) endDate.clone();
 
                 // get default duration from preferences.json file
                 int negAddDurationHour = 0 - userprefs.getDurationHour();
@@ -157,6 +136,64 @@ public class AddCommandParser {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                                                    AddCommand.MESSAGE_USAGE));
         }
+    }
+
+    /**
+     * Method that creates and returns
+     * get default duration from preferences.json file
+     * @throws ParseException
+     */
+    private Calendar setUpEndDateWithDefaults(LogicUserPrefs userprefs, Calendar startDate)
+            throws ParseException {
+        Calendar endDate = (Calendar) startDate.clone();
+
+        int addDurationHour = userprefs.getDurationHour();
+        if (addDurationHour <= 0) {
+            throw new ParseException(AddCommand.MESSAGE_INVALID_CONFIG_DURATION);
+        }
+        endDate.add(Calendar.HOUR_OF_DAY, addDurationHour);
+        return endDate;
+    }
+
+    /**
+     * method that parses date by using flag indicated by last occurrence of prefix amongst {@code endDatePrefixes},
+     * and extended if required by using any missing date fields such as month, date from the Calendar parsed from
+     * using the last occurrence of prefix amongst {@code startDatePrefixes}.
+     *
+     * @throws ParseException if raw date strings are not able to be parsed into Calendar
+     */
+    private Calendar doParseExtendedDate(String stringToSearch, Prefix[] startDatePrefixes,
+                                         Prefix[] endDatePrefixes) throws ParseException {
+        assert argMultimap != null;
+        Prefix startDatePrefix = ParserUtil.getLastPrefix(stringToSearch, startDatePrefixes);
+        Prefix endDatePrefix = ParserUtil.getLastPrefix(stringToSearch, endDatePrefixes);
+        return ParserUtil.parseExtendedDate(argMultimap.getValue(startDatePrefix).get(),
+                                            argMultimap.getValue(endDatePrefix).get());
+    }
+
+    /**
+     * method that parses date by using flag indicated by the last occurrence of prefix amongst input {@code Prefix[]}.
+     * Precondition: input raw string must contain at least one of Prefix in input Prefix[], {@code ArgumentMultimap}
+     * has been initialized beforehand.
+     *
+     * @throws ParseException if raw date string is not able to be parsed into Calendar
+     */
+    private Calendar doParseDate(String stringToSearch, Prefix... prefixes) throws ParseException {
+        assert argMultimap != null;
+        Prefix datePrefix = requireNonNull(ParserUtil.getLastPrefix(stringToSearch, prefixes));
+        return ParserUtil.parseDate(argMultimap.getValue(datePrefix).get());
+    }
+
+    /**
+     * converts input {@code Calendar} HOUR and MINUTE fields to 12am and 11.59pm.
+     * @param startDate
+     * @param endDate
+     */
+    private void setToFullDay(Calendar startDate, Calendar endDate) {
+        startDate.set(Calendar.HOUR_OF_DAY, 0);
+        startDate.set(Calendar.MINUTE, 0);
+        endDate.set(Calendar.HOUR_OF_DAY, 23);
+        endDate.set(Calendar.MINUTE, 59);
     }
 
     /**
