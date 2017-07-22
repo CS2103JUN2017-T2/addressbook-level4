@@ -46,73 +46,73 @@ public class SampleEntries {
         try {
             // Events (active)
             DINNER = EntryBuilder.build("Dinner with family",
-                                        new GregorianCalendar(2017, Calendar.DECEMBER, 25, 19, 00),
-                                        new GregorianCalendar(2017, Calendar.DECEMBER, 25, 21, 00),
+                                        new GregorianCalendar(2030, Calendar.DECEMBER, 25, 19, 00),
+                                        new GregorianCalendar(2030, Calendar.DECEMBER, 25, 21, 00),
                                         "cook");
             CAT = EntryBuilder.build("Feed the cat",
-                                     new GregorianCalendar(2017, Calendar.JULY, 12, 19, 00),
-                                     new GregorianCalendar(2017, Calendar.JULY, 12, 21, 00),
+                                     new GregorianCalendar(2030, Calendar.JULY, 12, 19, 00),
+                                     new GregorianCalendar(2030, Calendar.JULY, 12, 21, 00),
                                      "pet");
             MOVIE = EntryBuilder.build("Watch Spiderman",
-                                       new GregorianCalendar(2017, Calendar.JULY, 15, 15, 00),
-                                       new GregorianCalendar(2017, Calendar.JULY, 15, 17, 30),
+                                       new GregorianCalendar(2030, Calendar.JULY, 15, 15, 00),
+                                       new GregorianCalendar(2030, Calendar.JULY, 15, 17, 30),
                                        "marvel", "comics");
             OPENING = EntryBuilder.build("Attend exhibition opening",
-                                         new GregorianCalendar(2017, Calendar.OCTOBER, 7, 18, 00),
-                                         new GregorianCalendar(2017, Calendar.OCTOBER, 7, 21, 00),
+                                         new GregorianCalendar(2030, Calendar.OCTOBER, 7, 18, 00),
+                                         new GregorianCalendar(2030, Calendar.OCTOBER, 7, 21, 00),
                                          "tuxedo", "suit");
             // Events (archive)
             ASSIGNMENT = EntryBuilder.build("Finish cs2103 assignment",
-                                            new GregorianCalendar(2017, Calendar.SEPTEMBER, 9, 19, 00),
-                                            new GregorianCalendar(2017, Calendar.SEPTEMBER, 9, 21, 00),
+                                            new GregorianCalendar(2030, Calendar.SEPTEMBER, 9, 19, 00),
+                                            new GregorianCalendar(2030, Calendar.SEPTEMBER, 9, 21, 00),
                                             "school");
             ASSIGNMENT.setState(Entry.State.ARCHIVED);
             SHOPPING = EntryBuilder.build("Buy grocery",
-                                          new GregorianCalendar(2017, Calendar.NOVEMBER, 13, 19, 00),
-                                          new GregorianCalendar(2017, Calendar.NOVEMBER, 13, 21, 00),
+                                          new GregorianCalendar(2030, Calendar.NOVEMBER, 13, 19, 00),
+                                          new GregorianCalendar(2030, Calendar.NOVEMBER, 13, 21, 00),
                                           "weekends");
             SHOPPING.setState(Entry.State.ARCHIVED);
             // Events (bin)
             GYM = EntryBuilder.build("Go to gym",
-                                     new GregorianCalendar(2017, Calendar.SEPTEMBER, 11, 13, 00),
-                                     new GregorianCalendar(2017, Calendar.SEPTEMBER, 11, 15, 00),
+                                     new GregorianCalendar(2030, Calendar.SEPTEMBER, 11, 13, 00),
+                                     new GregorianCalendar(2030, Calendar.SEPTEMBER, 11, 15, 00),
                                      "health");
             GYM.setState(Entry.State.DELETED);
-            PAINT = EntryBuilder.build("Buy grocery",
-                                       new GregorianCalendar(2017, Calendar.NOVEMBER, 21, 14, 00),
-                                       new GregorianCalendar(2017, Calendar.NOVEMBER, 21, 16, 00),
+            PAINT = EntryBuilder.build("Attend painting workshop",
+                                       new GregorianCalendar(2030, Calendar.NOVEMBER, 21, 14, 00),
+                                       new GregorianCalendar(2030, Calendar.NOVEMBER, 21, 16, 00),
                                        "hobby");
             PAINT.setState(Entry.State.DELETED);
 
             // Deadlines (active)
             TAX = EntryBuilder.build("Submit tax forms",
-                                     new GregorianCalendar(2017, Calendar.JULY, 1, 00, 00),
+                                     new GregorianCalendar(2030, Calendar.JULY, 1, 00, 00),
                                      "money", "pay");
             PAPER = EntryBuilder.build("CS2103 finals",
-                                       new GregorianCalendar(2017, Calendar.JULY, 28, 10, 0),
+                                       new GregorianCalendar(2030, Calendar.JULY, 28, 10, 0),
                                        "school", "exam", "study");
             SUBMISSION = EntryBuilder.build("Submit assignment",
-                                            new GregorianCalendar(2017, Calendar.JULY, 12, 16, 00),
+                                            new GregorianCalendar(2030, Calendar.JULY, 12, 16, 00),
                                             "school");
             UPGRADE = EntryBuilder.build("Upgrade computer",
-                                         new GregorianCalendar(2017, Calendar.DECEMBER, 1, 00, 00),
+                                         new GregorianCalendar(2030, Calendar.DECEMBER, 1, 00, 00),
                                          "personal", "project");
             // Deadlines (archive)
             QUIZ = EntryBuilder.build("Complete post-lecture quiz",
-                                      new GregorianCalendar(2017, Calendar.JULY, 20, 00, 00),
+                                      new GregorianCalendar(2030, Calendar.JULY, 20, 00, 00),
                                       "school");
             QUIZ.setState(Entry.State.ARCHIVED);
             REGISTRATION = EntryBuilder.build("Register for marathon",
-                                              new GregorianCalendar(2017, Calendar.NOVEMBER, 19, 10, 0),
+                                              new GregorianCalendar(2030, Calendar.NOVEMBER, 19, 10, 0),
                                               "health");
-            ASSIGNMENT.setState(Entry.State.ARCHIVED);
+            REGISTRATION.setState(Entry.State.ARCHIVED);
             // Deadlines (bin)
             APPOINTMENT = EntryBuilder.build("Make health check appointment",
-                                             new GregorianCalendar(2017, Calendar.APRIL, 16, 00, 00),
+                                             new GregorianCalendar(2030, Calendar.OCTOBER, 16, 00, 00),
                                              "health", "weekends");
             APPOINTMENT.setState(Entry.State.DELETED);
             EMAIL = EntryBuilder.build("Email penpal",
-                                       new GregorianCalendar(2017, Calendar.NOVEMBER, 9, 14, 0),
+                                       new GregorianCalendar(2030, Calendar.NOVEMBER, 9, 14, 0),
                                        "hobby");
             EMAIL.setState(Entry.State.DELETED);
 
@@ -130,7 +130,7 @@ public class SampleEntries {
             SELL = EntryBuilder.build("Sell old things",
                                       "sale", "clutter");
             // Floating Tasks (archive)
-            EXERCISE = EntryBuilder.build("Go Jogging",
+            EXERCISE = EntryBuilder.build("Go jogging",
                                           "health");
             EXERCISE.setState(Entry.State.ARCHIVED);
             BOOK = EntryBuilder.build("Read books",
@@ -179,7 +179,7 @@ public class SampleEntries {
     // @@author A0126623L
     public static Entry[] getSampleArchivedEvents() {
         return new Entry[] {
-            ASSIGNMENT, SHOPPING
+            ASSIGNMENT
         };
     }
     // @@author
@@ -187,7 +187,7 @@ public class SampleEntries {
     // @@author A0126623L
     public static Entry[] getSampleArchivedDeadlines() {
         return new Entry[] {
-            QUIZ, REGISTRATION
+            QUIZ
         };
     }
     // @@author
@@ -195,7 +195,7 @@ public class SampleEntries {
     // @@author A0126623L
     public static Entry[] getSampleArchivedFloatingTasks() {
         return new Entry[] {
-            EXERCISE, BOOK
+            EXERCISE
         };
     }
     // @@author
@@ -211,7 +211,7 @@ public class SampleEntries {
     // @@author A0126623L
     public static Entry[] getSampleDeletedEvents() {
         return new Entry[] {
-            GYM, PAINT
+            GYM
         };
     }
     // @@author
@@ -219,7 +219,7 @@ public class SampleEntries {
     // @@author A0126623L
     public static Entry[] getSampleDeletedDeadlines() {
         return new Entry[] {
-            APPOINTMENT, EMAIL
+            APPOINTMENT
         };
     }
     // @@author
@@ -227,7 +227,7 @@ public class SampleEntries {
     // @@author A0126623L
     public static Entry[] getSampleDeletedFloatingTasks() {
         return new Entry[] {
-            BAKE, SING
+            BAKE
         };
     }
     // @@author
@@ -299,20 +299,6 @@ public class SampleEntries {
     public static EntryBook getSampleEntryBookWithActiveEntries() {
         EntryBook entryBook = new EntryBook();
         loadEntryBookWithSampleActiveEntries(entryBook);
-        return entryBook;
-    }
-    // @@author
-
-    // @@author A0126623L
-    /**
-     * @return  an {@code EntryBook} with sample events, deadlines and floating tasks
-     *          of various states (i.e. active, archived, deleted).
-     */
-    public static EntryBook getSampleEntryBookEntries() {
-        EntryBook entryBook = new EntryBook();
-        loadEntryBookWithSampleActiveEntries(entryBook);
-        loadEntryBookWithSampleArchivedEntries(entryBook);
-        loadEntryBookWithSampleDeletedEntries(entryBook);
         return entryBook;
     }
     // @@author

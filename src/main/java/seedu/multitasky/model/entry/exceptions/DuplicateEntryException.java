@@ -6,7 +6,9 @@ import seedu.multitasky.commons.exceptions.DuplicateDataException;
  * Signals that the operation will result in duplicate Entry objects.
  */
 public class DuplicateEntryException extends DuplicateDataException {
+    public static final String MESSAGE = "Operation would result in duplicate entries";
+
     public DuplicateEntryException() {
-        super("Operation would result in duplicate entries");
+        super(DuplicateEntryException.MESSAGE);
     }
 }
