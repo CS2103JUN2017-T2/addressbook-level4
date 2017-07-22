@@ -3,9 +3,12 @@ package seedu.multitasky.testutil;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Objects;
+
+import org.ocpsoft.prettytime.shade.edu.emory.mathcs.backport.java.util.Arrays;
 
 import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.commons.exceptions.IllegalValueException;
@@ -16,6 +19,7 @@ import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryOverdueException;
 import seedu.multitasky.model.entry.exceptions.OverlappingAndOverdueEventException;
 import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
+import seedu.multitasky.model.entry.util.Comparators;
 import seedu.multitasky.model.util.EntryBuilder;
 
 /**
@@ -154,6 +158,50 @@ public class SampleEntries {
         }
     }
 
+    // @@author A0126623L
+    /**
+     * @return Entry[] of sample events of mixed states (i.e. active, archived, deleted)
+     */
+    public static Entry[] getAllEvents() {
+        ArrayList<Entry> allEntriesList = new ArrayList<Entry>();
+
+        allEntriesList.addAll(Arrays.asList(SampleEntries.getSampleActiveEvents()));
+        allEntriesList.addAll(Arrays.asList(SampleEntries.getSampleArchivedEvents()));
+        allEntriesList.addAll(Arrays.asList(SampleEntries.getSampleDeletedEvents()));
+        allEntriesList.sort(Comparators.EVENT_DEFAULT);
+
+        return allEntriesList.toArray(new Entry[0]);
+    }
+
+    /**
+     * @return Entry[] of sample deadlines of mixed states (i.e. active, archived, deleted)
+     */
+    public static Entry[] getAllDeadlines() {
+        ArrayList<Entry> allEntriesList = new ArrayList<Entry>();
+
+        allEntriesList.addAll(Arrays.asList(SampleEntries.getSampleActiveDeadlines()));
+        allEntriesList.addAll(Arrays.asList(SampleEntries.getSampleArchivedDeadlines()));
+        allEntriesList.addAll(Arrays.asList(SampleEntries.getSampleDeletedDeadlines()));
+        allEntriesList.sort(Comparators.DEADLINE_DEFAULT);
+
+        return allEntriesList.toArray(new Entry[0]);
+    }
+
+    /**
+     * @return Entry[] of sample floating tasks of mixed states (i.e. active, archived, deleted)
+     */
+    public static Entry[] getAllFloatingTasks() {
+        ArrayList<Entry> allEntriesList = new ArrayList<Entry>();
+
+        allEntriesList.addAll(Arrays.asList(SampleEntries.getSampleActiveFloatingTasks()));
+        allEntriesList.addAll(Arrays.asList(SampleEntries.getSampleArchivedFloatingTasks()));
+        allEntriesList.addAll(Arrays.asList(SampleEntries.getSampleDeletedFloatingTasks()));
+        allEntriesList.sort(Comparators.FLOATING_TASK_DEFAULT);
+
+        return allEntriesList.toArray(new Entry[0]);
+    }
+
+    // @@author A0125586X
     public static Entry[] getSampleActiveEntries() {
         return new Entry[] {
             DINNER, TAX, PAPER, COOK, PROGRAMMING
