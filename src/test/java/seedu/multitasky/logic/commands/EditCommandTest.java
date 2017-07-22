@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_DEADLINE;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_EVENT;
 import static seedu.multitasky.logic.parser.CliSyntax.PREFIX_FLOATINGTASK;
-import static seedu.multitasky.testutil.EditCommandTestUtil.DESC_CLEAN;
+import static seedu.multitasky.testutil.EditCommandTestUtil.DESC_FULL;
 import static seedu.multitasky.testutil.EditCommandTestUtil.DESC_MEETING;
 import static seedu.multitasky.testutil.EditCommandTestUtil.INVALID_CALENDAR_END;
 import static seedu.multitasky.testutil.EditCommandTestUtil.INVALID_CALENDAR_START;
@@ -201,10 +201,10 @@ public class EditCommandTest {
     @Test
     public void equals() {
         final EditCommand standardCommand = new EditByIndexCommand(INDEX_FIRST_ENTRY, PREFIX_FLOATINGTASK,
-                                                                   DESC_CLEAN);
+                                                                   DESC_FULL);
 
         // same values -> returns true
-        EditEntryDescriptor copyDescriptor = new EditEntryDescriptor(DESC_CLEAN);
+        EditEntryDescriptor copyDescriptor = new EditEntryDescriptor(DESC_FULL);
         EditCommand commandWithSameValues = new EditByIndexCommand(INDEX_FIRST_ENTRY, PREFIX_FLOATINGTASK,
                                                                    copyDescriptor);
         assertTrue(standardCommand.equals(commandWithSameValues));
@@ -220,7 +220,7 @@ public class EditCommandTest {
 
         // different index -> returns false
         assertFalse(standardCommand.equals(new EditByIndexCommand(INDEX_SECOND_ENTRY, PREFIX_FLOATINGTASK,
-                                                                  DESC_CLEAN)));
+                                                                  DESC_FULL)));
 
         // different descriptor -> returns false
         assertFalse(standardCommand.equals(new EditByIndexCommand(INDEX_FIRST_ENTRY, PREFIX_FLOATINGTASK,

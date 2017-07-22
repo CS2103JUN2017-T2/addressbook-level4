@@ -39,6 +39,7 @@ public class EditCommandTestUtil {
 
     public static final EditEntryDescriptor DESC_CLEAN;
     public static final EditEntryDescriptor DESC_MEETING;
+    public static final EditEntryDescriptor DESC_FULL;
     public static final Entry EVENT_BOWLING;
     public static final Entry EVENT_FULLDAY;
     public static final Entry EVENT_FULLDAY_CORRECTED;
@@ -53,6 +54,10 @@ public class EditCommandTestUtil {
             DESC_MEETING = new EditEntryDescriptorBuilder().withName(VALID_NAME_MEETING)
                                                            .withTags(VALID_TAG_URGENT, VALID_TAG_FRIEND)
                                                            .build();
+
+            DESC_FULL = new EditEntryDescriptorBuilder().withName(VALID_NAME_CLEAN).withTags(VALID_TAG_URGENT)
+                    .withAddTags(VALID_TAG_FRIEND).withStartDate(VALID_CALENDAR_1).withEndDate(VALID_CALENDAR_2)
+                    .withResetStartDate().withResetEndDate().build();
 
             EVENT_BOWLING = EntryBuilder.build(new Name(VALID_NAME_BOWLING),
                                                VALID_CALENDAR_1,
