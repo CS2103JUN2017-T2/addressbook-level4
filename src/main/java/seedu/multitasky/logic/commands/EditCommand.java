@@ -150,7 +150,7 @@ public abstract class EditCommand extends Command {
         } else if (editToEvent(updatedStartDate, updatedEndDate) // event with start date == end date
                    && updatedEndDate.compareTo(updatedStartDate) == 0) {
             // can not change both to different dates if they are the same
-            if (updatedStartDate == updatedEndDate) {
+            if (updatedStartDate.equals(updatedEndDate)) {
                 updatedEndDate = (Calendar) updatedStartDate.clone();
             }
             // convert automatically to full day event

@@ -16,6 +16,7 @@ import static seedu.multitasky.testutil.SampleEntries.INDEX_SECOND_ENTRY;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -33,7 +34,10 @@ import seedu.multitasky.model.Model;
 import seedu.multitasky.model.ModelManager;
 import seedu.multitasky.model.UserPrefs;
 import seedu.multitasky.model.entry.Entry;
+import seedu.multitasky.model.entry.Name;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
+import seedu.multitasky.model.tag.Tag;
+import seedu.multitasky.model.util.EntryBuilder;
 import seedu.multitasky.testutil.EditCommandTestUtil;
 import seedu.multitasky.testutil.EditEntryDescriptorBuilder;
 import seedu.multitasky.testutil.SampleEntries;
@@ -117,6 +121,25 @@ public class EditCommandTest {
     // @@author
 
     @Test
+    public void execute_editFloatingNameAddTag_success() throws Exception {
+        ReadOnlyEntry targetEntry = model.getFilteredFloatingTaskList().get(INDEX_FIRST_ENTRY.getZeroBased());
+        Set<Tag> newTagSet = new HashSet<Tag>();
+        newTagSet.addAll(targetEntry.getTags());
+        newTagSet.add(new Tag("extratag"));
+        Entry editedEntry = EntryBuilder.build(new Name("changed name"), newTagSet);
+        EditEntryDescriptor descriptor = new EditEntryDescriptorBuilder(editedEntry).withAddTags("extratag").build();
+        EditCommand editCommand = prepareCommand(INDEX_FIRST_ENTRY, PREFIX_FLOATINGTASK, descriptor);
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, targetEntry, editedEntry);
+        Model expectedModel = new ModelManager(SampleEntries.getSampleEntryBookWithActiveEntries(), new UserPrefs());
+        expectedModel.updateEntry(targetEntry, editedEntry);
+        CommandResult result = editCommand.execute();
+
+        assertEquals(expectedMessage, result.feedbackToUser);
+        assertEquals(expectedModel, model);
+    }
+    // @@author
+
+    @Test
     public void execute_filteredListFloatingToEvent_success() throws Exception {
         showFirstEntryOnly();
         ReadOnlyEntry targetEntry = model.getFilteredFloatingTaskList().get(INDEX_FIRST_ENTRY.getZeroBased());
@@ -127,7 +150,10 @@ public class EditCommandTest {
         Model expectedModel = new ModelManager(new EntryBook(model.getEntryBook()), new UserPrefs());
         expectedModel.updateEntry(targetEntry, editedEntry);
 
-        CommandTestUtil.assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+        CommandResult result = editCommand.execute();
+
+        assertEquals(expectedMessage, result.feedbackToUser);
+        assertEquals(expectedModel, model);
     }
 
     // @@author A0140633R
