@@ -198,7 +198,7 @@ public class MainWindow extends UiPart<Region> {
         StatusBarFooter statusBarFooter = new StatusBarFooter(prefs.getEntryBookFilePath());
         statusbarPlaceholder.getChildren().add(statusBarFooter.getRoot());
 
-        commandBox = new CommandBox(logic);
+        commandBox = new CommandBox(logic, resultDisplay);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
 
     }
