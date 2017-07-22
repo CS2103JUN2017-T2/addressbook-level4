@@ -97,6 +97,39 @@ public class AddCommandParserTest {
         assertTrue(command instanceof AddCommand);
     }
 
+    public void parse_requireSmartParsingArgs_returnsAddCommand() throws Exception {
+        // deadline with two enddate flags
+        Command command = parser.parse("gardens by the bay by christmas", userprefs);
+        assertTrue(command instanceof AddCommand);
+
+        // event start only variant with two startdate flags
+        command = parser.parse("visit from parents from 3pm", userprefs);
+        assertTrue(command instanceof AddCommand);
+
+        // event end only with two enddate flags
+        command = parser.parse("go to the gym to 3pm", userprefs);
+        assertTrue(command instanceof AddCommand);
+    }
+
+    @Test
+    public void parse_invalidUserPrefsStartDateOnlyEvent_throwsParseException() throws Exception {
+        thrown.expect(ParseException.class);
+        thrown.expectMessage(String.format(AddCommand.MESSAGE_INVALID_CONFIG_DURATION));
+        LogicUserPrefsStub logicUserPrefsStub = new LogicUserPrefsStub();
+        logicUserPrefsStub.setDurationHour(-1);
+        parser.parse("task with only startDate from today", logicUserPrefsStub);
+    }
+
+    @Test
+    public void parse_invalidUserPrefsEndDateOnlyEvent_throwsParseException() throws Exception {
+        thrown.expect(ParseException.class);
+        thrown.expectMessage(String.format(AddCommand.MESSAGE_INVALID_CONFIG_DURATION));
+        LogicUserPrefsStub logicUserPrefsStub = new LogicUserPrefsStub();
+        logicUserPrefsStub.setDurationHour(-1);
+        parser.parse("task with only endDate to tomorrow", logicUserPrefsStub);
+    }
+
+    @Test
     public void parse_invalidArgsFollowedByValidArgs_returnsAddCommand() throws Exception {
         Command command = parser.parse(" a special task with many start date and end date " + PREFIX_FROM + " "
                 + INVALID_DATE + " " + PREFIX_AT + " " + VALID_DATE_17JULY + PREFIX_TO
@@ -119,4 +152,23 @@ public class AddCommandParserTest {
                      + " " + PREFIX_TO + " " + VALID_DATE_17JULY, userprefs);
     }
 
+    private class LogicUserPrefsStub implements LogicUserPrefs {
+        private int durationHour;
+
+        public LogicUserPrefsStub() {
+            durationHour = 1;
+        }
+
+        @Override
+        public int getDurationHour() {
+            return durationHour;
+        }
+
+        public void setDurationHour(int value) {
+            durationHour = value;
+        }
+    }
+
 }
+
+

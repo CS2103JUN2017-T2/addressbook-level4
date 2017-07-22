@@ -2,6 +2,7 @@ package seedu.multitasky.model.entry;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -132,7 +133,7 @@ public abstract class EntryList implements Iterable<Entry> {
 
         Entry entryToUpdate = internalList.get(index);
 
-        if (internalList.contains(editedEntry)) {
+        if (duplicatesPresentAfterEditing(entryToUpdate, editedEntry)) {
             if (!isArchivedOrDeletedFloatingTask(editedEntry)) {
                 throw new DuplicateEntryException();
             }
@@ -144,6 +145,30 @@ public abstract class EntryList implements Iterable<Entry> {
         // The right way is to implement observable properties in the Entry class.
         // Then, EntryCard should then bind its text labels to those observable properties.
         internalList.set(index, entryToUpdate);
+    }
+
+    // @@author A0126623L
+    /**
+     * Checks if duplicate entries are present after editing an entry. The entry to be edited
+     * is excluded from the duplicates-check.
+     * @param target        entry to edit
+     * @param editedEntry
+     * @return boolean
+     */
+    private boolean duplicatesPresentAfterEditing(ReadOnlyEntry target, ReadOnlyEntry editedEntry) {
+        ArrayList<Entry> prospectiveInternalList = createInternalListCopyWithoutTarget(target);
+        return prospectiveInternalList.contains(editedEntry);
+    }
+
+    // @@author A0126623L
+    private ArrayList<Entry> createInternalListCopyWithoutTarget(ReadOnlyEntry target) {
+        ArrayList<Entry> copiedInternalList = new ArrayList<Entry>();
+        for (Entry e : internalList) {
+            if (e != target) {
+                copiedInternalList.add(e);
+            }
+        }
+        return copiedInternalList;
     }
 
     // @@author A0126623L
