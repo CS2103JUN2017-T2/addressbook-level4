@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.commons.core.index.Index;
-import seedu.multitasky.commons.util.PowerMatch;
+import seedu.multitasky.commons.util.match.PowerMatch;
 import seedu.multitasky.logic.CommandHistory;
 import seedu.multitasky.logic.parser.Prefix;
 import seedu.multitasky.model.Model;
@@ -75,7 +75,7 @@ public class CompleteCommandTest {
         ReadOnlyEntry entry = model.getEntryBook().getFloatingTaskList().get(0);
         final String[] splitName = entry.getName().fullName.split("\\s+");
         model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList(splitName)), null, null, Entry.State.ACTIVE,
-                                             Model.Search.AND, PowerMatch.Level.LEVEL_0);
+                                             Model.Search.AND, PowerMatch.UNUSED);
 
         assert model.getFilteredFloatingTaskList().size() == 1;
     }
@@ -85,7 +85,7 @@ public class CompleteCommandTest {
      */
     private void showNoEntry(Model model) {
         model.updateFilteredFloatingTaskList(Collections.emptySet(), null, null, Entry.State.ACTIVE, Model.Search.AND,
-                                             PowerMatch.Level.LEVEL_0);
+                                             PowerMatch.UNUSED);
         assert model.getFilteredFloatingTaskList().isEmpty();
     }
 

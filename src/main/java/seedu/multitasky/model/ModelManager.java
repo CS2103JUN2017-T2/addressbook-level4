@@ -22,7 +22,7 @@ import seedu.multitasky.commons.events.storage.EntryBookToUndoEvent;
 import seedu.multitasky.commons.events.storage.FilePathChangedEvent;
 import seedu.multitasky.commons.events.storage.LoadDataFromFilePathEvent;
 import seedu.multitasky.commons.exceptions.IllegalValueException;
-import seedu.multitasky.commons.util.PowerMatch;
+import seedu.multitasky.commons.util.match.PowerMatch;
 import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.Event;
@@ -269,7 +269,7 @@ public class ModelManager extends ComponentManager implements Model {
         NameDateStateQualifier qualifier;
         for (Search search : searches) {
             if (search == Search.POWER_AND || search == Search.POWER_OR) {
-                for (PowerMatch.Level level : PowerMatch.Level.values()) {
+                for (int level = PowerMatch.MIN_LEVEL; level <= PowerMatch.MAX_LEVEL; ++level) {
                     qualifier = new NameDateStateQualifier(keywords, startDate, endDate, states, search,
                                                            level);
                     updateFilteredEventList(new PredicateExpression(qualifier));
@@ -281,7 +281,7 @@ public class ModelManager extends ComponentManager implements Model {
                     }
                 }
             } else {
-                qualifier = new NameDateStateQualifier(keywords, startDate, endDate, states, search, null);
+                qualifier = new NameDateStateQualifier(keywords, startDate, endDate, states, search, -1);
                 updateFilteredEventList(new PredicateExpression(qualifier));
                 updateFilteredDeadlineList(new PredicateExpression(qualifier));
                 updateFilteredFloatingTaskList(new PredicateExpression(qualifier));
@@ -301,7 +301,7 @@ public class ModelManager extends ComponentManager implements Model {
     // @@author A0125586X
     @Override
     public void updateFilteredEventList(Set<String> keywords, Calendar startDate, Calendar endDate,
-                                        Entry.State state, Search search, PowerMatch.Level level) {
+                                        Entry.State state, Search search, int level) {
         updateFilteredEventList(new PredicateExpression(new NameDateStateQualifier(keywords,
                                                                                    startDate, endDate, state,
                                                                                    search, level)));
@@ -316,7 +316,7 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void updateFilteredDeadlineList(Set<String> keywords, Calendar startDate,
                                            Calendar endDate, Entry.State state, Search search,
-                                           PowerMatch.Level level) {
+                                           int level) {
         updateFilteredDeadlineList(new PredicateExpression(new NameDateStateQualifier(keywords,
                                                                                       startDate, endDate,
                                                                                       state, search, level)));
@@ -331,7 +331,7 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void updateFilteredFloatingTaskList(Set<String> keywords, Calendar startDate,
                                                Calendar endDate, Entry.State state, Search search,
-                                               PowerMatch.Level level) {
+                                               int level) {
         updateFilteredFloatingTaskList(new PredicateExpression(new NameDateStateQualifier(keywords,
                                                                                           startDate, endDate,
                                                                                           state, search,
@@ -420,7 +420,7 @@ public class ModelManager extends ComponentManager implements Model {
         protected Calendar endDate;
         protected List<Entry.State> states;
         protected Search search;
-        protected PowerMatch.Level level;
+        protected int level;
 
         protected DateFormat dateFormat;
 
@@ -438,15 +438,12 @@ public class ModelManager extends ComponentManager implements Model {
          */
         public NameDateStateQualifier(Set<String> nameAndTagKeywords,
                 Calendar startDate, Calendar endDate,
-                List<Entry.State> states, Search search, PowerMatch.Level level) {
+                List<Entry.State> states, Search search, int level) {
             if (nameAndTagKeywords == null) {
                 throw new AssertionError("nameAndTagKeywords for NameDateStateQualifier cannot be null");
             }
             if (search == null) {
                 throw new AssertionError("search type for NameDateStateQualifier cannot be null");
-            }
-            if ((search == Search.POWER_AND || search == Search.POWER_OR) && level == null) {
-                throw new AssertionError("PowerMatch level cannot be null");
             }
             if (states == null) {
                 throw new AssertionError("States list cannot be null");
@@ -468,7 +465,7 @@ public class ModelManager extends ComponentManager implements Model {
          */
         public NameDateStateQualifier(Set<String> nameAndTagKeywords,
                 Calendar startDate, Calendar endDate,
-                Entry.State state, Search search, PowerMatch.Level level) {
+                Entry.State state, Search search, int level) {
             this(nameAndTagKeywords, startDate, endDate,
                  new ArrayList<>(Arrays.asList(new Entry.State[] { state, null })), search, level);
         }
@@ -515,7 +512,7 @@ public class ModelManager extends ComponentManager implements Model {
                 return false;
             case POWER_AND:
                 for (String keyword : nameAndTagKeywords) {
-                    if (!PowerMatch.isMatch(level, keyword, nameAndTags)) {
+                    if (!new PowerMatch().isMatch(level, keyword, nameAndTags)) {
                         return false;
                     }
                 }
@@ -525,7 +522,7 @@ public class ModelManager extends ComponentManager implements Model {
                     return true;
                 }
                 for (String keyword : nameAndTagKeywords) {
-                    if (PowerMatch.isMatch(level, keyword, nameAndTags)) {
+                    if (new PowerMatch().isMatch(level, keyword, nameAndTags)) {
                         return true;
                     }
                 }

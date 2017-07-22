@@ -24,7 +24,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import seedu.multitasky.commons.util.PowerMatch;
+import seedu.multitasky.commons.util.match.PowerMatch;
 import seedu.multitasky.logic.CommandHistory;
 import seedu.multitasky.logic.commands.EditCommand.EditEntryDescriptor;
 import seedu.multitasky.logic.commands.exceptions.CommandException;
@@ -207,7 +207,7 @@ public class EditByFindCommandTest {
         final String[] splitName = entry.getName().fullName.split("\\s+");
         model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList(splitName)),
                                              null, null, Entry.State.ACTIVE, Model.Search.AND,
-                                             PowerMatch.Level.LEVEL_0);
+                                             PowerMatch.UNUSED);
 
         assertTrue(model.getFilteredFloatingTaskList().size() == 1);
     }
