@@ -3,19 +3,12 @@ package seedu.multitasky.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import org.junit.Before;
 import org.junit.Test;
 
 public class StorageUserPrefsTest {
-    private StorageUserPrefs storageUserPrefs;
-
-    @Before
-    public void setUp() {
-        storageUserPrefs = new UserPrefs();
-    }
 
     /***************************
-     * Unit Test
+     * Unit Tests
      **************************/
     @Test
     public void getEntryBookSnapshotPath() {

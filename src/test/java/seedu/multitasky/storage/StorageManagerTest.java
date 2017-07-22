@@ -2,6 +2,7 @@ package seedu.multitasky.storage;
 
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -118,6 +119,7 @@ public class StorageManagerTest {
     public void loadDataFromFile_error() throws Exception {
         thrown.expect(Exception.class);
         EntryBook loadedData = storageManager.loadDataFromFile("./src/test/data/StorageManagerTest/test.xml");
+        assertNull(loadedData);
     }
 
     @Test
@@ -136,8 +138,8 @@ public class StorageManagerTest {
 
     @Test
     public void handleEntryBookToUndoEvent_failure() throws Exception {
-        StorageManager.setPreviousEntryBookSnapshotPath("dummy");
-        EntryBookToUndoEvent event = new EntryBookToUndoEvent(new EntryBook(), "dummy");
+        StorageManager.setPreviousEntryBookSnapshotPath("dummyUndo");
+        EntryBookToUndoEvent event = new EntryBookToUndoEvent(new EntryBook(), "dummyUndo");
         storageManager.handleEntryBookToUndoEvent(event);
         assertEquals(event.getMessage(), "Nothing to undo");
     }
@@ -153,8 +155,8 @@ public class StorageManagerTest {
 
     @Test
     public void handleEntryBookToRedoEvent_failure() throws Exception {
-        StorageManager.setNextEntryBookSnapshotPath("dummy");
-        EntryBookToRedoEvent event = new EntryBookToRedoEvent(new EntryBook(), "dummy");
+        StorageManager.setNextEntryBookSnapshotPath("dummyRedo");
+        EntryBookToRedoEvent event = new EntryBookToRedoEvent(new EntryBook(), "dummyRedo");
         storageManager.handleEntryBookToRedoEvent(event);
         assertEquals(event.getMessage(), "Nothing to redo");
     }
