@@ -147,10 +147,7 @@ public class AddCommandParser {
                 if (addDurationHour <= 0) {
                     throw new ParseException(AddCommand.MESSAGE_INVALID_CONFIG_DURATION);
                 }
-                endDate.add(Calendar.HOUR, addDurationHour);
-                if (endDate.compareTo(startDate) < 0) {
-                    throw new ParseException(AddCommand.MESSAGE_ENDDATE_BEFORE_STARTDATE);
-                }
+                endDate.add(Calendar.HOUR_OF_DAY, addDurationHour);
                 ReadOnlyEntry entry = new Event(name, startDate, endDate, tagList);
 
                 return new AddCommand(entry);
@@ -175,7 +172,7 @@ public class AddCommandParser {
                 if (negAddDurationHour >= 0) {
                     throw new ParseException(AddCommand.MESSAGE_INVALID_CONFIG_DURATION);
                 }
-                startDate.add(Calendar.HOUR, negAddDurationHour);
+                startDate.add(Calendar.HOUR_OF_DAY, negAddDurationHour);
                 if (endDate.compareTo(startDate) < 0) {
                     throw new ParseException(AddCommand.MESSAGE_ENDDATE_BEFORE_STARTDATE);
                 }

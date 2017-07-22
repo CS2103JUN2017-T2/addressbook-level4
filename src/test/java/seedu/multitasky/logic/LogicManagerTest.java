@@ -30,6 +30,7 @@ import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
 import seedu.multitasky.commons.events.ui.ShowHelpRequestEvent;
 import seedu.multitasky.commons.util.PowerMatch;
 import seedu.multitasky.logic.commands.AddCommand;
+import seedu.multitasky.logic.commands.ClearCommand;
 import seedu.multitasky.logic.commands.Command;
 import seedu.multitasky.logic.commands.CommandResult;
 import seedu.multitasky.logic.commands.DeleteCommand;
@@ -180,17 +181,15 @@ public class LogicManagerTest {
                              new ModelManager());
     }
 
-    // TODO revive when entrybook is fixed.
-    /*
-     * @Test
-     * public void execute_clear_success() throws Exception {
-     * TestDataHelper helper = new TestDataHelper();
-     * model.addEntry(helper.generateEntry(1));
-     * model.addEntry(helper.generateEntry(2));
-     * model.addEntry(helper.generateEntry(3));
-     * assertCommandSuccess(ClearCommand.COMMAND_WORD, ClearCommand.MESSAGE_SUCCESS, new ModelManager());
-     * }
-     */
+    @Test
+    public void execute_clear_success() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        model.addEntry(helper.generateEntry(1));
+        model.addEntry(helper.generateEntry(2));
+        model.addEntry(helper.generateEntry(3));
+        assertCommandSuccess(ClearCommand.COMMAND_WORD + " all",
+                             ClearCommand.MESSAGE_ALL_SUCCESS, new ModelManager());
+    }
 
     @Test
     public void execute_addInvalidArgsFormat_parseException() {
@@ -285,27 +284,6 @@ public class LogicManagerTest {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE);
         assertParseException(FindCommand.COMMAND_WORD + " ", expectedMessage);
     }
-
-    /*
-     * TODO modify this test as now we can match across words as well
-    @Test
-    public void execute_find_onlyMatchesFullWordsInNames() throws Exception {
-        TestDataHelper helper = new TestDataHelper();
-        Entry pTarget1 = EntryBuilder.build("bla bla KEY bla");
-        Entry pTarget2 = EntryBuilder.build("bla KEY bla bceofeia");
-        Entry p1 = EntryBuilder.build("KE Y");
-        Entry p2 = EntryBuilder.build("KEYKEYKEY sduauo");
-
-        List<Entry> fourEntrys = helper.generateEntryList(p1, pTarget1, p2, pTarget2);
-        Model expectedModel = new ModelManager(helper.generateEntryBook(fourEntrys), new UserPrefs());
-        expectedModel.updateFilteredFloatingTaskList(new HashSet<>(Collections.singletonList("KEY")), null, null,
-                                                     Entry.State.ACTIVE);
-        helper.addToModel(model, fourEntrys);
-        assertCommandSuccess(FindCommand.COMMAND_WORD + " KEY",
-                             Command.getMessageForEntryListShownSummary(expectedModel.getFilteredFloatingTaskList()
-                                                                                     .size()),
-                             expectedModel);
-    }*/
 
     @Test
     public void execute_find_isNotCaseSensitive() throws Exception {
