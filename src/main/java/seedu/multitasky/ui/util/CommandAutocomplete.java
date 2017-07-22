@@ -71,6 +71,17 @@ public class CommandAutocomplete implements TextAutocomplete {
         return commandResult.toString();
     }
 
+    public String getPossibilities(String input) {
+        StringBuilder possibilities = new StringBuilder();
+        SplitCommand splitCommand = split(input);
+        String commandWordPossibilities = commandWordAutocomplete.getPossibilities(splitCommand.getCommandWord());
+        if (commandWordPossibilities != null) {
+            possibilities.append(splitCommand.getCommandWord()).append(": ").append(commandWordPossibilities);
+            return possibilities.toString();
+        }
+        return null;
+    }
+
     private String autocompleteKeywords(String commandWord, String remainder) {
         StringBuilder keywordsResult = new StringBuilder();
         if (remainder.isEmpty()) {
@@ -99,12 +110,12 @@ public class CommandAutocomplete implements TextAutocomplete {
      * Splits a command word from the rest of the input string.
      */
     private SplitCommand split(String command) {
+        if (command.isEmpty()) {
+            return new SplitCommand("", "");
+        }
         // Command word should be followed by whitespace
         String[] words = command.split("\\s+");
-        if (words.length > 0) {
-            return new SplitCommand(words[0].trim(), command.substring(words[0].length()).trim());
-        }
-        return new SplitCommand("", "");
+        return new SplitCommand(words[0].trim(), command.substring(words[0].length()).trim());
     }
 
 }

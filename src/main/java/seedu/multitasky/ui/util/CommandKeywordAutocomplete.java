@@ -34,4 +34,9 @@ public class CommandKeywordAutocomplete implements TextAutocomplete {
         return input;
     }
 
+    @Override
+    public String getPossibilities(String input) {
+        return null;
+    }
+
 }

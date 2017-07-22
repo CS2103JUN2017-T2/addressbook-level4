@@ -1,5 +1,6 @@
 package seedu.multitasky.ui;
 
+import java.util.Date;
 import java.util.logging.Logger;
 
 import javafx.application.Platform;
@@ -32,7 +33,11 @@ import seedu.multitasky.ui.util.TextAutocomplete;
  */
 public class CommandBox extends UiPart<Region> {
 
+    // Two tab presses in 0.5 second is considered double
+    public static final int DOUBLE_TAB_PRESS_INTERVAL_MILLIS = 500;
+
     public static final String ERROR_STYLE_CLASS = "command-box-error";
+
     private static final String FXML = "CommandBox.fxml";
 
     private final Logger logger = LogsCenter.getLogger(CommandBox.class);
@@ -44,12 +49,15 @@ public class CommandBox extends UiPart<Region> {
     @FXML
     private TextField commandTextField;
 
+    private Date tabPressTime;
+
     public CommandBox(Logic logic) {
         super(FXML);
         this.logic = logic;
         commandHistory = new CommandHistory(getRoot(), commandTextField);
         autocomplete = new CommandAutocomplete(CommandUtil.COMMAND_WORDS, CommandUtil.COMMAND_KEYWORDS,
                                                CommandUtil.PREFIX_ONLY_COMMANDS);
+        tabPressTime = new Date();
         setCommandTextFieldFocus();
         onlyShowActiveEntries();
         setupCommandAutocompleteShortcut();
@@ -126,10 +134,29 @@ public class CommandBox extends UiPart<Region> {
             public void handle(KeyEvent event) {
                 if (event.getCode() == KeyCode.TAB) {
                     event.consume();
-                    setText(autocomplete.autocomplete(commandTextField.getText().trim()));
+                    if (isDoubleTabPress()) {
+                        String possibilities = autocomplete.getPossibilities(commandTextField.getText().trim());
+                        if (possibilities != null) {
+                            raise(new NewResultAvailableEvent(possibilities));
+                        }
+                    } else {
+                        setText(autocomplete.autocomplete(commandTextField.getText().trim()));
+                    }
                 }
             }
         });
+    }
+
+    /**
+     * Checks if this should be considered as a double tab press.
+     */
+    private boolean isDoubleTabPress() {
+        Date now = new Date();
+        if (now.getTime() - tabPressTime.getTime() <= DOUBLE_TAB_PRESS_INTERVAL_MILLIS) {
+            return true;
+        }
+        tabPressTime = now;
+        return false;
     }
 
     /**
