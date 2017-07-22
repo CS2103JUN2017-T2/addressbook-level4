@@ -12,7 +12,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
 import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.events.ui.NewResultAvailableEvent;
-import seedu.multitasky.commons.events.ui.ResultStyleChangeEvent;
 import seedu.multitasky.logic.Logic;
 import seedu.multitasky.logic.commands.CommandResult;
 import seedu.multitasky.logic.commands.ListCommand;
@@ -42,15 +41,21 @@ public class CommandBox extends UiPart<Region> {
     private TextAutocomplete autocomplete;
     private TextHistory commandHistory;
 
+    private ResultDisplay resultDisplay;
+
     @FXML
     private TextField commandTextField;
 
-    public CommandBox(Logic logic) {
+    private boolean isCommandSuccessful;
+
+    public CommandBox(Logic logic, ResultDisplay resultDisplay) {
         super(FXML);
         this.logic = logic;
+        this.resultDisplay = resultDisplay;
         autocomplete = new CommandAutocomplete(CommandUtil.COMMAND_WORDS, CommandUtil.COMMAND_KEYWORDS,
                                                CommandUtil.PREFIX_ONLY_COMMANDS);
         commandHistory = new CommandHistory();
+        isCommandSuccessful = false;
         setCommandTextFieldFocus();
         onlyShowActiveEntries();
         setupCommandAutocompleteShortcut();
@@ -77,16 +82,23 @@ public class CommandBox extends UiPart<Region> {
             setStyleToIndicateCommandSuccess();
             logger.info("Result: " + commandResult.feedbackToUser);
             raise(new NewResultAvailableEvent(commandResult.feedbackToUser));
+            isCommandSuccessful = true;
         } catch (CommandException | ParseException e) {
             // handle command failure
             setStyleToIndicateCommandFailure();
             logger.info("Invalid command: " + command);
             raise(new NewResultAvailableEvent(e.getMessage()));
+            isCommandSuccessful = false;
         } catch (DuplicateEntryException e) {
             setStyleToIndicateCommandFailure();
             logger.info("Unable to add duplicate entry with command: " + command);
             raise(new NewResultAvailableEvent(e.getMessage()));
+            isCommandSuccessful = false;
         }
+    }
+
+    public boolean lastCommandStatus() {
+        return isCommandSuccessful;
     }
 
     @FXML
@@ -153,22 +165,22 @@ public class CommandBox extends UiPart<Region> {
     }
 
     /**
-     * Sets the command box style to indicate a successful command.
+     * Sets the result display style to indicate a successful command.
      */
     private void setStyleToIndicateCommandSuccess() {
         commandTextField.getStyleClass().remove(ERROR_STYLE_CLASS);
-        raise(new ResultStyleChangeEvent(true));
+        resultDisplay.setStyleToIndicateCommandSuccess();
     }
 
     /**
-     * Sets the command box style to indicate a failed command.
+     * Sets the result display style to indicate a failed command.
      */
     private void setStyleToIndicateCommandFailure() {
         ObservableList<String> styleClass = commandTextField.getStyleClass();
         if (!styleClass.contains(ERROR_STYLE_CLASS)) {
             styleClass.add(ERROR_STYLE_CLASS);
         }
-        raise(new ResultStyleChangeEvent(false));
+        resultDisplay.setStyleToIndicateCommandFailure();
     }
 
     /**
