@@ -11,15 +11,19 @@ import java.util.HashSet;
  */
 public class PermutationMatch implements Match {
 
+    public static final int MAX_LENGTH = 8;
+
     public String match(final String input, final String... potentialMatches) {
-        if (input == null || potentialMatches == null || potentialMatches.length == 0) {
+        if (input == null || potentialMatches == null || potentialMatches.length == 0
+            || input.length() > MAX_LENGTH) {
             return null;
         }
         return MatchUtil.getRegexMatch(getRegexes(input), potentialMatches);
     }
 
     public boolean isMatch(final String input, final String potentialMatch) {
-        if (input == null || potentialMatch == null) {
+        if (input == null || potentialMatch == null
+            || input.length() > MAX_LENGTH) {
             return false;
         }
         return MatchUtil.getRegexMatch(getRegexes(input), potentialMatch) != null;
