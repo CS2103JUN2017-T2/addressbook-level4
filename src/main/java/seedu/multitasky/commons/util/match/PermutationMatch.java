@@ -1,9 +1,6 @@
 package seedu.multitasky.commons.util.match;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
 
 // @@author A0125586X
 /**
