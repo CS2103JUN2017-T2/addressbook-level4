@@ -80,11 +80,9 @@ public class AddCommandParser {
                 Calendar startDate = doParseDate(args, PREFIX_FROM, PREFIX_ON, PREFIX_AT);
                 Calendar endDate = doParseExtendedDate(args, PREFIX_ARRAY_STARTDATE, PREFIX_ARRAY_ENDDATE);
 
-                // check for special cases of date
                 calibrateCalendarsForComparison(startDate, endDate);
-                if (endDate.compareTo(startDate) < 0) {
-                    throw new ParseException(AddCommand.MESSAGE_ENDDATE_BEFORE_STARTDATE);
-                } else if (endDate.compareTo(startDate) == 0) {
+                checkEndDateBeforeStartDate(endDate, startDate);
+                if (endDate.compareTo(startDate) == 0) {
                     setToFullDay(startDate, endDate);
 
                     ReadOnlyEntry entry = new Event(name, startDate, endDate, tagList);
@@ -109,22 +107,14 @@ public class AddCommandParser {
             } catch (IllegalValueException ive) {
                 throw new ParseException(ive.getMessage(), ive);
             }
+
         } else if (isEventEndOnlyVariant()) {
             try {
                 Name name = doParseName();
                 Set<Tag> tagList = doParseTags();
                 Calendar endDate = doParseDate(args, PREFIX_TO);
-                Calendar startDate = (Calendar) endDate.clone();
-
-                // get default duration from preferences.json file
-                int negAddDurationHour = 0 - userprefs.getDurationHour();
-                if (negAddDurationHour >= 0) {
-                    throw new ParseException(AddCommand.MESSAGE_INVALID_CONFIG_DURATION);
-                }
-                startDate.add(Calendar.HOUR_OF_DAY, negAddDurationHour);
-                if (endDate.compareTo(startDate) < 0) {
-                    throw new ParseException(AddCommand.MESSAGE_ENDDATE_BEFORE_STARTDATE);
-                }
+                Calendar startDate = setUpStartDateWithDefaults(userprefs, endDate);
+                checkEndDateBeforeStartDate(endDate, startDate);
                 ReadOnlyEntry entry = new Event(name, startDate, endDate, tagList);
 
                 return new AddCommand(entry);
@@ -133,15 +123,35 @@ public class AddCommandParser {
             }
 
         } else { // not event, not deadline, not floating task
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                                                   AddCommand.MESSAGE_USAGE));
+            throw new AssertionError("entries should only be event, deadline or floatingtask");
+        }
+    }
+
+    private void checkEndDateBeforeStartDate(Calendar endDate, Calendar startDate) throws ParseException {
+        if (endDate.compareTo(startDate) < 0) {
+            throw new ParseException(AddCommand.MESSAGE_ENDDATE_BEFORE_STARTDATE);
         }
     }
 
     /**
-     * Method that creates and returns
-     * get default duration from preferences.json file
-     * @throws ParseException
+     * Method that creates and returns a {@code Calendar} by extending the Date from {@code endDate} with
+     * default duration from preferences.json file
+     */
+    private Calendar setUpStartDateWithDefaults(LogicUserPrefs userprefs, Calendar endDate)
+            throws ParseException {
+        Calendar startDate = (Calendar) endDate.clone();
+
+        int negAddDurationHour = 0 - userprefs.getDurationHour();
+        if (negAddDurationHour >= 0) {
+            throw new ParseException(AddCommand.MESSAGE_INVALID_CONFIG_DURATION);
+        }
+        startDate.add(Calendar.HOUR_OF_DAY, negAddDurationHour);
+        return startDate;
+    }
+
+    /**
+     * Method that creates and returns a {@code Calendar} by extending the Date from {@code startDate} with
+     * default duration from preferences.json file
      */
     private Calendar setUpEndDateWithDefaults(LogicUserPrefs userprefs, Calendar startDate)
             throws ParseException {
