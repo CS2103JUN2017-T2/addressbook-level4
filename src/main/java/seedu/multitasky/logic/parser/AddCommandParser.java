@@ -114,7 +114,6 @@ public class AddCommandParser {
                 Set<Tag> tagList = doParseTags();
                 Calendar endDate = doParseDate(args, PREFIX_TO);
                 Calendar startDate = setUpStartDateWithDefaults(userprefs, endDate);
-                checkEndDateBeforeStartDate(endDate, startDate);
                 ReadOnlyEntry entry = new Event(name, startDate, endDate, tagList);
 
                 return new AddCommand(entry);
@@ -325,8 +324,7 @@ public class AddCommandParser {
      * Method that loops through all but the last string in input {@code List<String>} and appends prefix + args to
      * input {@code StringBuilder} if {@code PrettyTimeParser} fails to parse it.
      */
-    private void appendAllExceptLastNonDateString(StringBuilder builder, Prefix prefix,
-                                     List<String> argList) {
+    private void appendAllExceptLastNonDateString(StringBuilder builder, Prefix prefix, List<String> argList) {
         List<Date> dateList;
         PrettyTimeParser ptp = new PrettyTimeParser();
         for (int i = 0; i < argList.size() - 1; i++) {
