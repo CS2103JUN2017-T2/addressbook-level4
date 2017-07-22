@@ -70,7 +70,7 @@ public class ParserUtil {
      * @return fullString with stringToRemove removed
      */
     private static String removeEscapeChar(String fullString, String stringToRemove) {
-        if (!stringToRemove.equals("\\")) {
+        if (!"\\".equals(stringToRemove)) {
             return fullString.replaceAll(stringToRemove, "");
         } else {
             return fullString.replaceAll("\\" + stringToRemove, "");
