@@ -117,12 +117,13 @@ public class ModelManager extends ComponentManager implements Model {
             if (target.getClass().equals(editedEntry.getClass())) { // updating to same type of entry
                 entryBook.updateEntry(target, editedEntry);
             } else { // updating to a different type of entry
-                /**
-                 * Adding is done before removal because adding may fail,
-                 * in which case removal should not be carried out.
-                 */
-                entryBook.addEntry(editedEntry);
                 entryBook.removeEntry(target);
+                try {
+                    entryBook.addEntry(editedEntry);
+                } catch (DuplicateEntryException dee) {
+                    // revert back to initial state
+                    entryBook.addEntry(target);
+                }
             }
         } catch (EntryNotFoundException | OverlappingEventException
                  | OverlappingAndOverdueEventException | EntryOverdueException e) {
@@ -258,7 +259,7 @@ public class ModelManager extends ComponentManager implements Model {
             if (search == Search.POWER_AND || search == Search.POWER_OR) {
                 for (int level = PowerMatch.MIN_LEVEL; level <= PowerMatch.MAX_LEVEL; ++level) {
                     qualifier = new NameDateStateQualifier(keywords, startDate, endDate, states, search,
-                            level);
+                                                           level);
                     updateFilteredEventList(new PredicateExpression(qualifier));
                     updateFilteredDeadlineList(new PredicateExpression(qualifier));
                     updateFilteredFloatingTaskList(new PredicateExpression(qualifier));
@@ -290,8 +291,8 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateFilteredEventList(Set<String> keywords, Calendar startDate, Calendar endDate,
                                         Entry.State state, Search search, int level) {
         updateFilteredEventList(new PredicateExpression(new NameDateStateQualifier(keywords,
-                startDate, endDate, state,
-                search, level)));
+                                                                                   startDate, endDate, state,
+                                                                                   search, level)));
     }
 
     // @@author A0126623L
@@ -305,8 +306,8 @@ public class ModelManager extends ComponentManager implements Model {
                                            Calendar endDate, Entry.State state, Search search,
                                            int level) {
         updateFilteredDeadlineList(new PredicateExpression(new NameDateStateQualifier(keywords,
-                startDate, endDate,
-                state, search, level)));
+                                                                                      startDate, endDate,
+                                                                                      state, search, level)));
     }
 
     // @@author A0126623L
@@ -320,9 +321,9 @@ public class ModelManager extends ComponentManager implements Model {
                                                Calendar endDate, Entry.State state, Search search,
                                                int level) {
         updateFilteredFloatingTaskList(new PredicateExpression(new NameDateStateQualifier(keywords,
-                startDate, endDate,
-                state, search,
-                level)));
+                                                                                          startDate, endDate,
+                                                                                          state, search,
+                                                                                          level)));
     }
 
     /** Updates the sorting comparators used. */
@@ -451,7 +452,7 @@ public class ModelManager extends ComponentManager implements Model {
                 Calendar startDate, Calendar endDate,
                 Entry.State state, Search search, int level) {
             this(nameAndTagKeywords, startDate, endDate,
-                    new ArrayList<>(Arrays.asList(new Entry.State[] { state, null })), search, level);
+                 new ArrayList<>(Arrays.asList(new Entry.State[] { state, null })), search, level);
         }
 
         @Override
@@ -556,7 +557,7 @@ public class ModelManager extends ComponentManager implements Model {
         public String toString() {
             StringBuilder builder = new StringBuilder();
             builder.append("NameDateStateQualifier: ")
-                    .append("keywords = ");
+                   .append("keywords = ");
             for (String keyword : nameAndTagKeywords) {
                 builder.append(keyword).append(", ");
             }
