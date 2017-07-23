@@ -8,11 +8,6 @@ import org.junit.Test;
 public class CommandHistoryTest {
 
     @Test
-    public void commandHistory_constructor_noExceptions() {
-        TextHistory commandHistory = new CommandHistory();
-    }
-
-    @Test
     public void commandHistory_noMorePrevious_same() {
         TextHistory commandHistory = new CommandHistory();
         commandHistory.save("a");
