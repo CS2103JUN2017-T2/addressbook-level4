@@ -10,13 +10,13 @@ import java.util.Set;
 import seedu.multitasky.model.tag.Tag;
 import seedu.multitasky.model.tag.UniqueTagList;
 
+// @@ author A0126623L
 /**
  * Represents a Entry in the entry book.
  * Guarantees: details are present and not null, field values are validated.
  */
 public abstract class Entry implements ReadOnlyEntry {
 
-    // @@ author A0126623L
     /**
      * Represents the state of an entry.
      * The three possible states are: ACTIVE, ARCHIVED, DELETED
@@ -40,20 +40,17 @@ public abstract class Entry implements ReadOnlyEntry {
                 return "DELETED";
             }
         };
-    };
-    // @@author
+    }
 
-    // @@author A0126623L
     /**
      * Date formatter for subclasses that need to format Date objects.
      */
     protected static DateFormat dateFormatter = DateFormat.getDateTimeInstance(DateFormat.MEDIUM,
                                                                                DateFormat.SHORT);
-    // @@author
 
-    private Name _name;
-    private UniqueTagList _tags;
-    private State _state;
+    private Name name;
+    private UniqueTagList tags;
+    private State state;
 
     /**
      * Every field must be present and not null.
@@ -61,9 +58,9 @@ public abstract class Entry implements ReadOnlyEntry {
      */
     protected Entry(Name name, Set<Tag> tags) {
         requireAllNonNull(name, tags);
-        this._name = name;
-        this._tags = new UniqueTagList(tags); // protect internal tags from changes in the arg list
-        this._state = State.ACTIVE;
+        this.name = name;
+        this.tags = new UniqueTagList(tags); // protect internal tags from changes in the arg list
+        this.state = State.ACTIVE;
     }
 
     /**
@@ -75,24 +72,24 @@ public abstract class Entry implements ReadOnlyEntry {
     }
 
     public void setName(Name name) {
-        this._name = requireNonNull(name);
+        this.name = requireNonNull(name);
     }
 
     @Override
     public Name getName() {
-        return _name;
+        return name;
     }
 
     /**
      * @param state cannot be null
      */
     public void setState(State state) {
-        this._state = requireNonNull(state);
+        this.state = requireNonNull(state);
     }
 
     @Override
     public State getState() {
-        return _state;
+        return state;
     }
 
     /**
@@ -101,14 +98,14 @@ public abstract class Entry implements ReadOnlyEntry {
      */
     @Override
     public Set<Tag> getTags() {
-        return Collections.unmodifiableSet(_tags.toSet());
+        return Collections.unmodifiableSet(tags.toSet());
     }
 
     /**
      * Replaces this entry's tags with the tags in the argument tag set.
      */
     public void setTags(Set<Tag> replacement) {
-        _tags.setTags(new UniqueTagList(replacement));
+        tags.setTags(new UniqueTagList(replacement));
     }
 
     /**

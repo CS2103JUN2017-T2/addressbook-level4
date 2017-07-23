@@ -11,8 +11,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
+import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.DeadlineList;
@@ -33,19 +35,19 @@ import seedu.multitasky.model.tag.Tag;
 import seedu.multitasky.model.tag.UniqueTagList;
 import seedu.multitasky.model.util.EntryBuilder;
 
+// @@author A0126623L
 /**
  * Wraps all data at the entry-book level
  */
 public class EntryBook implements ReadOnlyEntryBook {
+    private static final Logger logger = LogsCenter.getLogger(EntryBook.class);
 
-    // TODO: Decide later if it's useful to keep an internal list of all entries
     private final MiscEntryList allEntriesList;
     private final EventList eventList;
     private final DeadlineList deadlineList;
     private final FloatingTaskList floatingTaskList;
     private final UniqueTagList tags;
 
-    // @@author A0126623L
     public EntryBook() {
         allEntriesList = new MiscEntryList();
         eventList = new EventList();
@@ -83,9 +85,7 @@ public class EntryBook implements ReadOnlyEntryBook {
         syncMasterTagListWith(allEntriesList);
     }
 
-    /*****************************
-     * List overwrite operations *
-     *****************************/
+    // ================= List Overwrite Operations =================
 
     /**
      * Fills up {@code allEntriesList} with existing events, deadlines
@@ -121,10 +121,7 @@ public class EntryBook implements ReadOnlyEntryBook {
         this.tags.setTags(tags);
     }
 
-    // @@author A0126623L
-    /**************************
-     * Entry-level operations *
-     **************************/
+    // ================= Entry-Level Operations =================
 
     /**
      * Adds an entry to the entry book.
@@ -141,15 +138,13 @@ public class EntryBook implements ReadOnlyEntryBook {
         try {
             addToEntrySubtypeList(entryToAdd);
         } catch (OverlappingEventException | OverlappingAndOverdueEventException | EntryOverdueException e) {
-            // TODO: Figure out how to prevent repeating lines within this catch block and outside.
-            Entry newEntry = convertToEntry(entryToAdd);
-            syncMasterTagListWith(newEntry);
-            allEntriesList.add(newEntry);
+            syncMasterTagListWith(entryToAdd);
+            allEntriesList.add(entryToAdd);
             throw e;
         }
-        Entry newEntry = convertToEntry(entryToAdd);
-        syncMasterTagListWith(newEntry);
-        allEntriesList.add(newEntry);
+        syncMasterTagListWith(entryToAdd);
+        allEntriesList.add(entryToAdd);
+        logger.fine("EntryBook added: " + entryToAdd);
     }
 
     /**
@@ -223,13 +218,11 @@ public class EntryBook implements ReadOnlyEntryBook {
              */
         } catch (EntryNotFoundException | OverlappingEventException
                  | OverlappingAndOverdueEventException | EntryOverdueException e) {
-            // TODO: Figure out how to prevent repeating lines within this catch block and outside.
-            Entry editedEntry = convertToEntry(editedReadOnlyEntry);
-            syncMasterTagListWith(editedEntry);
+            syncMasterTagListWith(editedReadOnlyEntry);
             throw e;
         }
-        Entry editedEntry = convertToEntry(editedReadOnlyEntry);
-        syncMasterTagListWith(editedEntry);
+        syncMasterTagListWith(editedReadOnlyEntry);
+        logger.fine("EntryBook updated: " + editedReadOnlyEntry);
     }
 
     /**
@@ -308,6 +301,7 @@ public class EntryBook implements ReadOnlyEntryBook {
      * @throws EntryNotFoundException
      */
     public boolean removeEntry(ReadOnlyEntry entryToRemove) throws EntryNotFoundException {
+        logger.fine("EntryBook attempting to remove: " + entryToRemove);
         return (allEntriesList.remove(entryToRemove) && removeFromEntrySubtypeList(entryToRemove));
     }
 
@@ -335,10 +329,9 @@ public class EntryBook implements ReadOnlyEntryBook {
     public void clearStateSpecificEntries(Entry.State state) {
 
         ArrayList<ReadOnlyEntry> entriesToRemove = new ArrayList<>();
-
         collectStateSpecificEntriesToRemove(state, entriesToRemove);
-
         removeEntriesInList(entriesToRemove);
+        logger.fine("EntryBook cleared entries of type: " + state.toString());
     }
 
     private void collectStateSpecificEntriesToRemove(Entry.State state,
@@ -387,6 +380,8 @@ public class EntryBook implements ReadOnlyEntryBook {
             assert (entryToChange instanceof FloatingTask);
             floatingTaskList.changeEntryState(entryToChange, newState);
         }
+
+        logger.fine("EntryBook changed state of: " + entryToChange.getName() + " to " + newState.toString());
     }
 
     /**
@@ -467,21 +462,22 @@ public class EntryBook implements ReadOnlyEntryBook {
         }
     }
 
-    /************************
-     * Tag-level operations *
-     ************************/
+    // ================= Tag-Level Operations =================
 
     public void addTag(Tag t) throws UniqueTagList.DuplicateTagException {
         tags.add(t);
+
+        logger.fine("EntryBook added tag: " + t.tagName);
     }
 
-    // @@author A0126623L-reused
+    // @@author A0126623L
     /**
      * Ensures that every tag in this entry:
      * - exists in the master list {@link #tags}
      * - points to a Tag object in the master list
      */
-    private void syncMasterTagListWith(Entry entry) {
+    private void syncMasterTagListWith(ReadOnlyEntry readOnlyEntry) {
+        Entry entry = convertToEntry(readOnlyEntry);
         final UniqueTagList entryTags = new UniqueTagList(entry.getTags());
         tags.mergeFrom(entryTags);
 
@@ -496,6 +492,7 @@ public class EntryBook implements ReadOnlyEntryBook {
         entry.setTags(correctTagReferences);
     }
 
+    // @@author A0126623L-reused
     /**
      * Ensures that every tag in these entries:
      * - exists in the master list {@link #tags}
@@ -507,9 +504,7 @@ public class EntryBook implements ReadOnlyEntryBook {
         entries.forEach(this::syncMasterTagListWith);
     }
 
-    /*****************
-     *  util methods *
-     *****************/
+    // ================= Util Methods =================
 
     // @@author A0125586X
     public void setComparators(Comparator<ReadOnlyEntry> eventComparator,
