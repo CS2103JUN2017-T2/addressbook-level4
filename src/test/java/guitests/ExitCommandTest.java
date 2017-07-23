@@ -9,6 +9,7 @@ import seedu.multitasky.logic.commands.ExitCommand;
 
 // @@author A0125586X
 public class ExitCommandTest extends EntryBookGuiTest {
+
     /*******************************
      * Mixed-case and autocomplete *
      ******************************/

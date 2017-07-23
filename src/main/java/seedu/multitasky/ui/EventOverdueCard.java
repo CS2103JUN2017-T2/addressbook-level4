@@ -17,8 +17,8 @@ public class EventOverdueCard extends EntryCard {
         super(FXML, entry, displayedIndex);
         assert entry instanceof Event : "Entry to display on EventListCard must be Event";
 
-        startDateTime.setText(formatDate(entry.getStartDateAndTime().getTime()));
-        endDateTime.setText(formatDate(entry.getEndDateAndTime().getTime()));
+        startDateTime.setText(entry.getStartDateAndTimeString());
+        endDateTime.setText(entry.getEndDateAndTimeString());
         additionalInfo.setText(prettyTimeFormatDate(entry.getStartDateAndTime().getTime()));
     }
 }

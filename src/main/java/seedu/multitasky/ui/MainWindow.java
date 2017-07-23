@@ -262,18 +262,6 @@ public class MainWindow extends UiPart<Region> {
         raise(new ExitAppRequestEvent());
     }
 
-    public EventListPanel getEventListPanel() {
-        return this.eventListPanel;
-    }
-
-    public DeadlineListPanel getDeadlineListPanel() {
-        return this.deadlineListPanel;
-    }
-
-    public FloatingTaskListPanel getFloatingTaskListPanel() {
-        return this.floatingTaskListPanel;
-    }
-
     @Subscribe
     private void handleListTypeUpdateEvent(ListTypeUpdateEvent event) {
         stateCurrentlyShown.setText(String.format(Messages.MESSAGE_CURRENTLY_DISPLAYING, event.state));
