@@ -13,7 +13,8 @@ public class PowerMatchTest {
      *****************************/
     @Test
     public void powerMatch_matchNullEmptyArguments_nullResult() {
-        assertTrue(new PowerMatch().match(-1, "input", "input") == null);
+        assertTrue(new PowerMatch().match(PowerMatch.MIN_LEVEL - 1, "input", "input") == null);
+        assertTrue(new PowerMatch().match(PowerMatch.MAX_LEVEL + 1, "input", "input") == null);
         assertTrue(new PowerMatch().match(0, null, "input") == null);
         assertTrue(new PowerMatch().match(0, "input", (String[]) null) == null);
         assertTrue(new PowerMatch().match(0, "input") == null);
@@ -22,7 +23,8 @@ public class PowerMatchTest {
 
     @Test
     public void powerMatch_isMatchNullEmptyArguments_falseResult() {
-        assertFalse(new PowerMatch().isMatch(-1, "input", "input"));
+        assertFalse(new PowerMatch().isMatch(PowerMatch.MIN_LEVEL - 1, "input", "input"));
+        assertFalse(new PowerMatch().isMatch(PowerMatch.MAX_LEVEL + 1, "input", "input"));
         assertFalse(new PowerMatch().isMatch(0, null, "input"));
         assertFalse(new PowerMatch().isMatch(0, "input", null));
         assertFalse(new PowerMatch().isMatch(0, "input", ""));
