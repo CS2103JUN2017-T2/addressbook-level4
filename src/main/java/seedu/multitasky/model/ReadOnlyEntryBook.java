@@ -11,25 +11,21 @@ public interface ReadOnlyEntryBook {
 
     /**
      * Returns an unmodifiable view of the active entry list.
-     * TODO: Update this Javadoc if duplicate is not allowed in the future.
      */
     ObservableList<ReadOnlyEntry> getAllEntries();
 
     /**
      * Returns an unmodifiable view of the (active) event list.
-     * TODO: Update this Javadoc if duplicate is not allowed in the future.
      */
     ObservableList<ReadOnlyEntry> getEventList();
 
     /**
      * Returns an unmodifiable view of the (active) deadline list.
-     * TODO: Update this Javadoc if duplicate is not allowed in the future.
      */
     ObservableList<ReadOnlyEntry> getDeadlineList();
 
     /**
      * Returns an unmodifiable view of the (active) floating task list.
-     * TODO: Update this Javadoc if duplicate is not allowed in the future.
      */
     ObservableList<ReadOnlyEntry> getFloatingTaskList();
 

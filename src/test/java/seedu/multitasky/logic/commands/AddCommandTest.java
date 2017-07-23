@@ -25,6 +25,7 @@ import seedu.multitasky.model.entry.FloatingTask;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
+import seedu.multitasky.model.util.EntryBuilder;
 import seedu.multitasky.storage.exception.NothingToRedoException;
 import seedu.multitasky.testutil.SampleEntries;
 
@@ -246,11 +247,11 @@ public class AddCommandTest {
         @Override
         public void addEntry(ReadOnlyEntry entry) {
             if (entry instanceof FloatingTask) {
-                entrysAdded.add(new FloatingTask(entry));
+                entrysAdded.add(EntryBuilder.build(entry));
             } else if (entry instanceof Deadline) {
-                entrysAdded.add(new Deadline(entry));
+                entrysAdded.add(EntryBuilder.build(entry));
             } else if (entry instanceof Event) {
-                entrysAdded.add(new Event(entry));
+                entrysAdded.add(EntryBuilder.build(entry));
             } else {
                 throw new AssertionError("can only add float,deadline or event");
             }

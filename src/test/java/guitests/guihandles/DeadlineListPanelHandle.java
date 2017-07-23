@@ -2,7 +2,7 @@ package guitests.guihandles;
 
 import guitests.GuiRobot;
 import javafx.stage.Stage;
-import seedu.multitasky.model.entry.Deadline;
+import seedu.multitasky.model.util.EntryBuilder;
 
 //@@author A0125586X
 /**
@@ -20,6 +20,6 @@ public class DeadlineListPanelHandle extends EntryListPanelHandle {
      */
     @Override
     public EntryCardHandle getEntryCardHandle(int index) {
-        return getEntryCardHandle(new Deadline(getListView().getItems().get(index)));
+        return getEntryCardHandle(EntryBuilder.build(getListView().getItems().get(index)));
     }
 }
