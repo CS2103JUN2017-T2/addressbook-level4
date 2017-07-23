@@ -83,7 +83,7 @@ public class IndexTest {
         assertTrue(fifthIndex.equals(fifthIndex));
 
         // null -> returns false
-        assertFalse(fifthIndex.equals(null));
+        assertFalse(fifthIndex == null);
 
         // different types -> returns false
         assertFalse(fifthIndex.equals(5.0f));
