@@ -45,15 +45,7 @@ public class EditByFindCommand extends EditCommand {
 
     @Override
     public CommandResult execute() throws CommandException, DuplicateEntryException {
-
-        // Update all 3 lists with new search parameters until at least 1 result is found.
-        model.updateAllFilteredLists(keywords, null, null, Entry.State.ACTIVE, Model.STRICT_SEARCHES);
-
-        // collate a combined list to measure how many entries are found.
-        List<ReadOnlyEntry> allList = new ArrayList<>();
-        allList.addAll(model.getFilteredDeadlineList());
-        allList.addAll(model.getFilteredEventList());
-        allList.addAll(model.getFilteredFloatingTaskList());
+        List<ReadOnlyEntry> allList = getListAfterSearch();
 
         if (allList.size() == 1) { // proceed to edit
             ReadOnlyEntry entryToEdit = allList.get(0);
@@ -80,12 +72,7 @@ public class EditByFindCommand extends EditCommand {
                 commandResult = new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERLAP_AND_OVERDUE_ALERT,
                                                                 targetEntryString, editedEntry));
             }
-
-            // refresh list view after updating.
-            model.updateAllFilteredLists(history.getPrevKeywords(), history.getPrevStartDate(),
-                                         history.getPrevEndDate(), history.getPrevState(),
-                                         history.getPrevSearches());
-
+            revertListView();
             assert commandResult != null : "commandResult in EditByFindCommand shouldn't be null here.";
             return commandResult;
 
@@ -100,4 +87,27 @@ public class EditByFindCommand extends EditCommand {
             }
         }
     }
+
+    /**
+     * reverts inner lists in model to how they were before by using command history
+     */
+    private void revertListView() {
+        model.updateAllFilteredLists(history.getPrevKeywords(), history.getPrevStartDate(),
+                                     history.getPrevEndDate(), history.getPrevState(),
+                                     history.getPrevSearches());
+    }
+
+    /**
+     * updates inner lists with new keyword terms and returns a collated list with all found entries.
+     */
+    private List<ReadOnlyEntry> getListAfterSearch() {
+        model.updateAllFilteredLists(keywords, null, null, Entry.State.ACTIVE, Model.STRICT_SEARCHES);
+
+        List<ReadOnlyEntry> allList = new ArrayList<>();
+        allList.addAll(model.getFilteredDeadlineList());
+        allList.addAll(model.getFilteredEventList());
+        allList.addAll(model.getFilteredFloatingTaskList());
+        return allList;
+    }
+
 }

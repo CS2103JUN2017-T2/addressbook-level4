@@ -61,12 +61,17 @@ public class RestoreByIndexCommand extends RestoreCommand {
                                                    entryToRestore.getName()));
         }
 
-        // refresh list view after updating.
+        refreshListView();
+        return new CommandResult(String.format(MESSAGE_SUCCESS, entryToRestore));
+    }
+
+    /**
+     * refresh inner lists by using previous command history
+     */
+    private void refreshListView() {
         model.updateAllFilteredLists(history.getPrevKeywords(), history.getPrevStartDate(),
                                      history.getPrevEndDate(), history.getPrevState(),
                                      history.getPrevSearches());
-
-        return new CommandResult(String.format(MESSAGE_SUCCESS, entryToRestore));
     }
 
 }

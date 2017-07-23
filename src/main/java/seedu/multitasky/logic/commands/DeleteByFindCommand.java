@@ -21,7 +21,6 @@ import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
  */
 public class DeleteByFindCommand extends DeleteCommand {
     public static final String MESSAGE_NO_ENTRIES = "No entries found! Please try again with different keywords";
-
     public static final String MESSAGE_MULTIPLE_ENTRIES = "More than one entry found! \n"
                                                           + "Use " + COMMAND_WORD + " ["
                                                           + String.join(" | ",
@@ -40,14 +39,7 @@ public class DeleteByFindCommand extends DeleteCommand {
     @Override
     public CommandResult execute() throws CommandException, DuplicateEntryException {
 
-        // Update all 3 lists with new search parameters until at least 1 result is found.
-        model.updateAllFilteredLists(keywords, null, null, Entry.State.ACTIVE, Model.STRICT_SEARCHES);
-
-        // collate a combined list to measure how many entries are found.
-        List<ReadOnlyEntry> allList = new ArrayList<>();
-        allList.addAll(model.getFilteredDeadlineList());
-        allList.addAll(model.getFilteredEventList());
-        allList.addAll(model.getFilteredFloatingTaskList());
+        List<ReadOnlyEntry> allList = getListAfterSearch();
 
         if (allList.size() == 1) { // proceed to delete
             entryToDelete = allList.get(0);
@@ -57,10 +49,7 @@ public class DeleteByFindCommand extends DeleteCommand {
                     | EntryOverdueException | OverlappingAndOverdueEventException e) {
                 throw new AssertionError("These errors should not be occuring in delete.");
             }
-            // refresh list view after updating.
-            model.updateAllFilteredLists(history.getPrevKeywords(), history.getPrevStartDate(),
-                                         history.getPrevEndDate(), history.getPrevState(),
-                                         history.getPrevSearches());
+            revertListView();
             return new CommandResult(String.format(MESSAGE_SUCCESS, entryToDelete));
         } else {
             // save search parameters
@@ -72,6 +61,28 @@ public class DeleteByFindCommand extends DeleteCommand {
                 throw new CommandException(MESSAGE_NO_ENTRIES);
             }
         }
+    }
+
+    /**
+     * reverts inner lists in model to how they were before by using command history
+     */
+    private void revertListView() {
+        model.updateAllFilteredLists(history.getPrevKeywords(), history.getPrevStartDate(),
+                                     history.getPrevEndDate(), history.getPrevState(),
+                                     history.getPrevSearches());
+    }
+
+    /**
+     * updates inner lists with new keyword terms and returns a collated list with all found entries.
+     */
+    private List<ReadOnlyEntry> getListAfterSearch() {
+        model.updateAllFilteredLists(keywords, null, null, Entry.State.ACTIVE, Model.STRICT_SEARCHES);
+
+        List<ReadOnlyEntry> allList = new ArrayList<>();
+        allList.addAll(model.getFilteredDeadlineList());
+        allList.addAll(model.getFilteredEventList());
+        allList.addAll(model.getFilteredFloatingTaskList());
+        return allList;
     }
 
 }

@@ -39,13 +39,11 @@ public class DeleteCommandParser {
         if (args.trim().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
         }
-
         if (hasIndexFlag(argMultimap)) { // process to delete by indexes
-            if (hasInvalidFlagCombination(argMultimap)) {
+            if (!ParserUtil.hasValidListTypeCombination(argMultimap)) {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                                                        DeleteCommand.MESSAGE_USAGE));
             }
-
             try {
                 Prefix listIndicatorPrefix = ParserUtil.getMainPrefix(argMultimap, PREFIX_FLOATINGTASK,
                                                                       PREFIX_DEADLINE, PREFIX_EVENT);
@@ -54,26 +52,13 @@ public class DeleteCommandParser {
             } catch (IllegalValueException ive) {
                 throw new ParseException(ive.getMessage(), ive);
             }
-
         } else { // process to delete by find.
             String searchString = argMultimap.getPreamble().get()
                                              .replaceAll("\\" + CliSyntax.PREFIX_ESCAPE, "");
             final String[] keywords = searchString.split("\\s+");
             final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
-
             return new DeleteByFindCommand(keywordSet);
         }
-    }
-
-    /**
-     * A method that returns true if flags are given in an illogical manner for deleting commands.
-     * illogical := any 2 of /float, /deadline, /event used together.
-     */
-    private boolean hasInvalidFlagCombination(ArgumentMultimap argMultimap) {
-        assert argMultimap != null;
-        return ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_DEADLINE)
-               || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_DEADLINE, PREFIX_EVENT)
-               || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_EVENT);
     }
 
     /**

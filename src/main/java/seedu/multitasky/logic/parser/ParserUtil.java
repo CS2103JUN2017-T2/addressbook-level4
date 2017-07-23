@@ -69,7 +69,7 @@ public class ParserUtil {
      * @param stringToRemove
      * @return fullString with stringToRemove removed
      */
-    private static String removeEscapeChar(String fullString, String stringToRemove) {
+    public static String removeEscapeChar(String fullString, String stringToRemove) {
         if (!"\\".equals(stringToRemove)) {
             return fullString.replaceAll(stringToRemove, "");
         } else {
@@ -228,6 +228,20 @@ public class ParserUtil {
             }
         }
         return foundPrefix;
+    }
+
+    /**
+     * A method that returns true if flags are given in an logical manner for list flags.
+     * illogical := any 2 of float, deadline, event used together.
+     */
+    public static boolean hasValidListTypeCombination(ArgumentMultimap argMultimap) {
+        assert argMultimap != null;
+        if (ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_DEADLINE)
+            || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_DEADLINE, PREFIX_EVENT)
+            || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_EVENT)) {
+            return false;
+        }
+        return true;
     }
 
     // @@author A0125586X

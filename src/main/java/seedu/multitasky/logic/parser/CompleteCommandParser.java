@@ -41,7 +41,7 @@ public class CompleteCommandParser {
         }
 
         if (hasIndexFlag(argMultimap)) { // process to complete by indexes
-            if (hasInvalidFlagCombination(argMultimap)) {
+            if (!ParserUtil.hasValidListTypeCombination(argMultimap)) {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                         CompleteCommand.MESSAGE_USAGE));
             }
@@ -63,17 +63,6 @@ public class CompleteCommandParser {
 
             return new CompleteByFindCommand(keywordSet);
         }
-    }
-
-    /**
-     * A method that returns true if flags are given in an illogical manner for complete commands.
-     * illogical := any 2 of /float, /deadline, /event used together.
-     */
-    private boolean hasInvalidFlagCombination(ArgumentMultimap argMultimap) {
-        assert argMultimap != null;
-        return ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_DEADLINE)
-               || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_DEADLINE, PREFIX_EVENT)
-               || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_EVENT);
     }
 
     /**

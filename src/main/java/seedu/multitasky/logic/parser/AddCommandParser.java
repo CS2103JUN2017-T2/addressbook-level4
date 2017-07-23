@@ -49,30 +49,25 @@ public class AddCommandParser {
         if (args.trim().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
-
         if (isFloatingTask()) {
             try {
                 Name name = doParseName();
                 Set<Tag> tagList = doParseTags();
-
                 Entry entry = new FloatingTask(name, tagList);
                 return new AddCommand(entry);
             } catch (IllegalValueException ive) {
                 throw new ParseException(ive.getMessage(), ive);
             }
-
         } else if (isDeadline()) {
             try {
                 Name name = doParseName();
                 Set<Tag> tagList = doParseTags();
                 Calendar endDate = doParseDate(args, PREFIX_BY);
-
                 ReadOnlyEntry entry = new Deadline(name, endDate, tagList);
                 return new AddCommand(entry);
             } catch (IllegalValueException ive) {
                 throw new ParseException(ive.getMessage(), ive);
             }
-
         } else if (isEventStartEndVariant()) {
             try {
                 Name name = doParseName();
@@ -81,10 +76,9 @@ public class AddCommandParser {
                 Calendar endDate = doParseExtendedDate(args, PREFIX_ARRAY_STARTDATE, PREFIX_ARRAY_ENDDATE);
 
                 calibrateCalendarsForComparison(startDate, endDate);
-                checkEndDateBeforeStartDate(endDate, startDate);
+                checkEndDateBeforeStartDate(startDate, endDate);
                 if (endDate.compareTo(startDate) == 0) {
                     setToFullDay(startDate, endDate);
-
                     ReadOnlyEntry entry = new Event(name, startDate, endDate, tagList);
                     return new AddCommand(entry);
                 } else { // end date is later than start date as it should be
@@ -94,20 +88,17 @@ public class AddCommandParser {
             } catch (IllegalValueException ive) {
                 throw new ParseException(ive.getMessage(), ive);
             }
-
         } else if (isEventStartOnlyVariant()) {
             try {
                 Name name = doParseName();
                 Set<Tag> tagList = doParseTags();
                 Calendar startDate = doParseDate(args, PREFIX_ARRAY_STARTDATE);
                 Calendar endDate = setUpEndDateWithDefaults(userprefs, startDate);
-
                 ReadOnlyEntry entry = new Event(name, startDate, endDate, tagList);
                 return new AddCommand(entry);
             } catch (IllegalValueException ive) {
                 throw new ParseException(ive.getMessage(), ive);
             }
-
         } else if (isEventEndOnlyVariant()) {
             try {
                 Name name = doParseName();
@@ -115,18 +106,16 @@ public class AddCommandParser {
                 Calendar endDate = doParseDate(args, PREFIX_TO);
                 Calendar startDate = setUpStartDateWithDefaults(userprefs, endDate);
                 ReadOnlyEntry entry = new Event(name, startDate, endDate, tagList);
-
                 return new AddCommand(entry);
             } catch (IllegalValueException ive) {
                 throw new ParseException(ive.getMessage(), ive);
             }
-
         } else { // not event, not deadline, not floating task
             throw new AssertionError("entries should only be event, deadline or floatingtask");
         }
     }
 
-    private void checkEndDateBeforeStartDate(Calendar endDate, Calendar startDate) throws ParseException {
+    private void checkEndDateBeforeStartDate(Calendar startDate, Calendar endDate) throws ParseException {
         if (endDate.compareTo(startDate) < 0) {
             throw new ParseException(AddCommand.MESSAGE_ENDDATE_BEFORE_STARTDATE);
         }

@@ -52,35 +52,15 @@ public class EditCommandParser {
         if (args.trim().isEmpty()) { // print help message if command word used without args
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
         }
-
         if (!hasValidFlags()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
         }
-
         if (!history.hasEditHistory()) {
-            // initialise edit descriptor
-            Prefix startDatePrefix = null;
-            Prefix endDatePrefix = null;
-            if (hasStartDatePrefix()) {
-                startDatePrefix = ParserUtil.getLastPrefix(args, PREFIX_FROM, PREFIX_AT, PREFIX_ON);
-                if (argMultimap.getValue(startDatePrefix).get().equals("")) { // indicates reset
-                    editEntryDescriptor.setResetStartDate(true);
-                    startDatePrefix = null; // prevent parsing of date since it will throw exception there
-                }
-            }
-            if (hasEndDatePrefix()) {
-                endDatePrefix = ParserUtil.getLastPrefix(args, PREFIX_BY, PREFIX_TO);
-                if (argMultimap.getValue(endDatePrefix).get().equals("")) { // indicates reset
-                    editEntryDescriptor.setResetEndDate(true);
-                    endDatePrefix = null; // prevent parsing of date since it will throw exception there
-                }
-            }
-            initEntryEditor(argMultimap, editEntryDescriptor, startDatePrefix, endDatePrefix);
+            initEntryEditor(args, argMultimap, editEntryDescriptor);
         } else { // load up editEntryDescriptor from previous try
             editEntryDescriptor = history.getEditHistory();
             history.resetEditHistory();
         }
-
         if (hasIndexFlag(argMultimap)) { // edit by index
             try {
                 Prefix listIndicatorPrefix = ParserUtil.getMainPrefix(argMultimap, PREFIX_FLOATINGTASK,
@@ -94,8 +74,8 @@ public class EditCommandParser {
 
         } else { // search by find
 
-            String searchString = argMultimap.getPreamble().get()
-                                             .replaceAll("\\" + CliSyntax.PREFIX_ESCAPE, "");
+            String searchString = ParserUtil.removeEscapeChar(argMultimap.getPreamble().get(),
+                                                              CliSyntax.PREFIX_ESCAPE.toString());
             final String[] keywords = searchString.split("\\s+");
             final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
 
@@ -103,13 +83,28 @@ public class EditCommandParser {
         }
     }
 
-    /*
-     * Intializes the entry editor by parsing new values that will replace old data. throws ParseException if
-     * entry
-     * data are of wrong format or no fields are edited.
+    /**
+     * Intializes the entry editor by parsing new values that will replace old data.
+     * {@throws ParseException} if entry data are of wrong format or no fields are edited.
      */
-    private void initEntryEditor(ArgumentMultimap argMultimap, EditEntryDescriptor editEntryDescriptor,
-                                 Prefix startDatePrefix, Prefix endDatePrefix) throws ParseException {
+    private void initEntryEditor(String args, ArgumentMultimap argMultimap, EditEntryDescriptor editEntryDescriptor)
+            throws ParseException {
+        Prefix startDatePrefix = null;
+        Prefix endDatePrefix = null;
+        if (hasStartDatePrefix()) {
+            startDatePrefix = ParserUtil.getLastPrefix(args, PREFIX_FROM, PREFIX_AT, PREFIX_ON);
+            if (argMultimap.getValue(startDatePrefix).get().equals("")) { // indicates reset
+                editEntryDescriptor.setResetStartDate(true);
+                startDatePrefix = null; // prevent parsing of date since it will throw exception there
+            }
+        }
+        if (hasEndDatePrefix()) {
+            endDatePrefix = ParserUtil.getLastPrefix(args, PREFIX_BY, PREFIX_TO);
+            if (argMultimap.getValue(endDatePrefix).get().equals("")) { // indicates reset
+                editEntryDescriptor.setResetEndDate(true);
+                endDatePrefix = null; // prevent parsing of date since it will throw exception there
+            }
+        }
         try {
             ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME))
                       .ifPresent(editEntryDescriptor::setName);
@@ -130,7 +125,6 @@ public class EditCommandParser {
         } catch (IllegalValueException ive) {
             throw new ParseException(ive.getMessage(), ive);
         }
-
         if (!editEntryDescriptor.isAnyFieldEdited()) {
             throw new ParseException(EditCommand.MESSAGE_NOT_EDITED);
         }
