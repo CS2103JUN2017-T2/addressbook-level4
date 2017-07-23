@@ -80,3 +80,45 @@ About 50 sample data should be loaded to the GUI panel.
    `Up` | Previous entered command
    `Down` | Next entered command
 
+### Smart-Features
+1. **Auto-correct**  
+   Key in the following wrongly spelled command  
+   `lit revsi`  
+   Press `tab` and MultiTasky should be able to auto-correct the entered command to `list reverse`.
+2. **PowerSearch**  
+   Key in the following command
+   `find cs223`  
+   PowerSearch should be able to compensate for missing/wrong characters and finds entries related to the keyword `CS2103`.
+3. **Smart Parsing**
+   Key in the following command
+   ```
+   list
+   add visit gardens by the bay by christmas
+   ```
+   Scroll down the deadline panel to find the deadline named `visit gardens by the bay`.  
+   MultiTasky is able to identify the correct "by" word and figure out the deadline.
+
+1. **Detection and alerts**
+   Key in the following command to add a duplicate entry 
+   `add Wash dishes`  
+   MultiTasky should prevent us from adding duplicate entries.
+
+1. **Default duration for fast entry**  
+   `add Christmas party from christmas 7pm`  
+   Should result in a default event duration of 1 hour.
+
+1. **Memory for edit command**
+   ```
+   edit party from 27 dec 7pm to 9pm
+   edit event 2
+   ```
+   If more than one entries are found, the edit details are saved and one should just need to use index or hone the keyword search to identify the target entry to edit with the saved edit details.
+
+1. **Editing entries across entry types**  
+   ```
+   list
+   edit cors from
+   ```
+   The event named `Bid on CORS` should be turned into a deadline. Scroll down the deadline panel to check.
+
+**End of Manual Test Script**
