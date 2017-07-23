@@ -18,6 +18,10 @@ public interface ReadOnlyEntry {
 
     Calendar getEndDateAndTime();
 
+    String getStartDateAndTimeString();
+
+    String getEndDateAndTimeString();
+
     Entry.State getState();
 
     Set<Tag> getTags();
