@@ -17,9 +17,6 @@ import seedu.multitasky.model.util.EntryBuilder;
 import seedu.multitasky.model.util.TagSetBuilder;
 
 // @@author A0126623L
-/**
- * TODO: Make SetUp less dependent on actual classes, e.g. create utility classes and stubs.
- */
 public class EventTest {
 
     private Event event1, event2, event3, event4, event5, event6;
