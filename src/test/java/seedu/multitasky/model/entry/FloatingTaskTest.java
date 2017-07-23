@@ -16,7 +16,7 @@ import org.junit.Test;
 import seedu.multitasky.model.util.EntryBuilder;
 import seedu.multitasky.model.util.TagSetBuilder;
 
-//@@author A0126623L
+// @@author A0126623L
 public class FloatingTaskTest {
 
     private FloatingTask floatingTask1, floatingTask2, floatingTask3, floatingTask4;

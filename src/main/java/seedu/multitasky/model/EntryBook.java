@@ -11,8 +11,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
+import seedu.multitasky.commons.core.LogsCenter;
 import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.DeadlineList;
@@ -38,6 +40,7 @@ import seedu.multitasky.model.util.EntryBuilder;
  * Wraps all data at the entry-book level
  */
 public class EntryBook implements ReadOnlyEntryBook {
+    private static final Logger logger = LogsCenter.getLogger(EntryBook.class);
 
     private final MiscEntryList allEntriesList;
     private final EventList eventList;
@@ -141,6 +144,7 @@ public class EntryBook implements ReadOnlyEntryBook {
         }
         syncMasterTagListWith(entryToAdd);
         allEntriesList.add(entryToAdd);
+        logger.fine("EntryBook added: " + entryToAdd);
     }
 
     /**
@@ -218,6 +222,7 @@ public class EntryBook implements ReadOnlyEntryBook {
             throw e;
         }
         syncMasterTagListWith(editedReadOnlyEntry);
+        logger.fine("EntryBook updated: " + editedReadOnlyEntry);
     }
 
     /**
@@ -296,6 +301,7 @@ public class EntryBook implements ReadOnlyEntryBook {
      * @throws EntryNotFoundException
      */
     public boolean removeEntry(ReadOnlyEntry entryToRemove) throws EntryNotFoundException {
+        logger.fine("EntryBook attempting to remove: " + entryToRemove);
         return (allEntriesList.remove(entryToRemove) && removeFromEntrySubtypeList(entryToRemove));
     }
 
@@ -323,10 +329,9 @@ public class EntryBook implements ReadOnlyEntryBook {
     public void clearStateSpecificEntries(Entry.State state) {
 
         ArrayList<ReadOnlyEntry> entriesToRemove = new ArrayList<>();
-
         collectStateSpecificEntriesToRemove(state, entriesToRemove);
-
         removeEntriesInList(entriesToRemove);
+        logger.fine("EntryBook cleared entries of type: " + state.toString());
     }
 
     private void collectStateSpecificEntriesToRemove(Entry.State state,
@@ -375,6 +380,8 @@ public class EntryBook implements ReadOnlyEntryBook {
             assert (entryToChange instanceof FloatingTask);
             floatingTaskList.changeEntryState(entryToChange, newState);
         }
+
+        logger.fine("EntryBook changed state of: " + entryToChange.getName() + " to " + newState.toString());
     }
 
     /**
@@ -459,6 +466,8 @@ public class EntryBook implements ReadOnlyEntryBook {
 
     public void addTag(Tag t) throws UniqueTagList.DuplicateTagException {
         tags.add(t);
+
+        logger.fine("EntryBook added tag: " + t.tagName);
     }
 
     // @@author A0126623L
