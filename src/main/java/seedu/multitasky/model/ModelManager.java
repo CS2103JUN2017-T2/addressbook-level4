@@ -114,15 +114,17 @@ public class ModelManager extends ComponentManager implements Model {
             OverlappingAndOverdueEventException, EntryOverdueException {
         requireAllNonNull(target, editedEntry);
         try {
+            // TODO for ChuaPingChan: Refactor - SLAP
             if (target.getClass().equals(editedEntry.getClass())) { // updating to same type of entry
                 entryBook.updateEntry(target, editedEntry);
             } else { // updating to a different type of entry
-                /**
-                 * Adding is done before removal because adding may fail,
-                 * in which case removal should not be carried out.
-                 */
                 entryBook.addEntry(editedEntry);
-                entryBook.removeEntry(target);
+                try {
+                    entryBook.removeEntry(target);
+                } catch (EntryNotFoundException enfe) {
+                    // Revert back to initial state before edit was attempted
+                    entryBook.removeEntry(editedEntry);
+                }
             }
         } catch (EntryNotFoundException | OverlappingEventException
                  | OverlappingAndOverdueEventException | EntryOverdueException e) {
