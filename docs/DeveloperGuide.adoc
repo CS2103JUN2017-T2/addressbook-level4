@@ -170,13 +170,21 @@ _Figure 2.3.1 : Structure of the Logic Component_
 *API* :
 link:{repoURL}/src/main/java/seedu/multitasky/logic/Logic.java[`Logic.java`]
 
-.  `Logic` uses the `Parser` class to parse the user command.
-..  Some `Commands`, such as `DeleteCommand` require further parsing, which will be done by their subsidiary parsers such as the `DeleteCommandParser` class.
-.  After some processing, the parser classes will create the appropriate `Command` object which contain their inner mechanisms.
-.  Some `Command` objects such as `EditCommand` will depend on `CommandHistory` to determine its route of action. e.g. make use of the edit details from a previous `EditCommand` saved in the `CommandHistory`.
-.  This results in a `Command` object which is then executed by the `LogicManager`.
-.  The command execution can affect the `Model` (e.g. adding an Entry) and/or raise events.
-.  The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `Ui`.
+The Logic component deals with controlling the flow of modifications to underlying data. It parses user inputs and handles the manipulation of the states of data within the application accordingly.
+
+The class diagram above shows how the Logic component is structured. `Logic` applies the Facade pattern, and the API calls are made through the `LogicManager` class to the subsequent Parser classes.
+
+The `Logic` component:
+
+* `LogicManager` uses the `Parser` class to parse the user command.
+** Some `Commands`, such as `DeleteCommand` require further parsing, which will be done by their subsidiary parsers such as the `DeleteCommandParser` class.
+** The parser classes make use of utility methods in `ParserUtil`, `ArgumentMultimap`, etc.
+** These includes dependencies from the external third party library `PrettyTimeParser`. You may read more about PrettyTime project http://www.ocpsoft.org/prettytime/[here].
+* After processing, the parser classes will then create the appropriate `Command` object which contain their inner mechanisms.
+** Some `Command` objects such as `EditCommand` will depend on `CommandHistory` to determine its route of action. e.g. making use of the edit details from a previous `EditCommand` saved in the `CommandHistory` to help user not retype the details.
+* This results in a `Command` object which is then executed by the `LogicManager`.
+* The command execution can affect `Model` (e.g. adding an Entry) and/or raise events.
+* The result of the command execution is encapsulated as a `CommandResult` object which is passed back to `UI`.
 
 Given below is the Sequence Diagram for interactions within the `Logic` component for the `execute("delete float 1")` API call.
 
