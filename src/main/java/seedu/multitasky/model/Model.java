@@ -16,6 +16,7 @@ import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 import seedu.multitasky.storage.exception.NothingToRedoException;
 import seedu.multitasky.storage.exception.NothingToUndoException;
 
+// @@author A0126623L
 /**
  * The API of the Model component.
  */
@@ -29,9 +30,7 @@ public interface Model {
     public static final Search[] LENIENT_SEARCHES = { Search.AND, Search.OR, Search.POWER_AND,
         Search.POWER_OR };
 
-    /*****************************
-     * Entrybook-related methods *
-     *****************************/
+    // =========== EntryBook-level Operations ===========
 
     /** Returns the EntryBook */
     ReadOnlyEntryBook getEntryBook();
@@ -39,9 +38,7 @@ public interface Model {
     /** Clears existing backing model and replaces with the provided new data. */
     void resetData(ReadOnlyEntryBook newData);
 
-    /**************************
-     * Entry-level operations *
-     **************************/
+    // =========== Entry Level Operations ===========
 
     /** Adds the given entry
      * @throws EntryOverdueException
@@ -53,11 +50,9 @@ public interface Model {
     /** Deletes the given entry. */
     void deleteEntry(ReadOnlyEntry target) throws DuplicateEntryException, EntryNotFoundException;
 
-    /** Clears all entries of a specific state. */
-    public void clearStateSpecificEntries(Entry.State state);
-
     /**
      * Replaces the given entry {@code target} with {@code editedEntry}.
+     * Entry can be changed from one type to another, e.g. from an event to a deadline.
      *
      * @throws EntryNotFoundException if {@code target} could not be found in the list.
      * @throws EntryOverdueException if {@code editedReadOnlyEntry} is overdue.
@@ -76,9 +71,10 @@ public interface Model {
             throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException,
             OverlappingAndOverdueEventException, EntryOverdueException;
 
-    /*************************************
-     * ObservableList-related operations *
-     *************************************/
+    /** Clears all entries of a specific state. */
+    public void clearStateSpecificEntries(Entry.State state);
+
+    // =========== Filtered Entry List Accessors ===========
 
     /** Returns the filtered event list as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
     UnmodifiableObservableList<ReadOnlyEntry> getFilteredEventList();
@@ -154,9 +150,7 @@ public interface Model {
                                   Comparator<ReadOnlyEntry> deadlineComparator,
                                   Comparator<ReadOnlyEntry> floatingTaskComparator);
 
-    /******************************
-     * Storage-related operations *
-     ******************************/
+    // =========== Storage-Related Operations ===========
 
     /** Undo the previous data-changing action */
     void undoPreviousAction() throws NothingToUndoException;

@@ -50,7 +50,6 @@ public class ModelManager extends ComponentManager implements Model {
     private final FilteredList<ReadOnlyEntry> filteredDeadlineList;
     private final FilteredList<ReadOnlyEntry> filteredFloatingTaskList;
 
-    // @@author A0126623L
     /**
      * Initializes a ModelManager with the given entryBook and userPrefs.
      * Note that the reference of the entries in the given {@code entryBook}
@@ -67,11 +66,12 @@ public class ModelManager extends ComponentManager implements Model {
         filteredDeadlineList = new FilteredList<>(this.entryBook.getDeadlineList());
         filteredFloatingTaskList = new FilteredList<>(this.entryBook.getFloatingTaskList());
     }
-    // @@author
 
     public ModelManager() {
         this(new EntryBook(), new UserPrefs());
     }
+
+    // =========== EntryBook-level Operations ===========
 
     @Override
     public void resetData(ReadOnlyEntryBook newData) {
@@ -84,28 +84,8 @@ public class ModelManager extends ComponentManager implements Model {
         return entryBook;
     }
 
-    // =========== List Level Operations ===========
-
-    // @@author A0126623L
-
-    @Override
-    public void clearStateSpecificEntries(Entry.State state) {
-        entryBook.clearStateSpecificEntries(state);
-        indicateEntryBookChanged();
-    }
-    // @@author
-
     // =========== Entry Level Operations ===========
 
-    @Override
-    public synchronized void deleteEntry(ReadOnlyEntry target)
-            throws EntryNotFoundException {
-        entryBook.removeEntry(target);
-
-        indicateEntryBookChanged();
-    }
-
-    // @@author A0126623L
     @Override
     public synchronized void addEntry(ReadOnlyEntry entry)
             throws DuplicateEntryException, OverlappingEventException,
@@ -119,9 +99,39 @@ public class ModelManager extends ComponentManager implements Model {
         }
         indicateEntryBookChanged();
     }
-    // @@author
 
-    // @@author A0126623L
+    @Override
+    public synchronized void deleteEntry(ReadOnlyEntry target)
+            throws EntryNotFoundException {
+        entryBook.removeEntry(target);
+
+        indicateEntryBookChanged();
+    }
+
+    @Override
+    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
+            throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException,
+            OverlappingAndOverdueEventException, EntryOverdueException {
+        requireAllNonNull(target, editedEntry);
+        try {
+            if (target.getClass().equals(editedEntry.getClass())) { // updating to same type of entry
+                entryBook.updateEntry(target, editedEntry);
+            } else { // updating to a different type of entry
+                /**
+                 * Adding is done before removal because adding may fail,
+                 * in which case removal should not be carried out.
+                 */
+                entryBook.addEntry(editedEntry);
+                entryBook.removeEntry(target);
+            }
+        } catch (EntryNotFoundException | OverlappingEventException
+                 | OverlappingAndOverdueEventException | EntryOverdueException e) {
+            indicateEntryBookChanged();
+            throw e;
+        }
+        indicateEntryBookChanged();
+    }
+
     @Override
     public void changeEntryState(ReadOnlyEntry entryToChange, Entry.State newState)
             throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException,
@@ -136,31 +146,14 @@ public class ModelManager extends ComponentManager implements Model {
         indicateEntryBookChanged();
     }
 
-    // @@author A0126623L
     @Override
-    public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
-            throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException,
-            OverlappingAndOverdueEventException, EntryOverdueException {
-        requireAllNonNull(target, editedEntry);
-        try {
-            if (target.getClass().equals(editedEntry.getClass())) { // updating to same instance of entry
-                entryBook.updateEntry(target, editedEntry);
-            } else { // updating entry between lists
-                entryBook.addEntry(editedEntry);
-                entryBook.removeEntry(target);
-            }
-        } catch (EntryNotFoundException | OverlappingEventException
-                 | OverlappingAndOverdueEventException | EntryOverdueException e) {
-            indicateEntryBookChanged();
-            throw e;
-        }
+    public void clearStateSpecificEntries(Entry.State state) {
+        entryBook.clearStateSpecificEntries(state);
         indicateEntryBookChanged();
     }
-    // @@author
 
     // =========== Filtered Entry List Accessors ===========
 
-    // @@author A0126623L
     /**
      * Return a list of {@code ReadOnlyEntry} backed by the internal event list of
      * {@code entryBook}
@@ -170,7 +163,6 @@ public class ModelManager extends ComponentManager implements Model {
         return new UnmodifiableObservableList<>(filteredEventList);
     }
 
-    // @@author A0126623L
     /**
      * Return a list of {@code ReadOnlyEntry} backed by the internal deadline list of
      * {@code entryBook}
@@ -180,7 +172,6 @@ public class ModelManager extends ComponentManager implements Model {
         return new UnmodifiableObservableList<>(filteredDeadlineList);
     }
 
-    // @@author A0126623L
     /**
      * Return a list of {@code ReadOnlyEntry} backed by the internal floating task list of
      * {@code entryBook}
@@ -190,32 +181,26 @@ public class ModelManager extends ComponentManager implements Model {
         return new UnmodifiableObservableList<>(filteredFloatingTaskList);
     }
 
-    // @@author A0126623L
     @Override
     public UnmodifiableObservableList<ReadOnlyEntry> getActiveList() {
         return new UnmodifiableObservableList<>(entryBook.getAllEntries());
     }
 
-    // @@author A0126623L
     @Override
     public void updateFilteredEventListToShowAll() {
         filteredEventList.setPredicate(null);
     }
 
-    // @@author A0126623L
     @Override
     public void updateFilteredDeadlineListToShowAll() {
         filteredDeadlineList.setPredicate(null);
     }
 
-    // @@author A0126623L
     @Override
     public void updateFilteredFloatingTaskListToShowAll() {
         filteredFloatingTaskList.setPredicate(null);
     }
-    // @@author
 
-    // @@author A0126623L
     /**
      * Updates all filtered list to show all entries.
      */
@@ -225,23 +210,17 @@ public class ModelManager extends ComponentManager implements Model {
         updateFilteredDeadlineListToShowAll();
         updateFilteredFloatingTaskListToShowAll();
     }
-    // @@author
 
-    // @@author A0126623L
     @Override
     public void updateAllFilteredListToShowAllActiveEntries() {
         this.updateAllFilteredLists(new HashSet<>(), null, null, Entry.State.ACTIVE, Search.AND);
     }
-    // @@author
 
-    // @@author A0126623L
     @Override
     public void updateAllFilteredListToShowAllArchivedEntries() {
         this.updateAllFilteredLists(new HashSet<>(), null, null, Entry.State.ARCHIVED, Search.AND);
     }
-    // @@author
 
-    // @@author A0126623L
     @Override
     public void updateAllFilteredListToShowAllDeletedEntries() {
         this.updateAllFilteredLists(new HashSet<>(), null, null, Entry.State.DELETED, Search.AND);
@@ -255,7 +234,6 @@ public class ModelManager extends ComponentManager implements Model {
         updateAllFilteredLists(keywords, startDate, endDate, states, searches);
     }
 
-    // @@author A0125586X
     @Override
     public void updateAllFilteredLists(Set<String> keywords, Calendar startDate, Calendar endDate,
                                        Entry.State state, Entry.State state2, Search... searches) {
@@ -263,7 +241,7 @@ public class ModelManager extends ComponentManager implements Model {
         updateAllFilteredLists(keywords, startDate, endDate, states, searches);
     }
 
-    // @@author A0125586X
+    // TODO: Check with Mattheus whether refactoring is possible.
     private void updateAllFilteredLists(Set<String> keywords, Calendar startDate, Calendar endDate,
                                         List<Entry.State> states, Search... searches) {
         NameDateStateQualifier qualifier;
@@ -338,7 +316,6 @@ public class ModelManager extends ComponentManager implements Model {
                                                                                           level)));
     }
 
-    // @@author A0125586X
     /** Updates the sorting comparators used. */
     @Override
     public void updateSortingComparators(Comparator<ReadOnlyEntry> eventComparator,
@@ -346,7 +323,6 @@ public class ModelManager extends ComponentManager implements Model {
                                          Comparator<ReadOnlyEntry> floatingTaskComparator) {
         entryBook.setComparators(eventComparator, deadlineComparator, floatingTaskComparator);
     }
-    // @@author
 
     // @@author A0126623L
     @Override
@@ -367,7 +343,6 @@ public class ModelManager extends ComponentManager implements Model {
                && filteredDeadlineList.equals(other.filteredDeadlineList)
                && filteredFloatingTaskList.equals(other.filteredFloatingTaskList);
     }
-    // @@author
 
     // ========== Inner classes/interfaces used for filtering ==========
 
@@ -566,8 +541,8 @@ public class ModelManager extends ComponentManager implements Model {
                 return (checkDate.compareTo(startDate) >= 0) && (checkDate.compareTo(endDate) <= 0);
             }
         }
-        // @@author
 
+        // @@author A0126623L
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
@@ -596,7 +571,7 @@ public class ModelManager extends ComponentManager implements Model {
         }
     }
 
-    // ========== Event Raising Methods ==========
+    // ========== Storage-Related Operations ==========
 
     /** Raises an event to indicate the model has changed */
     private void indicateEntryBookChanged() {
