@@ -11,11 +11,21 @@ package seedu.multitasky.commons.util.match;
  * 5: 2 wrong/extra character match
  * 6: 2 wrong/extra character match
  */
-public class PowerMatch implements MatchLevelManager {
+public class PowerMatch implements Matcher {
 
     public static final int UNUSED = -1;
     public static final int MIN_LEVEL = 0;
     public static final int MAX_LEVEL = 6;
+
+    private Match[] matchLevels = {
+        new SubstringMatch(),
+        new PrefixMatch(),
+        new AcronymMatch(),
+        new PermutationMatch(),
+        new WrongExtra1Match(),
+        new WrongExtra2Match(),
+        new WrongExtra3Match(),
+    };
 
     /**
      * Attempts to find a match between the input and a single entry in {@code potentialMatches},
@@ -29,7 +39,8 @@ public class PowerMatch implements MatchLevelManager {
      *         or if {@code potentialMatches} is empty.
      */
     public String match(final int level, final String input, final String... potentialMatches) {
-        if (level < 0 || input == null || potentialMatches == null || potentialMatches.length == 0) {
+        if (level < 0 || level > MAX_LEVEL || input == null || potentialMatches == null
+            || potentialMatches.length == 0) {
             return null;
         } else if (input.isEmpty()) {
             if (potentialMatches.length == 1) {
@@ -38,24 +49,7 @@ public class PowerMatch implements MatchLevelManager {
                 return null;
             }
         }
-
-        switch (level) {
-        case 0:
-            return new SubstringMatch().match(input, potentialMatches);
-        case 1:
-            return new PrefixMatch().match(input, potentialMatches);
-        case 2:
-            return new AcronymMatch().match(input, potentialMatches);
-        case 3:
-            return new PermutationMatch().match(input, potentialMatches);
-        case 4:
-            return new WrongExtra1Match().match(input, potentialMatches);
-        case 5:
-            return new WrongExtra2Match().match(input, potentialMatches);
-        default:
-            // Combine highest level and anything above that
-            return new WrongExtra3Match().match(input, potentialMatches);
-        }
+        return matchLevels[level].match(input, potentialMatches);
     }
 
     /**
@@ -68,29 +62,13 @@ public class PowerMatch implements MatchLevelManager {
      *         at the specified level.
      */
     public boolean isMatch(final int level, final String input, final String potentialMatch) {
-        if (level < 0 || input == null || potentialMatch == null || potentialMatch.isEmpty()) {
+        if (level < 0 || level > MAX_LEVEL || input == null || potentialMatch == null
+            || potentialMatch.isEmpty()) {
             return false;
         } else if (input.isEmpty()) {
             return true;
         }
-
-        switch (level) {
-        case 0:
-            return new SubstringMatch().isMatch(input, potentialMatch);
-        case 1:
-            return new PrefixMatch().isMatch(input, potentialMatch);
-        case 2:
-            return new AcronymMatch().isMatch(input, potentialMatch);
-        case 3:
-            return new PermutationMatch().isMatch(input, potentialMatch);
-        case 4:
-            return new WrongExtra1Match().isMatch(input, potentialMatch);
-        case 5:
-            return new WrongExtra2Match().isMatch(input, potentialMatch);
-        default:
-            // Combine highest level and anything above that
-            return new WrongExtra3Match().isMatch(input, potentialMatch);
-        }
+        return matchLevels[level].isMatch(input, potentialMatch);
     }
 
 }

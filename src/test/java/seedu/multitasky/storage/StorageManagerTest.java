@@ -202,21 +202,6 @@ public class StorageManagerTest {
         assertTrue(eventCollector.get(0) instanceof DataSavingExceptionEvent);
     }
 
-    /**
-     * A Stub class to throw an exception when the save method is called
-     */
-    class XmlEntryBookStorageExceptionThrowingStub extends XmlEntryBookStorage {
-
-        public XmlEntryBookStorageExceptionThrowingStub(String filePath) {
-            super(filePath);
-        }
-
-        @Override
-        public void saveEntryBook(ReadOnlyEntryBook entryBook, String filePath) throws IOException {
-            throw new IOException("dummy exception");
-        }
-    }
-
     /***************************
      * Integration Tests *
      **************************/
@@ -255,8 +240,24 @@ public class StorageManagerTest {
 
     // @@author A0132788U
     /***************************
-     * Helper Methods *
+     * Helper Classes and Methods *
      **************************/
+
+    /**
+     * A Stub class to throw an exception when the save method is called
+     */
+    class XmlEntryBookStorageExceptionThrowingStub extends XmlEntryBookStorage {
+
+        public XmlEntryBookStorageExceptionThrowingStub(String filePath) {
+            super(filePath);
+        }
+
+        @Override
+        public void saveEntryBook(ReadOnlyEntryBook entryBook, String filePath) throws IOException {
+            throw new IOException("dummy exception");
+        }
+    }
+
     private java.util.Optional<ReadOnlyEntryBook> readEntryBook(String filePath) throws Exception {
         return new XmlEntryBookStorage(filePath).readEntryBook(addToTestDataPathIfNotNull(filePath));
     }
@@ -264,4 +265,5 @@ public class StorageManagerTest {
     private String addToTestDataPathIfNotNull(String prefsFileInTestDataFolder) {
         return prefsFileInTestDataFolder != null ? TEST_DATA_FOLDER + prefsFileInTestDataFolder : null;
     }
+
 }

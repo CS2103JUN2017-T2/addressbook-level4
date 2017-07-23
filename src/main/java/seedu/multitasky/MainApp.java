@@ -88,7 +88,7 @@ public class MainApp extends Application {
      * 2. File is not in readable XML format
      * 3. File cannot be read from
      */
-    private Model initModelManager(Storage storage, UserPrefs userPrefs) {
+    protected Model initModelManager(Storage storage, UserPrefs userPrefs) {
         Optional<ReadOnlyEntryBook> entryBookOptional;
         ReadOnlyEntryBook initialData;
         DeleteAllSnapshotsOnStartup event = new DeleteAllSnapshotsOnStartup();
