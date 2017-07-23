@@ -12,7 +12,6 @@ public class FloatingTaskList extends EntryList {
         super();
         comparator = Comparators.FLOATING_TASK_DEFAULT;
     }
-    // @@author
 
     // @@author A0126623L
     /**
@@ -30,7 +29,6 @@ public class FloatingTaskList extends EntryList {
 
         internalList.add((FloatingTask) toAdd);
     }
-    // @@author
 
     // @@author A0126623L
     /**
@@ -45,5 +43,4 @@ public class FloatingTaskList extends EntryList {
         }
         super.setEntries(replacement);
     }
-    // @@author
 }

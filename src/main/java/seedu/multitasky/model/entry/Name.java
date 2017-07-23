@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import seedu.multitasky.commons.exceptions.IllegalValueException;
 
+// @@author A0126623L-reused
 /**
  * Represents an Entry's name in the entry book.
  * Guarantees: immutable; is valid as declared in {@link #isValidName(String)}
@@ -19,8 +20,6 @@ public class Name {
      * The first character of the entry must not be a whitespace, otherwise " " (a blank string)
      * becomes a valid input.
      */
-    // public static final String NAME_VALIDATION_REGEX =
-    // "[\\p{Alnum}][\\p{Alnum} ]*";
     public static final String NAME_VALIDATION_REGEX = "[\\p{Alnum}][\\p{Alnum}\\p{S}\\p{P} ]*";
 
     public final String fullName;

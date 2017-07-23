@@ -7,7 +7,7 @@ import seedu.multitasky.logic.commands.exceptions.CommandException;
 
 // @@author A0132788U
 /**
- * Opens the entered XML path and loads data in the given file.
+ * Opens the entered filepath of the readable XML file to load data.
  */
 
 public class OpenCommand extends Command {
@@ -33,7 +33,7 @@ public class OpenCommand extends Command {
     }
 
     /**
-     * Executes the Load command if the file already exists in this location.
+     * Executes the Open command if the file exists in this location.
      *
      * @throws CommandException
      */

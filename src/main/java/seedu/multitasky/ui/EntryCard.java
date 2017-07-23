@@ -1,6 +1,5 @@
 package seedu.multitasky.ui;
 
-import java.text.DateFormat;
 import java.util.Date;
 
 import org.ocpsoft.prettytime.PrettyTime;
@@ -43,13 +42,11 @@ public abstract class EntryCard extends UiPart<Region> {
     @FXML
     protected FlowPane tags;
 
-    protected DateFormat dateFormat;
     protected PrettyTime prettyTime;
 
     public EntryCard(String fxml, ReadOnlyEntry entry, int displayedIndex) {
         super(fxml);
         initAll(entry, displayedIndex);
-        dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT);
         prettyTime = new PrettyTime();
     }
 
@@ -65,10 +62,6 @@ public abstract class EntryCard extends UiPart<Region> {
 
     protected void initTags(ReadOnlyEntry entry) {
         entry.getTags().forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
-    }
-
-    protected String formatDate(Date date) {
-        return dateFormat.format(date);
     }
 
     protected String prettyTimeFormatDate(Date date) {

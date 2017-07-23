@@ -80,13 +80,17 @@ public class MainApp extends Application {
         return applicationParameters.get(parameterName);
     }
 
+    // @@author A0132788U
+    /**
+     * Initializes the Model by first deleting snapshots created during data mutation from previous run.
+     * Then loads an existing EntryBook or creates a new one if:
+     * 1. File does not exist
+     * 2. File is not in readable XML format
+     * 3. File cannot be read from
+     */
     private Model initModelManager(Storage storage, UserPrefs userPrefs) {
         Optional<ReadOnlyEntryBook> entryBookOptional;
         ReadOnlyEntryBook initialData;
-        // @@author A0132788U
-        /**
-         * Deletes snapshot files from previous run, then either loads an existing EntryBook or creates a new one.
-         */
         DeleteAllSnapshotsOnStartup event = new DeleteAllSnapshotsOnStartup();
         try {
             entryBookOptional = storage.readEntryBook();
@@ -104,9 +108,13 @@ public class MainApp extends Application {
         } catch (DataConversionException e) {
             logger.warning("Data file not in the correct format. Will be starting with an empty EntryBook");
             initialData = new EntryBook();
+            storage.handleEntryBookChangedEvent(new EntryBookChangedEvent(initialData));
+
         } catch (IOException e) {
             logger.warning("Problem while reading from the file. Will be starting with an empty EntryBook");
             initialData = new EntryBook();
+            storage.handleEntryBookChangedEvent(new EntryBookChangedEvent(initialData));
+
         }
 
         return new ModelManager(initialData, userPrefs);

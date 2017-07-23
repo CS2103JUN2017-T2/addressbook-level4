@@ -5,6 +5,7 @@ import java.util.Set;
 
 import seedu.multitasky.model.tag.Tag;
 
+// @@author A0126623L
 /**
  * A read-only immutable interface for a Entry in the entrybook.
  * Implementations should guarantee: details are present and not null, field values are validated.
@@ -16,6 +17,10 @@ public interface ReadOnlyEntry {
     Calendar getStartDateAndTime();
 
     Calendar getEndDateAndTime();
+
+    String getStartDateAndTimeString();
+
+    String getEndDateAndTimeString();
 
     Entry.State getState();
 

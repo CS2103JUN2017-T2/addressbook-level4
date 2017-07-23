@@ -52,9 +52,9 @@ public class SaveCommand extends Command {
     /**
      * Method to check whether given file path is valid.
      * A file path is valid if :
-     * 1. It has a non-null parent directory.
-     * 2. It ends with xml.
-     * 3. The parent directory can be written to.
+     * 1. It has a non-null parent directory
+     * 2. It ends with .xml
+     * 3. The parent directory can be written to
      */
     private boolean isValidPath(String newFilePath) {
         File parent = (new File(newFilePath)).getParentFile();

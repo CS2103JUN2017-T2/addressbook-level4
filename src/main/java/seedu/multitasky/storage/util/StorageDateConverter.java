@@ -8,9 +8,9 @@ import java.util.Date;
 
 //@@author A0132788U
 /**
- * Class that implements methods to convert Date to String to enable Storage to store dates in a human-editable form in
- * the XML file.
- * Parses String and converts it back to Date to return to Model.
+ * Class that implements methods to convert Date to String to enable Storage to store dates
+ * in an editable form inside the XML file.
+ * Parses String and converts it back to Date.
  */
 public class StorageDateConverter {
 
