@@ -123,6 +123,7 @@ public class ModelManager extends ComponentManager implements Model {
                 } catch (DuplicateEntryException dee) {
                     // revert back to initial state
                     entryBook.addEntry(target);
+                    throw dee;
                 }
             }
         } catch (EntryNotFoundException | OverlappingEventException
