@@ -384,6 +384,12 @@ Smart parsing is enabled while adding new entries to MultiTasky. When multiple d
 * `add meet boss by next week by tomorrow` will ignore `by next week` and add a deadline entry named `meet boss` with date `tomorrow`
 //<!-- @@author -->
 
+//<!-- @@author A0126623L -->
+=== Smart Alert
+
+MultiTasky is capable of detecting commands that result in events or deadlines that are overdue and alert the user about it. Users will also be notified if they input a command that results in an active event that overlaps with existing event(s) that are active. The aforementioned events and deadlines will still be added normally.
+//<!-- @@author -->
+
 == FAQ
 
 *Q*: How do I transfer my data to another Computer? +
