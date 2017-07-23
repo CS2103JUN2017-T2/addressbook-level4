@@ -573,14 +573,13 @@ public class ModelManager extends ComponentManager implements Model {
         }
     }
 
+    // @@author A0132788U
     // ========== Storage-Related Operations ==========
 
     /** Raises an event to indicate the model has changed */
     private void indicateEntryBookChanged() {
         raise(new EntryBookChangedEvent(entryBook));
     }
-
-    // @@author A0132788U
 
     @Override
     public void undoPreviousAction() throws NothingToUndoException {
