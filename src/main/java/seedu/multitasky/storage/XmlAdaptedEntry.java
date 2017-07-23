@@ -83,19 +83,13 @@ public class XmlAdaptedEntry {
         Calendar endDateAndTimeToUse = null;
 
         if (startDateAndTime != null) {
-            try {
-                startDateAndTimeToUse = converter.convertStringToDate(startDateAndTime);
-            } catch (Exception e) {
-                throw new Exception("Start time is invalid!");
-            }
+            startDateAndTimeToUse = converter.convertStringToDate(startDateAndTime);
+            assert startDateAndTimeToUse != null;
         }
 
         if (endDateAndTime != null) {
-            try {
-                endDateAndTimeToUse = converter.convertStringToDate(endDateAndTime);
-            } catch (Exception e) {
-                throw new Exception("End time is invalid!");
-            }
+            endDateAndTimeToUse = converter.convertStringToDate(endDateAndTime);
+            assert endDateAndTimeToUse != null;
         }
 
         final Set<Tag> tags = new HashSet<>(entryTags);
@@ -107,6 +101,7 @@ public class XmlAdaptedEntry {
     }
 
     private void setEntryState(Entry entry) {
+        assert state != null;
         switch (state) {
         case "ACTIVE":
             return;

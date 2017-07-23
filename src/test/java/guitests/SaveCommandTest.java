@@ -20,7 +20,7 @@ public class SaveCommandTest extends EntryBookGuiTest {
      * Set to a valid file path *
      **************************/
     @Test
-    public void saveToValidPath_success() {
+    public void saveToValidPath_error() {
         String validPath = TestUtil.getFilePathInSandboxFolder(Integer.toString(new Random().nextInt(250000)) + ".xml");
         new File(validPath).getParentFile().setWritable(true);
         commandBox.runCommand("save " + validPath);
@@ -31,7 +31,7 @@ public class SaveCommandTest extends EntryBookGuiTest {
      * End file path with non XML extension *
      **************************/
     @Test
-    public void saveFilePathToNonXml_failure() {
+    public void saveFilePathToNonXml_error() {
         String nonXmlFilePath = TestUtil.getFilePathInSandboxFolder("entrybook.fxml");
         commandBox.runCommand("save " + nonXmlFilePath);
         assertResultMessage(String.format(SaveCommand.MESSAGE_FAILURE + SaveCommand.MESSAGE_USAGE));
@@ -41,7 +41,7 @@ public class SaveCommandTest extends EntryBookGuiTest {
      * Save at location of existing file *
      **************************/
     @Test
-    public void saveToExistingPath_failure() {
+    public void saveToExistingPath_error() {
         String validPath = TestUtil.getFilePathInSandboxFolder("exists.xml");
         new File(validPath).getParentFile().setWritable(true);
         commandBox.runCommand("save " + validPath);

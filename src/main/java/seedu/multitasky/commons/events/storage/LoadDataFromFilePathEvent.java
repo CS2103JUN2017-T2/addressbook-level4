@@ -44,6 +44,6 @@ public class LoadDataFromFilePathEvent extends BaseEvent {
 
     @Override
     public String toString() {
-        return "redo";
+        return "File opened is: " + filepath;
     }
 }

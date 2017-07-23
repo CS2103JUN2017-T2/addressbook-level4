@@ -20,11 +20,6 @@ import seedu.multitasky.logic.parser.exceptions.ParseException;
  * Parses input arguments and creates a new CompleteCommand object
  */
 public class CompleteCommandParser {
-    private ArgumentMultimap argMultimap;
-
-    public ArgumentMultimap getArgMultimap() {
-        return argMultimap;
-    }
 
     /**
      * Parses the given {@code String} of arguments in the context of the CompleteCommand and returns a
@@ -34,7 +29,8 @@ public class CompleteCommandParser {
      */
     // @@author A0132788U-reused
     public CompleteCommand parse(String args) throws ParseException {
-        argMultimap = ArgumentTokenizer.tokenize(args, ParserUtil.toPrefixArray(CompleteCommand.VALID_PREFIXES));
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args,
+                ParserUtil.toPrefixArray(CompleteCommand.VALID_PREFIXES));
 
         if (args.trim().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, CompleteCommand.MESSAGE_USAGE));

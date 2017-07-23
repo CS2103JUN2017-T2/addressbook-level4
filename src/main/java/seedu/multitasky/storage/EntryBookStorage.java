@@ -17,11 +17,6 @@ public interface EntryBookStorage {
     String getEntryBookFilePath();
 
     /**
-     * Returns the file path of the snapshot folder.
-     */
-    String getEntryBookSnapshotPath();
-
-    /**
      * Returns EntryBook data as a {@link ReadOnlyEntryBook}.
      * Returns {@code Optional.empty()} if storage file is not found.
      *
