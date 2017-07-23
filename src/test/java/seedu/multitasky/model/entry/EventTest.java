@@ -154,17 +154,20 @@ public class EventTest {
         Entry eventWithStartTimeOverlapped = EntryBuilder.build(event1);
         eventWithStartTimeOverlapped.getStartDateAndTime().add(Calendar.HOUR, offsetAmount);
         eventWithStartTimeOverlapped.getEndDateAndTime().add(Calendar.HOUR, offsetAmount);
-        assertTrue(event1.hasOverlappingTime(eventWithStartTimeOverlapped));
+        assertTrue(eventWithStartTimeOverlapped instanceof OverlapCapable);
+        assertTrue(event1.overlapsWith((OverlapCapable) eventWithStartTimeOverlapped));
 
         // Make an event with start time overlapping with event1.
         Entry eventWithEndTimeOverlapped = EntryBuilder.build(event1);
         eventWithEndTimeOverlapped.getStartDateAndTime().add(Calendar.HOUR, -offsetAmount);
         eventWithEndTimeOverlapped.getEndDateAndTime().add(Calendar.HOUR, -offsetAmount);
-        assertTrue(event1.hasOverlappingTime(eventWithEndTimeOverlapped));
+        assertTrue(eventWithEndTimeOverlapped instanceof OverlapCapable);
+        assertTrue(event1.overlapsWith((OverlapCapable) eventWithEndTimeOverlapped));
 
         // Make an event fully overlapped with event1.
         Entry eventFullyOverlapped = EntryBuilder.build(event1);
-        assertTrue(event1.hasOverlappingTime(eventFullyOverlapped));
+        assertTrue(eventFullyOverlapped instanceof OverlapCapable);
+        assertTrue(event1.overlapsWith((OverlapCapable) eventFullyOverlapped));
 
         try {
             // Make an event that doesn't overlap with event1.
@@ -174,7 +177,8 @@ public class EventTest {
                                                           "tag1");
             eventWithNoOverlap.getStartDateAndTime().add(Calendar.YEAR, offsetAmount);
             eventWithNoOverlap.getEndDateAndTime().add(Calendar.YEAR, offsetAmount + 1);
-            assertFalse(event1.hasOverlappingTime(eventWithNoOverlap));
+            assertTrue(eventWithNoOverlap instanceof OverlapCapable);
+            assertFalse(event1.overlapsWith((OverlapCapable) eventWithNoOverlap));
         } catch (Exception e) {
             fail("Should not fail.");
         }

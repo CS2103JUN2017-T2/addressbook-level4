@@ -8,4 +8,6 @@ public interface TextAutocomplete {
 
     public String autocomplete(String input);
 
+    public String getPossibilities(String input);
+
 }

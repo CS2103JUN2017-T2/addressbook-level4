@@ -17,6 +17,7 @@ import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 import seedu.multitasky.model.entry.util.Comparators;
 import seedu.multitasky.model.util.EntryBuilder;
 
+// @@author A0126623L
 /**
  * A list of entries that does not allow nulls.
  * Supports a minimal set of list operations.
@@ -30,7 +31,16 @@ public abstract class EntryList implements Iterable<Entry> {
 
     protected Comparator<ReadOnlyEntry> comparator = Comparators.ENTRY_DEFAULT;
 
-    // @@author A0126623L
+    /**
+     * Clears the current list of entries and add all elements from replacement.
+     * The updated list of entries will contain the references to the elements in {@code replacement}.
+     * @param replacement
+     */
+    public void setEntries(EntryList replacement) {
+        this.internalList.setAll(replacement.internalList);
+    }
+
+    // ========== Entry Level Operations ==========
     /**
      * Adds an entry to the list.
      *
@@ -43,40 +53,6 @@ public abstract class EntryList implements Iterable<Entry> {
                 throw new DuplicateEntryException();
             }
         }
-    };
-    // @@author
-
-    /**
-     * Returns an unmodifiable copy of the ObservableList.
-     */
-    public UnmodifiableObservableList<Entry> asObservableList() {
-        return new UnmodifiableObservableList<>(internalList);
-    }
-
-    /**
-     * Returns true if the list contains an equivalent entry as the given
-     * argument.
-     */
-    public boolean contains(ReadOnlyEntry toCheck) {
-        requireNonNull(toCheck);
-        return internalList.contains(toCheck);
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        return other == this // short circuit if same object
-               || (other instanceof EntryList // instanceof handles nulls
-                   && this.internalList.equals(((EntryList) other).internalList));
-    }
-
-    @Override
-    public int hashCode() {
-        return internalList.hashCode();
-    }
-
-    @Override
-    public Iterator<Entry> iterator() {
-        return internalList.iterator();
     }
 
     /**
@@ -93,7 +69,15 @@ public abstract class EntryList implements Iterable<Entry> {
         return entryFoundAndDeleted;
     }
 
-    // @@author A0126623L
+    /**
+     * Returns true if the list contains an equivalent entry as the given
+     * argument.
+     */
+    public boolean contains(ReadOnlyEntry toCheck) {
+        requireNonNull(toCheck);
+        return internalList.contains(toCheck);
+    }
+
     /**
      * Changes the state (i.e. ACTIVE, ARCHIVED, DELETED) of an existing entry to {@code newState}.
      * @param entryToChange
@@ -105,15 +89,6 @@ public abstract class EntryList implements Iterable<Entry> {
         Entry editedEntry = EntryBuilder.build(entryToChange);
         editedEntry.setState(newState);
         this.updateEntry(entryToChange, editedEntry);
-    }
-
-    /**
-     * Clears the current list of entries and add all elements from replacement.
-     * The updated list of entries will contain the references to the elements in {@code replacement}.
-     * @param replacement
-     */
-    public void setEntries(EntryList replacement) {
-        this.internalList.setAll(replacement.internalList);
     }
 
     /**
@@ -140,14 +115,9 @@ public abstract class EntryList implements Iterable<Entry> {
         }
 
         entryToUpdate.resetData(editedEntry);
-        // TODO: The code below is just a workaround to notify observers of the
-        // updated entry.
-        // The right way is to implement observable properties in the Entry class.
-        // Then, EntryCard should then bind its text labels to those observable properties.
         internalList.set(index, entryToUpdate);
     }
 
-    // @@author A0126623L
     /**
      * Checks if duplicate entries are present after editing an entry. The entry to be edited
      * is excluded from the duplicates-check.
@@ -160,18 +130,6 @@ public abstract class EntryList implements Iterable<Entry> {
         return prospectiveInternalList.contains(editedEntry);
     }
 
-    // @@author A0126623L
-    private ArrayList<Entry> createInternalListCopyWithoutTarget(ReadOnlyEntry target) {
-        ArrayList<Entry> copiedInternalList = new ArrayList<Entry>();
-        for (Entry e : internalList) {
-            if (e != target) {
-                copiedInternalList.add(e);
-            }
-        }
-        return copiedInternalList;
-    }
-
-    // @@author A0126623L
     /**
      * Checks if the given entry is a floating task with the "archived" or "deleted" status, which is allowed in model.
      *
@@ -184,7 +142,25 @@ public abstract class EntryList implements Iterable<Entry> {
                 && (entry.getState().equals(Entry.State.ARCHIVED)
                     || entry.getState().equals(Entry.State.DELETED)));
     }
-    // @@author A0126623L
+
+    // ========== List-Related Operations ==========
+
+    /**
+     * Returns an unmodifiable copy of the ObservableList.
+     */
+    public UnmodifiableObservableList<Entry> asObservableList() {
+        return new UnmodifiableObservableList<>(internalList);
+    }
+
+    private ArrayList<Entry> createInternalListCopyWithoutTarget(ReadOnlyEntry target) {
+        ArrayList<Entry> copiedInternalList = new ArrayList<Entry>();
+        for (Entry e : internalList) {
+            if (e != target) {
+                copiedInternalList.add(e);
+            }
+        }
+        return copiedInternalList;
+    }
 
     // @@author A0125586X
     /**
@@ -194,6 +170,8 @@ public abstract class EntryList implements Iterable<Entry> {
         Collections.sort(internalList, comparator);
     }
 
+    // ========== Util Methods ==========
+
     /**
      * Sets the comparator for this list, and sorts it using the comparator.
      */
@@ -201,5 +179,22 @@ public abstract class EntryList implements Iterable<Entry> {
         this.comparator = comparator;
         sortInternalList();
     }
-    // @@author
+
+    // @@author A0126623L-reused
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+               || (other instanceof EntryList // instanceof handles nulls
+                   && this.internalList.equals(((EntryList) other).internalList));
+    }
+
+    @Override
+    public int hashCode() {
+        return internalList.hashCode();
+    }
+
+    @Override
+    public Iterator<Entry> iterator() {
+        return internalList.iterator();
+    }
 }

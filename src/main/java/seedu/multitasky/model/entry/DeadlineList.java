@@ -17,7 +17,6 @@ public class DeadlineList extends EntryList {
         super();
         comparator = Comparators.DEADLINE_DEFAULT;
     }
-    // @@author
 
     // @@author A0126623L
     /**

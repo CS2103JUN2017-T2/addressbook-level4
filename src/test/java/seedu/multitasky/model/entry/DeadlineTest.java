@@ -2,6 +2,7 @@ package seedu.multitasky.model.entry;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -101,6 +102,13 @@ public class DeadlineTest {
         } catch (Exception e) {
             fail("DeadlineTest.resetDataTest() failed.");
         }
+    }
+
+    // @@author A0126623L
+    @Test
+    public void getStartAndEndTime_invokeGetterMethods_nulls() {
+        assertNull(deadline1.getStartDateAndTime());
+        assertNull(deadline1.getStartDateAndTimeString());
     }
 
     // @@author A0126623L
