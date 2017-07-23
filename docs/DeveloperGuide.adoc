@@ -172,13 +172,13 @@ link:{repoURL}/src/main/java/seedu/multitasky/logic/Logic.java[`Logic.java`]
 
 The Logic component deals with controlling the flow of modifications to underlying data. It parses user inputs and handles the manipulation of the states of data within the application accordingly.
 
-The class diagram above shows how the Logic component is structured. `Logic` applies the Facade pattern, and the API calls are made through the `LogicManager` class to the subsequent Parser classes.
+The class diagram above shows how the Logic component is structured. `Logic` applies the Facade pattern, and the API calls are made through the `LogicManager` class to the subsequent Parser classes. Note also that dependency inversion has been applied to LogicUserPrefs so that the dependencies that Logic has to the lower level module UserPrefs, are abstracted out into a common interface.
 
 The `Logic` component:
 
 * `LogicManager` uses the `Parser` class to parse the user command.
 ** Some `Commands`, such as `DeleteCommand` require further parsing, which will be done by their subsidiary parsers such as the `DeleteCommandParser` class.
-** The parser classes make use of utility methods in `ParserUtil`, `ArgumentMultimap`, etc.
+** The parser classes make use of utility methods in `ParserUtil`, `ArgumentMultimap`, `LogicUserPrefs` etc.
 ** These includes dependencies from the external third party library `PrettyTimeParser`. You may read more about PrettyTime project http://www.ocpsoft.org/prettytime/[here].
 * After processing, the parser classes will then create the appropriate `Command` object which contain their inner mechanisms.
 ** Some `Command` objects such as `EditCommand` will depend on `CommandHistory` to determine its route of action. e.g. making use of the edit details from a previous `EditCommand` saved in the `CommandHistory` to help user not retype the details.
