@@ -579,13 +579,9 @@ public class ModelManager extends ComponentManager implements Model {
             return builder.toString();
         }
     }
-<<<<<<< HEAD
-    // @@author A0132788U
-    // ========== Event Raising Methods ==========
-=======
 
+    // @@author A0132788U
     // ========== Storage-Related Operations ==========
->>>>>>> d5038ca95d5dc55e30df4d7f1171df8ae7b3fd61
 
     /** Raises an event to indicate the model has changed */
     private void indicateEntryBookChanged() {
@@ -594,13 +590,8 @@ public class ModelManager extends ComponentManager implements Model {
 
     /** Raises an event when undo is entered by user and resets data to previous state to update the UI */
     private void indicateUndoAction() throws NothingToUndoException {
-<<<<<<< HEAD
-        EntryBookToUndoEvent undoEvent = new EntryBookToUndoEvent(_entryBook, "");
+        EntryBookToUndoEvent undoEvent = new EntryBookToUndoEvent(entryBook, "");
         raise(undoEvent);
-=======
-        EntryBookToUndoEvent undoEvent;
-        raise(undoEvent = new EntryBookToUndoEvent(entryBook, ""));
->>>>>>> d5038ca95d5dc55e30df4d7f1171df8ae7b3fd61
         if (undoEvent.getMessage().equals("undo successful")) {
             entryBook.resetData(undoEvent.getData());
         } else {
