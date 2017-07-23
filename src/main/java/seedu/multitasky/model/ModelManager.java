@@ -114,17 +114,10 @@ public class ModelManager extends ComponentManager implements Model {
             OverlappingAndOverdueEventException, EntryOverdueException {
         requireAllNonNull(target, editedEntry);
         try {
-            // TODO for ChuaPingChan: Refactor - SLAP
             if (target.getClass().equals(editedEntry.getClass())) { // updating to same type of entry
                 entryBook.updateEntry(target, editedEntry);
             } else { // updating to a different type of entry
-                entryBook.addEntry(editedEntry);
-                try {
-                    entryBook.removeEntry(target);
-                } catch (EntryNotFoundException enfe) {
-                    // Revert back to initial state before edit was attempted
-                    entryBook.removeEntry(editedEntry);
-                }
+                changeEntryType(target, editedEntry);
             }
         } catch (EntryNotFoundException | OverlappingEventException
                  | OverlappingAndOverdueEventException | EntryOverdueException e) {
@@ -132,6 +125,29 @@ public class ModelManager extends ComponentManager implements Model {
             throw e;
         }
         indicateEntryBookChanged();
+    }
+
+    /**
+     * Update a given entry subtype {@code target} to a different type {@code editedEntry} by
+     * first adding {@code editedEntry} into the EntryBook followed by removing {@code target}.
+     * @param target
+     * @param editedEntry
+     * @throws DuplicateEntryException
+     * @throws OverlappingEventException
+     * @throws OverlappingAndOverdueEventException
+     * @throws EntryOverdueException
+     * @throws EntryNotFoundException
+     */
+    private void changeEntryType(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
+            throws DuplicateEntryException, OverlappingEventException, OverlappingAndOverdueEventException,
+            EntryOverdueException, EntryNotFoundException {
+        entryBook.addEntry(editedEntry);
+        try {
+            entryBook.removeEntry(target);
+        } catch (EntryNotFoundException enfe) {
+            // Revert back to initial state before edit was attempted
+            entryBook.removeEntry(editedEntry);
+        }
     }
 
     @Override
