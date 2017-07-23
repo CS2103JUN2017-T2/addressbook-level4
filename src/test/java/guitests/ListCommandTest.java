@@ -46,6 +46,32 @@ public class ListCommandTest extends EntryBookGuiTest {
         assertTrue(floatingTaskListPanel.isListMatching(new Entry[0]));
     }
 
+    // @@author A0126623L
+    @Test
+    public void list_archive_success() {
+        commandBox.runCommand(CommandUtil.getListArchiveCommand());
+        assertTrue(eventListPanel.isListMatching(SampleEntries.getSampleArchivedEvents()));
+        assertTrue(deadlineListPanel.isListMatching(SampleEntries.getSampleArchivedDeadlines()));
+        assertTrue(floatingTaskListPanel.isListMatching(SampleEntries.getSampleArchivedFloatingTasks()));
+    }
+
+    @Test
+    public void list_bin_success() {
+        commandBox.runCommand(CommandUtil.getListBinCommand());
+        assertTrue(eventListPanel.isListMatching(SampleEntries.getSampleDeletedEvents()));
+        assertTrue(deadlineListPanel.isListMatching(SampleEntries.getSampleDeletedDeadlines()));
+        assertTrue(floatingTaskListPanel.isListMatching(SampleEntries.getSampleDeletedFloatingTasks()));
+    }
+
+    @Test
+    public void list_allEntries_success() {
+        commandBox.runCommand(CommandUtil.getListAllCommand());
+        assertTrue(eventListPanel.isListMatching(SampleEntries.getAllEvents()));
+        assertTrue(deadlineListPanel.isListMatching(SampleEntries.getAllDeadlines()));
+        assertTrue(floatingTaskListPanel.isListMatching(SampleEntries.getAllFloatingTasks()));
+    }
+
+    // @@author A0125586X
     /********************************
      * Listing the different orders *
      *******************************/

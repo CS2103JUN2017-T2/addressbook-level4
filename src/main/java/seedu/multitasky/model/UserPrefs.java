@@ -7,15 +7,13 @@ import seedu.multitasky.commons.core.GuiSettings;
 /**
  * Represents User's preferences.
  */
-// @@author A0132788U
-public class UserPrefs implements LogicUserPrefs {
-    /** Index to maintain snapshot file number */
-    private static int index = 0;
-    /** Snapshot file path without index and xml */
-    private static String entryBookSnapshotPath = "data/snapshots/entrybook";
-    private GuiSettings guiSettings;
+public class UserPrefs implements LogicUserPrefs, StorageUserPrefs {
+
     private String entryBookName = "MyEntryBook";
     private String entryBookFilePath = "data/entrybook.xml";
+    /** Snapshot file path without index and xml */
+    private String entryBookSnapshotPath = "data/snapshots/entrybook";
+    private GuiSettings guiSettings;
     // @@author A0140633R
     private int defaultDurationHour;
     // @@author
@@ -35,50 +33,6 @@ public class UserPrefs implements LogicUserPrefs {
 
     public void setGuiSettings(double width, double height, int x, int y) {
         guiSettings = new GuiSettings(width, height, x, y);
-    }
-
-    public String getEntryBookFilePath() {
-        return entryBookFilePath;
-    }
-
-    public void setEntryBookFilePath(String entryBookFilePath) {
-        this.entryBookFilePath = entryBookFilePath;
-    }
-
-    /**
-     * The getter and setter for the snapshot file path
-     */
-    public static String getEntryBookSnapshotPath() {
-        return entryBookSnapshotPath;
-    }
-
-    public static void setEntryBookSnapshotPath(String entryBookSnapshotPath) {
-        UserPrefs.entryBookSnapshotPath = entryBookSnapshotPath;
-    }
-
-    /**
-     * Methods to update the indices when files are created during mutation/deleted during exit
-     */
-    public static void incrementIndexByOne() {
-        index++;
-    }
-
-    public static void decrementIndexByOne() {
-        index--;
-    }
-
-    public static int getIndex() {
-        return index;
-    }
-
-    public static void setIndex(int index) {
-        UserPrefs.index = index;
-    }
-
-
-    @Override
-    public int getDurationHour() {
-        return defaultDurationHour;
     }
 
     private void setDurationHour() {
@@ -120,6 +74,36 @@ public class UserPrefs implements LogicUserPrefs {
         sb.append("\nLocal data file location : " + entryBookFilePath);
         sb.append("\nEntryBook name : " + entryBookName);
         return sb.toString();
+    }
+    // @@author A0132788U
+
+    // ================ Storage UserPrefs methods ==============================
+
+    @Override
+    public String getEntryBookFilePath() {
+        return entryBookFilePath;
+    }
+
+    @Override
+    public void setEntryBookFilePath(String entryBookFilePath) {
+        this.entryBookFilePath = entryBookFilePath;
+    }
+
+    @Override
+    public String getEntryBookSnapshotPath() {
+        return entryBookSnapshotPath;
+    }
+
+    @Override
+    public void setEntryBookSnapshotPath(String entryBookSnapshotPath) {
+        this.entryBookSnapshotPath = entryBookSnapshotPath;
+    }
+
+    // @@author A0140633R
+    // ================ Logic UserPrefs methods ==============================
+    @Override
+    public int getDurationHour() {
+        return defaultDurationHour;
     }
 
 }

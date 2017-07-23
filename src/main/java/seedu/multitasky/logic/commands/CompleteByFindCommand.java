@@ -44,14 +44,9 @@ public class CompleteByFindCommand extends CompleteCommand {
             entryToComplete = allList.get(0);
             try {
                 model.changeEntryState(entryToComplete, Entry.State.ARCHIVED);
-            } catch (EntryNotFoundException e) {
-                throw new AssertionError("The target entry cannot be missing");
-            } catch (OverlappingEventException oee) {
-                throw new AssertionError("Overlap should not happen for complete command.");
-            } catch (EntryOverdueException e) {
-                throw new AssertionError("Overdue should not apply to complete command.");
-            } catch (OverlappingAndOverdueEventException e) {
-                throw new AssertionError("Overlap and overdue should not apply to complete command.");
+            } catch (EntryNotFoundException | OverlappingEventException | EntryOverdueException
+                     | OverlappingAndOverdueEventException e) {
+                throw new AssertionError("These exceptions are not valid for complete command");
             }
             revertListView();
             return new CommandResult(String.format(MESSAGE_SUCCESS, entryToComplete));

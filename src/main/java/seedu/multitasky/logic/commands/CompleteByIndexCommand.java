@@ -41,14 +41,9 @@ public class CompleteByIndexCommand extends CompleteCommand {
         entryToComplete = listToCompleteFrom.get(targetIndex.getZeroBased());
         try {
             model.changeEntryState(entryToComplete, Entry.State.ARCHIVED);
-        } catch (EntryNotFoundException enfe) {
-            throw new AssertionError("The target entry cannot be missing");
-        } catch (OverlappingEventException oee) {
-            throw new AssertionError("Overlap should not happen for complete command.");
-        } catch (EntryOverdueException e) {
-            throw new AssertionError("Overdue should not apply to complete command.");
-        } catch (OverlappingAndOverdueEventException e) {
-            throw new AssertionError("Overlap and overdue should not apply to complete command.");
+        } catch (EntryNotFoundException | OverlappingEventException | OverlappingAndOverdueEventException
+                 | EntryOverdueException e) {
+            throw new AssertionError("These exceptions are not valid for complete command");
         }
         refreshListView();
         return new CommandResult(String.format(MESSAGE_SUCCESS, entryToComplete));

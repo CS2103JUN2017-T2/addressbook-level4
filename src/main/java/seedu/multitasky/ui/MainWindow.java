@@ -112,7 +112,7 @@ public class MainWindow extends UiPart<Region> {
         setCommandExecuteShortcut(UndoCommand.COMMAND_WORD,
                                   new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN));
         setCommandExecuteShortcut(RedoCommand.COMMAND_WORD,
-                                  new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN));
+                                  new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_DOWN));
 
         setCommandShortcut(EditCommand.COMMAND_WORD + " ", new KeyCodeCombination(KeyCode.F2));
         setCommandShortcut(FindCommand.COMMAND_WORD + " ", new KeyCodeCombination(KeyCode.F3));
@@ -198,7 +198,7 @@ public class MainWindow extends UiPart<Region> {
         StatusBarFooter statusBarFooter = new StatusBarFooter(prefs.getEntryBookFilePath());
         statusbarPlaceholder.getChildren().add(statusBarFooter.getRoot());
 
-        commandBox = new CommandBox(logic);
+        commandBox = new CommandBox(logic, resultDisplay);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
 
     }
