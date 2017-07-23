@@ -6,18 +6,19 @@ import java.util.Set;
 
 import seedu.multitasky.model.tag.Tag;
 
+// @@author A0126623L
 public class FloatingTask extends Entry {
 
-    private Calendar _startDateAndTime;
-    private Calendar _endDateAndTime;
+    private Calendar startDateAndTime;
+    private Calendar endDateAndTime;
 
     /**
      * Every field must be present and not null.
      */
     public FloatingTask(Name name, Set<Tag> tags) {
         super(name, tags);
-        _startDateAndTime = null;
-        _endDateAndTime = null;
+        startDateAndTime = null;
+        endDateAndTime = null;
     }
 
     /**
@@ -34,7 +35,7 @@ public class FloatingTask extends Entry {
 
     @Override
     public Calendar getStartDateAndTime() {
-        return _startDateAndTime;
+        return startDateAndTime;
     }
 
     public Calendar getEndDateAndTimeString() {
@@ -43,7 +44,7 @@ public class FloatingTask extends Entry {
 
     @Override
     public Calendar getEndDateAndTime() {
-        return _endDateAndTime;
+        return endDateAndTime;
     }
 
     @Override
@@ -52,7 +53,6 @@ public class FloatingTask extends Entry {
                || this.isSameStateAs((ReadOnlyEntry) other);
     }
 
-    // @@author A0126623L
     /**
      * Compares the state with another Floating Task.
      */
@@ -62,23 +62,19 @@ public class FloatingTask extends Entry {
                 && this.getName().equals(other.getName())
                 && this.getState().equals(other.getState()));
     }
-    // @@author
 
+    // @@author A0126623L-reused
     @Override
     public int hashCode() {
-        // use this method for custom fields hashing instead of implementing your own
         return Objects.hash(getName(), getState(), getTags());
     }
 
-    // @@author A0126623L
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
 
-        // TODO: Include state in string?
         builder.append(getName()).append(", Tags: ");
         getTags().forEach(builder::append);
         return builder.toString();
     }
-    // @@author
 }

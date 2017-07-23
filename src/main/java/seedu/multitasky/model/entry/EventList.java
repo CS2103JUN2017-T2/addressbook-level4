@@ -17,7 +17,6 @@ public class EventList extends EntryList {
         super();
         comparator = Comparators.EVENT_DEFAULT;
     }
-    // @@author
 
     // @@author A0126623L
     /**
@@ -37,7 +36,6 @@ public class EventList extends EntryList {
         internalList.add((Event) toAdd);
         sortInternalList();
     }
-    // @@author
 
     // @@author A0126623L
     /**
@@ -59,7 +57,6 @@ public class EventList extends EntryList {
         }
         return false;
     }
-    // @@author
 
     // @@author A0126623L
     /**
@@ -83,7 +80,6 @@ public class EventList extends EntryList {
         }
         return false;
     }
-    // @@author
 
     // @@author A0125586X
     /**
@@ -99,7 +95,6 @@ public class EventList extends EntryList {
         super.updateEntry(target, editedEntry);
         sortInternalList();
     }
-    // @@author
 
     // @@author A0126623L
     /**
@@ -114,6 +109,5 @@ public class EventList extends EntryList {
         }
         super.setEntries(replacement);
     }
-    // @@author
 
 }

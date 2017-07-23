@@ -6,12 +6,12 @@ import java.util.Set;
 import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.model.tag.Tag;
 
+// @@author A0126623L
 /**
  * Provides utility methods to build sets of Tags
  */
 public class TagSetBuilder {
 
-    // @@ author A0126623L
     /**
      * Returns a tag set containing the list of strings given.
      */
@@ -22,6 +22,5 @@ public class TagSetBuilder {
         }
         return tags;
     }
-    // @@ author
 
 }
