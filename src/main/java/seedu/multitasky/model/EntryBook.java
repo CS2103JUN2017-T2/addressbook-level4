@@ -135,15 +135,12 @@ public class EntryBook implements ReadOnlyEntryBook {
         try {
             addToEntrySubtypeList(entryToAdd);
         } catch (OverlappingEventException | OverlappingAndOverdueEventException | EntryOverdueException e) {
-            // TODO: Figure out how to prevent repeating lines within this catch block and outside.
-            Entry newEntry = convertToEntry(entryToAdd);
-            syncMasterTagListWith(newEntry);
-            allEntriesList.add(newEntry);
+            syncMasterTagListWith(entryToAdd);
+            allEntriesList.add(entryToAdd);
             throw e;
         }
-        Entry newEntry = convertToEntry(entryToAdd);
-        syncMasterTagListWith(newEntry);
-        allEntriesList.add(newEntry);
+        syncMasterTagListWith(entryToAdd);
+        allEntriesList.add(entryToAdd);
     }
 
     /**
@@ -217,13 +214,10 @@ public class EntryBook implements ReadOnlyEntryBook {
              */
         } catch (EntryNotFoundException | OverlappingEventException
                  | OverlappingAndOverdueEventException | EntryOverdueException e) {
-            // TODO: Figure out how to prevent repeating lines within this catch block and outside.
-            Entry editedEntry = convertToEntry(editedReadOnlyEntry);
-            syncMasterTagListWith(editedEntry);
+            syncMasterTagListWith(editedReadOnlyEntry);
             throw e;
         }
-        Entry editedEntry = convertToEntry(editedReadOnlyEntry);
-        syncMasterTagListWith(editedEntry);
+        syncMasterTagListWith(editedReadOnlyEntry);
     }
 
     /**
@@ -467,13 +461,14 @@ public class EntryBook implements ReadOnlyEntryBook {
         tags.add(t);
     }
 
-    // @@author A0126623L-reused
+    // @@author A0126623L
     /**
      * Ensures that every tag in this entry:
      * - exists in the master list {@link #tags}
      * - points to a Tag object in the master list
      */
-    private void syncMasterTagListWith(Entry entry) {
+    private void syncMasterTagListWith(ReadOnlyEntry readOnlyEntry) {
+        Entry entry = convertToEntry(readOnlyEntry);
         final UniqueTagList entryTags = new UniqueTagList(entry.getTags());
         tags.mergeFrom(entryTags);
 
@@ -488,6 +483,7 @@ public class EntryBook implements ReadOnlyEntryBook {
         entry.setTags(correctTagReferences);
     }
 
+    // @@author A0126623L-reused
     /**
      * Ensures that every tag in these entries:
      * - exists in the master list {@link #tags}
