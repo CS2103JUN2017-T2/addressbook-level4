@@ -29,13 +29,13 @@ import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 import seedu.multitasky.model.util.EntryBuilder;
 import seedu.multitasky.testutil.SampleEntries;
 
+// @@author A0126623L
 public class EntryBookTest {
 
     private EventList[] listOfEventLists = EventListTest.getListOfSampleEventLists();
     private DeadlineList[] listOfDeadlineLists = DeadlineListTest.getListOfSampleDeadlineLists();
     private FloatingTaskList[] listOfFloatingTaskLists = FloatingTaskListTest.getListOfSampleFloatingTaskLists();
 
-    // @@author A0126623L
     /**
      * @return EntryBook    with sample events, deadlines and floating tasks.
      * @throws DuplicateEntryException
@@ -89,11 +89,9 @@ public class EntryBookTest {
 
         return entryBook;
     }
-    // @@author
 
-    // @@author A0126623L
     @Test
-    public void addTest() {
+    public void add_sampleEntryBook_success() {
         try {
             EntryBook entryBookUnderTest = EntryBookTest.getSampleEntryBook();
 
@@ -113,11 +111,9 @@ public class EntryBookTest {
             fail("Error in EntryBookTest.getSampleEntryBook().");
         }
     }
-    // @@author
 
-    // @@author A0126623L
     @Test
-    public void removeTest() throws EntryNotFoundException {
+    public void remove_entriesInSampleEntryBook_success() throws EntryNotFoundException {
         try {
             EntryBook entryBookUnderTest = EntryBookTest.getSampleEntryBook();
 
@@ -159,9 +155,7 @@ public class EntryBookTest {
             fail("Error in EntryBookTest.getSampleEntryBook().");
         }
     }
-    // @@author
 
-    // @@author A0126623L
     @Test
     public void setAllEntriesList_validSampleEntryBook_success() {
         try {
@@ -175,9 +169,7 @@ public class EntryBookTest {
             e.printStackTrace();
         }
     }
-    // @@author
 
-    // @@author A0126623L
     @Test(expected = NullPointerException.class)
     public void setAllEntries_null_nullPointerExceptionThrown() {
         EntryBook entryBookToSet = new EntryBook();
@@ -187,9 +179,7 @@ public class EntryBookTest {
         entryBookToSet.resetData(entryBookUsedForReset);
         fail("Should not reach here. Reset data should fail.");
     }
-    // @@author
 
-    // @@author A0126623L
     @Test
     public void updateEntryTest_validEditedFloatingTask_success() {
         try {
@@ -207,9 +197,7 @@ public class EntryBookTest {
             fail("Should not result in any exceptions here.");
         }
     }
-    // @@author
 
-    // @@author A0126623L
     @Test(expected = OverlappingAndOverdueEventException.class)
     public void updateEntryTest_validEditedOverlappingAndOverdueEvent_success()
             throws OverlappingAndOverdueEventException {
@@ -232,10 +220,7 @@ public class EntryBookTest {
             e.printStackTrace();
         }
     }
-    // @@author
-    // TODO: Add cases for overdue OR overlapping events.
 
-    // @@author A0126623L
     @Test(expected = EntryOverdueException.class)
     public void updateEntryTest_validEditedOverdueDeadline_success()
             throws EntryOverdueException {
@@ -258,9 +243,7 @@ public class EntryBookTest {
             e.printStackTrace();
         }
     }
-    // @@author
 
-    // @@author A0126623L
     @Test
     public void clearStateSpecificEntriesTest_clearActiveEntries_success() {
         EntryBook entryBookUnderTest = SampleEntries.getSampleEntryBook();
@@ -270,9 +253,7 @@ public class EntryBookTest {
                                                                      Entry.State.ACTIVE);
         assertFalse(activeEntriesPresent);
     }
-    // @@author
 
-    // @@author A0126623L
     @Test
     public void clearStateSpecificEntriesTest_clearArchivedEntries_success() {
         EntryBook entryBookUnderTest = SampleEntries.getSampleEntryBook();
@@ -286,9 +267,7 @@ public class EntryBookTest {
                                                                Entry.State.ARCHIVED);
         assertFalse(archivedEntriesPresent);
     }
-    // @@author
 
-    // @@author A0126623L
     @Test
     public void clearStateSpecificEntriesTest_clearDeletedEntries_success() {
         EntryBook entryBookUnderTest = SampleEntries.getSampleEntryBook();
@@ -302,9 +281,7 @@ public class EntryBookTest {
                                                               Entry.State.DELETED);
         assertFalse(deletedEntriesPresent);
     }
-    // @@author
 
-    // @@author A0126623L
     private boolean entriesOfSpecificStatePresent(ReadOnlyEntryBook entryBook, Entry.State targetState) {
         List<ReadOnlyEntry> allEntries = entryBook.getAllEntries();
 
@@ -335,9 +312,7 @@ public class EntryBookTest {
         }
         return false;
     }
-    // @@author
 
-    // @@author A0126623L
     @Test
     public void changeEntryStateTest_changeActiveToDeleted_success() {
         EntryBook entryBookUnderTest = SampleEntries.getSampleEntryBookWithActiveEntries();
@@ -356,6 +331,5 @@ public class EntryBookTest {
             // These specific set of exceptions an be ignored in this test.
         }
     }
-    // @@author
 
 }

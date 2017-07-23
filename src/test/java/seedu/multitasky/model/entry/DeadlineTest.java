@@ -16,11 +16,11 @@ import org.junit.Test;
 import seedu.multitasky.model.util.EntryBuilder;
 import seedu.multitasky.model.util.TagSetBuilder;
 
+// @@author A0126623L
 public class DeadlineTest {
 
     private Deadline deadline1, deadline2, deadline3, deadline4, deadline5;
 
-    // @@author A0126623L
     /**
      * Gets an array of 5 sample deadlines.
      * The first two deadlines are meaningfully equivalent, the remaining are unique.
@@ -48,18 +48,14 @@ public class DeadlineTest {
             return null;
         }
     }
-    // @@author
 
-    // @@author A0126623L
     /**
      * Returns a list of Deadlines of 5 sample elements.
      */
     public static List<Deadline> getSampleDeadlineList() {
         return Arrays.asList(DeadlineTest.getSampleDeadlineArray());
     }
-    // @@author
 
-    // @@author A0126623L
     @Before
     public void setUp() {
         Deadline[] sampleDeadlineArrayData = getSampleDeadlineArray();
@@ -71,15 +67,13 @@ public class DeadlineTest {
         deadline5 = sampleDeadlineArrayData[4];
     }
 
-    // @@author A0126623L
     @Test
-    public void getNameTest() {
+    public void getName_actualAndExpected_success() {
         assertEquals("error at getName()", "SampleName1", deadline1.getName().fullName);
     }
 
-    // @@author A0126623L
     @Test
-    public void getTagsTest() {
+    public void getTags_actualAndExpected_success() {
         // Same tags
         assertTrue(deadline1.getTags().equals(deadline2.getTags()));
 
@@ -87,9 +81,8 @@ public class DeadlineTest {
         assertFalse(deadline1.getTags().equals(deadline5.getTags()));
     }
 
-    // @@author A0126623L
     @Test
-    public void resetDataTest() {
+    public void resetData_sampleDeadlineToReset_success() {
         try {
             Entry tempDeadline = EntryBuilder.build(deadline1);
             assert (tempDeadline instanceof Deadline) : "Error in DeadlineTest.resetDataTest().";
@@ -104,24 +97,21 @@ public class DeadlineTest {
         }
     }
 
-    // @@author A0126623L
     @Test
     public void getStartAndEndTime_invokeGetterMethods_nulls() {
         assertNull(deadline1.getStartDateAndTime());
         assertNull(deadline1.getStartDateAndTimeString());
     }
 
-    // @@author A0126623L
     @Test
-    public void toStringTest() {
+    public void toString_expectedString_success() {
         assertEquals("Deadline formatting is wrong",
                      "SampleName1, Deadline: Jul 7, 2017 6:30 PM, Tags: [tag1]",
                      deadline1.toString());
     }
 
-    // @@author A0126623L
     @Test
-    public void equalsTest() {
+    public void equals_variousCases_success() {
         // Equal
         assertTrue(deadline1.equals(deadline2));
 
@@ -131,9 +121,8 @@ public class DeadlineTest {
         assertFalse(deadline1.equals(deadline5));
     }
 
-    // @@author A0126623L
     @Test
-    public void isOverdueTest() {
+    public void isOverdue_variousCases_success() {
         final int offsetAmount = 10;
         try {
             // Overdue deadline
@@ -162,6 +151,5 @@ public class DeadlineTest {
         }
 
     }
-    // @@author
 
 }

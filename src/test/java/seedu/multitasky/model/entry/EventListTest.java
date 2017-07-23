@@ -20,7 +20,6 @@ public class EventListTest {
     private EventList eventList1, eventList2, eventList3;
     private Event[] sampleEventArray = EventTest.getSampleEventArray();
 
-    // @@author A0126623L
     /**
      * Copies the events in the given events collection into an Event List.
      *
@@ -37,7 +36,6 @@ public class EventListTest {
         return eventList;
     }
 
-    // @@author A0126623L
     /**
      * Copies all the elements of a given event list into a new event list
      *
@@ -59,7 +57,6 @@ public class EventListTest {
         }
     }
 
-    // @@author A0126623L
     /**
      * Generates an array of 3 EventList samples.
      * The first two EventList objects are meaningfully equivalent, the third one is unique.
@@ -89,7 +86,6 @@ public class EventListTest {
         eventList3 = listOfEventList[2];
     }
 
-    // @@author A0126623L
     /**
      * Tests if sample entries used in this test class are considered equal when necessary.
      */
@@ -105,7 +101,6 @@ public class EventListTest {
         assertTrue(sampleEventArray[0].equals(eventList1.asObservableList().get(0)));
     }
 
-    // @@author A0126623L
     /**
      * Dependent on the correct functioning of the contains method.
      */
@@ -126,7 +121,6 @@ public class EventListTest {
         }
     }
 
-    // @@author A0126623L
     @Test(expected = DuplicateEntryException.class)
     public void add_duplicateEvent_throwDuplicateEntryException() throws DuplicateEntryException {
         EventList eventListUnderTest = EventListTest.copyEventList(eventList1);
@@ -134,7 +128,6 @@ public class EventListTest {
         eventListUnderTest.add(copiedEvent);
     }
 
-    // @@author A0126623L
     @Test
     public void equals_variousSampleEvents_success() {
         EventList dummyEventList = EventListTest.copyEventList(eventList2);
@@ -147,7 +140,6 @@ public class EventListTest {
         assertFalse(eventList1.equals(eventList3));
     }
 
-    // @@author A0126623L
     @Test
     public void remove_removeSampleEvent_success() throws EntryNotFoundException {
         EventList eventListToTest = EventListTest.copyEventList(eventList1);
@@ -157,7 +149,6 @@ public class EventListTest {
         assertTrue(eventListToTest.asObservableList().get(0).equals(sampleEventArray[2]));
     }
 
-    // @@author A0126623L
     @Test(expected = Exception.class)
     public void remove_nonExistentEntry_returnEntryNotFoundException() throws EntryNotFoundException {
         EventList eventListUnderTest = EventListTest.copyEventList(eventList1);
@@ -165,7 +156,6 @@ public class EventListTest {
         eventListUnderTest.remove(sampleEventArray[3]);
     }
 
-    // @@author A0126623L
     @Test
     public void update_updateSampleEvent_success() throws EntryNotFoundException {
         EventList eventListToTest = EventListTest.copyEventList(eventList1);
@@ -182,7 +172,6 @@ public class EventListTest {
         }
     }
 
-    // @@author A0126623L
     @Test
     public void setEntries_newEventList_equalsMethodReturnsFalse() {
         EventList eventListToTest = EventListTest.copyEventList(eventList3);
@@ -193,7 +182,6 @@ public class EventListTest {
         assertTrue(eventListToTest.equals(eventList1));
     }
 
-    // @@author A0126623L
     @Test
     public void hasOverlapping_overlappingAndNonOverlappingSampleEvents_success() {
         int offsetAmount = 1000;
@@ -213,7 +201,6 @@ public class EventListTest {
         }
     }
 
-    // @@author A0126623L
     @Test
     public void hasOverlappingEventAfterUpdate_overlappingEventAfterUpdate_success() {
         Entry eventToManipulate = eventList1.asObservableList().get(0);

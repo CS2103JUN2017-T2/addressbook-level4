@@ -16,11 +16,11 @@ import org.junit.Test;
 import seedu.multitasky.model.util.EntryBuilder;
 import seedu.multitasky.model.util.TagSetBuilder;
 
+//@@author A0126623L
 public class FloatingTaskTest {
 
     private FloatingTask floatingTask1, floatingTask2, floatingTask3, floatingTask4;
 
-    // @@author A0126623L
     /**
      * Gets an array of 4 sample floatingTasks.
      * The first two floatingTasks are meaningfully equivalent, the remaining are unique.
@@ -47,18 +47,14 @@ public class FloatingTaskTest {
             return null;
         }
     }
-    // @@author
 
-    // @@author A0126623L
     /**
      * Returns list of FloatingTasks of 4 sample elements.
      */
     public static List<FloatingTask> getSampleFloatingTaskList() {
         return Arrays.asList(FloatingTaskTest.getSampleFloatingTaskArray());
     }
-    // @@author
 
-    // @@author A0126623L
     @Before
     public void setUp() {
         FloatingTask[] sampleFloatingTaskArrayData = getSampleFloatingTaskArray();
@@ -69,15 +65,13 @@ public class FloatingTaskTest {
         floatingTask4 = sampleFloatingTaskArrayData[3];
     }
 
-    // @@author A0126623L
     @Test
-    public void getNameTest() {
+    public void getName_actualAndExpected_success() {
         assertEquals("error at getName()", "SampleName1", floatingTask1.getName().fullName);
     }
 
-    // @@author A0126623L
     @Test
-    public void getTagsTest() {
+    public void getTags_actualAndExpected_success() {
         // Same tags
         assertTrue(floatingTask1.getTags().equals(floatingTask2.getTags()));
 
@@ -85,9 +79,8 @@ public class FloatingTaskTest {
         assertFalse(floatingTask1.getTags().equals(floatingTask4.getTags()));
     }
 
-    // @@author A0126623L
     @Test
-    public void resetDataTest() {
+    public void resetData_sampleFloatingTaskToReset_success() {
         FloatingTask tester999 = (FloatingTask) EntryBuilder.build(floatingTask1);
         assertFalse(tester999.equals(floatingTask3));
 
@@ -95,7 +88,6 @@ public class FloatingTaskTest {
         assertTrue(tester999.equals(floatingTask3));
     }
 
-    // @@author A0126623L
     @Test
     public void getStartAndEndTime_invokeGetterMethods_nulls() {
         assertNull(floatingTask1.getStartDateAndTime());
@@ -104,17 +96,15 @@ public class FloatingTaskTest {
         assertNull(floatingTask1.getEndDateAndTimeString());
     }
 
-    // @@author A0126623L
     @Test
-    public void toStringTest() {
+    public void toString_expectedString_success() {
         assertEquals("FloatingTask formatting is wrong",
                      "SampleName1, Tags: [tag1]",
                      floatingTask1.toString());
     }
 
-    // @@author A0126623L
     @Test
-    public void equalsTest() {
+    public void equals_variousCases_success() {
         // Equal
         assertTrue(floatingTask1.equals(floatingTask2));
 
