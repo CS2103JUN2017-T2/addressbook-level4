@@ -196,43 +196,8 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void updateFilteredEventListToShowAll() {
-        filteredEventList.setPredicate(null);
-    }
-
-    @Override
-    public void updateFilteredDeadlineListToShowAll() {
-        filteredDeadlineList.setPredicate(null);
-    }
-
-    @Override
-    public void updateFilteredFloatingTaskListToShowAll() {
-        filteredFloatingTaskList.setPredicate(null);
-    }
-
-    /**
-     * Updates all filtered list to show all entries.
-     */
-    @Override
-    public void updateAllFilteredListToShowAll() {
-        updateFilteredEventListToShowAll();
-        updateFilteredDeadlineListToShowAll();
-        updateFilteredFloatingTaskListToShowAll();
-    }
-
-    @Override
     public void updateAllFilteredListToShowAllActiveEntries() {
         this.updateAllFilteredLists(new HashSet<>(), null, null, Entry.State.ACTIVE, Search.AND);
-    }
-
-    @Override
-    public void updateAllFilteredListToShowAllArchivedEntries() {
-        this.updateAllFilteredLists(new HashSet<>(), null, null, Entry.State.ARCHIVED, Search.AND);
-    }
-
-    @Override
-    public void updateAllFilteredListToShowAllDeletedEntries() {
-        this.updateAllFilteredLists(new HashSet<>(), null, null, Entry.State.DELETED, Search.AND);
     }
 
     // @@author A0125586X
@@ -378,10 +343,6 @@ public class ModelManager extends ComponentManager implements Model {
             return qualifier.run(entry);
         }
 
-        @Override
-        public String toString() {
-            return qualifier.toString();
-        }
     }
 
     interface Qualifier {
@@ -461,8 +422,6 @@ public class ModelManager extends ComponentManager implements Model {
                     || entry instanceof Deadline && isWithinRange(entry.getEndDateAndTime())
                     || entry instanceof Event && isWithinRange(entry.getStartDateAndTime())) {
                     return true;
-                } else {
-                    assert false : "DateAndStatusQualifier::run received ReadOnlyEntry of unknown type";
                 }
             }
             return false;
@@ -552,7 +511,7 @@ public class ModelManager extends ComponentManager implements Model {
         }
 
         // @@author A0126623L
-        @Override
+        /*@Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
             builder.append("NameDateStateQualifier: ")
@@ -577,7 +536,7 @@ public class ModelManager extends ComponentManager implements Model {
                 builder.append(state.toString());
             }
             return builder.toString();
-        }
+        }*/
     }
 
     // @@author A0132788U
