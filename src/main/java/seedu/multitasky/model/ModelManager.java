@@ -259,7 +259,6 @@ public class ModelManager extends ComponentManager implements Model {
         updateAllFilteredLists(keywords, startDate, endDate, states, searches);
     }
 
-    // TODO: Check with Mattheus whether refactoring is possible.
     private void updateAllFilteredLists(Set<String> keywords, Calendar startDate, Calendar endDate,
                                         List<Entry.State> states, Search... searches) {
         NameDateStateQualifier qualifier;
@@ -268,25 +267,26 @@ public class ModelManager extends ComponentManager implements Model {
                 for (int level = PowerMatch.MIN_LEVEL; level <= PowerMatch.MAX_LEVEL; ++level) {
                     qualifier = new NameDateStateQualifier(keywords, startDate, endDate, states, search,
                                                            level);
-                    updateFilteredEventList(new PredicateExpression(qualifier));
-                    updateFilteredDeadlineList(new PredicateExpression(qualifier));
-                    updateFilteredFloatingTaskList(new PredicateExpression(qualifier));
-                    if ((getFilteredEventList().size() + getFilteredDeadlineList().size()
-                         + getFilteredFloatingTaskList().size()) > 0) {
+                    if (filteredResultNonZero(qualifier)) {
                         break; // No need to search further
                     }
                 }
             } else {
                 qualifier = new NameDateStateQualifier(keywords, startDate, endDate, states, search, -1);
-                updateFilteredEventList(new PredicateExpression(qualifier));
-                updateFilteredDeadlineList(new PredicateExpression(qualifier));
-                updateFilteredFloatingTaskList(new PredicateExpression(qualifier));
-                if ((getFilteredEventList().size() + getFilteredDeadlineList().size()
-                     + getFilteredFloatingTaskList().size()) > 0) {
+                if (filteredResultNonZero(qualifier)) {
                     break; // No need to search further
                 }
             }
         }
+    }
+
+    private boolean filteredResultNonZero(NameDateStateQualifier qualifier) {
+        updateFilteredEventList(new PredicateExpression(qualifier));
+        updateFilteredDeadlineList(new PredicateExpression(qualifier));
+        updateFilteredFloatingTaskList(new PredicateExpression(qualifier));
+        return ((getFilteredEventList().size()
+                 + getFilteredDeadlineList().size()
+                 + getFilteredFloatingTaskList().size()) > 0);
     }
 
     // @@author A0126623L
