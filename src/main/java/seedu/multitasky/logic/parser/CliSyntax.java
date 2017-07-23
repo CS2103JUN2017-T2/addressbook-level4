@@ -21,13 +21,10 @@ public class CliSyntax {
     public static final Prefix PREFIX_ESCAPE = new Prefix("\\");
 
     /* Start Date Prefix Array */
-    public static final Prefix[] PREFIX_ARRAY_STARTDATE = { PREFIX_FROM,
-                                                            PREFIX_ON,
-                                                            PREFIX_AT };
+    public static final Prefix[] PREFIX_ARRAY_STARTDATE = { PREFIX_FROM, PREFIX_ON, PREFIX_AT };
 
-    /* Start Date Prefix Array */
-    public static final Prefix[] PREFIX_ARRAY_ENDDATE = { PREFIX_TO,
-                                                          PREFIX_BY };
+    /* End Date Prefix Array */
+    public static final Prefix[] PREFIX_ARRAY_ENDDATE = { PREFIX_TO, PREFIX_BY };
 
     /* Entry type */
     public static final Prefix PREFIX_EVENT = new Prefix("event");
