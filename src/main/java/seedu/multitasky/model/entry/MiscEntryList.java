@@ -10,7 +10,6 @@ import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
  */
 public class MiscEntryList extends EntryList {
 
-    // @@author A0126623L
     /**
      * Adds the reference to an entry to the list. It does not create new entry objects.
      *
@@ -23,7 +22,6 @@ public class MiscEntryList extends EntryList {
         internalList.add((Entry) toAdd);
     }
 
-    // @@author A0126623L
     /**
      * Sets MiscEntryList to contain the reference to the entries in the given list.
      */

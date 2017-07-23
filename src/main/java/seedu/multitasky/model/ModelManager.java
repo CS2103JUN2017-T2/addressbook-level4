@@ -45,12 +45,11 @@ import seedu.multitasky.storage.exception.NothingToUndoException;
 public class ModelManager extends ComponentManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
-    private final EntryBook _entryBook;
-    private final FilteredList<ReadOnlyEntry> _filteredEventList;
-    private final FilteredList<ReadOnlyEntry> _filteredDeadlineList;
-    private final FilteredList<ReadOnlyEntry> _filteredFloatingTaskList;
+    private final EntryBook entryBook;
+    private final FilteredList<ReadOnlyEntry> filteredEventList;
+    private final FilteredList<ReadOnlyEntry> filteredDeadlineList;
+    private final FilteredList<ReadOnlyEntry> filteredFloatingTaskList;
 
-    // @@author A0126623L
     /**
      * Initializes a ModelManager with the given entryBook and userPrefs.
      * Note that the reference of the entries in the given {@code entryBook}
@@ -62,56 +61,37 @@ public class ModelManager extends ComponentManager implements Model {
 
         logger.fine("Initializing with entry book: " + entryBook + " and user prefs " + userPrefs);
 
-        this._entryBook = new EntryBook(entryBook);
-        _filteredEventList = new FilteredList<>(this._entryBook.getEventList());
-        _filteredDeadlineList = new FilteredList<>(this._entryBook.getDeadlineList());
-        _filteredFloatingTaskList = new FilteredList<>(this._entryBook.getFloatingTaskList());
+        this.entryBook = new EntryBook(entryBook);
+        filteredEventList = new FilteredList<>(this.entryBook.getEventList());
+        filteredDeadlineList = new FilteredList<>(this.entryBook.getDeadlineList());
+        filteredFloatingTaskList = new FilteredList<>(this.entryBook.getFloatingTaskList());
     }
-    // @@author
 
     public ModelManager() {
         this(new EntryBook(), new UserPrefs());
     }
 
+    // =========== EntryBook-level Operations ===========
+
     @Override
     public void resetData(ReadOnlyEntryBook newData) {
-        _entryBook.resetData(newData);
+        entryBook.resetData(newData);
         indicateEntryBookChanged();
     }
 
     @Override
     public ReadOnlyEntryBook getEntryBook() {
-        return _entryBook;
+        return entryBook;
     }
-
-    // =========== List Level Operations ===========
-
-    // @@author A0126623L
-
-    @Override
-    public void clearStateSpecificEntries(Entry.State state) {
-        _entryBook.clearStateSpecificEntries(state);
-        indicateEntryBookChanged();
-    }
-    // @@author
 
     // =========== Entry Level Operations ===========
 
-    @Override
-    public synchronized void deleteEntry(ReadOnlyEntry target)
-            throws EntryNotFoundException {
-        _entryBook.removeEntry(target);
-
-        indicateEntryBookChanged();
-    }
-
-    // @@author A0126623L
     @Override
     public synchronized void addEntry(ReadOnlyEntry entry)
             throws DuplicateEntryException, OverlappingEventException,
             OverlappingAndOverdueEventException, EntryOverdueException {
         try {
-            _entryBook.addEntry(entry);
+            entryBook.addEntry(entry);
         } catch (OverlappingEventException | OverlappingAndOverdueEventException
                  | EntryOverdueException e) {
             indicateEntryBookChanged();
@@ -119,35 +99,30 @@ public class ModelManager extends ComponentManager implements Model {
         }
         indicateEntryBookChanged();
     }
-    // @@author
 
-    // @@author A0126623L
     @Override
-    public void changeEntryState(ReadOnlyEntry entryToChange, Entry.State newState)
-            throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException,
-            OverlappingAndOverdueEventException, EntryOverdueException {
-        try {
-            _entryBook.changeEntryState(entryToChange, newState);
-        } catch (EntryNotFoundException | OverlappingEventException
-                 | OverlappingAndOverdueEventException | EntryOverdueException e) {
-            indicateEntryBookChanged();
-            throw e;
-        }
+    public synchronized void deleteEntry(ReadOnlyEntry target)
+            throws EntryNotFoundException {
+        entryBook.removeEntry(target);
+
         indicateEntryBookChanged();
     }
 
-    // @@author A0126623L
     @Override
     public void updateEntry(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
             throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException,
             OverlappingAndOverdueEventException, EntryOverdueException {
         requireAllNonNull(target, editedEntry);
         try {
-            if (target.getClass().equals(editedEntry.getClass())) { // updating to same instance of entry
-                _entryBook.updateEntry(target, editedEntry);
-            } else { // updating entry between lists
-                _entryBook.addEntry(editedEntry);
-                _entryBook.removeEntry(target);
+            if (target.getClass().equals(editedEntry.getClass())) { // updating to same type of entry
+                entryBook.updateEntry(target, editedEntry);
+            } else { // updating to a different type of entry
+                /**
+                 * Adding is done before removal because adding may fail,
+                 * in which case removal should not be carried out.
+                 */
+                entryBook.addEntry(editedEntry);
+                entryBook.removeEntry(target);
             }
         } catch (EntryNotFoundException | OverlappingEventException
                  | OverlappingAndOverdueEventException | EntryOverdueException e) {
@@ -156,66 +131,76 @@ public class ModelManager extends ComponentManager implements Model {
         }
         indicateEntryBookChanged();
     }
-    // @@author
+
+    @Override
+    public void changeEntryState(ReadOnlyEntry entryToChange, Entry.State newState)
+            throws DuplicateEntryException, EntryNotFoundException, OverlappingEventException,
+            OverlappingAndOverdueEventException, EntryOverdueException {
+        try {
+            entryBook.changeEntryState(entryToChange, newState);
+        } catch (EntryNotFoundException | OverlappingEventException
+                 | OverlappingAndOverdueEventException | EntryOverdueException e) {
+            indicateEntryBookChanged();
+            throw e;
+        }
+        indicateEntryBookChanged();
+    }
+
+    @Override
+    public void clearStateSpecificEntries(Entry.State state) {
+        entryBook.clearStateSpecificEntries(state);
+        indicateEntryBookChanged();
+    }
 
     // =========== Filtered Entry List Accessors ===========
 
-    // @@author A0126623L
     /**
      * Return a list of {@code ReadOnlyEntry} backed by the internal event list of
      * {@code entryBook}
      */
     @Override
     public UnmodifiableObservableList<ReadOnlyEntry> getFilteredEventList() {
-        return new UnmodifiableObservableList<>(_filteredEventList);
+        return new UnmodifiableObservableList<>(filteredEventList);
     }
 
-    // @@author A0126623L
     /**
      * Return a list of {@code ReadOnlyEntry} backed by the internal deadline list of
      * {@code entryBook}
      */
     @Override
     public UnmodifiableObservableList<ReadOnlyEntry> getFilteredDeadlineList() {
-        return new UnmodifiableObservableList<>(_filteredDeadlineList);
+        return new UnmodifiableObservableList<>(filteredDeadlineList);
     }
 
-    // @@author A0126623L
     /**
      * Return a list of {@code ReadOnlyEntry} backed by the internal floating task list of
      * {@code entryBook}
      */
     @Override
     public UnmodifiableObservableList<ReadOnlyEntry> getFilteredFloatingTaskList() {
-        return new UnmodifiableObservableList<>(_filteredFloatingTaskList);
+        return new UnmodifiableObservableList<>(filteredFloatingTaskList);
     }
 
-    // @@author A0126623L
     @Override
     public UnmodifiableObservableList<ReadOnlyEntry> getActiveList() {
-        return new UnmodifiableObservableList<>(_entryBook.getAllEntries());
+        return new UnmodifiableObservableList<>(entryBook.getAllEntries());
     }
 
-    // @@author A0126623L
     @Override
     public void updateFilteredEventListToShowAll() {
-        _filteredEventList.setPredicate(null);
+        filteredEventList.setPredicate(null);
     }
 
-    // @@author A0126623L
     @Override
     public void updateFilteredDeadlineListToShowAll() {
-        _filteredDeadlineList.setPredicate(null);
+        filteredDeadlineList.setPredicate(null);
     }
 
-    // @@author A0126623L
     @Override
     public void updateFilteredFloatingTaskListToShowAll() {
-        _filteredFloatingTaskList.setPredicate(null);
+        filteredFloatingTaskList.setPredicate(null);
     }
-    // @@author
 
-    // @@author A0126623L
     /**
      * Updates all filtered list to show all entries.
      */
@@ -225,23 +210,17 @@ public class ModelManager extends ComponentManager implements Model {
         updateFilteredDeadlineListToShowAll();
         updateFilteredFloatingTaskListToShowAll();
     }
-    // @@author
 
-    // @@author A0126623L
     @Override
     public void updateAllFilteredListToShowAllActiveEntries() {
         this.updateAllFilteredLists(new HashSet<>(), null, null, Entry.State.ACTIVE, Search.AND);
     }
-    // @@author
 
-    // @@author A0126623L
     @Override
     public void updateAllFilteredListToShowAllArchivedEntries() {
         this.updateAllFilteredLists(new HashSet<>(), null, null, Entry.State.ARCHIVED, Search.AND);
     }
-    // @@author
 
-    // @@author A0126623L
     @Override
     public void updateAllFilteredListToShowAllDeletedEntries() {
         this.updateAllFilteredLists(new HashSet<>(), null, null, Entry.State.DELETED, Search.AND);
@@ -255,7 +234,6 @@ public class ModelManager extends ComponentManager implements Model {
         updateAllFilteredLists(keywords, startDate, endDate, states, searches);
     }
 
-    // @@author A0125586X
     @Override
     public void updateAllFilteredLists(Set<String> keywords, Calendar startDate, Calendar endDate,
                                        Entry.State state, Entry.State state2, Search... searches) {
@@ -263,7 +241,7 @@ public class ModelManager extends ComponentManager implements Model {
         updateAllFilteredLists(keywords, startDate, endDate, states, searches);
     }
 
-    // @@author A0125586X
+    // TODO: Check with Mattheus whether refactoring is possible.
     private void updateAllFilteredLists(Set<String> keywords, Calendar startDate, Calendar endDate,
                                         List<Entry.State> states, Search... searches) {
         NameDateStateQualifier qualifier;
@@ -295,7 +273,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     // @@author A0126623L
     private void updateFilteredEventList(Expression expression) {
-        _filteredEventList.setPredicate(expression::satisfies);
+        filteredEventList.setPredicate(expression::satisfies);
     }
 
     // @@author A0125586X
@@ -309,7 +287,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     // @@author A0126623L
     private void updateFilteredDeadlineList(Expression expression) {
-        _filteredDeadlineList.setPredicate(expression::satisfies);
+        filteredDeadlineList.setPredicate(expression::satisfies);
     }
 
     // @@author A0125586X
@@ -324,7 +302,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     // @@author A0126623L
     private void updateFilteredFloatingTaskList(Expression expression) {
-        _filteredFloatingTaskList.setPredicate(expression::satisfies);
+        filteredFloatingTaskList.setPredicate(expression::satisfies);
     }
 
     // @@author A0125586X
@@ -338,15 +316,13 @@ public class ModelManager extends ComponentManager implements Model {
                                                                                           level)));
     }
 
-    // @@author A0125586X
     /** Updates the sorting comparators used. */
     @Override
     public void updateSortingComparators(Comparator<ReadOnlyEntry> eventComparator,
                                          Comparator<ReadOnlyEntry> deadlineComparator,
                                          Comparator<ReadOnlyEntry> floatingTaskComparator) {
-        _entryBook.setComparators(eventComparator, deadlineComparator, floatingTaskComparator);
+        entryBook.setComparators(eventComparator, deadlineComparator, floatingTaskComparator);
     }
-    // @@author
 
     // @@author A0126623L
     @Override
@@ -363,11 +339,10 @@ public class ModelManager extends ComponentManager implements Model {
 
         // state check
         ModelManager other = (ModelManager) obj;
-        return _entryBook.equals(other._entryBook) && _filteredEventList.equals(other._filteredEventList)
-               && _filteredDeadlineList.equals(other._filteredDeadlineList)
-               && _filteredFloatingTaskList.equals(other._filteredFloatingTaskList);
+        return entryBook.equals(other.entryBook) && filteredEventList.equals(other.filteredEventList)
+               && filteredDeadlineList.equals(other.filteredDeadlineList)
+               && filteredFloatingTaskList.equals(other.filteredFloatingTaskList);
     }
-    // @@author
 
     // ========== Inner classes/interfaces used for filtering ==========
 
@@ -566,8 +541,8 @@ public class ModelManager extends ComponentManager implements Model {
                 return (checkDate.compareTo(startDate) >= 0) && (checkDate.compareTo(endDate) <= 0);
             }
         }
-        // @@author
 
+        // @@author A0126623L
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
@@ -596,20 +571,20 @@ public class ModelManager extends ComponentManager implements Model {
         }
     }
 
-    // ========== Event Raising Methods ==========
+    // ========== Storage-Related Operations ==========
 
     /** Raises an event to indicate the model has changed */
     private void indicateEntryBookChanged() {
-        raise(new EntryBookChangedEvent(_entryBook));
+        raise(new EntryBookChangedEvent(entryBook));
     }
 
     // @@author A0132788U
     /** Raises an event when undo is entered by user and resets data to previous state for updating the UI */
     private void indicateUndoAction() throws NothingToUndoException {
         EntryBookToUndoEvent undoEvent;
-        raise(undoEvent = new EntryBookToUndoEvent(_entryBook, ""));
+        raise(undoEvent = new EntryBookToUndoEvent(entryBook, ""));
         if (undoEvent.getMessage().equals("undo successful")) {
-            _entryBook.resetData(undoEvent.getData());
+            entryBook.resetData(undoEvent.getData());
         } else {
             throw new NothingToUndoException("");
         }
@@ -618,9 +593,9 @@ public class ModelManager extends ComponentManager implements Model {
     /** Raises an event when redo is entered by user and resets data to next state for updating the UI */
     private void indicateRedoAction() throws NothingToRedoException {
         EntryBookToRedoEvent redoEvent;
-        raise(redoEvent = new EntryBookToRedoEvent(_entryBook, ""));
+        raise(redoEvent = new EntryBookToRedoEvent(entryBook, ""));
         if (redoEvent.getMessage().equals("redo successful")) {
-            _entryBook.resetData(redoEvent.getData());
+            entryBook.resetData(redoEvent.getData());
         } else {
             throw new NothingToRedoException("");
         }
@@ -639,16 +614,16 @@ public class ModelManager extends ComponentManager implements Model {
     /** Raises an event when new file path is entered by user */
     @Override
     public void changeFilePath(String newFilePath) {
-        raise(new FilePathChangedEvent(_entryBook, newFilePath));
+        raise(new FilePathChangedEvent(entryBook, newFilePath));
     }
 
     /** Raises an event when filepath to load data from is entered by user */
     @Override
     public void openFilePath(String newFilePath) throws IllegalValueException {
         LoadDataFromFilePathEvent event;
-        raise(event = new LoadDataFromFilePathEvent(_entryBook, newFilePath, ""));
+        raise(event = new LoadDataFromFilePathEvent(entryBook, newFilePath, ""));
         if (event.getMessage().equals("open successful")) {
-            _entryBook.resetData(event.getData());
+            entryBook.resetData(event.getData());
             indicateEntryBookChanged();
         } else {
             throw new IllegalValueException("load unsuccessful");

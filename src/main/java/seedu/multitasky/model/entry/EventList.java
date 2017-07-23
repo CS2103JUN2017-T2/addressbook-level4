@@ -17,7 +17,6 @@ public class EventList extends EntryList {
         super();
         comparator = Comparators.EVENT_DEFAULT;
     }
-    // @@author
 
     // @@author A0126623L
     /**
@@ -37,7 +36,6 @@ public class EventList extends EntryList {
         internalList.add((Event) toAdd);
         sortInternalList();
     }
-    // @@author
 
     // @@author A0126623L
     /**
@@ -46,16 +44,19 @@ public class EventList extends EntryList {
     public boolean hasOverlappingEvent(ReadOnlyEntry other) {
         for (Entry existingEntry : internalList) {
             assert (existingEntry instanceof Event) : "Non-event should not exist in an event list.";
+            if (!(other instanceof OverlapCapable)) {
+                return false;
+            }
+            Event otherEvent = (Event) other;
             Event existingEvent = (Event) existingEntry;
 
             if (existingEvent.isActive()
-                && existingEvent.hasOverlappingTime(other)) {
+                && existingEvent.overlapsWith(otherEvent)) {
                 return true;
             }
         }
         return false;
     }
-    // @@author
 
     // @@author A0126623L
     /**
@@ -65,17 +66,20 @@ public class EventList extends EntryList {
     public boolean hasOverlappingEventAfterUpdate(ReadOnlyEntry target, ReadOnlyEntry prospectiveEntry) {
         for (Entry existingEntry : internalList) {
             assert (existingEntry instanceof Event) : "Non-event should not exist in an event list.";
+            if (!(prospectiveEntry instanceof OverlapCapable)) {
+                return false;
+            }
+            Event prospectiveEvent = (Event) prospectiveEntry;
             Event existingEvent = (Event) existingEntry;
 
             if (existingEvent.isActive()
-                && existingEvent.hasOverlappingTime(prospectiveEntry)
+                && existingEvent.overlapsWith(prospectiveEvent)
                 && !(existingEvent.equals(target))) {
                 return true;
             }
         }
         return false;
     }
-    // @@author
 
     // @@author A0125586X
     /**
@@ -91,7 +95,6 @@ public class EventList extends EntryList {
         super.updateEntry(target, editedEntry);
         sortInternalList();
     }
-    // @@author
 
     // @@author A0126623L
     /**
@@ -106,6 +109,5 @@ public class EventList extends EntryList {
         }
         super.setEntries(replacement);
     }
-    // @@author
 
 }
