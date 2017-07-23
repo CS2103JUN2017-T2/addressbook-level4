@@ -67,8 +67,7 @@ public class EntryBook implements ReadOnlyEntryBook {
     private void setAllEntriesList() throws DuplicateEntryException {
         /*
          * The reset of list of all entries is different from the others because here we want to add the
-         * references to
-         * existing entries, not making new copies.
+         * references to existing entries, not making new copies.
          */
         this._allEntriesList.setEntries(new MiscEntryList());
         for (ReadOnlyEntry entry : _eventList) {
@@ -149,13 +148,8 @@ public class EntryBook implements ReadOnlyEntryBook {
         try {
             addToEntrySubtypeList(e);
         } finally {
-
             Entry newEntry = convertToEntry(e);
             syncMasterTagListWith(newEntry);
-
-            // TODO: Decide later if it's still necessary to keep an internal list of all entries
-
-            // Adds reference of newEntry to allEntriesList, not creating a copy.
             _allEntriesList.add(newEntry);
         }
     }
