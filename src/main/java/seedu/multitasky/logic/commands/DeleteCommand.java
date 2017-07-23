@@ -9,7 +9,7 @@ import seedu.multitasky.model.Model;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 
 // @@author A0140633R
-/*
+/**
  * Abstract class that represents a delete command. Holds command_word and confirmation messages a delete
  * command will be using.
  */

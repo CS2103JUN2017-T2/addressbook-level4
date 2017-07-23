@@ -9,10 +9,10 @@ import seedu.multitasky.model.Model;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 
 //@@author A0126623L-reused
-/*
-* Abstract class that represents a restore command. Holds command_word and confirmation messages a restore
-* command will be using.
-*/
+/**
+ * Abstract class that represents a restore command. Holds command_word and confirmation messages a restore
+ * command will be using.
+ */
 public abstract class RestoreCommand extends Command {
 
     public static final String COMMAND_WORD = "restore";
@@ -49,7 +49,6 @@ public abstract class RestoreCommand extends Command {
 
     @Override
     public void setData(Model model, CommandHistory history) {
-        //TODO: Consider refactoring these to the superclass's setData();
         Objects.requireNonNull(history);
         Objects.requireNonNull(model);
         this.model = model;

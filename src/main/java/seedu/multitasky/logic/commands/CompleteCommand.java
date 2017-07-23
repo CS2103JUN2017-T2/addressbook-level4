@@ -9,7 +9,7 @@ import seedu.multitasky.model.Model;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 
 // @@author A0132788U-reused
-/*
+/**
  * Abstract class that represents a complete command. It contains the command keyword, usage instructions,
  * prefixes and the success message.
  */

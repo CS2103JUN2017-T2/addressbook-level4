@@ -18,9 +18,9 @@ import seedu.multitasky.model.entry.exceptions.EntryOverdueException;
 import seedu.multitasky.model.entry.exceptions.OverlappingAndOverdueEventException;
 import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 
-/*
-* Finds entries from given keywords and restores entry if it is the only one found.
-*/
+/**
+ * Finds entries from given keywords and restores entry if it is the only one found.
+ */
 public class RestoreByFindCommand extends RestoreCommand {
 
     public static final String MESSAGE_NO_ENTRIES = "No entries found! Please try again with different keywords";
