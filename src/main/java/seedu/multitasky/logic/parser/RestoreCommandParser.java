@@ -45,7 +45,7 @@ public class RestoreCommandParser {
         }
 
         if (hasIndexFlag(argMultimap)) { // process to restore by indexes
-            if (hasInvalidFlagCombination(argMultimap)) {
+            if (!ParserUtil.hasValidListTypeCombination(argMultimap)) {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                                                        RestoreCommand.MESSAGE_USAGE));
             }
@@ -69,26 +69,6 @@ public class RestoreCommandParser {
         }
     }
     // @@author
-
-    /**
-     * TODO: Since more than 1 command parsers (delete, complete and restore) use the method below,
-     * it may be refactored into the ParserUtil class as a static method.
-     */
-    // @@author A0126623L-reused
-    /**
-     * A method that returns true if flags are given in an illogical manner for restoring commands.
-     * illogical := any 2 of /float, /deadline, /event used together.
-     */
-    private boolean hasInvalidFlagCombination(ArgumentMultimap argMultimap) {
-        if (argMultimap == null) {
-            throw new AssertionError("argMultimap cannot be null.");
-        }
-        return ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_DEADLINE)
-               || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_DEADLINE, PREFIX_EVENT)
-               || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_EVENT);
-    }
-    // @@author
-
     // @@author A0126623L-reused
     /**
      * A method that returns true if flags in given ArgumentMultimap has at least one index-indicating

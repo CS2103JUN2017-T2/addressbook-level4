@@ -45,13 +45,17 @@ public class CompleteByIndexCommand extends CompleteCommand {
                  | EntryOverdueException e) {
             throw new AssertionError("These exceptions are not valid for complete command");
         }
-
-        // refresh list view after updating.
-        model.updateAllFilteredLists(history.getPrevKeywords(), history.getPrevStartDate(),
-                history.getPrevEndDate(), history.getPrevState(),
-                history.getPrevSearches());
-
+        refreshListView();
         return new CommandResult(String.format(MESSAGE_SUCCESS, entryToComplete));
+    }
+
+    /**
+     * refresh inner lists by using previous command history
+     */
+    private void refreshListView() {
+        model.updateAllFilteredLists(history.getPrevKeywords(), history.getPrevStartDate(),
+                                     history.getPrevEndDate(), history.getPrevState(),
+                                     history.getPrevSearches());
     }
 
 }

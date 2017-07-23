@@ -27,11 +27,7 @@ public class ClearCommandParser {
             return new ClearCommand();
         }
 
-        /*
-         * TODO modify ArgumentTokenizer to be able to detect without needing a whitespace in front of
-         * trimmedArgs
-         */
-        ArgumentMultimap argumentMultimap = ArgumentTokenizer.tokenize(" " + trimmedArgs,
+        ArgumentMultimap argumentMultimap = ArgumentTokenizer.tokenize(trimmedArgs,
                                                                        toPrefixArray(ClearCommand.VALID_PREFIXES));
 
         ArrayList<String> prefixesPresent = argumentMultimap.getPresentPrefixes(ClearCommand.VALID_PREFIXES);

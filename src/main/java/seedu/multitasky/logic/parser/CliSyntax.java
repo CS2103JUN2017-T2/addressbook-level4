@@ -20,6 +20,12 @@ public class CliSyntax {
     public static final Prefix PREFIX_ADDTAG = new Prefix("addtag");
     public static final Prefix PREFIX_ESCAPE = new Prefix("\\");
 
+    /* Start Date Prefix Array */
+    public static final Prefix[] PREFIX_ARRAY_STARTDATE = { PREFIX_FROM, PREFIX_ON, PREFIX_AT };
+
+    /* End Date Prefix Array */
+    public static final Prefix[] PREFIX_ARRAY_ENDDATE = { PREFIX_TO, PREFIX_BY };
+
     /* Entry type */
     public static final Prefix PREFIX_EVENT = new Prefix("event");
     public static final Prefix PREFIX_DEADLINE = new Prefix("deadline");

@@ -17,7 +17,6 @@ import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 public class AddCommand extends Command {
 
     public static final String COMMAND_WORD = "add";
-
     // @@author A0140633R
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds an entry to MultiTasky. " + "\n"
             + "Format: " + COMMAND_WORD + " NAME" + " ["
@@ -26,30 +25,23 @@ public class AddCommand extends Command {
             + CliSyntax.PREFIX_TO + " DATE" + "]" + "]"
             + " [" + CliSyntax.PREFIX_TAG + " TAGS..." + "]" + "\n"
             + "All possible flags for Add : 'by', 'from', 'to', 'at', 'tag'";
-
     public static final String MESSAGE_SUCCESS = "New entry added:" + "\n"
                                                  + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s";
-
-    public static final String MESSAGE_SUCCESS_WITH_OVERLAP_ALERT = "New entry added:" + "\n"
-            + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
+    public static final String MESSAGE_SUCCESS_WITH_OVERLAP_ALERT = MESSAGE_SUCCESS + "\n"
             + "Alert: New entry overlaps with existing event(s).";
-    public static final String MESSAGE_SUCCESS_WITH_OVERDUE_ALERT = "New entry added:" + "\n"
-            + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
+    public static final String MESSAGE_SUCCESS_WITH_OVERDUE_ALERT = MESSAGE_SUCCESS + "\n"
             + "Alert: New entry is overdue.";
-    public static final String MESSAGE_SUCCESS_WITH_OVERLAP_AND_OVERDUE_ALERT = "New entry added:" + "\n"
-            + Messages.MESSAGE_ENTRY_DESCRIPTION + "%1$s" + "\n"
+    public static final String MESSAGE_SUCCESS_WITH_OVERLAP_AND_OVERDUE_ALERT = MESSAGE_SUCCESS + "\n"
             + "Alert: New entry is overdue and overlaps with existing event(s).";
+    public static final String MESSAGE_INVALID_CONFIG_DURATION = "default addDuration cannot be zero or negative!";
+    public static final String MESSAGE_ENDDATE_BEFORE_STARTDATE = "Can not have end date before start date!";
 
     public static final String[] VALID_PREFIXES = {CliSyntax.PREFIX_FROM.toString(),
-                                                   CliSyntax.PREFIX_BY.toString(),
-                                                   CliSyntax.PREFIX_AT.toString(),
-                                                   CliSyntax.PREFIX_ON.toString(),
-                                                   CliSyntax.PREFIX_TO.toString(),
-                                                   CliSyntax.PREFIX_TAG.toString()};
-
-    public static final String MESSAGE_INVALID_CONFIG_DURATION = "default addDuration cannot be zero or negative!";
-
-    public static final String MESSAGE_ENDDATE_BEFORE_STARTDATE = "Can not have end date before start date!";
+        CliSyntax.PREFIX_BY.toString(),
+        CliSyntax.PREFIX_AT.toString(),
+        CliSyntax.PREFIX_ON.toString(),
+        CliSyntax.PREFIX_TO.toString(),
+        CliSyntax.PREFIX_TAG.toString()};
 
     private final ReadOnlyEntry toAdd;
 
