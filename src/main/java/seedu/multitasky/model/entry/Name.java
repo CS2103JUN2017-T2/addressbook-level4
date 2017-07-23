@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import seedu.multitasky.commons.exceptions.IllegalValueException;
 
-// @@author A0126623L-reused
+// @@author A0126623L
 /**
  * Represents an Entry's name in the entry book.
  * Guarantees: immutable; is valid as declared in {@link #isValidName(String)}
@@ -38,6 +38,7 @@ public class Name {
         this.fullName = trimmedName;
     }
 
+    // @@author A0126623L-reused
     /**
      * Returns true if a given string is a valid entry name.
      */

@@ -33,19 +33,18 @@ import seedu.multitasky.model.tag.Tag;
 import seedu.multitasky.model.tag.UniqueTagList;
 import seedu.multitasky.model.util.EntryBuilder;
 
+// @@author A0126623L
 /**
  * Wraps all data at the entry-book level
  */
 public class EntryBook implements ReadOnlyEntryBook {
 
-    // TODO: Decide later if it's useful to keep an internal list of all entries
     private final MiscEntryList allEntriesList;
     private final EventList eventList;
     private final DeadlineList deadlineList;
     private final FloatingTaskList floatingTaskList;
     private final UniqueTagList tags;
 
-    // @@author A0126623L
     public EntryBook() {
         allEntriesList = new MiscEntryList();
         eventList = new EventList();
@@ -83,9 +82,7 @@ public class EntryBook implements ReadOnlyEntryBook {
         syncMasterTagListWith(allEntriesList);
     }
 
-    /*****************************
-     * List overwrite operations *
-     *****************************/
+    // ================= List Overwrite Operations =================
 
     /**
      * Fills up {@code allEntriesList} with existing events, deadlines
@@ -121,10 +118,7 @@ public class EntryBook implements ReadOnlyEntryBook {
         this.tags.setTags(tags);
     }
 
-    // @@author A0126623L
-    /**************************
-     * Entry-level operations *
-     **************************/
+    // ================= Entry-Level Operations =================
 
     /**
      * Adds an entry to the entry book.
@@ -467,9 +461,7 @@ public class EntryBook implements ReadOnlyEntryBook {
         }
     }
 
-    /************************
-     * Tag-level operations *
-     ************************/
+    // ================= Tag-Level Operations =================
 
     public void addTag(Tag t) throws UniqueTagList.DuplicateTagException {
         tags.add(t);
@@ -507,9 +499,7 @@ public class EntryBook implements ReadOnlyEntryBook {
         entries.forEach(this::syncMasterTagListWith);
     }
 
-    /*****************
-     *  util methods *
-     *****************/
+    // ================= Util Methods =================
 
     // @@author A0125586X
     public void setComparators(Comparator<ReadOnlyEntry> eventComparator,
