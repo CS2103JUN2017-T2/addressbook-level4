@@ -15,7 +15,7 @@ public class DeadlineCard extends EntryCard {
         super(FXML, entry, displayedIndex);
         assert entry instanceof Deadline : "Entry to display on DeadlineListCard must be Deadline";
 
-        endDateTime.setText(formatDate(entry.getEndDateAndTime().getTime()));
+        endDateTime.setText(entry.getEndDateAndTimeString());
         additionalInfo.setText(prettyTimeFormatDate(entry.getEndDateAndTime().getTime()));
     }
 }

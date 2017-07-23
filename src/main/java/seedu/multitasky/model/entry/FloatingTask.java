@@ -29,7 +29,7 @@ public class FloatingTask extends Entry {
         super(source.getName(), source.getTags());
     }
 
-    public Calendar getStartDateAndTimeString() {
+    public String getStartDateAndTimeString() {
         return null; // Floating tasks have no start time.
     }
 
@@ -38,7 +38,7 @@ public class FloatingTask extends Entry {
         return startDateAndTime;
     }
 
-    public Calendar getEndDateAndTimeString() {
+    public String getEndDateAndTimeString() {
         return null; // Floating tasks have no end time.
     }
 
