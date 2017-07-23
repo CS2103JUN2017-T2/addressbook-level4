@@ -2,6 +2,7 @@ package seedu.multitasky.model.entry;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -92,6 +93,15 @@ public class FloatingTaskTest {
 
         tester999.resetData(floatingTask3);
         assertTrue(tester999.equals(floatingTask3));
+    }
+
+    // @@author A0126623L
+    @Test
+    public void getStartAndEndTime_invokeGetterMethods_nulls() {
+        assertNull(floatingTask1.getStartDateAndTime());
+        assertNull(floatingTask1.getEndDateAndTime());
+        assertNull(floatingTask1.getStartDateAndTimeString());
+        assertNull(floatingTask1.getEndDateAndTimeString());
     }
 
     // @@author A0126623L
