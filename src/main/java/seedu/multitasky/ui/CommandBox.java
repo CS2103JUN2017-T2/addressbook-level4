@@ -1,5 +1,6 @@
 package seedu.multitasky.ui;
 
+import java.util.Date;
 import java.util.logging.Logger;
 
 import javafx.application.Platform;
@@ -32,7 +33,11 @@ import seedu.multitasky.ui.util.TextHistory;
  */
 public class CommandBox extends UiPart<Region> {
 
+    // Two tab presses in 0.5 second is considered double
+    public static final int DOUBLE_TAB_PRESS_INTERVAL_MILLIS = 500;
+
     public static final String ERROR_STYLE_CLASS = "command-box-error";
+
     private static final String FXML = "CommandBox.fxml";
 
     private final Logger logger = LogsCenter.getLogger(CommandBox.class);
@@ -46,7 +51,7 @@ public class CommandBox extends UiPart<Region> {
     @FXML
     private TextField commandTextField;
 
-    private boolean isCommandSuccessful;
+    private Date tabPressTime;
 
     public CommandBox(Logic logic, ResultDisplay resultDisplay) {
         super(FXML);
@@ -55,7 +60,7 @@ public class CommandBox extends UiPart<Region> {
         autocomplete = new CommandAutocomplete(CommandUtil.COMMAND_WORDS, CommandUtil.COMMAND_KEYWORDS,
                                                CommandUtil.PREFIX_ONLY_COMMANDS);
         commandHistory = new CommandHistory();
-        isCommandSuccessful = false;
+        tabPressTime = new Date();
         setCommandTextFieldFocus();
         onlyShowActiveEntries();
         setupCommandAutocompleteShortcut();
@@ -82,23 +87,16 @@ public class CommandBox extends UiPart<Region> {
             setStyleToIndicateCommandSuccess();
             logger.info("Result: " + commandResult.feedbackToUser);
             raise(new NewResultAvailableEvent(commandResult.feedbackToUser));
-            isCommandSuccessful = true;
         } catch (CommandException | ParseException e) {
             // handle command failure
             setStyleToIndicateCommandFailure();
             logger.info("Invalid command: " + command);
             raise(new NewResultAvailableEvent(e.getMessage()));
-            isCommandSuccessful = false;
         } catch (DuplicateEntryException e) {
             setStyleToIndicateCommandFailure();
             logger.info("Unable to add duplicate entry with command: " + command);
             raise(new NewResultAvailableEvent(e.getMessage()));
-            isCommandSuccessful = false;
         }
-    }
-
-    public boolean lastCommandStatus() {
-        return isCommandSuccessful;
     }
 
     @FXML
@@ -140,6 +138,14 @@ public class CommandBox extends UiPart<Region> {
             public void handle(KeyEvent event) {
                 if (event.getCode() == KeyCode.TAB) {
                     event.consume();
+                    if (isDoubleTabPress()) {
+                        String possibilities = autocomplete.getPossibilities(commandTextField.getText().trim());
+                        if (possibilities != null) {
+                            raise(new NewResultAvailableEvent(possibilities));
+                        }
+                    } else {
+                        setText(autocomplete.autocomplete(commandTextField.getText().trim()));
+                    }
                     setText(autocomplete.autocomplete(getText()));
                 }
             }
@@ -165,7 +171,19 @@ public class CommandBox extends UiPart<Region> {
     }
 
     /**
-     * Sets the result display style to indicate a successful command.
+     * Checks if this should be considered as a double tab press.
+     */
+    private boolean isDoubleTabPress() {
+        Date now = new Date();
+        if (now.getTime() - tabPressTime.getTime() <= DOUBLE_TAB_PRESS_INTERVAL_MILLIS) {
+            return true;
+        }
+        tabPressTime = now;
+        return false;
+    }
+
+    /**
+     * Sets the command box style to indicate a successful command.
      */
     private void setStyleToIndicateCommandSuccess() {
         commandTextField.getStyleClass().remove(ERROR_STYLE_CLASS);

@@ -34,4 +34,25 @@ public class CommandWordAutocomplete implements TextAutocomplete {
         return input;
     }
 
+    @Override
+    public String getPossibilities(String input) {
+        StringBuilder possibilities = new StringBuilder();
+        for (int level = PowerMatch.MIN_LEVEL; level <= PowerMatch.MAX_LEVEL; ++level) {
+            for (String commandWord : commandWords) {
+                if (new PowerMatch().isMatch(level, input, commandWord)) {
+                    possibilities.append(commandWord).append(" ");
+                }
+            }
+            if (!possibilities.toString().isEmpty() && possibilities.toString().split(" ").length > 1) {
+                // Multiple possibilities
+                return possibilities.toString();
+            } else if (!possibilities.toString().isEmpty() && possibilities.toString().trim().indexOf(" ") == -1) {
+                // Only one possibility, not relevant
+                return null;
+            }
+            possibilities = new StringBuilder();
+        }
+        return null;
+    }
+
 }
