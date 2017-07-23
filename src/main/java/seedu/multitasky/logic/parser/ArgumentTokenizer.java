@@ -22,8 +22,8 @@ public class ArgumentTokenizer {
      * @return ArgumentMultimap object that maps prefixes to their arguments
      */
     public static ArgumentMultimap tokenize(String argsString, Prefix... prefixes) {
-        List<PrefixPosition> positions = findAllPrefixPositions(argsString + " ", prefixes);
-        return extractArguments(argsString, positions);
+        List<PrefixPosition> positions = findAllPrefixPositions(" " + argsString + " ", prefixes);
+        return extractArguments(" " + argsString + " ", positions);
     }
 
     /**

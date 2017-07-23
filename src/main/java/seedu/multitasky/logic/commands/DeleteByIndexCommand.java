@@ -37,7 +37,6 @@ public class DeleteByIndexCommand extends DeleteCommand {
         if (targetIndex.getZeroBased() >= listToDeleteFrom.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
         }
-
         entryToDelete = listToDeleteFrom.get(targetIndex.getZeroBased());
         try {
             model.changeEntryState(entryToDelete, Entry.State.DELETED);
@@ -45,12 +44,17 @@ public class DeleteByIndexCommand extends DeleteCommand {
                 | EntryOverdueException | OverlappingAndOverdueEventException e) {
             throw new AssertionError("These errors should not be occuring in delete.");
         }
-        // refresh list view after updating.
+        refreshListView();
+        return new CommandResult(String.format(MESSAGE_SUCCESS, entryToDelete));
+    }
+
+    /**
+     * refresh inner lists by using previous command history
+     */
+    private void refreshListView() {
         model.updateAllFilteredLists(history.getPrevKeywords(), history.getPrevStartDate(),
                                      history.getPrevEndDate(), history.getPrevState(),
                                      history.getPrevSearches());
-
-        return new CommandResult(String.format(MESSAGE_SUCCESS, entryToDelete));
     }
 
 }

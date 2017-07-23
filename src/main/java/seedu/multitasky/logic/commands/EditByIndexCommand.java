@@ -56,12 +56,6 @@ public class EditByIndexCommand extends EditCommand {
             assert editedEntry != null;
 
             model.updateEntry(entryToEdit, editedEntry);
-
-            // refresh list view after updating
-            model.updateAllFilteredLists(history.getPrevKeywords(), history.getPrevStartDate(),
-                                         history.getPrevEndDate(), history.getPrevState(),
-                                         history.getPrevSearches());
-
         } catch (EntryNotFoundException pnfe) {
             throw new AssertionError("The target entry cannot be missing");
         } catch (OverlappingEventException oee) {
@@ -74,7 +68,7 @@ public class EditByIndexCommand extends EditCommand {
             return new CommandResult(String.format(MESSAGE_SUCCESS_WITH_OVERLAP_AND_OVERDUE_ALERT,
                                                    targetEntryString, editedEntry));
         }
-
+        refreshListView();
         return new CommandResult(String.format(MESSAGE_SUCCESS, targetEntryString, editedEntry));
     }
 
@@ -100,6 +94,15 @@ public class EditByIndexCommand extends EditCommand {
 
         // check equality in editEntryDescriptor.
         return editEntryDescriptor.equals(e.editEntryDescriptor);
+    }
+
+    /**
+     * refresh inner lists by using previous command history
+     */
+    private void refreshListView() {
+        model.updateAllFilteredLists(history.getPrevKeywords(), history.getPrevStartDate(),
+                                     history.getPrevEndDate(), history.getPrevState(),
+                                     history.getPrevSearches());
     }
 
 }

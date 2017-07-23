@@ -59,7 +59,21 @@ public class ParserUtil {
         if (!name.isPresent()) {
             return Optional.empty();
         } else {
-            return Optional.of(new Name(name.get().replaceAll("\\" + CliSyntax.PREFIX_ESCAPE.toString(), "")));
+            return Optional.of(new Name(removeEscapeChar(name.get(), CliSyntax.PREFIX_ESCAPE.toString())));
+        }
+    }
+
+    /**
+     * method that removes string from input full string
+     * @param fullString
+     * @param stringToRemove
+     * @return fullString with stringToRemove removed
+     */
+    public static String removeEscapeChar(String fullString, String stringToRemove) {
+        if (!"\\".equals(stringToRemove)) {
+            return fullString.replaceAll(stringToRemove, "");
+        } else {
+            return fullString.replaceAll("\\" + stringToRemove, "");
         }
     }
 
@@ -198,8 +212,8 @@ public class ParserUtil {
 
     /**
      * searches through the input string for for prefixes and returns the prefix that has the
-     * last occurence
-     * returns null if not found
+     * last occurrence
+     * @return last occurring prefix in input String among input {@code Prefix[]}, and returns {@code null} if not found
      */
     public static Prefix getLastPrefix(String stringToSearch, Prefix...prefixes) {
         // to deal with cases with prefix right at end or start
@@ -214,6 +228,20 @@ public class ParserUtil {
             }
         }
         return foundPrefix;
+    }
+
+    /**
+     * A method that returns true if flags are given in an logical manner for list flags.
+     * illogical := any 2 of float, deadline, event used together.
+     */
+    public static boolean hasValidListTypeCombination(ArgumentMultimap argMultimap) {
+        assert argMultimap != null;
+        if (ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_DEADLINE)
+            || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_DEADLINE, PREFIX_EVENT)
+            || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_EVENT)) {
+            return false;
+        }
+        return true;
     }
 
     // @@author A0125586X
