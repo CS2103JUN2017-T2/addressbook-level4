@@ -224,8 +224,9 @@ _Figure 2.5.1 : Structure of the Storage Component_
 
 The `Storage` component,
 
-* can save `UserPref` objects in json format and read it back.
-* saves snapshots after every data mutation.
+* can save `UserPrefs` objects in json format and read it back.
+* uses `StorageUserPrefs` interface from Model component to set user's file storage preference.
+* saves snapshots after every data mutation (CRUD + complete, restore, open) using StorageManager.
 * can save the Entry Book data in xml format and read it back using EntryBuilder from Model.
 //<!-- @@author -->
 
