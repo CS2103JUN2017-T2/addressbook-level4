@@ -125,10 +125,34 @@ public class ListCommandTest extends EntryBookGuiTest {
         assertTrue(floatingTaskListPanel.isListMatching(entryToDelete));
     }
 
+    /****************************
+     * Listing over date ranges *
+     ***************************/
     @Test
-    public void list_keyboardShortcut_success() {
-        commandBox.pressKey(KeyCode.F5);
-        assertTrue(commandBox.getCommandInput().equals(ListCommand.COMMAND_WORD + " "));
+    public void list_lowerDateRange_filtered() {
+        commandBox.runCommand(ListCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_FROM + " Jan 1 2031");
+        Entry[] expectedList = {};
+        assertTrue(eventListPanel.isListMatching(expectedList));
+        assertTrue(deadlineListPanel.isListMatching(expectedList));
+    }
+
+    @Test
+    public void list_upperDateRange_filtered() {
+        commandBox.runCommand(ListCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_TO + " Jan 1 2029");
+        Entry[] expectedList = {};
+        assertTrue(eventListPanel.isListMatching(expectedList));
+        assertTrue(deadlineListPanel.isListMatching(expectedList));
+    }
+
+    @Test
+    public void list_wholeDateRange_filtered() {
+        commandBox.runCommand(ListCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_FROM + " Jun 1 2030"
+                                + " " +  CliSyntax.PREFIX_TO + " December 31 2030");
+        Entry[] expectedEventList = { SampleEntries.DINNER };
+        Entry[] expectedDeadlineList = { SampleEntries.TAX,
+                                         SampleEntries.PAPER };
+        assertTrue(eventListPanel.isListMatching(expectedEventList));
+        assertTrue(deadlineListPanel.isListMatching(expectedDeadlineList));
     }
 
     /*******************************
@@ -149,9 +173,15 @@ public class ListCommandTest extends EntryBookGuiTest {
         commandBox.pressTabKey();
         assertCommandBox("list reverse ");
 
-        commandBox.enterCommand("l u f");
+        commandBox.enterCommand("l u t");
         commandBox.pressTabKey();
-        assertCommandBox("list upcoming from ");
+        assertCommandBox("list upcoming to ");
+    }
+
+    @Test
+    public void list_keyboardShortcut_success() {
+        commandBox.pressKey(KeyCode.F5);
+        assertTrue(commandBox.getCommandInput().equals(ListCommand.COMMAND_WORD + " "));
     }
 
     /*******************

@@ -134,26 +134,6 @@ public class AddCommandTest {
         }
 
         @Override
-        public void updateFilteredEventListToShowAll() {
-            fail("This method should not be called.");
-        }
-
-        @Override
-        public void updateFilteredDeadlineListToShowAll() {
-            fail("This method should not be called.");
-        }
-
-        @Override
-        public void updateFilteredFloatingTaskListToShowAll() {
-            fail("This method should not be called.");
-        }
-
-        @Override
-        public void updateAllFilteredListToShowAll() {
-            fail("This method should not be called.");
-        }
-
-        @Override
         public void updateAllFilteredLists(Set<String> keywords, Calendar startDate, Calendar endDate,
                                            Entry.State state, Search... searches) {
             fail("This method should not be called.");
@@ -202,16 +182,6 @@ public class AddCommandTest {
 
         @Override
         public void updateAllFilteredListToShowAllActiveEntries() {
-            fail("This method should not be called.");
-        }
-
-        @Override
-        public void updateAllFilteredListToShowAllArchivedEntries() {
-            fail("This method should not be called.");
-        }
-
-        @Override
-        public void updateAllFilteredListToShowAllDeletedEntries() {
             fail("This method should not be called.");
         }
 
