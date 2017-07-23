@@ -31,19 +31,18 @@ public abstract class EditCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD + " : Edits the entry identified by keywords"
             + " if it is the only entry found, or edits the entry identified by the index number of the last"
             + " entry listing.\n"
-            + "Format: " + COMMAND_WORD + " [" + "[" + "KEYWORDS" + "]" + " |"
-            + " [" + String.join(" | ", CliSyntax.PREFIX_EVENT.toString(), CliSyntax.PREFIX_DEADLINE.toString(),
-            CliSyntax.PREFIX_FLOATINGTASK.toString()) + "]" + " INDEX" + "]"
-            + " [" + "[" + CliSyntax.PREFIX_NAME + " NAME" + "]"
-            + " |" + "[" + CliSyntax.PREFIX_BY + " DATE" + "]"
-            + " |" + " [" + CliSyntax.PREFIX_FROM + " DATE"
-            + " " + CliSyntax.PREFIX_TO + " DATE" + "]" + "]"
-            + " [" + CliSyntax.PREFIX_TAG + " TAGS..." + "]" + "\n"
-            + "All possible flags for Edit : 'name', 'tag','by', 'from', 'to', 'at', 'on', 'event',"
+            + "Format: " + COMMAND_WORD + " <" + "KEYWORDS" + ">" + " |"
+            + " <<" + String.join(" | ", CliSyntax.PREFIX_EVENT.toString(), CliSyntax.PREFIX_DEADLINE.toString(),
+            CliSyntax.PREFIX_FLOATINGTASK.toString()) + ">" + " INDEX" + ">"
+            + " [" + CliSyntax.PREFIX_NAME + " NAME" + "]"
+            + " |" + " [" + CliSyntax.PREFIX_BY + " DATE"
+            + " |" + " " + CliSyntax.PREFIX_FROM + " DATE"
+            + " " + CliSyntax.PREFIX_TO + " DATE" + "]"
+            + " [" + CliSyntax.PREFIX_TAG + " TAGS..."
+            + " |" + " " + CliSyntax.PREFIX_ADDTAG + " TAGS..." + "]" + "\n"
+            + "All possible flags for Edit : 'name', 'tag', 'by', 'from', 'to', 'at', 'on', 'event',"
             + " 'deadline', 'float', 'addtag" + "\n"
-            + "Note: Existing values will be overwritten by the input values. "
-            + "Use addtag to add on to previous tag values";
-
+            + "Note: Existing values will be overwritten by the input values. ";
 
     public static final String MESSAGE_SUCCESS = "Target entry: " + Messages.MESSAGE_ENTRY_DESCRIPTION
             + "%1$s\n" + "Entry edited: " + Messages.MESSAGE_ENTRY_DESCRIPTION + "%2$s";
