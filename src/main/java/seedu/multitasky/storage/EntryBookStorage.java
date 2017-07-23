@@ -17,6 +17,11 @@ public interface EntryBookStorage {
     String getEntryBookFilePath();
 
     /**
+     * Sets the file path of the new entrybook.
+     */
+    void setEntryBookFilePath(String newFilePath);
+
+    /**
      * Returns EntryBook data as a {@link ReadOnlyEntryBook}.
      * Returns {@code Optional.empty()} if storage file is not found.
      *
@@ -29,11 +34,6 @@ public interface EntryBookStorage {
      * @see #getEntryBookFilePath()
      */
     Optional<ReadOnlyEntryBook> readEntryBook(String filePath) throws DataConversionException, IOException;
-
-    /**
-     * Sets the file path of the new entrybook.
-     */
-    void setEntryBookFilePath(String newFilePath);
 
     /**
      * Saves the given {@link ReadOnlyEntryBook} to the storage.

@@ -198,7 +198,7 @@ public class StorageManager extends ComponentManager implements Storage {
 
     /**
      * Saves data from the previous snapshot to the current entrybook and passes back
-     * the event data to ModelManager to reset and update the display.
+     * the event data to ModelManager to update the display.
      * Sets error message if unable to undo.
      *
      * @throws Exception
@@ -220,7 +220,7 @@ public class StorageManager extends ComponentManager implements Storage {
 
     /**
      * Saves data from the next snapshot to the current entrybook and passes back
-     * the event data to ModelManager to reset and update the display.
+     * the event data to ModelManager to update the display.
      * Sets error message if unable to redo.
      *
      * @throws Exception
@@ -245,6 +245,7 @@ public class StorageManager extends ComponentManager implements Storage {
      *
      * @throws IOException
      */
+    @Override
     @Subscribe
     public void handleFilePathChangedEvent(FilePathChangedEvent event) throws IOException {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "File path changed, saving to file"));
@@ -258,6 +259,7 @@ public class StorageManager extends ComponentManager implements Storage {
      *
      * @throws DataConversionException
      */
+    @Override
     @Subscribe
     public void handleLoadDataFromFilePathEvent(LoadDataFromFilePathEvent event) throws Exception {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "Data changed, opening file and loading data"));
