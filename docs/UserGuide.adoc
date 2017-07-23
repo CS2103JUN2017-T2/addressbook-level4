@@ -319,28 +319,39 @@ MultiTasky data is saved in the hard disk automatically after any command that c
 There is no need to save manually.
 
 //<!-- @@author A0125586X -->
-=== Autocomplete
-
+=== Command Autocomplete
 Autocomplete functionality is enabled when entering commands. Simply press the `tab` key and MultiTasky will attempt to correct/complete words that you've typed so far. +
 Here are some examples you can try:
 
 * Autocomplete will only complete your input if it's sure that that's the word you want.
-** Type `e` and press `tab`. Notice how nothing has changed as there are two possibilities for this input: `edit` and `exit`. Now add an `x` behind `e` to get `ex` and now it completes to `exit` when you press `tab`.
-* Autocomplete is able to figure out what you want not just from the beginnings of words, but also from the middle.
-** Notice that typing just `x` and pressing `tab` gives you `exit` as well.
-* Autocomplete is able to compensate for the occasional typo, so you don't have to spend time going back to change a small typo.
-** Try typing `lisft` and pressing `tab`. This autocorrects to `list`.
-* For certain commands Autocomplete can even work on every word you've typed, not just the actual command word.
-** If you want to delete the first deadline in the list, you can type `d d` and press `tab`, and it completes to `delete deadline`. Now all you need is to enter `1` and press `enter` to execute your command.
-** This goes beyond just two words in some special cases. Try typing in `l u f` which completes to `list upcoming from`, and you can continue on to type your desired starting date.
+** Type `e` and press `tab`. Notice how nothing has changed as there are two possibilities for this input: `edit` and `exit`. You can also press `tab` two times quickly in succession which shows you that `e` can autocomplete to `edit` or `exit`.
+** Now add an `x` behind `e` to get `ex` and now it completes to `exit` when you press `tab`.
+* Autocomplete is able to complete words using the middle of words, not just the beginning.
+** Try typing `x` and pressing `tab`, it completes to `exit`.
+* For certain cases Autocomplete can also complete multiple words as once.
+** Try typing in `l u t` which completes to `list upcoming to`.
 
-=== PowerSearch
+=== Command Autocorrect
+In addition to autocompleting your words, MultiTasky is also able to autocorrect your words.
+Here are some other examples you can try:
 
+* Autocorrect is able to correct when you type characters in the wrong order.
+** Try typing `lsti` and pressing `tab`. This autocorrects to `list`.
+* Autocorrect is also able to correct extra/missing/wrong characters that you enter.
+** Try typing `lsti` and pressing `tab`. This autocorrects to `list`.
+** `lisst` autocorrects to `list`.
+** `dete` autocorrects to `delete`.
+
+== Keyword PowerSearch
 PowerSearch is enabled for all commands that search for entries by keyword, like `find`, `edit`, `complete` and so on:
 
 * PowerSearch is used automatically when regular search is unable to find any results.
-* PowerSearch uses similar matching rules as Autocomplete. It can also do some more interesting things that Autocomplete cannot:
-** It can match acronyms. So if you had an event called `Play tennis with friends`, the keyword `ptwf` would produce a match.
+** This means that if the regular keyword search rules produce search results, PowerSearch will not be used.
+* PowerSearch uses similar matching rules as Autocomplete and Autocorrect. This means that PowerSearch is able to check for the following:
+** substrings
+** acronyms
+** characters in the wrong order
+** missing/wrong characters
 
 === Keyboard Shortcuts
 
