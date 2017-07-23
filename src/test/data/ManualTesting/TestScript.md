@@ -50,3 +50,33 @@ About 50 sample data should be loaded to the GUI panel.
    and notice that the active lists are still empty.
    Use the undo shortcut `Ctrl`+`Z` to make one additional undo, this will undo the changes made by `clear` and the active entries should appear.
    Redo can be done either by keying in the command `redo` or using the shortcut `Ctrl`+`Y`. The active entries should disappear again. Execute undo once more with `Ctrl`+`Z` to bring back the active entries for the upcoming tests.
+   
+### Time-Saving Features
+1. **Auto-complete for command word and multiple keywords**  
+   Key in the following line of incomplete words  
+   `l u t`
+   Press the `tab` key, and the command should auto-complete to `list upcoming to`.  
+   Complete the command
+   `list upcoming to 8pm`  
+1. **Double-`tab` to show all possibilities of possible words for autocomplete if a single match cannot be found**  
+   Key in the following in the command box  
+   `c`  
+   Press `tab` once. You should notice auto-complete doesn't work because there are two possible commands, i.e. `clear` and `complete`.  
+   Now, try pressing `tab` twice (double-tap) and MultiTasky should display the possible commands:  
+   `c: clear complete`
+1. **Shortcuts**
+   Try all the following keyboard shortcuts:
+
+   Keyboard Shortcut | Associated Command
+   ------------ | -------------
+   `F1` | `help`
+   `F2` | `edit`
+   `F3` | `find`
+   `F4` | `exit`
+   `F5` | `list`
+   `F6` | Brings focus back to command textbox
+   `Ctrl`+`S` | `save`
+   `Ctrl`+`O` | `open`
+   `Up` | Previous entered command
+   `Down` | Next entered command
+
