@@ -325,8 +325,10 @@ Autocomplete functionality is enabled when entering commands. Simply press the `
 Here are some examples you can try:
 
 * Autocomplete will only complete your input if it's sure that that's the word you want.
-** Type `e` and press `tab`. Notice how nothing has changed as there are two possibilities for this input: `edit` and `exit`. You can also press `tab` two times quickly in succession which shows you that `e` can autocomplete to `edit` or `exit`.
+** Type `e` and press `tab`. Notice how nothing has changed as there are multiple possibilities for completing this input.
 ** Now add an `x` behind `e` to get `ex` and now it completes to `exit` when you press `tab`.
+* You can also ask Autocomplete to show you the possibilities that it has found.
+** Try typing `is` and pressing `tab` once. The word is not completed. Then press `tab` twice quickly, which shows that `is` can be corrected to `history` or `list`.
 * Autocomplete is able to complete words using the middle of words, not just the beginning.
 ** Try typing `x` and pressing `tab`, it completes to `exit`.
 * For certain cases Autocomplete can also complete multiple words as once.
