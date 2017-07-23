@@ -16,6 +16,7 @@ import seedu.multitasky.logic.commands.CompleteByIndexCommand;
 import seedu.multitasky.logic.commands.CompleteCommand;
 import seedu.multitasky.logic.parser.exceptions.ParseException;
 
+// @@author A0132788U-reused
 /**
  * Parses input arguments and creates a new CompleteCommand object
  */
@@ -27,7 +28,7 @@ public class CompleteCommandParser {
      *
      * @throws ParseException if the user input does not conform the expected format
      */
-    // @@author A0132788U-reused
+
     public CompleteCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args,
                 ParserUtil.toPrefixArray(CompleteCommand.VALID_PREFIXES));

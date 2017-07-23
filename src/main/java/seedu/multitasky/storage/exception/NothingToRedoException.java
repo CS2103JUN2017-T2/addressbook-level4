@@ -2,7 +2,7 @@ package seedu.multitasky.storage.exception;
 
 // @@author A0132788U
 /**
- * Exception throws when there is nothing to redo.
+ * Exception thrown when there is nothing to redo.
  */
 public class NothingToRedoException extends Exception {
 

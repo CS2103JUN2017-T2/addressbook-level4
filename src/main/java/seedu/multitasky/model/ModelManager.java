@@ -152,6 +152,15 @@ public class ModelManager extends ComponentManager implements Model {
         indicateEntryBookChanged();
     }
 
+    @Override
+    public void undoPreviousAction() throws NothingToUndoException {
+        indicateUndoAction();
+    }
+
+    @Override
+    public void redoPreviousAction() throws NothingToRedoException {
+        indicateRedoAction();
+    }
     // =========== Filtered Entry List Accessors ===========
 
     /**
@@ -249,7 +258,7 @@ public class ModelManager extends ComponentManager implements Model {
             if (search == Search.POWER_AND || search == Search.POWER_OR) {
                 for (int level = PowerMatch.MIN_LEVEL; level <= PowerMatch.MAX_LEVEL; ++level) {
                     qualifier = new NameDateStateQualifier(keywords, startDate, endDate, states, search,
-                                                           level);
+                            level);
                     updateFilteredEventList(new PredicateExpression(qualifier));
                     updateFilteredDeadlineList(new PredicateExpression(qualifier));
                     updateFilteredFloatingTaskList(new PredicateExpression(qualifier));
@@ -281,8 +290,8 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateFilteredEventList(Set<String> keywords, Calendar startDate, Calendar endDate,
                                         Entry.State state, Search search, int level) {
         updateFilteredEventList(new PredicateExpression(new NameDateStateQualifier(keywords,
-                                                                                   startDate, endDate, state,
-                                                                                   search, level)));
+                startDate, endDate, state,
+                search, level)));
     }
 
     // @@author A0126623L
@@ -296,8 +305,8 @@ public class ModelManager extends ComponentManager implements Model {
                                            Calendar endDate, Entry.State state, Search search,
                                            int level) {
         updateFilteredDeadlineList(new PredicateExpression(new NameDateStateQualifier(keywords,
-                                                                                      startDate, endDate,
-                                                                                      state, search, level)));
+                startDate, endDate,
+                state, search, level)));
     }
 
     // @@author A0126623L
@@ -311,9 +320,9 @@ public class ModelManager extends ComponentManager implements Model {
                                                Calendar endDate, Entry.State state, Search search,
                                                int level) {
         updateFilteredFloatingTaskList(new PredicateExpression(new NameDateStateQualifier(keywords,
-                                                                                          startDate, endDate,
-                                                                                          state, search,
-                                                                                          level)));
+                startDate, endDate,
+                state, search,
+                level)));
     }
 
     /** Updates the sorting comparators used. */
@@ -404,12 +413,12 @@ public class ModelManager extends ComponentManager implements Model {
          *
          * @param nameAndTagKeywords the keywords to match against the entry's name and tags. cannot be null.
          * @param startDate the earliest date that will produce a match. if it is null then
-         *                  there is no lower limit on the entry's date.
-         * @param endDate   the latest date that will produce a match. if it is null then
-         *                  there is no upper limit on the entry's date.
-         * @param states    the required states to match against the entry's state. if it is null or empty
-         *                  then entries of any state will match.
-         * @param search    the type of search to use (AND, OR, POWER_AND, POWER_OR). cannot be null.
+         *            there is no lower limit on the entry's date.
+         * @param endDate the latest date that will produce a match. if it is null then
+         *            there is no upper limit on the entry's date.
+         * @param states the required states to match against the entry's state. if it is null or empty
+         *            then entries of any state will match.
+         * @param search the type of search to use (AND, OR, POWER_AND, POWER_OR). cannot be null.
          */
         public NameDateStateQualifier(Set<String> nameAndTagKeywords,
                 Calendar startDate, Calendar endDate,
@@ -442,7 +451,7 @@ public class ModelManager extends ComponentManager implements Model {
                 Calendar startDate, Calendar endDate,
                 Entry.State state, Search search, int level) {
             this(nameAndTagKeywords, startDate, endDate,
-                 new ArrayList<>(Arrays.asList(new Entry.State[] { state, null })), search, level);
+                    new ArrayList<>(Arrays.asList(new Entry.State[] { state, null })), search, level);
         }
 
         @Override
@@ -547,7 +556,7 @@ public class ModelManager extends ComponentManager implements Model {
         public String toString() {
             StringBuilder builder = new StringBuilder();
             builder.append("NameDateStateQualifier: ")
-                   .append("keywords = ");
+                    .append("keywords = ");
             for (String keyword : nameAndTagKeywords) {
                 builder.append(keyword).append(", ");
             }
@@ -571,6 +580,7 @@ public class ModelManager extends ComponentManager implements Model {
         }
     }
 
+    // @@author A0132788U
     // ========== Storage-Related Operations ==========
 
     /** Raises an event to indicate the model has changed */
@@ -578,11 +588,10 @@ public class ModelManager extends ComponentManager implements Model {
         raise(new EntryBookChangedEvent(entryBook));
     }
 
-    // @@author A0132788U
-    /** Raises an event when undo is entered by user and resets data to previous state for updating the UI */
+    /** Raises an event when undo is entered by user and resets data to previous state to update the UI */
     private void indicateUndoAction() throws NothingToUndoException {
-        EntryBookToUndoEvent undoEvent;
-        raise(undoEvent = new EntryBookToUndoEvent(entryBook, ""));
+        EntryBookToUndoEvent undoEvent = new EntryBookToUndoEvent(entryBook, "");
+        raise(undoEvent);
         if (undoEvent.getMessage().equals("undo successful")) {
             entryBook.resetData(undoEvent.getData());
         } else {
@@ -590,7 +599,7 @@ public class ModelManager extends ComponentManager implements Model {
         }
     }
 
-    /** Raises an event when redo is entered by user and resets data to next state for updating the UI */
+    /** Raises an event when redo is entered by user and resets data to next state to update the UI */
     private void indicateRedoAction() throws NothingToRedoException {
         EntryBookToRedoEvent redoEvent;
         raise(redoEvent = new EntryBookToRedoEvent(entryBook, ""));
@@ -599,16 +608,6 @@ public class ModelManager extends ComponentManager implements Model {
         } else {
             throw new NothingToRedoException("");
         }
-    }
-
-    @Override
-    public void undoPreviousAction() throws NothingToUndoException {
-        indicateUndoAction();
-    }
-
-    @Override
-    public void redoPreviousAction() throws NothingToRedoException {
-        indicateRedoAction();
     }
 
     /** Raises an event when new file path is entered by user */
@@ -629,6 +628,7 @@ public class ModelManager extends ComponentManager implements Model {
             throw new IllegalValueException("load unsuccessful");
         }
     }
+
     // @@author
 
 }

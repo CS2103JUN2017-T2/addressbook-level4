@@ -4,24 +4,23 @@ import java.io.File;
 
 // @@author A0132788U
 /**
- * Event that deletes all the snapshot files created from previous program run on startup.
+ * Event that deletes all the snapshot files created from previous program run during startup.
  */
 public class DeleteAllSnapshotsOnStartup {
 
     private static final String FILE_PATH = "data/snapshots/entrybook";
     private String newFilePath;
-    private boolean ifExists;
+    private boolean shouldExist;
     private int index = 1;
-    private File toDelete;
 
     public void deleteAllSnapshotFiles() {
         newFilePath = FILE_PATH + index + ".xml";
-        toDelete = new File(newFilePath);
-        ifExists = toDelete.exists();
-        while (ifExists == true) {
+        File toDelete = new File(newFilePath);
+        shouldExist = toDelete.exists();
+        while (shouldExist) {
             newFilePath = FILE_PATH + index + ".xml";
             toDelete = new File(newFilePath);
-            ifExists = toDelete.exists();
+            shouldExist = toDelete.exists();
             toDelete.delete();
             index++;
         }

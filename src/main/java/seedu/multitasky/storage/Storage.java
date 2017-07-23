@@ -7,6 +7,8 @@ import seedu.multitasky.commons.events.model.EntryBookChangedEvent;
 import seedu.multitasky.commons.events.storage.DataSavingExceptionEvent;
 import seedu.multitasky.commons.events.storage.EntryBookToRedoEvent;
 import seedu.multitasky.commons.events.storage.EntryBookToUndoEvent;
+import seedu.multitasky.commons.events.storage.FilePathChangedEvent;
+import seedu.multitasky.commons.events.storage.LoadDataFromFilePathEvent;
 import seedu.multitasky.commons.exceptions.DataConversionException;
 import seedu.multitasky.model.ReadOnlyEntryBook;
 import seedu.multitasky.model.UserPrefs;
@@ -37,6 +39,7 @@ public interface Storage extends EntryBookStorage, UserPrefsStorage {
      */
     void handleEntryBookChangedEvent(EntryBookChangedEvent e);
 
+    // @@author A0132788U
     /**
      * Changes the current version of the Entry Book to the previous one on the hard disk.
      * Raises {@link DataSavingExceptionEvent} if there was an error during saving.
@@ -52,4 +55,18 @@ public interface Storage extends EntryBookStorage, UserPrefsStorage {
      * @throws Exception
      */
     void handleEntryBookToRedoEvent(EntryBookToRedoEvent e) throws Exception;
+
+    /**
+     * Changes file path in Preferences.json to save data in a new location.
+     *
+     * @throws IOException
+     */
+    void handleFilePathChangedEvent(FilePathChangedEvent event) throws IOException;
+
+    /**
+     * Loads data from a given filepath.
+     *
+     * @throws Exception
+     */
+    void handleLoadDataFromFilePathEvent(LoadDataFromFilePathEvent event) throws Exception;
 }
