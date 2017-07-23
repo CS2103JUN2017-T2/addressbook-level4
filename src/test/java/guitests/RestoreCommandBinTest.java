@@ -3,18 +3,15 @@ package guitests;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.util.Calendar;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import seedu.multitasky.commons.core.Messages;
 import seedu.multitasky.commons.core.index.Index;
 import seedu.multitasky.commons.exceptions.IllegalValueException;
-import seedu.multitasky.logic.commands.RestoreByFindCommand;
+import seedu.multitasky.logic.commands.DeleteCommand;
 import seedu.multitasky.logic.commands.RestoreCommand;
 import seedu.multitasky.logic.parser.CliSyntax;
-import seedu.multitasky.model.entry.Deadline;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.util.EntryBuilder;
@@ -22,17 +19,14 @@ import seedu.multitasky.testutil.CommandUtil;
 import seedu.multitasky.testutil.SampleEntries;
 import seedu.multitasky.testutil.TestUtil;
 
-// @@author A0126623L-reused
+// @@author A0126623L
 public class RestoreCommandBinTest extends EntryBookGuiTest {
 
-    // @@author A0126623L
     @Before
     public void setUp() {
         commandBox.runCommand(CommandUtil.getListBinCommand());
     }
-    // @@author
 
-    // @@author A0126623L-reused
     /**********************
      * Restoring by Index *
      *********************/
@@ -135,37 +129,112 @@ public class RestoreCommandBinTest extends EntryBookGuiTest {
      ********************************/
 
     @Test
-    public void restore_duplicateFloatingTask_throwDuplicateEntryException() {
-        Entry entryToRestore = SampleEntries.BAKE;
-        Entry duplicatedActiveEntry = EntryBuilder.build(entryToRestore);
+    public void restoreByKeyword_duplicateFloatingTask_throwDuplicateEntryException() {
+        Entry deletedEntryToRestore = SampleEntries.BAKE;
+        Entry duplicatedActiveEntry = EntryBuilder.build(deletedEntryToRestore);
         commandBox.runCommand(CommandUtil.getAddFloatingTaskCommand(duplicatedActiveEntry));
         commandBox.runCommand(RestoreCommand.COMMAND_WORD + " baking");
         assertResultMessage(DuplicateEntryException.MESSAGE);
     }
 
     @Test
-    public void restore_overdueDeadline_overdueEntryAlertDisplayed() {
+    public void restoreByKeyword_overdueDeadline_overdueEntryAlertDisplayed() {
         try {
-            Entry overdueDeadline = createOverdueDeadline();
+            Entry overdueDeadline = SampleEntries.createOverdueDeadline();
 
             commandBox.runCommand(CommandUtil.getAddDeadlineCommand(overdueDeadline));
             commandBox.runCommand(CommandUtil.getDeleteByFullNameCommand(overdueDeadline));
+            assertResultMessage(String.format(DeleteCommand.MESSAGE_SUCCESS, overdueDeadline));
             commandBox.runCommand(CommandUtil.getRestoreByFullNameCommand(overdueDeadline));
-            assertResultMessage(String.format(RestoreByFindCommand.MESSAGE_SUCCESS_WITH_OVERDUE_ALERT,
+            assertResultMessage(String.format(RestoreCommand.MESSAGE_SUCCESS_WITH_OVERDUE_ALERT,
                                               overdueDeadline.getName()));
         } catch (IllegalValueException e) {
             fail("IllegalValueException should not be thrown here, or something is wrong.");
         }
     }
 
-    private Entry createOverdueDeadline() throws IllegalValueException {
-        Entry overdueDeadline;
-        overdueDeadline = EntryBuilder.build("Write tests", Calendar.getInstance(), "MultiTasky");
-        assertTrue(overdueDeadline instanceof Deadline);
-        int randomOverdueYear = 2000;
-        overdueDeadline.getEndDateAndTime().set(Calendar.YEAR, randomOverdueYear);
-        assertTrue(((Deadline) overdueDeadline).isOverdue());
-        return overdueDeadline;
+    @Test
+    public void restoreByIndex_duplicateFloatingTask_throwDuplicateEntryException() {
+        Entry deletedEntryToRestore = SampleEntries.BAKE;
+        Entry duplicatedActiveEntry = EntryBuilder.build(deletedEntryToRestore);
+        commandBox.runCommand(CommandUtil.getClearBinCommand());
+        commandBox.runCommand(CommandUtil.getAddFloatingTaskCommand(duplicatedActiveEntry));
+        commandBox.runCommand(CommandUtil.getDeleteByFullNameCommand(duplicatedActiveEntry));
+        commandBox.runCommand(CommandUtil.getAddFloatingTaskCommand(duplicatedActiveEntry));
+        commandBox.runCommand(RestoreCommand.COMMAND_WORD + " baking");
+        assertResultMessage(DuplicateEntryException.MESSAGE);
+    }
+
+    @Test
+    public void restoreByIndex_overdueDeadline_overdueEntryAlertDisplayed() {
+        try {
+            Entry overdueDeadline = SampleEntries.createOverdueDeadline();
+
+            commandBox.runCommand(CommandUtil.getClearBinCommand());
+            commandBox.runCommand(CommandUtil.getAddDeadlineCommand(overdueDeadline));
+            commandBox.runCommand(CommandUtil.getDeleteByFullNameCommand(overdueDeadline));
+            commandBox.runCommand(CommandUtil.getRestoreDeadlineByIndexCommand(Index.fromOneBased(1)));
+            assertResultMessage(String.format(RestoreCommand.MESSAGE_SUCCESS_WITH_OVERDUE_ALERT,
+                                              overdueDeadline.getName()));
+        } catch (IllegalValueException e) {
+            fail("IllegalValueException should not be thrown here, or something is wrong.");
+        }
+    }
+
+    @Test
+    public void restoreByKeyword_overlappingEvent_successWithAppropriateAlert() {
+        Entry overlappingEntryToRestore = SampleEntries.GYM;
+        Entry overlappingEventInActiveList = SampleEntries.createOverlappingEvent(overlappingEntryToRestore);
+        commandBox.runCommand(CommandUtil.getAddEventCommand(overlappingEventInActiveList));
+        commandBox.runCommand(CommandUtil.getRestoreByFullNameCommand(overlappingEntryToRestore));
+        assertResultMessage(String.format(RestoreCommand.MESSAGE_SUCCESS_WITH_OVERLAP_ALERT,
+                                          overlappingEntryToRestore.getName().toString()));
+    }
+
+    @Test
+    public void restoreByIndex_overlappingEvent_successWithAppropriateAlert() {
+        // Set up deleted entry that will result in overlap alert when restored
+        commandBox.runCommand(CommandUtil.getClearBinCommand());
+        Entry overlappingEntryToRestore = SampleEntries.GYM;
+        commandBox.runCommand(CommandUtil.getAddEventCommand(overlappingEntryToRestore));
+        commandBox.runCommand(CommandUtil.getDeleteByFullNameCommand(overlappingEntryToRestore));
+
+        // Create entry in active list that will overlap with overlappingEntryToRestore
+        Entry overlappingEventInActiveList = SampleEntries.createOverlappingEvent(overlappingEntryToRestore);
+        commandBox.runCommand(CommandUtil.getAddEventCommand(overlappingEventInActiveList));
+
+        commandBox.runCommand(CommandUtil.getRestoreEventByIndexCommand(Index.fromOneBased(1)));
+        assertResultMessage(String.format(RestoreCommand.MESSAGE_SUCCESS_WITH_OVERLAP_ALERT,
+                                          overlappingEntryToRestore.getName().toString()));
+    }
+
+    @Test
+    public void restoreByKeyword_overlappingAndOverdueEvent_successWithAppropriateAlert()
+            throws IllegalValueException {
+        Entry overdueEvent = SampleEntries.createOverdueEvent();
+        Entry overlappingAndOverdueEvent = SampleEntries.createOverlappingEvent(overdueEvent);
+
+        commandBox.runCommand(CommandUtil.getAddEventCommand(overdueEvent));
+        commandBox.runCommand(CommandUtil.getAddEventCommand(overlappingAndOverdueEvent));
+        commandBox.runCommand(CommandUtil.getDeleteByFullNameCommand(overlappingAndOverdueEvent));
+        commandBox.runCommand(CommandUtil.getRestoreByFullNameCommand(overlappingAndOverdueEvent));
+        assertResultMessage(String.format(RestoreCommand.MESSAGE_SUCCESS_WITH_OVERLAP_AND_OVERDUE_ALERT,
+                                          overlappingAndOverdueEvent.getName().toString()));
+    }
+
+    @Test
+    public void restoreByIndex_overlappingAndOverdueEvent_successWithAppropriateAlert()
+            throws IllegalValueException {
+        Entry overdueEvent = SampleEntries.createOverdueEvent();
+        Entry overlappingAndOverdueEvent = SampleEntries.createOverlappingEvent(overdueEvent);
+
+        commandBox.runCommand(CommandUtil.getClearBinCommand());
+        commandBox.runCommand(CommandUtil.getAddEventCommand(overdueEvent));
+        commandBox.runCommand(CommandUtil.getAddEventCommand(overlappingAndOverdueEvent));
+        commandBox.runCommand(CommandUtil.getDeleteByFullNameCommand(overlappingAndOverdueEvent));
+        commandBox.runCommand(CommandUtil.getRestoreEventByIndexCommand(Index.fromOneBased(1)));
+        assertResultMessage(String.format(RestoreCommand.MESSAGE_SUCCESS_WITH_OVERLAP_AND_OVERDUE_ALERT,
+                                          overlappingAndOverdueEvent.getName().toString()));
     }
 
     // @@author A0126623L-reused

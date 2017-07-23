@@ -9,6 +9,7 @@ import java.util.Objects;
 import org.junit.Before;
 import org.junit.Test;
 
+import seedu.multitasky.commons.exceptions.IllegalValueException;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 import seedu.multitasky.model.util.EntryBuilder;
@@ -96,7 +97,7 @@ public class FloatingTaskListTest {
      * Dependent on the correct functioning of the contains method.
      */
     @Test
-    public void addAndContainsTest() {
+    public void add_sampleFloatingTask_success() {
         FloatingTaskList floatingTaskListUnderTest = new FloatingTaskList();
 
         try {
@@ -114,7 +115,7 @@ public class FloatingTaskListTest {
 
     // @@author A0126623L
     @Test(expected = DuplicateEntryException.class)
-    public void addTest_duplicateFloatingTask_throwDuplicateEntryException() throws DuplicateEntryException {
+    public void add_duplicateFloatingTask_throwDuplicateEntryException() throws DuplicateEntryException {
         FloatingTaskList floatingTaskListUnderTest = FloatingTaskListTest.copyFloatingTaskList(floatingTaskList1);
         FloatingTask copiedFloatingTask = (FloatingTask) EntryBuilder.build(floatingTaskListUnderTest.asObservableList()
                                                                                                      .get(0));
@@ -123,7 +124,7 @@ public class FloatingTaskListTest {
 
     // @@author A0126623L
     @Test
-    public void equalsTest() {
+    public void equals_variousSampleFloatingTasks_success() {
         FloatingTaskList dummyFloatingTaskList = FloatingTaskListTest.copyFloatingTaskList(floatingTaskList2);
         assertTrue(floatingTaskList1.equals(floatingTaskList2));
         assertTrue(floatingTaskList1.equals(dummyFloatingTaskList));
@@ -136,7 +137,7 @@ public class FloatingTaskListTest {
 
     // @@author A0126623L
     @Test
-    public void removeTest() throws EntryNotFoundException {
+    public void remove_removeSampleFloatingTask_success() throws EntryNotFoundException {
         FloatingTaskList floatingTaskListToTest = FloatingTaskListTest.copyFloatingTaskList(floatingTaskList1);
 
         floatingTaskListToTest.remove(sampleFloatingTaskArray[0]);
@@ -146,7 +147,7 @@ public class FloatingTaskListTest {
 
     // @@author A0126623L
     @Test(expected = Exception.class)
-    public void removeTest_returnEntryNotFoundException() throws EntryNotFoundException {
+    public void remove_nonExistentEntry_returnEntryNotFoundException() throws EntryNotFoundException {
         FloatingTaskList floatingTaskListUnderTest = FloatingTaskListTest.copyFloatingTaskList(floatingTaskList1);
 
         floatingTaskListUnderTest.remove(sampleFloatingTaskArray[3]);
@@ -154,7 +155,7 @@ public class FloatingTaskListTest {
 
     // @@author A0126623L
     @Test
-    public void updateEntryAndEqualsTest() throws EntryNotFoundException {
+    public void update_updateSampleFloatingTask_success() throws EntryNotFoundException {
         FloatingTaskList floatingTaskListToTest = FloatingTaskListTest.copyFloatingTaskList(floatingTaskList1);
         assertTrue(floatingTaskListToTest.equals(floatingTaskList1));
         assertFalse(floatingTaskListToTest.contains(sampleFloatingTaskArray[3]));
@@ -170,9 +171,6 @@ public class FloatingTaskListTest {
     }
 
     // @@author A0126623L
-    /**
-     * Note: This test method relies on the correct functioning of the equals() method.
-     */
     @Test
     public void setEntriesTest_newFloatingTaskList_equalsMethodReturnsFalse() {
         FloatingTaskList floatingTaskListToTest = FloatingTaskListTest.copyFloatingTaskList(floatingTaskList3);
@@ -185,17 +183,21 @@ public class FloatingTaskListTest {
     // @@author
 
     // @@author A0126623L
-    @Test
-    public void shouldAllowDuplicateNonActiveFloatingTask() {
-        FloatingTaskList floatingTaskListUnderTest = this.copyFloatingTaskList(floatingTaskList1);
+    @Test(expected = DuplicateEntryException.class)
+    public void duplicatePermission_activeDuplicateFloatingTask_throwsDuplicateEntryException()
+            throws DuplicateEntryException {
+        FloatingTaskList floatingTaskListUnderTest = FloatingTaskListTest.copyFloatingTaskList(floatingTaskList1);
         assertTrue(floatingTaskListUnderTest.contains(sampleFloatingTaskArray[0]));
 
-        try {
-            floatingTaskListUnderTest.add(sampleFloatingTaskArray[0]);
-            fail("Should not reach this step as a duplicate active floating task is added.");
-        } catch (DuplicateEntryException e) {
-            // Do nothing. DuplicateEntryException is as expected.
-        }
+        floatingTaskListUnderTest.add(sampleFloatingTaskArray[0]);
+        fail("Should not reach this step as a duplicate active floating task is added.");
+
+    }
+
+    // @@author A0126623L
+    @Test
+    public void duplicatePermission_nonActiveDuplicateFloatingTask_success() {
+        FloatingTaskList floatingTaskListUnderTest = FloatingTaskListTest.copyFloatingTaskList(floatingTaskList1);
 
         FloatingTask entryToUpdate = (FloatingTask) EntryBuilder.build(sampleFloatingTaskArray[0]);
         FloatingTask editedEntry = (FloatingTask) EntryBuilder.build(sampleFloatingTaskArray[0]);
@@ -215,5 +217,16 @@ public class FloatingTaskListTest {
         }
         assertTrue(floatingTaskListUnderTest.contains(sampleFloatingTaskArray[0]));
     }
-    // @@author
+
+    @Test(expected = DuplicateEntryException.class)
+    public void duplicatePermission_sameNameAndDifferent_throwDuplicateEntryException()
+            throws IllegalValueException, DuplicateEntryException {
+        FloatingTaskList floatingTaskListUnderTest = FloatingTaskListTest.copyFloatingTaskList(floatingTaskList1);
+        assertTrue(floatingTaskListUnderTest.contains(sampleFloatingTaskArray[0]));
+
+        Entry floatingTaskWithDifferentTag = EntryBuilder.build(sampleFloatingTaskArray[0].getName());
+        assertTrue(floatingTaskWithDifferentTag instanceof FloatingTask);
+
+        floatingTaskListUnderTest.add(floatingTaskWithDifferentTag);
+    }
 }
