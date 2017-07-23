@@ -236,7 +236,7 @@ Classes used by multiple components are in the `seedu.multitasky.commons` packag
 //<!-- @@author A0125586X -->
 ==== PowerMatch
 
-image::PowerMatchClassDiagram.jpg[width="800"]
+image::PowerMatchClassDiagram.png[width="800"]
 _Figure 2.6.1 : Structure of the PowerMatch Feature_
 
 PowerMatch is the algorithm that powers the command autocomplete as well as PowerSearch. When checking if a given input matches a potential match, it can perform the following checks:
