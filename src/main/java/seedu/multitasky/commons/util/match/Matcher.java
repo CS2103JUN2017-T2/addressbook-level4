@@ -2,9 +2,9 @@ package seedu.multitasky.commons.util.match;
 
 // @@author A0125586X
 /**
- * Interface for objects that manage different levels of matching.
+ * Interface for objects that perform different levels of matching.
  */
-public interface MatchLevelManager {
+public interface Matcher {
 
     public String match(final int level, final String input, final String... potentialMatches);
 
