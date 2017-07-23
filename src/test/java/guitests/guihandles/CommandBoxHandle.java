@@ -34,7 +34,7 @@ public class CommandBoxHandle extends GuiHandle {
 
     /**
      * Enters the given command in the Command Box and presses enter.
-     * @return true if the command succeeded, false otherwise.
+     * @return if the last command was successful
      */
     public boolean runCommand(String command) {
         enterCommand(command);

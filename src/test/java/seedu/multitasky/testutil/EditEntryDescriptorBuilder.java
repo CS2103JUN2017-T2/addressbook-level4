@@ -1,6 +1,7 @@
 package seedu.multitasky.testutil;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Optional;
 
 import seedu.multitasky.commons.exceptions.IllegalValueException;
@@ -47,12 +48,21 @@ public class EditEntryDescriptorBuilder {
         return this;
     }
 
+    public EditEntryDescriptorBuilder withStartDate(Calendar startDate) throws IllegalValueException {
+        descriptor.setStartDate(startDate);
+        return this;
+    }
+
     public EditEntryDescriptorBuilder withEndDate(String endDate) throws IllegalValueException {
         ParserUtil.parseDate(Optional.of(endDate)).ifPresent(descriptor::setEndDate);
         return this;
     }
 
-    // @@author A0126623L
+    public EditEntryDescriptorBuilder withEndDate(Calendar endDate) throws IllegalValueException {
+        descriptor.setEndDate(endDate);
+        return this;
+    }
+
     public EditEntryDescriptorBuilder withName(String name) throws IllegalValueException {
         ParserUtil.parseName(Optional.of(name)).ifPresent(descriptor::setName);
         return this;
@@ -65,6 +75,16 @@ public class EditEntryDescriptorBuilder {
 
     public EditEntryDescriptorBuilder withAddTags(String... tags) throws IllegalValueException {
         descriptor.setAddTags(ParserUtil.parseTags(Arrays.asList(tags)));
+        return this;
+    }
+
+    public EditEntryDescriptorBuilder withResetStartDate() throws IllegalValueException {
+        descriptor.setResetStartDate(true);
+        return this;
+    }
+
+    public EditEntryDescriptorBuilder withResetEndDate() throws IllegalValueException {
+        descriptor.setResetEndDate(true);
         return this;
     }
 

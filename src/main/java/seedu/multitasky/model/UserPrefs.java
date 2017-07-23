@@ -15,11 +15,12 @@ public class UserPrefs implements LogicUserPrefs, StorageUserPrefs {
     private String entryBookSnapshotPath = "data/snapshots/entrybook";
     private GuiSettings guiSettings;
     // @@author A0140633R
-    private final int defaultDurationHour = 1;
+    private int defaultDurationHour;
     // @@author
 
     public UserPrefs() {
         this.setGuiSettings(500, 500, 0, 0);
+        this.setDurationHour();
     }
 
     public GuiSettings getGuiSettings() {
@@ -32,6 +33,15 @@ public class UserPrefs implements LogicUserPrefs, StorageUserPrefs {
 
     public void setGuiSettings(double width, double height, int x, int y) {
         guiSettings = new GuiSettings(width, height, x, y);
+    }
+  
+    @Override
+    public int getDurationHour() {
+        return defaultDurationHour;
+    }
+
+    private void setDurationHour() {
+        this.defaultDurationHour = defaultDurationHour == 0 ? 1 : defaultDurationHour;
     }
 
     public String getEntryBookName() {
@@ -70,7 +80,8 @@ public class UserPrefs implements LogicUserPrefs, StorageUserPrefs {
         sb.append("\nEntryBook name : " + entryBookName);
         return sb.toString();
     }
-    // @@author A0132788U
+      // @@author A0132788U
+
     // ================ Storage UserPrefs methods ==============================
 
     @Override

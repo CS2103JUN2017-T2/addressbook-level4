@@ -6,7 +6,6 @@ import java.util.Set;
 
 import seedu.multitasky.commons.core.UnmodifiableObservableList;
 import seedu.multitasky.commons.exceptions.IllegalValueException;
-import seedu.multitasky.commons.util.PowerMatch;
 import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
@@ -135,21 +134,21 @@ public interface Model {
      * date range and state using the specified search type.
      */
     void updateFilteredEventList(Set<String> keywords, Calendar startDate, Calendar endDate,
-                                 Entry.State state, Search search, PowerMatch.Level level);
+                                 Entry.State state, Search search, int level);
 
     /**
      * Updates the filter of the filtered deadline list to filter by the given keywords,
      * date range and state using the specified search type.
      */
     void updateFilteredDeadlineList(Set<String> keywords, Calendar startDate, Calendar endDate,
-                                    Entry.State state, Search search, PowerMatch.Level level);
+                                    Entry.State state, Search search, int level);
 
     /**
      * Updates the filter of the filtered floating task list to filter by the given keywords,
      * date range and state using the specified search type.
      */
     void updateFilteredFloatingTaskList(Set<String> keywords, Calendar startDate, Calendar endDate,
-                                        Entry.State state, Search search, PowerMatch.Level level);
+                                        Entry.State state, Search search, int level);
 
     /** Updates the sorting comparators used. */
     void updateSortingComparators(Comparator<ReadOnlyEntry> eventComparator,

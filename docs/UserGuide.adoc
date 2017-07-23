@@ -345,7 +345,7 @@ Shortcuts that execute commands:
 
 * `F1` executes the `help` command
 * `ctrl` + `z` executes `undo`
-* `ctrl` + `r` executes `redo`
+* `ctrl` + `y` executes `redo`
 
 Shortcuts that bring up commands:
 
@@ -353,7 +353,8 @@ Shortcuts that bring up commands:
 * `F3` types `find` into the command box
 * `F4` types `exit` into the command box
 * `F5` types `list` into the command box
-* `ctrl` + `s` types `set` into the command box
+* `ctrl` + `s` types `save` into the command box
+* `ctrl` + `o` types `open` into the command box
 
 Other shortcuts:
 * `F6` brings the command box into focus for typing

@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import javafx.scene.input.KeyCode;
 import seedu.multitasky.commons.core.index.Index;
+import seedu.multitasky.logic.commands.ClearCommand;
 import seedu.multitasky.logic.commands.ListCommand;
 import seedu.multitasky.logic.parser.CliSyntax;
 import seedu.multitasky.model.entry.Entry;
@@ -29,6 +30,7 @@ public class ListCommandTest extends EntryBookGuiTest {
 
     @Test
     public void list_archive_empty() {
+        commandBox.runCommand(ClearCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_ARCHIVE);
         commandBox.runCommand(ListCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_ARCHIVE);
         assertTrue(eventListPanel.isListMatching(new Entry[0]));
         assertTrue(deadlineListPanel.isListMatching(new Entry[0]));
@@ -37,6 +39,7 @@ public class ListCommandTest extends EntryBookGuiTest {
 
     @Test
     public void list_bin_empty() {
+        commandBox.runCommand(ClearCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_BIN);
         commandBox.runCommand(ListCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_BIN);
         assertTrue(eventListPanel.isListMatching(new Entry[0]));
         assertTrue(deadlineListPanel.isListMatching(new Entry[0]));
@@ -68,6 +71,7 @@ public class ListCommandTest extends EntryBookGuiTest {
         Index index = SampleEntries.INDEX_FIRST_ENTRY;
         Entry[] currentList = SampleEntries.getSampleActiveEvents();
         Entry entryToDelete = currentList[index.getZeroBased()];
+        commandBox.runCommand(ClearCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_BIN);
         commandBox.runCommand(CommandUtil.getDeleteEventByIndexCommand(index));
         commandBox.runCommand(ListCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_BIN);
         assertTrue(eventListPanel.isListMatching(entryToDelete));
@@ -78,6 +82,7 @@ public class ListCommandTest extends EntryBookGuiTest {
         Index index = SampleEntries.INDEX_FIRST_ENTRY;
         Entry[] currentList = SampleEntries.getSampleActiveDeadlines();
         Entry entryToDelete = currentList[index.getZeroBased()];
+        commandBox.runCommand(ClearCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_BIN);
         commandBox.runCommand(CommandUtil.getDeleteDeadlineByIndexCommand(index));
         commandBox.runCommand(ListCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_BIN);
         assertTrue(deadlineListPanel.isListMatching(entryToDelete));
@@ -88,6 +93,7 @@ public class ListCommandTest extends EntryBookGuiTest {
         Index index = SampleEntries.INDEX_FIRST_ENTRY;
         Entry[] currentList = SampleEntries.getSampleActiveFloatingTasks();
         Entry entryToDelete = currentList[index.getZeroBased()];
+        commandBox.runCommand(ClearCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_BIN);
         commandBox.runCommand(CommandUtil.getDeleteFloatingTaskByIndexCommand(index));
         commandBox.runCommand(ListCommand.COMMAND_WORD + " " + CliSyntax.PREFIX_BIN);
         assertTrue(floatingTaskListPanel.isListMatching(entryToDelete));
@@ -121,7 +127,6 @@ public class ListCommandTest extends EntryBookGuiTest {
         commandBox.pressTabKey();
         assertCommandBox("list upcoming from ");
     }
-
 
     /*******************
      * Utility methods *

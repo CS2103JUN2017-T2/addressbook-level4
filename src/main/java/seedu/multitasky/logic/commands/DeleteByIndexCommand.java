@@ -41,14 +41,9 @@ public class DeleteByIndexCommand extends DeleteCommand {
         entryToDelete = listToDeleteFrom.get(targetIndex.getZeroBased());
         try {
             model.changeEntryState(entryToDelete, Entry.State.DELETED);
-        } catch (EntryNotFoundException enfe) {
-            throw new AssertionError("The target entry cannot be missing");
-        } catch (OverlappingEventException oee) {
-            throw new AssertionError("Overlap should not happen for deletion.");
-        } catch (EntryOverdueException e) {
-            throw new AssertionError("Overdue should not apply to deletion.");
-        } catch (OverlappingAndOverdueEventException e) {
-            throw new AssertionError("Overlap and overdue should not apply to deletion.");
+        } catch (EntryNotFoundException | OverlappingEventException
+                | EntryOverdueException | OverlappingAndOverdueEventException e) {
+            throw new AssertionError("These errors should not be occuring in delete.");
         }
         // refresh list view after updating.
         model.updateAllFilteredLists(history.getPrevKeywords(), history.getPrevStartDate(),
