@@ -1,5 +1,7 @@
 package seedu.multitasky.ui.util;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.Map;
 
 import org.junit.Before;
@@ -48,6 +50,12 @@ public class CommandKeywordAutocompleteTest {
         assertAutocomplete(commandKeywordAutoComplete, "o", CliSyntax.PREFIX_ON);
         assertAutocomplete(commandKeywordAutoComplete, "to", CliSyntax.PREFIX_TO);
         assertAutocomplete(commandKeywordAutoComplete, "g", CliSyntax.PREFIX_TAG);
+    }
+
+    @Test
+    public void commandKeywordAutocomplete_getPossibilities_null() {
+        commandKeywordAutoComplete = new CommandKeywordAutocomplete(commandKeywords.get(AddCommand.COMMAND_WORD));
+        assertTrue(commandKeywordAutoComplete.getPossibilities("") == null);
     }
 
     private void assertAutocomplete(TextAutocomplete textAutoComplete, String input, Prefix expected) {

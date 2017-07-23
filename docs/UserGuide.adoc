@@ -276,7 +276,7 @@ Format: `open ./filepath.xml`
 
 ****
 * Filepath should use  `\` as a delimiter if MultiTasky is used on a system with Windows OS.
-* Filepath will be saved in the same directory if it starts with `./`.
+* Filepath will be opened from the same directory if it starts with `./`.
 * Full path of the file should be specified.
 * File should exist.
 * Filepath should contain XML data which is readable by MultiTasky.

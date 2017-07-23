@@ -29,7 +29,7 @@ import seedu.multitasky.testutil.SampleEntries;
 
 // @@author A0132788U
 /**
- * Unit tests for StorageManager operations
+ * Tests for StorageManager operations
  */
 public class StorageManagerTest {
 

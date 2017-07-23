@@ -111,6 +111,14 @@ public class CommandBoxTest extends EntryBookGuiTest {
         assertCommandBox(COMMAND_THAT_CANNOT_AUTOCOMPLETE);
     }
 
+    @Test
+    public void commandBox_doubleTab_showPossibilities() {
+        commandBox.enterCommand("e");
+        commandBox.pressTabKey();
+        commandBox.pressTabKey();
+        assertResultMessage("e: clear complete delete edit exit help open redo restore save ");
+    }
+
     /*********************
      * Command box focus *
      ********************/
