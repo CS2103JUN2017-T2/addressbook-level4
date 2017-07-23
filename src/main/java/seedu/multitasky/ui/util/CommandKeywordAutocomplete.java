@@ -3,6 +3,7 @@ package seedu.multitasky.ui.util;
 import java.util.Arrays;
 import java.util.List;
 
+import seedu.multitasky.commons.util.match.Matcher;
 import seedu.multitasky.commons.util.match.PowerMatch;
 
 // @@author A0125586X
@@ -15,6 +16,8 @@ public class CommandKeywordAutocomplete implements TextAutocomplete {
     private List<String> commandKeywords;
     private int numCommandKeywords;
 
+    private Matcher matcher = new PowerMatch();
+
     public CommandKeywordAutocomplete(String[] commandKeywords) {
         if (commandKeywords == null) {
             throw new AssertionError("commandKeywords cannot be null");
@@ -26,7 +29,7 @@ public class CommandKeywordAutocomplete implements TextAutocomplete {
     public String autocomplete(String input) {
         String match = null;
         for (int level = PowerMatch.MIN_LEVEL; level <= PowerMatch.MAX_LEVEL; ++level) {
-            match = new PowerMatch().match(level, input, commandKeywords.toArray(new String[numCommandKeywords]));
+            match = matcher.match(level, input, commandKeywords.toArray(new String[numCommandKeywords]));
             if (match != null) {
                 return match;
             }
