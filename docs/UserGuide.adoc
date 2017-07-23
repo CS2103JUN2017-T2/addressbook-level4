@@ -342,7 +342,7 @@ Here are some other examples you can try:
 ** `lisst` autocorrects to `list`.
 ** `dete` autocorrects to `delete`.
 
-== Keyword PowerSearch
+=== Keyword PowerSearch
 PowerSearch is enabled for all commands that search for entries by keyword, like `find`, `edit`, `complete` and so on:
 
 * PowerSearch is used automatically when regular search is unable to find any results.
