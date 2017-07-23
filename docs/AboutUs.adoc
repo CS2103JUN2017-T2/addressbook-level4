@@ -49,9 +49,9 @@ image::kevinlamkb.png[width="150", align="left"]
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#adding-an-entry-code-add-code[Adding entries]
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#editing-an-entry-code-edit-code[Editing entries]
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#deleting-an-entry-code-delete-code[Deleting entries]
-* Code written: https://github.com/CS2103JUN2017-T2/main/blob/master/collated/main/A0140633R.md[functional code], https://github.com/CS2103JUN2017-T2/main/blob/master/collated/test/A0140633R.md[test code] and https://github.com/CS2103JUN2017-T2/main/blob/master/collated/docs/A0140633R.md[documentation]
+* Code written: https://github.com/CS2103JUN2017-T2/main/blob/master/collated/main/A0140633R.md[functional code], https://github.com/CS2103JUN2017-T2/main/blob/master/collated/test/A0140633R.md[test code], https://github.com/CS2103JUN2017-T2/main/blob/master/collated/docs/A0140633R.md[documentation] and https://github.com/CS2103JUN2017-T2/main/blob/master/unused/DateUtil.java[unused]
 * Other major contributions:
-** Implement support for natural language parsing.
+** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#smart-parsing[Implement support for natural language parsing.]
 ** Implement workaround for FilteredList refresh issues.
 
 '''
