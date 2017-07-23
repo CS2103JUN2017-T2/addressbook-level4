@@ -139,14 +139,13 @@ public class CommandBox extends UiPart<Region> {
                 if (event.getCode() == KeyCode.TAB) {
                     event.consume();
                     if (isDoubleTabPress()) {
-                        String possibilities = autocomplete.getPossibilities(commandTextField.getText().trim());
+                        String possibilities = autocomplete.getPossibilities(getText());
                         if (possibilities != null) {
                             raise(new NewResultAvailableEvent(possibilities));
                         }
                     } else {
-                        setText(autocomplete.autocomplete(commandTextField.getText().trim()));
+                        setText(autocomplete.autocomplete(getText()));
                     }
-                    setText(autocomplete.autocomplete(getText()));
                 }
             }
         });
