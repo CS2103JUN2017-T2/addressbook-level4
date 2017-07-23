@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<entrybook>
+    <events>
+        <name>Dinner with family</name>
+        <startDateAndTime>25/12/17 19:00</startDateAndTime>
+        <endDateAndTime>25/12/17 21:00</endDateAndTime>
+        <state>ACTIVE</state>
+        <tagged>cook</tagged>
+    </events>
+    <floatingTasks>
+        <name>Learn to cook</name>
+        <state>ACTIVE</state>
+        <tagged>goals</tagged>
+    </floatingTasks>
+    <floatingTasks>
+        <name>Learn programming</name>
+        <state>ACTIVE</state>
+        <tagged>computer</tagged>
+        <tagged>lessons</tagged>
+    </floatingTasks>
+    <deadlines>
+        <name>Submit tax forms</name>
+        <endDateAndTime>01/07/17 00:00</endDateAndTime>
+        <state>ACTIVE</state>
+        <tagged>money</tagged>
+        <tagged>pay</tagged>
+    </deadlines>
+    <deadlines>
+        <name>CS2103 finals</name>
+        <endDateAndTime>28/07/17 10:00</endDateAndTime>
+        <state>ACTIVE</state>
+        <tagged>exam</tagged>
+        <tagged>study</tagged>
+        <tagged>school</tagged>
+    </deadlines>
+    <tags>cook</tags>
+    <tags>money</tags>
+    <tags>pay</tags>
+    <tags>exam</tags>
+    <tags>study</tags>
+    <tags>school</tags>
+    <tags>goals</tags>
+    <tags>computer</tags>
+    <tags>lessons</tags>
+</entrybook>
