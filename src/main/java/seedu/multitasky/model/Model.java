@@ -85,9 +85,6 @@ public interface Model {
     /** Returns the filtered floating task list as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
     UnmodifiableObservableList<ReadOnlyEntry> getFilteredFloatingTaskList();
 
-    /** Returns the active entry list as an {@code UnmodifiableObservableList<ReadOnlyEntry>} */
-    UnmodifiableObservableList<ReadOnlyEntry> getActiveList();
-
     /** Updates the filter of all filtered lists to show all active entries */
     public void updateAllFilteredListToShowAllActiveEntries();
 
@@ -105,20 +102,6 @@ public interface Model {
      */
     void updateAllFilteredLists(Set<String> keywords, Calendar startDate, Calendar endDate,
                                 Entry.State state, Entry.State state2, Search... searches);
-
-    /**
-     * Updates the filter of the filtered event list to filter by the given keywords,
-     * date range and state using the specified search type.
-     */
-    void updateFilteredEventList(Set<String> keywords, Calendar startDate, Calendar endDate,
-                                 Entry.State state, Search search, int level);
-
-    /**
-     * Updates the filter of the filtered deadline list to filter by the given keywords,
-     * date range and state using the specified search type.
-     */
-    void updateFilteredDeadlineList(Set<String> keywords, Calendar startDate, Calendar endDate,
-                                    Entry.State state, Search search, int level);
 
     /**
      * Updates the filter of the filtered floating task list to filter by the given keywords,

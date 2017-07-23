@@ -191,11 +191,6 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public UnmodifiableObservableList<ReadOnlyEntry> getActiveList() {
-        return new UnmodifiableObservableList<>(entryBook.getAllEntries());
-    }
-
-    @Override
     public void updateAllFilteredListToShowAllActiveEntries() {
         this.updateAllFilteredLists(new HashSet<>(), null, null, Entry.State.ACTIVE, Search.AND);
     }
@@ -250,28 +245,9 @@ public class ModelManager extends ComponentManager implements Model {
         filteredEventList.setPredicate(expression::satisfies);
     }
 
-    // @@author A0125586X
-    @Override
-    public void updateFilteredEventList(Set<String> keywords, Calendar startDate, Calendar endDate,
-                                        Entry.State state, Search search, int level) {
-        updateFilteredEventList(new PredicateExpression(new NameDateStateQualifier(keywords,
-                startDate, endDate, state,
-                search, level)));
-    }
-
     // @@author A0126623L
     private void updateFilteredDeadlineList(Expression expression) {
         filteredDeadlineList.setPredicate(expression::satisfies);
-    }
-
-    // @@author A0125586X
-    @Override
-    public void updateFilteredDeadlineList(Set<String> keywords, Calendar startDate,
-                                           Calendar endDate, Entry.State state, Search search,
-                                           int level) {
-        updateFilteredDeadlineList(new PredicateExpression(new NameDateStateQualifier(keywords,
-                startDate, endDate,
-                state, search, level)));
     }
 
     // @@author A0126623L
@@ -461,6 +437,7 @@ public class ModelManager extends ComponentManager implements Model {
                 }
                 return true;
             case POWER_OR:
+            default:
                 if (nameAndTagKeywords.size() == 0) {
                     return true;
                 }
@@ -470,10 +447,7 @@ public class ModelManager extends ComponentManager implements Model {
                     }
                 }
                 return false;
-            default:
-                assert false : "DateAndStatusQualifier: unknown search type";
             }
-            return false;
         }
 
         // @@author A0126623L
@@ -510,33 +484,6 @@ public class ModelManager extends ComponentManager implements Model {
             }
         }
 
-        // @@author A0126623L
-        /*@Override
-        public String toString() {
-            StringBuilder builder = new StringBuilder();
-            builder.append("NameDateStateQualifier: ")
-                    .append("keywords = ");
-            for (String keyword : nameAndTagKeywords) {
-                builder.append(keyword).append(", ");
-            }
-            builder.append("startDate = ");
-            if (startDate == null) {
-                builder.append("null");
-            } else {
-                builder.append(dateFormat.format(startDate));
-            }
-            builder.append(", endDate = ");
-            if (endDate == null) {
-                builder.append("null");
-            } else {
-                builder.append(dateFormat.format(endDate));
-            }
-            builder.append(", states =");
-            for (Entry.State state : states) {
-                builder.append(state.toString());
-            }
-            return builder.toString();
-        }*/
     }
 
     // @@author A0132788U
