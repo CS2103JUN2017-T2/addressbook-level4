@@ -27,7 +27,6 @@ About 50 sample entries should be loaded on to the GUI panels.
 > Command: `add Pay camp fee by tomorrow 6 pm tag school important`   
 - This entry will be added to the Deadline List.  
 - On the GUI, the next day's date is displayed.  
-- The notations `one day from now` and time as `6 pm` are also displayed below the date.
 
 ### Add an event 
 > Command: `add Football match on 2nd August 6 pm to 9 pm tag play`  
@@ -40,7 +39,7 @@ About 50 sample entries should be loaded on to the GUI panels.
 ### Add a duplicate entry
 > Command: `add Wash dishes`
 - MultiTasky should prevent us from adding duplicate entries. This also applies to events and deadlines.
-- Tags are not taken into account to determine duplicates.
+- Tags and case-sensitivity are not taken into account to determine duplicates.
 
 ### Add an overlapping event
 > Command: `add Driving test from 28 July 10am to 28 July 11am`
