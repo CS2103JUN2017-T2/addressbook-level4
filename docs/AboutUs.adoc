@@ -36,7 +36,6 @@ image::chuapingchan.png[width="150", align="left"]
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#smart-alert[Smart Alert]
 * Code written: https://github.com/CS2103JUN2017-T2/main/blob/master/collated/main/A0126623L.md[functional code], https://github.com/CS2103JUN2017-T2/main/blob/master/collated/test/A0126623L.md[test code] and https://github.com/CS2103JUN2017-T2/main/blob/master/collated/docs/A0126623L.md[documentation]
 * Other major contributions:
-** https://github.com/CS2103JUN2017-T2/main/pull/271[Draft manual test script]
 ** Maintain meeting minutes
 
 '''
