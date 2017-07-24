@@ -393,6 +393,8 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |developer |have an automated test program |check program functionality after every update
 
+|`* *` |developer |have at least 90% test coverage |ensure program is functioning as it is supposed to
+
 |`* *` |new user |have similar syntax for most commands |use them easily without confusion
 
 |`* *` |user |edit entries after searching for them |search and update in a one-shot approach

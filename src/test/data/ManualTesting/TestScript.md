@@ -28,7 +28,7 @@ About 50 sample entries should be loaded to the GUI panel.
    list
    list upcoming
    ```
-   Upcoming events are displayed in order of ascending date. Overdue deadline is shifted to the bottom of the deadline panel. Scroll down to check.
+   Upcoming events are displayed in order of ascending date. Overdue deadlines are shifted to the bottom of the deadline panel. Scroll down to check.
 1. **Finding an entry**  
    `find exam`  
    By default, only active entries are searched.

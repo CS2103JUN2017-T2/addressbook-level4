@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<entrybook>
+    <events>
+        <name>Attend SoC conference</name>
+        <startDateAndTime>30/03/17 11:00</startDateAndTime>
+        <endDateAndTime>01/04/17 22:00</endDateAndTime>
+        <state>ARCHIVED</state>
+        <tagged>important</tagged>
+        <tagged>school</tagged>
+        <tagged>grade</tagged>
+    </events>
+    <events>
+        <name>Go for concert</name>
+        <startDateAndTime>04/07/17 22:00</startDateAndTime>
+        <endDateAndTime>05/07/17 01:00</endDateAndTime>
+        <state>DELETED</state>
+        <tagged>important</tagged>
+        <tagged>concert</tagged>
+        <tagged>enhancement</tagged>
+    </events>
+    <events>
+        <name>Register for MPE for modules</name>
+        <startDateAndTime>07/07/17 23:12</startDateAndTime>
+        <endDateAndTime>11/07/17 23:12</endDateAndTime>
+        <state>ARCHIVED</state>
+        <tagged>important</tagged>
+        <tagged>school</tagged>
+    </events>
+    <events>
+        <name>Watch Game of Thrones premiere</name>
+        <startDateAndTime>17/07/17 23:00</startDateAndTime>
+        <endDateAndTime>18/07/17 00:00</endDateAndTime>
+        <state>ARCHIVED</state>
+        <tagged>TV</tagged>
+    </events>
+    <events>
+        <name>Attend Jie Ying's presentation</name>
+        <startDateAndTime>21/07/17 14:00</startDateAndTime>
+        <endDateAndTime>21/07/17 15:00</endDateAndTime>
+        <state>DELETED</state>
+        <tagged>important</tagged>
+        <tagged>friend</tagged>
+    </events>
+    <events>
+        <name>Exam for Software Engineering</name>
+        <startDateAndTime>28/07/17 10:00</startDateAndTime>
+        <endDateAndTime>28/07/17 12:00</endDateAndTime>
+        <state>ACTIVE</state>
+        <tagged>school</tagged>
+        <tagged>grade</tagged>
+        <tagged>CS2103</tagged>
+    </events>
+    <events>
+        <name>Take pet turtle Crumb to vet</name>
+        <startDateAndTime>29/07/17 10:00</startDateAndTime>
+        <endDateAndTime>29/07/17 11:00</endDateAndTime>
+        <state>DELETED</state>
+        <tagged>turtle</tagged>
+        <tagged>health</tagged>
+    </events>
+    <events>
+        <name>Meeting with FYP supervisor</name>
+        <startDateAndTime>29/07/17 10:00</startDateAndTime>
+        <endDateAndTime>29/07/17 12:00</endDateAndTime>
+        <state>ACTIVE</state>
+        <tagged>important</tagged>
+        <tagged>school</tagged>
+    </events>
+    <events>
+        <name>Bid on CORS</name>
+        <startDateAndTime>30/07/17 10:00</startDateAndTime>
+        <endDateAndTime>30/07/17 11:00</endDateAndTime>
+        <state>ACTIVE</state>
+        <tagged>important</tagged>
+        <tagged>school</tagged>
+    </events>
+    <events>
+        <name>Go for FairPrice sale</name>
+        <startDateAndTime>05/08/17 13:00</startDateAndTime>
+        <endDateAndTime>08/08/17 21:00</endDateAndTime>
+        <state>ACTIVE</state>
+        <tagged>sale</tagged>
+        <tagged>finance</tagged>
+    </events>
+    <events>
+        <name>Go for RunNUS</name>
+        <startDateAndTime>13/08/17 06:00</startDateAndTime>
+        <endDateAndTime>13/08/17 07:00</endDateAndTime>
+        <state>DELETED</state>
+        <tagged>fitness</tagged>
+        <tagged>goals</tagged>
+    </events>
+    <events>
+        <name>Attend Student Life Fair</name>
+        <startDateAndTime>15/08/17 15:00</startDateAndTime>
+        <endDateAndTime>17/08/17 18:00</endDateAndTime>
+        <state>DELETED</state>
+        <tagged>school</tagged>
+    </events>
+    <events>
+        <name>Attend Welcome Party</name>
+        <startDateAndTime>16/08/17 18:00</startDateAndTime>
+        <endDateAndTime>16/08/17 19:00</endDateAndTime>
+        <state>ACTIVE</state>
+        <tagged>school</tagged>
+        <tagged>food</tagged>
+    </events>
+    <events>
+        <name>Bake cake for Megha's birthday</name>
+        <startDateAndTime>04/09/17 22:00</startDateAndTime>
+        <endDateAndTime>04/09/17 23:00</endDateAndTime>
+        <state>ACTIVE</state>
+        <tagged>learn</tagged>
+        <tagged>cook</tagged>
+        <tagged>friend</tagged>
+    </events>
+    <events>
+        <name>Banking conference</name>
+        <startDateAndTime>18/12/17 10:00</startDateAndTime>
+        <endDateAndTime>26/12/17 20:00</endDateAndTime>
+        <state>ACTIVE</state>
+        <tagged>important</tagged>
+        <tagged>school</tagged>
+        <tagged>job</tagged>
+    </events>
+    <events>
+        <name>Post homecoming-event briefing</name>
+        <startDateAndTime>20/01/18 14:00</startDateAndTime>
+        <endDateAndTime>20/01/18 15:00</endDateAndTime>
+        <state>ACTIVE</state>
+        <tagged>important</tagged>
+        <tagged>school</tagged>
+    </events>
+    <floatingTasks>
+        <name>Do laundry</name>
+        <state>ARCHIVED</state>
+        <tagged>housework</tagged>
+    </floatingTasks>
+    <floatingTasks>
+        <name>Wash dishes</name>
+        <state>ACTIVE</state>
+        <tagged>kitchen</tagged>
+    </floatingTasks>
+    <floatingTasks>
+        <name>Buy cornflakes</name>
+        <state>ARCHIVED</state>
+        <tagged>breakfast</tagged>
+    </floatingTasks>
+    <floatingTasks>
+        <name>Take Vitamin supplements</name>
+        <state>ACTIVE</state>
+        <tagged>health</tagged>
+    </floatingTasks>
+    <floatingTasks>
+        <name>Empty garbage</name>
+        <state>ARCHIVED</state>
+        <tagged>housework</tagged>
+    </floatingTasks>
+    <floatingTasks>
+        <name>Buy gift for JY</name>
+        <state>DELETED</state>
+        <tagged>graduation</tagged>
+        <tagged>friend</tagged>
+    </floatingTasks>
+    <floatingTasks>
+        <name>Go to UHC for sugar test</name>
+        <state>ARCHIVED</state>
+        <tagged>health</tagged>
+        <tagged>diabetes</tagged>
+    </floatingTasks>
+    <floatingTasks>
+        <name>Sign up for piano lessons</name>
+        <state>DELETED</state>
+        <tagged>music</tagged>
+        <tagged>learn</tagged>
+    </floatingTasks>
+    <floatingTasks>
+        <name>Clean fridge</name>
+        <state>ARCHIVED</state>
+        <tagged>kitchen</tagged>
+        <tagged>housework</tagged>
+    </floatingTasks>
+    <floatingTasks>
+        <name>Disinfect bathroom</name>
+        <state>DELETED</state>
+        <tagged>health</tagged>
+        <tagged>housework</tagged>
+    </floatingTasks>
+    <floatingTasks>
+        <name>Volunteer at SPCA</name>
+        <state>DELETED</state>
+        <tagged>volunteer</tagged>
+        <tagged>animals</tagged>
+    </floatingTasks>
+    <floatingTasks>
+        <name>Adopt pet turtle and name it Crumb</name>
+        <state>ARCHIVED</state>
+        <tagged>turtle</tagged>
+        <tagged>animals</tagged>
+        <tagged>goals</tagged>
+    </floatingTasks>
+    <floatingTasks>
+        <name>Decorate room with wall art</name>
+        <state>ARCHIVED</state>
+        <tagged>enhancement</tagged>
+        <tagged>housework</tagged>
+        <tagged>goals</tagged>
+    </floatingTasks>
+    <floatingTasks>
+        <name>Improve sewing skills</name>
+        <state>ACTIVE</state>
+        <tagged>learn</tagged>
+        <tagged>goals</tagged>
+    </floatingTasks>
+    <floatingTasks>
+        <name>Buy aquarium for Crumb</name>
+        <state>ARCHIVED</state>
+        <tagged>turtle</tagged>
+        <tagged>health</tagged>
+    </floatingTasks>
+    <floatingTasks>
+        <name>Fix router</name>
+        <state>ARCHIVED</state>
+        <tagged>important</tagged>
+    </floatingTasks>
+    <floatingTasks>
+        <name>Buy cutting board from Ikea</name>
+        <state>DELETED</state>
+        <tagged>cook</tagged>
+        <tagged>kitchen</tagged>
+        <tagged>housework</tagged>
+    </floatingTasks>
+    <floatingTasks>
+        <name>Teach Mom to use MS Excel</name>
+        <state>ACTIVE</state>
+        <tagged>important</tagged>
+        <tagged>enhancement</tagged>
+        <tagged>family</tagged>
+    </floatingTasks>
+    <floatingTasks>
+        <name>Practise guitar</name>
+        <state>ACTIVE</state>
+        <tagged>learn</tagged>
+        <tagged>goals</tagged>
+    </floatingTasks>
+    <floatingTasks>
+        <name>Update Wordpress blog</name>
+        <state>ACTIVE</state>
+        <tagged>enhancement</tagged>
+    </floatingTasks>
+    <floatingTasks>
+        <name>Buy dishwasher first</name>
+        <state>ACTIVE</state>
+        <tagged>housework</tagged>
+    </floatingTasks>
+    <deadlines>
+        <name>Register for FYP</name>
+        <endDateAndTime>05/07/17 11:00</endDateAndTime>
+        <state>ARCHIVED</state>
+        <tagged>important</tagged>
+        <tagged>school</tagged>
+    </deadlines>
+    <deadlines>
+        <name>V0.3 due</name>
+        <endDateAndTime>11/07/17 10:00</endDateAndTime>
+        <state>ARCHIVED</state>
+    </deadlines>
+    <deadlines>
+        <name>Pay Special Term fees</name>
+        <endDateAndTime>14/07/17 00:00</endDateAndTime>
+        <state>ARCHIVED</state>
+        <tagged>important</tagged>
+        <tagged>school</tagged>
+        <tagged>finance</tagged>
+    </deadlines>
+    <deadlines>
+        <name>V0.4 due</name>
+        <endDateAndTime>17/07/17 10:00</endDateAndTime>
+        <state>ARCHIVED</state>
+        <tagged>school</tagged>
+        <tagged>grade</tagged>
+        <tagged>CS2103</tagged>
+    </deadlines>
+    <deadlines>
+        <name>Wish Sean for his birthday</name>
+        <endDateAndTime>17/07/17 23:00</endDateAndTime>
+        <state>ARCHIVED</state>
+        <tagged>friend</tagged>
+    </deadlines>
+    <deadlines>
+        <name>Label items in fridge</name>
+        <endDateAndTime>18/07/17 22:00</endDateAndTime>
+        <state>ARCHIVED</state>
+        <tagged>cleaning</tagged>
+        <tagged>important</tagged>
+        <tagged>housework</tagged>
+    </deadlines>
+    <deadlines>
+        <name>Throw expired eggs</name>
+        <endDateAndTime>19/07/17 10:00</endDateAndTime>
+        <state>DELETED</state>
+        <tagged>kitchen</tagged>
+        <tagged>housework</tagged>
+        <tagged>food</tagged>
+    </deadlines>
+    <deadlines>
+        <name>V0.5RC due</name>
+        <endDateAndTime>19/07/17 16:00</endDateAndTime>
+        <state>ACTIVE</state>
+        <tagged>school</tagged>
+        <tagged>grade</tagged>
+        <tagged>CS2103</tagged>
+    </deadlines>
+    <deadlines>
+        <name>Do lecture quiz</name>
+        <endDateAndTime>20/07/17 22:00</endDateAndTime>
+        <state>ACTIVE</state>
+        <tagged>important</tagged>
+        <tagged>grade</tagged>
+        <tagged>CS2103</tagged>
+    </deadlines>
+    <deadlines>
+        <name>V0.5 due</name>
+        <endDateAndTime>24/07/17 16:00</endDateAndTime>
+        <state>ACTIVE</state>
+        <tagged>school</tagged>
+        <tagged>grade</tagged>
+        <tagged>CS2103</tagged>
+    </deadlines>
+    <deadlines>
+        <name>Finish NUS1101 article</name>
+        <endDateAndTime>25/07/17 22:00</endDateAndTime>
+        <state>ACTIVE</state>
+        <tagged>important</tagged>
+        <tagged>article</tagged>
+    </deadlines>
+    <deadlines>
+        <name>Remove Skype free trial</name>
+        <endDateAndTime>27/07/17 23:08</endDateAndTime>
+        <state>ARCHIVED</state>
+        <tagged>important</tagged>
+        <tagged>finance</tagged>
+    </deadlines>
+    <deadlines>
+        <name>Print notes for exam</name>
+        <endDateAndTime>28/07/17 00:00</endDateAndTime>
+        <state>ACTIVE</state>
+        <tagged>important</tagged>
+        <tagged>CS2103</tagged>
+    </deadlines>
+    <deadlines>
+        <name>Renew Netflix subscription</name>
+        <endDateAndTime>01/08/17 00:00</endDateAndTime>
+        <state>ACTIVE</state>
+        <tagged>important</tagged>
+        <tagged>finance</tagged>
+    </deadlines>
+    <deadlines>
+        <name>Dry clean blazer for internship</name>
+        <endDateAndTime>01/08/17 17:00</endDateAndTime>
+        <state>DELETED</state>
+        <tagged>important</tagged>
+        <tagged>work</tagged>
+    </deadlines>
+    <deadlines>
+        <name>Deposit money for GIRO</name>
+        <endDateAndTime>10/08/17 22:00</endDateAndTime>
+        <state>ARCHIVED</state>
+        <tagged>important</tagged>
+        <tagged>finance</tagged>
+    </deadlines>
+    <deadlines>
+        <name>Buy flight tickets</name>
+        <endDateAndTime>30/09/17 22:00</endDateAndTime>
+        <state>ACTIVE</state>
+        <tagged>important</tagged>
+        <tagged>home</tagged>
+    </deadlines>
+    <deadlines>
+        <name>Replace hard-disk by warranty expiration date</name>
+        <endDateAndTime>20/11/17 23:00</endDateAndTime>
+        <state>ARCHIVED</state>
+        <tagged>important</tagged>
+        <tagged>finance</tagged>
+    </deadlines>
+    <tags>housework</tags>
+    <tags>kitchen</tags>
+    <tags>breakfast</tags>
+    <tags>health</tags>
+    <tags>bribe</tags>
+    <tags>grade</tags>
+    <tags>diabetes</tags>
+    <tags>music</tags>
+    <tags>learn</tags>
+    <tags>volunteer</tags>
+    <tags>animals</tags>
+    <tags>goals</tags>
+    <tags>important</tags>
+    <tags>work</tags>
+    <tags>nottomiss</tags>
+    <tags>friend</tags>
+    <tags>turtle</tags>
+    <tags>cook</tags>
+    <tags>enhancement</tags>
+    <tags>home</tags>
+    <tags>article</tags>
+    <tags>CS2103</tags>
+    <tags>cleaning</tags>
+    <tags>school</tags>
+    <tags>finance</tags>
+    <tags>family</tags>
+    <tags>food</tags>
+    <tags>TV</tags>
+    <tags>concert</tags>
+    <tags>sale</tags>
+    <tags>fitness</tags>
+    <tags>job</tags>
+    <tags>graduation</tags>
+</entrybook>
