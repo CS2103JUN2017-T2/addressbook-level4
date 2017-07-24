@@ -166,8 +166,12 @@ About 50 sample entries should be loaded on to the GUI panels.
 
 ## Delete Command
 ### Delete event by index
+
+> Command: `list`
+- List all entries for deletion.
+
 > Command: `delete event 1`
-- Deletes `Register for MPE for modules` from the Events Active list and moves it to Bin.
+- Deletes `NDP 2016` from the Events Active list and moves it to Bin.
 
 ### Delete deadline by keyword
 > Command: `delete quiz`
@@ -181,15 +185,18 @@ About 50 sample entries should be loaded on to the GUI panels.
 > Command: `delete float 1`
 - `Wash dishes` is deleted and moved from Floating Tasks Active list to Bin.
 
-## Delete Command
 ### Delete entry that contains a keyword
+> Command: `list`
+- List all entries for deletion.
+
 > Command: `delete \event`
 - Deletes `Post homecoming-event briefing` from the Events Active list and moves it to Bin.
 
 ## Restore Command
 ### Restore an archived entry using keywords
-> Command: `list archive`
-> Command: `restore Register for FYP`
+> Command: `list archive` 
+
+> Command: `restore Register for FYP` 
 - List all archived entries and restore "Register for FYP" deadline. The entry should disappear from the archived after it is restored.
 > Command: `list`
 - This brings back the active list, which should have the restored "Register for FYP" deadline.
@@ -248,6 +255,9 @@ About 50 sample entries should be loaded on to the GUI panels.
 > Command: `list`
 > Command: `clear`
 - Active entries are listed, and then cleared.
+
+> Command: `undo`
+- Active entries are brought back.
 
 ### Clear bin
 > Command: `list bin`
