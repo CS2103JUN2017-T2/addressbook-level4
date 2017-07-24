@@ -52,18 +52,18 @@ About 50 sample data should be loaded to the GUI panel.
    Redo can be done either by keying in the command `redo` or using the shortcut `Ctrl`+`Y`. The active entries should disappear again. Execute undo once more with `Ctrl`+`Z` to bring back the active entries for the upcoming tests.
    
 ### Time-Saving Features
-1. **Auto-complete for command word and multiple keywords**  
+1. **Auto-complete for command word and multiple keywords using `tab`**  
    Key in the following line of incomplete words  
    `l u t`
    Press the `tab` key, and the command should auto-complete to `list upcoming to`.  
-   Complete the command
+   Complete typing the rest of the command to show all upcoming entries until 8pm today:  
    `list upcoming to 8pm`  
 1. **Double-`tab` to show all possibilities of possible words for autocomplete if a single match cannot be found**  
    Key in the following in the command box  
    `c`  
    Press `tab` once. You should notice auto-complete doesn't work because there are two possible commands, i.e. `clear` and `complete`.  
    Now, try pressing `tab` twice (double-tap) and MultiTasky should display the possible commands:  
-   `c: clear complete`
+   `c:  clear        complete`
 1. **Shortcuts**
    Try all the following keyboard shortcuts:
 
@@ -94,6 +94,7 @@ About 50 sample data should be loaded to the GUI panel.
    `find cs213` finds `CS2103`.  
    _wrong or extra characters_: The following command  
    `find cs22223` finds `CS2103`.  
+   PowerSearch is able to match entry names as well as tags.  
 3. **Smart Parsing**
    Key in the following command
    ```
