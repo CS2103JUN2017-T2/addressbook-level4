@@ -33,6 +33,10 @@ About 50 sample entries should be loaded on to the GUI panel.
 > Command: `add Football match on 2nd August 6 pm to 9 pm tag play`  
 - Scroll down the Events List to ensure that it is successfully added.
 
+### Add an event using defaults for fast entry
+> Command: `add Christmas party from christmas 7pm`
+- A default duration of 1 hour will be used as the duration of the event to infer the ending datetime.
+
 ### Add a duplicate entry
 > Command: `add Wash dishes`
 - MultiTasky should prevent us from adding duplicate entries. This also applies to deadlines and floating tasks.
@@ -49,6 +53,10 @@ About 50 sample entries should be loaded on to the GUI panel.
 ### Add an overlapping and overdue event
 > Command: `add Register for SOC modules from 9 July to 10 July`
 - The entry should be added successfully but with an alert that it is overdue and overlaps with existing event(s).
+
+### Smart parsing for adding entries
+> Command: `add visit gardens by the bay by christmas`
+- Scroll to the new deadline entry and verify that `by the bay` is correctly parsed as a name and not a date. MultiTasky is able to identify the correct "by" word and figure out the deadline.
 
 ## Complete Command
 ### Completing an entry by index
@@ -127,7 +135,7 @@ About 50 sample entries should be loaded on to the GUI panel.
 - the entry `teach Mom to use Excel` is converted from a floating task to an event.
 
 ### Using saved edit details
-> Command: `edit party from 27 dec 7pm to 9pm`
+> Command: `edit party from 27 dec 7pm to 9pm`  
 > Command: `edit event 2`
 - If more than one entries are found through edit by keyword search, the edit details are saved and user can use index or hone the keyword search to identify the target entry to edit with the saved edit details.
 
@@ -264,7 +272,6 @@ About 50 sample entries should be loaded on to the GUI panel.
 
 
 # Outdated
-## Add Command
 
 1. **Using keywords as names**  
    The words "event", "deadline", and "float" have special meanings for MultiTasky. To enter them as part of the name of entries, escape-word is necessary. As an example, to delete the event named "Homecoming-event briefing" in the sample data, try  
@@ -329,17 +336,5 @@ About 50 sample entries should be loaded on to the GUI panel.
    `find cs213` finds `CS2103`.  
    _wrong or extra characters_: The following command  
    `find cs22223` finds `CS2103`.  
-3. **Smart Parsing**
-   Key in the following command
-   ```
-   list
-   add visit gardens by the bay by christmas
-   ```
-   Scroll down the Deadlines list to find the deadline named `visit gardens by the bay`.  
-   MultiTasky is able to identify the correct "by" word and figure out the deadline.
-
-1. **Default duration for fast entry**  
-   `add Christmas party from christmas 7pm`  
-   Should result in a default event duration of 1 hour.
 
 **End of Manual Test Script**
