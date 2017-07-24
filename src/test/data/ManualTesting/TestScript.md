@@ -285,7 +285,7 @@ About 50 sample entries should be loaded on to the GUI panel.
 - The command entered is corrected to `delete`.
 
 ### Command box focus keyboard shortcuts
-> Action: click somewhere else in the window apart from the command box to remove focus from it.
+> Action: click somewhere else in the window apart from the command box to remove focus from it.  
 > Command: `F6`
 - Focus returns to the command box.
 
