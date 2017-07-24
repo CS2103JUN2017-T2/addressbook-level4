@@ -156,21 +156,6 @@ About 50 sample entries should be loaded on to the GUI panel.
 > Command: `F3`
 - `find` is entered into the command box.
 
-## Restore Command
-### Restore an archived entry using keywords
-> Command: `list archive`
-> Command: `restore Register for FYP`
-- List all archived entries and restore "Register for FYP" deadline. The entry should disappear from the archived after it is restored.
-> Command: `list`
-- This brings back the active list, which should have the restored "Register for FYP" deadline.
-
-### Restore an archived entry using index
-> Command: `list archive`
-> Command: `restore float 2`
-- This should restore the floating task "Buy cornflakes".
-> Command: `list`
-- This brings back the active list, which should have the restored "Buy cornflakes" floating task.
-
 ## Delete Command
 ### Delete event by index
 > Command: `delete event 1`
@@ -187,6 +172,21 @@ About 50 sample entries should be loaded on to the GUI panel.
 
 > Command: `delete float 1`
 - `Wash dishes` is deleted and moved from Floating Tasks Active list to Bin.
+
+## Restore Command
+### Restore an archived entry using keywords
+> Command: `list archive`
+> Command: `restore Register for FYP`
+- List all archived entries and restore "Register for FYP" deadline. The entry should disappear from the archived after it is restored.
+> Command: `list`
+- This brings back the active list, which should have the restored "Register for FYP" deadline.
+
+### Restore an archived entry using index
+> Command: `list archive`
+> Command: `restore float 2`
+- This should restore the floating task "Buy cornflakes".
+> Command: `list`
+- This brings back the active list, which should have the restored "Buy cornflakes" floating task.
 
 ## History Command
 ### View command history
