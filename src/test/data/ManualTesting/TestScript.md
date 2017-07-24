@@ -13,21 +13,23 @@ About 50 sample data should be loaded to the GUI panel.
 1. **Add a floating task**  
    `add run dishwasher tag housework`  
    Scroll along the floating task GUI panel to ensure the entry is added successfully.
+   
 1. **Edit a floating task's name**  
    `edit dishwasher name buy dishwasher first`  
-1. **Moving an entry to and from archive**  
-   ```
-   complete deadline 1
-   list archive
-   ```
-   Scroll down in archive to find “label fridge”.
+   Notice that the previous entry `run dishwasher`'s name has been modified to `buy dishwasher first`.
    
-   ```
-   restore label fridge
-   list
-   list upcoming
-   ```
+1. **Moving an entry to and from archive**  
+   `complete deadline 1`  
+   `list archive`  
+   The entry has been completed and moved to archive. Scroll down in archive to find “label fridge”.  
+   `restore label fridge`  
+   `list`  
+   The entry has been moved back to active.
+   
+1. **Listing entries**
+   `list upcoming`  
    Overdue deadline is shifted to the bottom of the deadline panel. Scroll down to check.
+   
 1. **Finding an entry**  
    `find exam`  
    By default, only active entries are searched.
@@ -79,6 +81,8 @@ About 50 sample data should be loaded to the GUI panel.
    `Ctrl`+`O` | `open`
    `Up` | Previous entered command
    `Down` | Next entered command
+   `Ctrl`+`z` | `undo`
+   `Ctrl`+`y` | `redo`
 
 ### Smart-Features
 1. **Auto-correct**  
