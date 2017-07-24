@@ -6,7 +6,7 @@ This is a guide which explains the steps to perform manual testing to users.
 1. Download the `SampleData.xml` file from [GitHub repository](https://github.com/CS2103JUN2017-T2/main/blob/master/src/test/data/ManualTesting/SampleData.xml).
 1. Start MultiTasky using the `.jar` file.
 1. Load the sample data by entering the command `open <filepath to SampleData.xml>`.  
-About 50 sample data should be loaded to the GUI panel.
+About 50 sample entries should be loaded to the GUI panel.
 
 ## Test Cases
 ### Basic Features
@@ -17,6 +17,7 @@ About 50 sample data should be loaded to the GUI panel.
 1. **Edit a floating task's name**  
    `edit dishwasher name buy dishwasher first`  
    Scroll down the Floating Task list to ensure that the entry is edited successfully.
+
 1. **Using keywords as names**  
    The words "event", "deadline", and "float" have special meanings for MultiTasky. To enter them as part of the name of entries, escape-word is necessary. As an example, to delete the event named "Homecoming-event briefing" in the sample data, try  
    `delete \event`  
@@ -34,7 +35,7 @@ About 50 sample data should be loaded to the GUI panel.
    list
    list upcoming
    ```
-   Overdue deadline is shifted to the bottom of the deadline panel. Scroll down to check.
+   Overdue deadlines are shifted to the bottom of the Deadline list. Scroll down to check.
 1. **Finding an entry**  
    `find exam`  
    By default, only active entries are searched.
@@ -107,7 +108,7 @@ About 50 sample data should be loaded to the GUI panel.
    list
    add visit gardens by the bay by christmas
    ```
-   Scroll down the deadline panel to find the deadline named `visit gardens by the bay`.  
+   Scroll down the Deadlines list to find the deadline named `visit gardens by the bay`.  
    MultiTasky is able to identify the correct "by" word and figure out the deadline.
 
 1. **Detection and alerts**  
