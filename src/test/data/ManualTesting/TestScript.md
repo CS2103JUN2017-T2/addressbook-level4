@@ -19,7 +19,7 @@ About 50 sample data should be loaded to the GUI panel.
 
 1. **Using keywords as names**  
    The words "event", "deadline", and "float" have special meaning to MultiTasky. To enter them as part of the name of entries, escape-word is necessary. As an example, to delete the event named "Homecoming event" in the sample data, try  
-   `delete \event`
+   `delete \event`  
    The event should be successfully deleted.
 
 1. **Moving an entry to and from archive**  
