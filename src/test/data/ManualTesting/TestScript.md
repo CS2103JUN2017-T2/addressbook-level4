@@ -101,10 +101,16 @@ About 50 sample data should be loaded to the GUI panel.
    Scroll down the deadline panel to find the deadline named `visit gardens by the bay`.  
    MultiTasky is able to identify the correct "by" word and figure out the deadline.
 
-1. **Detection and alerts**
+1. **Detection and alerts**  
+   _Duplicates_  
    Key in the following command to add a duplicate entry 
    `add Wash dishes`  
    MultiTasky should prevent us from adding duplicate entries.
+   
+   _Overlapping Events_  
+   Try adding an overlapping event with existing entry  
+   `add Driving test from 28 July 10am to 28 July 11am`  
+   The entry should be successfully added but with an alert that it overlaps with existing event(s).
 
 1. **Default duration for fast entry**  
    `add Christmas party from christmas 7pm`  
