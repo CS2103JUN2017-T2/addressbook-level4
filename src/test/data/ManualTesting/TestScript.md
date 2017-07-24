@@ -112,7 +112,7 @@ About 50 sample entries should be loaded on to the GUI panel.
 - Deletes `Take Vitamin supplements` from the Floating Tasks Active list and moves it to Bin.
 
 ### Delete deadline by keyword
-> Command: `delete deadline quiz`
+> Command: `delete quiz`
 - Deletes `Do lecture quiz` from the Deadlines Active list and moves it to Bin.
 
 ### Delete event by keyword then index
