@@ -21,7 +21,6 @@ import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.testutil.SampleEntries;
 
-//TODO implement restore by find tests and separate out restore by index / abstract class restore tests from here.
 
 //@@author A0126623L-reused
 /**
@@ -56,25 +55,7 @@ public class RestoreCommandTest {
         CommandTestUtil.assertCommandFailure(restoreCommand, model,
                                              Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
     }
-
-    // TODO fix bug from ModelManager updateFilteredList. look at NameQualifier.run(),
-    // right now if emptySet is given as keywords, the for loop is not executed and returns true. (should be
-    // false)
-    // reimplement test after fixing.
-    /*
-     * @Test
-     * public void execute_validIndexFilteredList_success() throws Exception {
-     * showFirstEntryOnly(model);
-     * ReadOnlyEntry entryToRestore =
-     * model.getFilteredFloatingTaskList().get(INDEX_FIRST_ENTRY.getZeroBased());
-     * RestoreCommand restoreCommand = prepareCommand(INDEX_FIRST_ENTRY);
-     * String expectedMessage = String.format(RestoreCommand.MESSAGE_SUCCESS, entryToRestore);
-     * Model expectedModel = new ModelManager(model.getEntryBook(), new UserPrefs());
-     * expectedModel.restoreEntry(entryToRestore);
-     * showNoEntry(expectedModel);
-     * CommandTestUtil.assertCommandSuccess(restoreCommand, model, expectedMessage, expectedModel);
-     * }
-     */
+     
 
     @Test
     public void execute_invalidIndexFilteredList_throwsCommandException() throws Exception {

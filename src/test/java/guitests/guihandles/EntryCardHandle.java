@@ -74,7 +74,6 @@ public class EntryCardHandle extends GuiHandle {
     }
 
     public boolean isSameEntry(ReadOnlyEntry entry) {
-        //TODO add more checks once other Entry fields are ready
         return getName().equals(entry.getName().toString())
                 && getTags().equals(getTags(entry.getTags()));
     }
