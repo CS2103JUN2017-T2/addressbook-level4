@@ -150,7 +150,7 @@ public class ParserUtil {
         final Set<Tag> tagSet = new HashSet<>();
         for (String tagString : tags) {
             for (String tagName : tagString.split("\\s+")) {
-                tagSet.add(new Tag(tagName));
+                tagSet.add(new Tag(removeEscapeChar(tagName, CliSyntax.PREFIX_ESCAPE.toString())));
             }
         }
         return tagSet;

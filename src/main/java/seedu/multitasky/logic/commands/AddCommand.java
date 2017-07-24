@@ -20,9 +20,9 @@ public class AddCommand extends Command {
     // @@author A0140633R
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds an entry to MultiTasky. " + "\n"
             + "Format: " + COMMAND_WORD + " NAME" + " ["
-            + "[" + CliSyntax.PREFIX_BY + " DATE" + "]"
-            + " |" + " [" + CliSyntax.PREFIX_FROM + " DATE" + " "
-            + CliSyntax.PREFIX_TO + " DATE" + "]" + "]"
+            + CliSyntax.PREFIX_BY + " DATE" + " |" + " "
+            + CliSyntax.PREFIX_FROM + " DATE" + " "
+            + CliSyntax.PREFIX_TO + " DATE" + "]"
             + " [" + CliSyntax.PREFIX_TAG + " TAGS..." + "]" + "\n"
             + "All possible flags for Add : 'by', 'from', 'to', 'at', 'tag'";
     public static final String MESSAGE_SUCCESS = "New entry added:" + "\n"

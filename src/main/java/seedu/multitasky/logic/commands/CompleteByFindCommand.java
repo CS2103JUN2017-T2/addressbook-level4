@@ -16,7 +16,7 @@ import seedu.multitasky.model.entry.exceptions.OverlappingAndOverdueEventExcepti
 import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 
 // @@author A0132788U-reused
-/*
+/**
  * Finds entries from given keywords and completes the entry if it is the only one found and moves it to archive.
  */
 public class CompleteByFindCommand extends CompleteCommand {

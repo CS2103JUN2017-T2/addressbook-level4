@@ -9,8 +9,9 @@ import seedu.multitasky.model.util.EntryBuilder;
 
 public class EntryTest {
 
+    // @@author A0126623L
     @Test
-    public void testStateToString() throws IllegalValueException {
+    public void setState_invokeSetState_success() throws IllegalValueException {
         Entry eventUnderTest = EntryBuilder.build("dummyName");
         assertTrue(eventUnderTest.getState().toString().equals("ACTIVE"));
 

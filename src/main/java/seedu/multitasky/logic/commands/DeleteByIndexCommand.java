@@ -15,7 +15,7 @@ import seedu.multitasky.model.entry.exceptions.OverlappingAndOverdueEventExcepti
 import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 
 // @@author A0140633R
-/*
+/**
  * Deletes an entry identified using the type of entry followed by displayed index.
  */
 public class DeleteByIndexCommand extends DeleteCommand {

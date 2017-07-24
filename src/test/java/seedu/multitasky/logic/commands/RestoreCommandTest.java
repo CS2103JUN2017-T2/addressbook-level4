@@ -5,7 +5,6 @@ import static seedu.multitasky.testutil.SampleEntries.INDEX_FIRST_ENTRY;
 import static seedu.multitasky.testutil.SampleEntries.INDEX_SECOND_ENTRY;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 
 import org.junit.Test;
@@ -22,7 +21,6 @@ import seedu.multitasky.model.entry.Entry;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 import seedu.multitasky.testutil.SampleEntries;
 
-//TODO implement restore by find tests and separate out restore by index / abstract class restore tests from here.
 
 //@@author A0126623L-reused
 /**
@@ -30,7 +28,8 @@ import seedu.multitasky.testutil.SampleEntries;
 */
 public class RestoreCommandTest {
 
-    private Model model = new ModelManager(SampleEntries.getSampleEntryBookWithActiveEntries(), new UserPrefs());
+    private Model model = new ModelManager(SampleEntries.getSampleEntryBookWithActiveEntries(),
+                                           new UserPrefs());
 
     @Test
     public void execute_validIndexUnfilteredList_success() throws Exception {
@@ -57,24 +56,6 @@ public class RestoreCommandTest {
                                              Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
     }
 
-    // TODO fix bug from ModelManager updateFilteredList. look at NameQualifier.run(),
-    // right now if emptySet is given as keywords, the for loop is not executed and returns true. (should be
-    // false)
-    // reimplement test after fixing.
-    /*
-     * @Test
-     * public void execute_validIndexFilteredList_success() throws Exception {
-     * showFirstEntryOnly(model);
-     * ReadOnlyEntry entryToRestore =
-     * model.getFilteredFloatingTaskList().get(INDEX_FIRST_ENTRY.getZeroBased());
-     * RestoreCommand restoreCommand = prepareCommand(INDEX_FIRST_ENTRY);
-     * String expectedMessage = String.format(RestoreCommand.MESSAGE_SUCCESS, entryToRestore);
-     * Model expectedModel = new ModelManager(model.getEntryBook(), new UserPrefs());
-     * expectedModel.restoreEntry(entryToRestore);
-     * showNoEntry(expectedModel);
-     * CommandTestUtil.assertCommandSuccess(restoreCommand, model, expectedMessage, expectedModel);
-     * }
-     */
 
     @Test
     public void execute_invalidIndexFilteredList_throwsCommandException() throws Exception {
@@ -105,19 +86,11 @@ public class RestoreCommandTest {
     private void showFirstEntryOnly(Model model) {
         ReadOnlyEntry entry = model.getEntryBook().getFloatingTaskList().get(0);
         final String[] splitName = entry.getName().fullName.split("\\s+");
-        model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList(splitName)), null, null, Entry.State.ACTIVE,
+        model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList(splitName)), null, null,
+                                             Entry.State.ACTIVE,
                                              Model.Search.AND, PowerMatch.UNUSED);
 
         assert model.getFilteredFloatingTaskList().size() == 1;
-    }
-
-    /**
-     * Updates {@code model}'s filtered list to show no one.
-     */
-    private void showNoEntry(Model model) {
-        model.updateFilteredFloatingTaskList(Collections.emptySet(), null, null, Entry.State.ACTIVE,
-                                             Model.Search.AND, PowerMatch.UNUSED);
-        assert model.getFilteredFloatingTaskList().isEmpty();
     }
 
 }

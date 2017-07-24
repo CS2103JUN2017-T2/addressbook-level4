@@ -92,7 +92,6 @@ public class UnmodifiableObservableListTest {
     private class BasicInvalidationListener implements InvalidationListener {
         @Override
         public void invalidated(Observable arg0) {
-            // TODO Auto-generated method stub
         }
     }
 

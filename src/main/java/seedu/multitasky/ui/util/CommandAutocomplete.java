@@ -76,7 +76,7 @@ public class CommandAutocomplete implements TextAutocomplete {
         SplitCommand splitCommand = split(input);
         String commandWordPossibilities = commandWordAutocomplete.getPossibilities(splitCommand.getCommandWord());
         if (commandWordPossibilities != null) {
-            possibilities.append(splitCommand.getCommandWord()).append(": ").append(commandWordPossibilities);
+            possibilities.append(splitCommand.getCommandWord()).append(":  ").append(commandWordPossibilities);
             return possibilities.toString();
         }
         return null;

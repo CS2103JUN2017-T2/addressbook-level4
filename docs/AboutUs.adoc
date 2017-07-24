@@ -6,7 +6,7 @@ We are a team based in the http://www.comp.nus.edu.sg[School of Computing, Natio
 
 == Project Team
 
-== http://github.com/mattheuslee[Mattheus Lee]
+=== http://github.com/mattheuslee[Mattheus Lee]
 image::mattheuslee.jpg[width="150", align="left"]
 
 * Role: Team Leader
@@ -14,8 +14,8 @@ image::mattheuslee.jpg[width="150", align="left"]
 * Aspects/tools in charge of: Git, Deliverables and scheduling, GUI tests
 * Features implemented:
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#listing-all-entries-code-list-code[List entries]
-** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#autocomplete[Command Autocomplete] using https://github.com/CS2103JUN2017-T2/main/blob/master/docs/DeveloperGuide.adoc#261-powermatch[PowerMatch]
-** Keyword PowerSearch using https://github.com/CS2103JUN2017-T2/main/blob/master/docs/DeveloperGuide.adoc#261-powermatch[PowerMatch]
+** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#command-autocomplete[Command Autocomplete] and https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#command-autocorrect[Command Autocorrect] using https://github.com/CS2103JUN2017-T2/main/blob/master/docs/DeveloperGuide.adoc#261-powermatch[PowerMatch]
+** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#keyword-powersearch[Keyword PowerSearch] using https://github.com/CS2103JUN2017-T2/main/blob/master/docs/DeveloperGuide.adoc#261-powermatch[PowerMatch]
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#keyboard-shortcuts[Keyboard Shortcuts]
 * Code written: https://github.com/CS2103JUN2017-T2/main/blob/master/collated/main/A0125586X.md[functional code], https://github.com/CS2103JUN2017-T2/main/blob/master/collated/test/A0125586X.md[test code] and https://github.com/CS2103JUN2017-T2/main/blob/master/collated/docs/A0125586X.md[documentation]
 * Other major contributions:
@@ -28,19 +28,19 @@ image::chuapingchan.png[width="150", align="left"]
 
 * Role: Developer
 * Components in charge of: https://github.com/CS2103JUN2017-T2/main/blob/master/docs/DeveloperGuide.adoc#model-component[Model]
-* Aspects/tools in charge of: Code Quality, Testing
+* Aspects/tools in charge of: Code Quality, Unit Tests
 * Features implemented:
-** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/DeveloperGuide.adoc#model-component[Entry States] -- archive and bin concept
+** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/DeveloperGuide.adoc#model-component[Entry States -- Archive and Bin]
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#restoring-an-entry-code-restore-code[Restore command]
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#clearing-entries-code-clear-code[Clear command]
+** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#smart-alert[Smart Alert]
 * Code written: https://github.com/CS2103JUN2017-T2/main/blob/master/collated/main/A0126623L.md[functional code], https://github.com/CS2103JUN2017-T2/main/blob/master/collated/test/A0126623L.md[test code] and https://github.com/CS2103JUN2017-T2/main/blob/master/collated/docs/A0126623L.md[documentation]
 * Other major contributions:
-** https://github.com/CS2103JUN2017-T2/main/issues/158[Implement detection and alert notification of overlapping events]
-** https://github.com/CS2103JUN2017-T2/main/issues/163[Implement detection and alert notification of overdue entries]
-** Maintain meeting minutes.
+** https://github.com/CS2103JUN2017-T2/main/pull/271[Draft manual test script]
+** Maintain meeting minutes
 
 '''
-== http://github.com/kevinLamKB[Kevin Lam]
+=== http://github.com/kevinLamKB[Kevin Lam]
 image::kevinlamkb.png[width="150", align="left"]
 * Role: Developer
 * Components in charge of: https://github.com/CS2103JUN2017-T2/main/blob/master/docs/DeveloperGuide.adoc#logic-component[Logic]
@@ -49,13 +49,13 @@ image::kevinlamkb.png[width="150", align="left"]
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#adding-an-entry-code-add-code[Adding entries]
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#editing-an-entry-code-edit-code[Editing entries]
 ** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#deleting-an-entry-code-delete-code[Deleting entries]
-* Code written: https://github.com/CS2103JUN2017-T2/main/blob/master/collated/main/A0140633R.md[functional code], https://github.com/CS2103JUN2017-T2/main/blob/master/collated/test/A0140633R.md[test code] and https://github.com/CS2103JUN2017-T2/main/blob/master/collated/docs/A0140633R.md[documentation]
+* Code written: https://github.com/CS2103JUN2017-T2/main/blob/master/collated/main/A0140633R.md[functional code], https://github.com/CS2103JUN2017-T2/main/blob/master/collated/test/A0140633R.md[test code], https://github.com/CS2103JUN2017-T2/main/blob/master/collated/docs/A0140633R.md[documentation] and https://github.com/CS2103JUN2017-T2/main/blob/master/unused/DateUtil.java[unused]
 * Other major contributions:
-** Implement support for natural language parsing.
+** https://github.com/CS2103JUN2017-T2/main/blob/master/docs/UserGuide.adoc#smart-parsing[Implement support for natural language parsing.]
 ** Implement workaround for FilteredList refresh issues.
 
 '''
-== http://github.com/akd13[Akankshita Dash]
+=== http://github.com/akd13[Akankshita Dash]
 image::akd13.png[width="150", align="left"]
 * Role: Developer
 * Components in charge of: https://github.com/CS2103JUN2017-T2/main/blob/master/docs/DeveloperGuide.adoc#storage-component[Storage]
