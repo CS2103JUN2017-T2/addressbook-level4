@@ -152,7 +152,7 @@ About 50 sample entries should be loaded on to the GUI panels.
 ### Finding entries over a date range
 > Command: `find cs2103 from 21 July 2017 to 25 July 2017`
 - Only entries that match `cs2103` and are between 21 July 2017 and 25 July 2017 are shown.
-- In this case, only `Do lecture quiz` should be displayed.
+- In this case, only `V0.5 due` should be displayed.
 
 ### Finding entries using PowerSearch
 > Command: `find sc2013`
