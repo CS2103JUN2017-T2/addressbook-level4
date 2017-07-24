@@ -63,50 +63,70 @@ About 50 sample entries should be loaded on to the GUI panel.
 ## List Command
 ### Listing the active entries
 > Command: `list`
-- The status bar at the top should read: `Currently displaying: active`
-- By default, active entries are displayed with `list`
+- The status bar at the top should read: `Currently displaying: active`.
+- By default, active entries are displayed with `list`.
 
 ### Listing the archive (completed entries)
 > Command: `list archive`
-- The status bar at the top should read: `Currently displaying: archive`
+- The status bar at the top should read: `Currently displaying: archive`.
 
 ### Listing the bin (deleted entries)
 > Command: `list bin`
-- The status bar at the top should read: `Currently displaying: bin`
+- The status bar at the top should read: `Currently displaying: bin`.
 
 ### Listing all entries (active + archived + deleted)
 > Command: `list all`
-- The status bar at the top should read: `Currently displaying: all`
+- The status bar at the top should read: `Currently displaying: all`.
 
 ### Listing entries in upcoming order
 > Command: `list upcoming`
-- All overdue events and deadlines are moved to the bottom of their respective lists
+- All overdue events and deadlines are moved to the bottom of their respective lists.
 
 ### Listing entries in reverse order
 > Command: `list reverse`
-- The event and deadline that is furthest in the future is shown at the top of the list
+- The event and deadline that is furthest in the future is shown at the top of the list.
 
-### Listing entries after a cetain date
+### Listing entries after a certain date
 > Command: `list from July 26 2017`
-- All events and deadlines before July 26 2017 are no longer shown
-- Floating tasks remain unchanged
+- All events and deadlines before July 26 2017 are no longer shown.
+- Floating tasks remain unchanged.
 
-### Listing entries before a cetain date
+### Listing entries before a certain date
 > Command: `list to July 26 2017`
-- All events and deadlines after July 26 2017 are no longer shown
-- Floating tasks remain unchanged
+- All events and deadlines after July 26 2017 are no longer shown.
+- Floating tasks remain unchanged.
 
 ### Listing entries between two dates
 > Command: `list from July 26 2017 to July 29 2017
-- Only events and deadlines between the two dates are shown
-- Floating tasks remain unchanged
+- Only events and deadlines between the two dates are shown.
+- Floating tasks remain unchanged.
 
 ### List command keyboard shortcut
 > Command: press the `F5` key
-- `list` is entered ino the command box
+- `list` is entered ino the command box.
+
+## Find command
+### Finding entries using basic keyword search
+> Command: `find cs2103`
+- All entries with `cs2103` in either the name or the tags are displayed.
+- `cs2103` matches `CS2103`, as the search is case-insensitive.
+
+### Finding entries over a date range
+> Command: `find cs2103 from 21 July 2017 to 25 July 2017`
+- Only entries that match `cs2103` and are between 21 July 2017 and 25 July 2017 are shown.
+- In this case, only `Do lecture quiz` should be displayed.
+
+### Finding entries using PowerSearch
+> Command: `find sc2013`
+- As regular search for `sc2013` does not produce any results, PowerSearch is used instead, which matches `cs2103` as a permutation of `sc2013`.
+> Command: `find cs22223`
+- PowerSearch is also able to match given extra or wrong characters in the search.
+
+### Find command keyboard shortcut
+> Command: `F3`
+- `find` is entered into the command box.
 
 ## Delete Command
-
 ### Delete floating task by index
 > Command: `delete float 2`
 - Deletes `Take Vitamin supplements` from the Floating Tasks Active list and moves it to Bin.
@@ -123,6 +143,11 @@ About 50 sample entries should be loaded on to the GUI panel.
 
 > Command: `delete float 1`
 - `Wash dishes` is deleted.
+
+## History Command
+### View command history
+> Command: `history`
+- All the entered commands are shown in the result display, with the most recently entered command shown first.
 
 
 # Outdated
