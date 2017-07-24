@@ -5,7 +5,6 @@ import static seedu.multitasky.testutil.SampleEntries.INDEX_FIRST_ENTRY;
 import static seedu.multitasky.testutil.SampleEntries.INDEX_SECOND_ENTRY;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 
 import org.junit.Test;
@@ -30,7 +29,8 @@ import seedu.multitasky.testutil.SampleEntries;
 */
 public class RestoreCommandTest {
 
-    private Model model = new ModelManager(SampleEntries.getSampleEntryBookWithActiveEntries(), new UserPrefs());
+    private Model model = new ModelManager(SampleEntries.getSampleEntryBookWithActiveEntries(),
+                                           new UserPrefs());
 
     @Test
     public void execute_validIndexUnfilteredList_success() throws Exception {
@@ -105,19 +105,11 @@ public class RestoreCommandTest {
     private void showFirstEntryOnly(Model model) {
         ReadOnlyEntry entry = model.getEntryBook().getFloatingTaskList().get(0);
         final String[] splitName = entry.getName().fullName.split("\\s+");
-        model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList(splitName)), null, null, Entry.State.ACTIVE,
+        model.updateFilteredFloatingTaskList(new HashSet<>(Arrays.asList(splitName)), null, null,
+                                             Entry.State.ACTIVE,
                                              Model.Search.AND, PowerMatch.UNUSED);
 
         assert model.getFilteredFloatingTaskList().size() == 1;
-    }
-
-    /**
-     * Updates {@code model}'s filtered list to show no one.
-     */
-    private void showNoEntry(Model model) {
-        model.updateFilteredFloatingTaskList(Collections.emptySet(), null, null, Entry.State.ACTIVE,
-                                             Model.Search.AND, PowerMatch.UNUSED);
-        assert model.getFilteredFloatingTaskList().isEmpty();
     }
 
 }

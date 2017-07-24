@@ -16,7 +16,7 @@ import seedu.multitasky.model.entry.exceptions.EntryOverdueException;
 import seedu.multitasky.model.entry.exceptions.OverlappingAndOverdueEventException;
 import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 
-//@@author A0126623L-reused
+//@@author A0126623L
 /**
  * Restores an entry identified using the type of entry followed by displayed index.
  */

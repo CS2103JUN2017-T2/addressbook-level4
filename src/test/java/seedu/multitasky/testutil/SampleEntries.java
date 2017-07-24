@@ -219,7 +219,6 @@ public class SampleEntries {
     public static Entry[] getSampleActiveFloatingTasks() {
         return new Entry[] { COOK, PROGRAMMING };
     }
-    // @@author
 
     // @@author A0126623L
     public static Entry[] getSampleArchivedEntries() {
@@ -227,65 +226,49 @@ public class SampleEntries {
             ASSIGNMENT, QUIZ, EXERCISE
         };
     }
-    // @@author
 
-    // @@author A0126623L
     public static Entry[] getSampleArchivedEvents() {
         return new Entry[] {
             ASSIGNMENT
         };
     }
-    // @@author
 
-    // @@author A0126623L
     public static Entry[] getSampleArchivedDeadlines() {
         return new Entry[] {
             QUIZ
         };
     }
-    // @@author
 
-    // @@author A0126623L
     public static Entry[] getSampleArchivedFloatingTasks() {
         return new Entry[] {
             EXERCISE
         };
     }
-    // @@author
 
-    // @@author A0126623L
     public static Entry[] getSampleDeletedEntries() {
         return new Entry[] {
             GYM, APPOINTMENT, BAKE
         };
     }
-    // @@author
 
-    // @@author A0126623L
     public static Entry[] getSampleDeletedEvents() {
         return new Entry[] {
             GYM
         };
     }
-    // @@author
 
-    // @@author A0126623L
     public static Entry[] getSampleDeletedDeadlines() {
         return new Entry[] {
             APPOINTMENT
         };
     }
-    // @@author
 
-    // @@author A0126623L
     public static Entry[] getSampleDeletedFloatingTasks() {
         return new Entry[] {
             BAKE
         };
     }
-    // @@author
 
-    // @@author A0126623L
     /**
      * Adds sample entries to the provided EntryBook
      */
@@ -305,9 +288,7 @@ public class SampleEntries {
             }
         }
     }
-    // @@author
 
-    // @@author A0126623L
     private static void loadEntryBookWithSampleArchivedEntries(EntryBook entryBook) {
         Objects.requireNonNull(entryBook);
         for (Entry entry : getSampleArchivedEntries()) {
@@ -324,9 +305,7 @@ public class SampleEntries {
             }
         }
     }
-    // @@author
 
-    // @@author A0126623L
     private static void loadEntryBookWithSampleDeletedEntries(EntryBook entryBook) {
         Objects.requireNonNull(entryBook);
         for (Entry entry : getSampleDeletedEntries()) {
@@ -343,9 +322,7 @@ public class SampleEntries {
             }
         }
     }
-    // @@author
 
-    // @@author A0126623L
     /**
      * @return an {@code EntryBook} with active sample events, deadlines and floating tasks.
      */
@@ -354,9 +331,7 @@ public class SampleEntries {
         loadEntryBookWithSampleActiveEntries(entryBook);
         return entryBook;
     }
-    // @@author
 
-    // @@author A0126623L
     /**
      * @return  an {@code EntryBook} with sample events, deadlines and floating tasks
      *          of various states (i.e. active, archived, deleted).
@@ -368,9 +343,7 @@ public class SampleEntries {
         loadEntryBookWithSampleDeletedEntries(entryBook);
         return entryBook;
     }
-    // @@author
 
-    // @@author A0126623L
     /**
      * Creates an overlapping event with the given {@code Event} by creating a copy
      * of the given {@code Event} and changing the name.
@@ -387,7 +360,6 @@ public class SampleEntries {
         return overlappingEventToAdd;
     }
 
-    // @@author A0126623L
     /**
      * Creates a sample overdue {@code Event}.
      * @return {@code Entry}
@@ -402,7 +374,6 @@ public class SampleEntries {
         return EntryBuilder.build("D&D", startDate, endDate, "party");
     }
 
-    // @@author A0126623L
     /**
      * Creates a sample overdue {@code Deadline}.
      * @return {@code Entry}
