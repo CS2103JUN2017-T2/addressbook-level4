@@ -116,7 +116,8 @@ public class CommandBoxTest extends EntryBookGuiTest {
         commandBox.enterCommand("e");
         commandBox.pressTabKey();
         commandBox.pressTabKey();
-        assertResultMessage("e: clear complete delete edit exit help open redo restore save ");
+        assertResultMessage("e:  clear        complete        delete        edit        exit        "
+                          + "help        open        redo        restore        save        ");
     }
 
     /*********************
