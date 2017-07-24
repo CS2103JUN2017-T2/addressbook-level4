@@ -12,15 +12,15 @@ About 50 sample entries should be loaded to the GUI panel.
 ### Basic Features
 1. **Add a floating task**  
    `add run dishwasher tag housework`  
-   Scroll along the floating task GUI panel to ensure the entry is added successfully.
+   Scroll down the Floating Task list to ensure that the entry is added successfully.
    
 1. **Edit a floating task's name**  
    `edit dishwasher name buy dishwasher first`  
-
+   Scroll down the Floating Task list to ensure that the entry is edited successfully.
 1. **Using keywords as names**  
-   The words "event", "deadline", and "float" have special meaning to MultiTasky. To enter them as part of the name of entries, escape-word is necessary. As an example, to delete the event named "Homecoming event" in the sample data, try  
+   The words "event", "deadline", and "float" have special meanings for MultiTasky. To enter them as part of the name of entries, escape-word is necessary. As an example, to delete the event named "Homecoming-event briefing" in the sample data, try  
    `delete \event`  
-   The event should be successfully deleted.
+   Scroll down the Events list to ensure that the event is successfully deleted.
 
 1. **Moving an entry to and from archive**  
    ```
