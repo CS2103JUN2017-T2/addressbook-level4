@@ -11,21 +11,66 @@ About 50 sample entries should be loaded to the GUI panel.
 ## Help Command
 ### Opening the help window
 > Command: `help`  
-   * Opens MultiTasky's UserGuide.
+- Opens MultiTasky's UserGuide.
    
 ### Help window shortcut
 > Command: `F1`  
-   * Opens MultiTasky's UserGuide.
+- Opens MultiTasky's UserGuide.
 
 ## Complete Command
-### Completing a task by index
+### Completing an entry by index
 > Command: `complete deadline 1`
 - The first entry in the active deadlines list (`V0.5RC due`) is moved to the archive.
 
-### Completing a task by keyword search
+### Completing an entry by keyword search
 > Command: `complete mpe modules`
 - The entry `Register for MPE for modules` is moved to the archive.
 - We do not need to specify the full name to select the entry to complete, as long as the keywords provided are sufficient to identify a single entry.
+
+## List Command
+### Listing the active entries
+> Command: `list`
+- The status bar at the top should read: `Currently displaying: active`
+- By default, active entries are displayed with `list`
+
+### Listing the archive (completed entries)
+> Command: `list archive`
+- The status bar at the top should read: `Currently displaying: archive`
+
+### Listing the bin (deleted entries)
+> Command: `list bin`
+- The status bar at the top should read: `Currently displaying: bin`
+
+### Listing all entries (active + archived + deleted)
+> Command: `list all`
+- The status bar at the top should read: `Currently displaying: all`
+
+### Listing entries in upcoming order
+> Command: `list upcoming`
+- All overdue events and deadlines are moved to the bottom of their respective lists
+
+### Listing entries in reverse order
+> Command: `list reverse`
+- The event and deadline that is furthest in the future is shown at the top of the list
+
+### Listing entries after a cetain date
+> Command: `list from July 26 2017`
+- All events and deadlines before July 26 2017 are no longer shown
+- Floating tasks remain unchanged
+
+### Listing entries before a cetain date
+> Command: `list to July 26 2017`
+- All events and deadlines after July 26 2017 are no longer shown
+- Floating tasks remain unchanged
+
+### Listing entries between two dates
+> Command: `list from July 26 2017 to July 29 2017
+- Only events and deadlines between the two dates are shown
+- Floating tasks remain unchanged
+
+### List command keyboard shortcut
+> Command: press the `F5` key
+- `list` is entered ino the command box
 
 ## Add Command
 1. **Edit a floating task's name**  
