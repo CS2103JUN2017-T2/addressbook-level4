@@ -53,12 +53,12 @@ About 50 sample entries should be loaded on to the GUI panel.
 ## Complete Command
 ### Completing an entry by index
 > Command: `complete deadline 1`
-   * The first entry in the active deadlines list (`V0.5RC due`) is moved to the archive.
+- The first entry in the active deadlines list (`V0.5RC due`) is moved to the archive.
 
 ### Completing an entry by keyword search
 > Command: `complete mpe modules`
-   * The entry `Register for MPE for modules` is moved to the archive.
-   * We do not need to specify the full name to select the entry to complete, as long as the keywords provided are sufficient to identify a single entry.
+- The entry `Register for MPE for modules` is moved to the archive.
+- We do not need to specify the full name to select the entry to complete, as long as the keywords provided are sufficient to identify a single entry.
 
 ## List Command
 ### Listing the active entries
@@ -105,7 +105,22 @@ About 50 sample entries should be loaded on to the GUI panel.
 > Command: press the `F5` key
 - `list` is entered ino the command box
 
+## Delete Command
 
+### Delete floating task
+> Command: `delete float 2`
+- Deletes `Take Vitamin supplements` from the Floating Tasks Active list and moves it to Bin.
+
+> Command: `delete deadline quiz`
+- Deletes `Do lecture quiz` from the Deadlines Active list and moves it to Bin.
+
+> Command: `delete dish`
+- Lists two entries with the word dish, `Wash dishes` and `Run dishwasher`.
+- User can specify which entry to delete using the index. 
+- We delete the first entry.
+
+> Command: `delete float 1`
+- `Wash dishes` is deleted.
 
 
 # Outdated
