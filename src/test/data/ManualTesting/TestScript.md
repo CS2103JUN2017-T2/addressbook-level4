@@ -173,6 +173,11 @@ About 50 sample entries should be loaded on to the GUI panel.
 > Command: `delete float 1`
 - `Wash dishes` is deleted and moved from Floating Tasks Active list to Bin.
 
+## Delete Command
+### Delete entry that contains a keyword
+> Command: `delete \event`
+- Deletes `Post homecoming-event briefing` from the Events Active list and moves it to Bin.
+
 ## Restore Command
 ### Restore an archived entry using keywords
 > Command: `list archive`
@@ -292,43 +297,5 @@ About 50 sample entries should be loaded on to the GUI panel.
 ## Exit command
 > `exit`
 - MultiTasky should be closed normally.
-
-**End of Manual Test Script**
-
-# Outdated
-## Add Command
-
-1. **Using keywords as names**  
-   The words "event", "deadline", and "float" have special meanings for MultiTasky. To enter them as part of the name of entries, escape-word is necessary. As an example, to delete the event named "Homecoming-event briefing" in the sample data, try  
-   `delete \event`  
-   Scroll down the Events list to ensure that the event is successfully deleted.
-
-1. **Finding an entry**  
-   `find exam`  
-   By default, only active entries are searched.
-   
-   To find a completed entry (in archive), do  
-   `find turtle archive`
-1. **Undo and redo changes**  
-   `undo`  
-   Clears the changes made by the previous command (i.e. `clear all`). The entries in the bin should reappear.  
-   Enter the command  
-   `list`  
-   and notice that the active lists are still empty.
-   Use the undo shortcut `Ctrl`+`Z` to make one additional undo, this will undo the changes made by `clear` and the active entries should appear.
-   Redo can be done either by keying in the command `redo` or using the shortcut `Ctrl`+`Y`. The active entries should disappear again. Execute undo once more with `Ctrl`+`Z` to bring back the active entries for the upcoming tests.
-
-3. **Smart Parsing**
-   Key in the following command
-   ```
-   list
-   add visit gardens by the bay by christmas
-   ```
-   Scroll down the Deadlines list to find the deadline named `visit gardens by the bay`.  
-   MultiTasky is able to identify the correct "by" word and figure out the deadline.
-
-1. **Default duration for fast entry**  
-   `add Christmas party from christmas 7pm`  
-   Should result in a default event duration of 1 hour.
 
 **End of Manual Test Script**
