@@ -6,16 +6,22 @@ This is a guide which explains the steps to perform manual testing to users.
 1. Download the `SampleData.xml` file from [GitHub repository](https://github.com/CS2103JUN2017-T2/main/blob/master/src/test/data/ManualTesting/SampleData.xml).
 1. Start MultiTasky using the `.jar` file.
 1. Load the sample data by entering the command `open <filepath to SampleData.xml>`.  
-About 50 sample entries should be loaded to the GUI panel.
+About 50 sample data should be loaded to the GUI panel.
 
 ## Test Cases
 ### Basic Features
 1. **Add a floating task**  
    `add run dishwasher tag housework`  
-   Scroll down the Floating Tasks GUI panel to ensure the entry is added successfully.
+   Scroll along the floating task GUI panel to ensure the entry is added successfully.
+   
 1. **Edit a floating task's name**  
    `edit dishwasher name buy dishwasher first`  
-   Scroll down the Floating Tasks list on the GUI to ensure the entry is edited successfully.
+
+1. **Using keywords as names**  
+   The words "event", "deadline", and "float" have special meaning to MultiTasky. To enter them as part of the name of entries, escape-word is necessary. As an example, to delete the event named "Homecoming event" in the sample data, try  
+   `delete \event`
+   The event should be successfully deleted.
+
 1. **Moving an entry to and from archive**  
    ```
    complete deadline 1
@@ -28,42 +34,43 @@ About 50 sample entries should be loaded to the GUI panel.
    list
    list upcoming
    ```
-   Upcoming events are displayed in order of ascending date. Overdue deadline is shifted to the bottom of the deadline panel. Scroll down to check.
+   Overdue deadline is shifted to the bottom of the deadline panel. Scroll down to check.
 1. **Finding an entry**  
    `find exam`  
    By default, only active entries are searched.
    
-   To find a completed entry (in archive list), do  
+   To find a completed entry (in archive), do  
    `find turtle archive`
 1. **Clearing entries**  
    `list`
    `clear`  
-   By default, active entries are listed and then cleared.  
+   Active entries are listed, and then cleared.  
    
    `list bin`  
-   Entries in the bin should appear (not cleared). Clear all entries, including those in the archive and bin, with the command `clear all`
+   Entries in the bin should appear (not cleared). Clear all entries, including those in the archive and bin, with the command  
+   `clear all`
 1. **Undo and redo changes**  
    `undo`  
    Clears the changes made by the previous command (i.e. `clear all`). The entries in the bin should reappear.  
    Enter the command  
    `list`  
    and notice that the active lists are still empty.
-   Use the undo shortcut `Ctrl`+`Z` to make one additional undo, this will undo the changes made by `clear` and the active entries should re-appear.
+   Use the undo shortcut `Ctrl`+`Z` to make one additional undo, this will undo the changes made by `clear` and the active entries should appear.
    Redo can be done either by keying in the command `redo` or using the shortcut `Ctrl`+`Y`. The active entries should disappear again. Execute undo once more with `Ctrl`+`Z` to bring back the active entries for the upcoming tests.
    
 ### Time-Saving Features
-1. **Auto-complete for command word and multiple keywords using `tab`**  
+1. **Auto-complete for command word and multiple keywords**  
    Key in the following line of incomplete words  
    `l u t`
    Press the `tab` key, and the command should auto-complete to `list upcoming to`.  
-   Complete typing the rest of the command to show all upcoming entries until 8pm today:  
+   Complete the command
    `list upcoming to 8pm`  
 1. **Double-`tab` to show all possibilities of possible words for autocomplete if a single match cannot be found**  
    Key in the following in the command box  
    `c`  
    Press `tab` once. You should notice auto-complete doesn't work because there are two possible commands, i.e. `clear` and `complete`.  
    Now, try pressing `tab` twice (double-tap) and MultiTasky should display the possible commands:  
-   `c:  clear        complete`
+   `c: clear complete`
 1. **Shortcuts**
    Try all the following keyboard shortcuts:
 
@@ -94,7 +101,6 @@ About 50 sample entries should be loaded to the GUI panel.
    `find cs213` finds `CS2103`.  
    _wrong or extra characters_: The following command  
    `find cs22223` finds `CS2103`.  
-   PowerSearch is able to match entry names as well as tags.  
 3. **Smart Parsing**
    Key in the following command
    ```
