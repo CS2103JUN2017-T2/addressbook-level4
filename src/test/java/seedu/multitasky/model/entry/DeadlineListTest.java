@@ -100,7 +100,6 @@ public class DeadlineListTest {
         assertTrue(sampleDeadlineArray[0].equals(deadlineList1.asObservableList().get(0)));
     }
 
-    // @@author A0126623L
     /**
      * Dependent on the correct functioning of the contains method.
      */
@@ -121,7 +120,6 @@ public class DeadlineListTest {
         }
     }
 
-    // @@author A0126623L
     @Test(expected = DuplicateEntryException.class)
     public void add_duplicateDeadline_throwDuplicateEntryException() throws DuplicateEntryException {
         DeadlineList deadlineListUnderTest = DeadlineListTest.copyDeadlineList(deadlineList1);
@@ -130,7 +128,6 @@ public class DeadlineListTest {
         deadlineListUnderTest.add(copiedDeadline);
     }
 
-    // @@author A0126623L
     @Test
     public void equals_variousSampleDeadlines_success() {
         DeadlineList dummyDeadlineList = DeadlineListTest.copyDeadlineList(deadlineList2);
@@ -143,7 +140,6 @@ public class DeadlineListTest {
         assertFalse(deadlineList1.equals(deadlineList3));
     }
 
-    // @@author A0126623L
     @Test
     public void remove_removeSampleDeadline_success() throws EntryNotFoundException {
         DeadlineList deadlineListToTest = DeadlineListTest.copyDeadlineList(deadlineList1);
@@ -153,7 +149,6 @@ public class DeadlineListTest {
         assertTrue(deadlineListToTest.asObservableList().get(0).equals(sampleDeadlineArray[2]));
     }
 
-    // @@author A0126623L
     @Test(expected = EntryNotFoundException.class)
     public void remove_nonExistentEntry_returnEntryNotFoundException() throws EntryNotFoundException {
         DeadlineList deadlineListUnderTest = DeadlineListTest.copyDeadlineList(deadlineList1);
@@ -161,7 +156,6 @@ public class DeadlineListTest {
         deadlineListUnderTest.remove(sampleDeadlineArray[3]);
     }
 
-    // @@author A0126623L
     @Test
     public void update_updateSampleDeadline_success() throws EntryNotFoundException {
         DeadlineList deadlineListToTest = DeadlineListTest.copyDeadlineList(deadlineList1);
@@ -178,7 +172,6 @@ public class DeadlineListTest {
         }
     }
 
-    // @@author A0126623L
     @Test
     public void setEntries_newDeadlineList_equalsMethodReturnsFalse() {
         DeadlineList deadlineListToTest = DeadlineListTest.copyDeadlineList(deadlineList3);
