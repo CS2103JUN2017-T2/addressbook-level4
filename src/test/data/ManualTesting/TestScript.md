@@ -194,8 +194,8 @@ About 50 sample entries should be loaded on to the GUI panels.
 
 ## Restore Command
 ### Restore an archived entry using keywords
-> Command: `list archive` 
-> Command: `restore Register for FYP` 
+> Command: `list archive`  
+> Command: `restore Register for FYP`  
 - List all archived entries and restore "Register for FYP" deadline. The entry should disappear from the archived after it is restored.
 > Command: `list`  
 - This brings back the active list, which should have the restored "Register for FYP" deadline.
