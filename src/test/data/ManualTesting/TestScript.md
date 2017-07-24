@@ -77,6 +77,8 @@ About 50 sample data should be loaded to the GUI panel.
    `F6` | Brings focus back to command textbox
    `Ctrl`+`S` | `save`
    `Ctrl`+`O` | `open`
+   `Ctrl`+`Z` | `undo`
+   `Ctrl`+`Y` | `redo`
    `Up` | Previous entered command
    `Down` | Next entered command
 
@@ -111,6 +113,9 @@ About 50 sample data should be loaded to the GUI panel.
    Try adding an overlapping event with existing entry  
    `add Driving test from 28 July 10am to 28 July 11am`  
    The entry should be successfully added but with an alert that it overlaps with existing event(s).
+   
+   _Overdue Events or Deadlines_  
+   `add 
 
 1. **Default duration for fast entry**  
    `add Christmas party from christmas 7pm`  
