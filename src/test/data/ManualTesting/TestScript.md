@@ -14,7 +14,7 @@ About 50 sample entries should be loaded to the GUI panel.
    `add run dishwasher tag housework`  
    Scroll down the Floating Tasks GUI panel to ensure the entry is added successfully.
 1. **Edit a floating task's name**  
-   `edit dishwasher name buy dishwasher first` 
+   `edit dishwasher name buy dishwasher first`  
    Scroll down the Floating Tasks list on the GUI to ensure the entry is edited successfully.
 1. **Moving an entry to and from archive**  
    ```
