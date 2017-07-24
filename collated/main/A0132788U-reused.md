@@ -1,12 +1,11 @@
 # A0132788U-reused
 ###### \java\seedu\multitasky\logic\commands\CompleteByFindCommand.java
 ``` java
-/*
+/**
  * Finds entries from given keywords and completes the entry if it is the only one found and moves it to archive.
  */
 public class CompleteByFindCommand extends CompleteCommand {
     public static final String MESSAGE_NO_ENTRIES = "No entries found! Please try again with different keywords";
-
     public static final String MESSAGE_MULTIPLE_ENTRIES = "More than one entry found! \n"
                                                           + "Use " + COMMAND_WORD + " ["
                                                           + String.join(" | ",
@@ -22,40 +21,19 @@ public class CompleteByFindCommand extends CompleteCommand {
         this.keywords = keywords;
     }
 
-    public Set<String> getKeywords() {
-        return keywords;
-    }
-
     @Override
     public CommandResult execute() throws CommandException, DuplicateEntryException {
-
-        // Update all 3 lists with new search parameters until at least 1 result is found.
-        model.updateAllFilteredLists(keywords, null, null, Entry.State.ACTIVE, Model.STRICT_SEARCHES);
-
-        // collate a combined list to measure how many entries are found.
-        List<ReadOnlyEntry> allList = new ArrayList<>();
-        allList.addAll(model.getFilteredDeadlineList());
-        allList.addAll(model.getFilteredEventList());
-        allList.addAll(model.getFilteredFloatingTaskList());
+        List<ReadOnlyEntry> allList = getListAfterSearch();
 
         if (allList.size() == 1) { // proceed to complete
             entryToComplete = allList.get(0);
             try {
                 model.changeEntryState(entryToComplete, Entry.State.ARCHIVED);
-            } catch (EntryNotFoundException e) {
-                throw new AssertionError("The target entry cannot be missing");
-            } catch (OverlappingEventException oee) {
-                throw new AssertionError("Overlap should not happen for complete command.");
-            } catch (EntryOverdueException e) {
-                throw new AssertionError("Overdue should not apply to complete command.");
-            } catch (OverlappingAndOverdueEventException e) {
-                throw new AssertionError("Overlap and overdue should not apply to complete command.");
+            } catch (EntryNotFoundException | OverlappingEventException | EntryOverdueException
+                     | OverlappingAndOverdueEventException e) {
+                throw new AssertionError("These exceptions are not valid for complete command");
             }
-            // refresh list view after updating.
-            model.updateAllFilteredLists(history.getPrevKeywords(), history.getPrevStartDate(),
-                                         history.getPrevEndDate(), history.getPrevState(),
-                                         history.getPrevSearches());
-
+            revertListView();
             return new CommandResult(String.format(MESSAGE_SUCCESS, entryToComplete));
         } else {
             history.setPrevSearch(keywords, null, null, Entry.State.ACTIVE);
@@ -68,11 +46,33 @@ public class CompleteByFindCommand extends CompleteCommand {
         }
     }
 
+    /**
+     * reverts inner lists in model to how they were before by using command history
+     */
+    private void revertListView() {
+        model.updateAllFilteredLists(history.getPrevKeywords(), history.getPrevStartDate(),
+                                     history.getPrevEndDate(), history.getPrevState(),
+                                     history.getPrevSearches());
+    }
+
+    /**
+     * updates inner lists with new keyword terms and returns a collated list with all found entries.
+     */
+    private List<ReadOnlyEntry> getListAfterSearch() {
+        model.updateAllFilteredLists(keywords, null, null, Entry.State.ACTIVE, Model.STRICT_SEARCHES);
+
+        List<ReadOnlyEntry> allList = new ArrayList<>();
+        allList.addAll(model.getFilteredDeadlineList());
+        allList.addAll(model.getFilteredEventList());
+        allList.addAll(model.getFilteredFloatingTaskList());
+        return allList;
+    }
+
 }
 ```
 ###### \java\seedu\multitasky\logic\commands\CompleteByIndexCommand.java
 ``` java
-/*
+/**
  * Completes an entry identified using the type of entry followed by displayed index.
  */
 public class CompleteByIndexCommand extends CompleteCommand {
@@ -98,28 +98,28 @@ public class CompleteByIndexCommand extends CompleteCommand {
         entryToComplete = listToCompleteFrom.get(targetIndex.getZeroBased());
         try {
             model.changeEntryState(entryToComplete, Entry.State.ARCHIVED);
-        } catch (EntryNotFoundException enfe) {
-            throw new AssertionError("The target entry cannot be missing");
-        } catch (OverlappingEventException oee) {
-            throw new AssertionError("Overlap should not happen for complete command.");
-        } catch (EntryOverdueException e) {
-            throw new AssertionError("Overdue should not apply to complete command.");
-        } catch (OverlappingAndOverdueEventException e) {
-            throw new AssertionError("Overlap and overdue should not apply to complete command.");
+        } catch (EntryNotFoundException | OverlappingEventException | OverlappingAndOverdueEventException
+                 | EntryOverdueException e) {
+            throw new AssertionError("These exceptions are not valid for complete command");
         }
-        // refresh list view after updating.
+        refreshListView();
+        return new CommandResult(String.format(MESSAGE_SUCCESS, entryToComplete));
+    }
+
+    /**
+     * refresh inner lists by using previous command history
+     */
+    private void refreshListView() {
         model.updateAllFilteredLists(history.getPrevKeywords(), history.getPrevStartDate(),
                                      history.getPrevEndDate(), history.getPrevState(),
                                      history.getPrevSearches());
-
-        return new CommandResult(String.format(MESSAGE_SUCCESS, entryToComplete));
     }
 
 }
 ```
 ###### \java\seedu\multitasky\logic\commands\CompleteCommand.java
 ``` java
-/*
+/**
  * Abstract class that represents a complete command. It contains the command keyword, usage instructions,
  * prefixes and the success message.
  */
@@ -131,11 +131,11 @@ public abstract class CompleteCommand extends Command {
                                                + " if it is the only entry found, or completes the entry identified"
                                                + " by the index number of the last entry listing"
                                                + " and moves it to archive.\n"
-                                               + "Format: " + COMMAND_WORD + " [" + "[" + "KEYWORDS" + "]" + " |"
-                                               + " [" + String.join(" | ", CliSyntax.PREFIX_EVENT.toString(),
+                                               + "Format: " + COMMAND_WORD + " <" + "KEYWORDS" + ">" + " |"
+                                               + " <<" + String.join(" | ", CliSyntax.PREFIX_EVENT.toString(),
                                                        CliSyntax.PREFIX_DEADLINE.toString(),
                                                        CliSyntax.PREFIX_FLOATINGTASK.toString())
-                                               + "]" + " INDEX" + "]" + "\n"
+                                               + ">" + " INDEX" + ">" + "\n"
                                                + "All possible flags for Complete : 'event', 'deadline', 'float'";
 
     public static final String MESSAGE_SUCCESS = "Entry completed:" + "\n"
@@ -160,15 +160,28 @@ public abstract class CompleteCommand extends Command {
 ```
 ###### \java\seedu\multitasky\logic\parser\CompleteCommandParser.java
 ``` java
+/**
+ * Parses input arguments and creates a new CompleteCommand object
+ */
+public class CompleteCommandParser {
+
+    /**
+     * Parses the given {@code String} of arguments in the context of the CompleteCommand and returns a
+     * CompleteCommand object for execution.
+     *
+     * @throws ParseException if the user input does not conform the expected format
+     */
+
     public CompleteCommand parse(String args) throws ParseException {
-        argMultimap = ArgumentTokenizer.tokenize(args, ParserUtil.toPrefixArray(CompleteCommand.VALID_PREFIXES));
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args,
+                ParserUtil.toPrefixArray(CompleteCommand.VALID_PREFIXES));
 
         if (args.trim().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, CompleteCommand.MESSAGE_USAGE));
         }
 
         if (hasIndexFlag(argMultimap)) { // process to complete by indexes
-            if (hasInvalidFlagCombination(argMultimap)) {
+            if (!ParserUtil.hasValidListTypeCombination(argMultimap)) {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                         CompleteCommand.MESSAGE_USAGE));
             }
@@ -190,17 +203,6 @@ public abstract class CompleteCommand extends Command {
 
             return new CompleteByFindCommand(keywordSet);
         }
-    }
-
-    /**
-     * A method that returns true if flags are given in an illogical manner for complete commands.
-     * illogical := any 2 of /float, /deadline, /event used together.
-     */
-    private boolean hasInvalidFlagCombination(ArgumentMultimap argMultimap) {
-        assert argMultimap != null;
-        return ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_DEADLINE)
-               || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_DEADLINE, PREFIX_EVENT)
-               || ParserUtil.areAllPrefixesPresent(argMultimap, PREFIX_FLOATINGTASK, PREFIX_EVENT);
     }
 
     /**
