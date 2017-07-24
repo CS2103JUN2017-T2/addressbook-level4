@@ -164,6 +164,38 @@ About 50 sample entries should be loaded on to the GUI panel.
 > Command: `history`
 - All the entered commands are shown in the result display, with the most recently entered command shown first.
 
+## Clear command
+### Clear active entries
+> Command: `list`
+> Command: `clear`
+- Active entries are listed, and then cleared.
+
+### Clear bin
+> Command: `list bin`
+> Command: `clear bin`
+- The bin is cleared.
+> Command: `list`
+- Entries which are active should still be present.
+> Command: `undo`
+- Execute undo to bring back the cleared entries for subsequent tests.
+
+### Clear archive
+> Command: `list archive`
+> Command: `clear archive`
+- The archive is cleared.
+> Command: `list`
+- Entries which are active should still be present.
+> Command: `undo`
+- Execute undo to bring back the cleared entries for subsequent tests.
+
+### Clear all entries
+> Command: `clear all`
+- This clears all command.
+> Command: `list all`
+- This should display an empty list.
+> Command: `undo`
+- Execute undo to bring back the cleared entries for subsequent tests.
+
 
 # Outdated
 ## Add Command
@@ -182,14 +214,6 @@ Scroll down the Floating Task list to ensure that the entry is edited successful
    
    To find a completed entry (in archive), do  
    `find turtle archive`
-1. **Clearing entries**  
-   `list`  
-   `clear`    
-   Active entries are listed, and then cleared.  
-   
-   `list bin`  
-   Entries in the bin should appear (not cleared). Clear all entries, including those in the archive and bin, with the command  
-   `clear all`
 1. **Undo and redo changes**  
    `undo`  
    Clears the changes made by the previous command (i.e. `clear all`). The entries in the bin should reappear.  
