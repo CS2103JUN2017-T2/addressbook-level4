@@ -23,7 +23,7 @@ import seedu.multitasky.model.UserPrefs;
 
 // @@author A0132788U
 /**
- * Manages storage of EntryBook data in local storage.
+ * Manages EntryBook data in local storage.
  */
 public class StorageManager extends ComponentManager implements Storage {
     /** Index to maintain snapshot file number */
@@ -33,7 +33,6 @@ public class StorageManager extends ComponentManager implements Storage {
     private UserPrefsStorage userPrefsStorage;
     private StorageUserPrefs userPrefs;
 
-    // @@author
     public StorageManager(EntryBookStorage entryBookStorage, UserPrefsStorage userPrefsStorage,
             StorageUserPrefs userPrefs) {
         super();
@@ -42,7 +41,55 @@ public class StorageManager extends ComponentManager implements Storage {
         this.userPrefs = userPrefs;
     }
 
-    // ================ UserPrefs methods ==============================
+    // ================ EntryBook methods ==============================
+
+    @Override
+    public String getEntryBookFilePath() {
+        return entryBookStorage.getEntryBookFilePath();
+    }
+
+    @Override
+    public void setEntryBookFilePath(String newFilePath) {
+        entryBookStorage.setEntryBookFilePath(newFilePath);
+    }
+
+    @Override
+    public Optional<ReadOnlyEntryBook> readEntryBook() throws DataConversionException, IOException {
+        return readEntryBook(entryBookStorage.getEntryBookFilePath());
+    }
+
+    @Override
+    public Optional<ReadOnlyEntryBook> readEntryBook(String filePath) throws DataConversionException, IOException {
+        logger.fine("Attempting to read data from file: " + filePath);
+        return entryBookStorage.readEntryBook(filePath);
+    }
+
+    @Override
+    public void saveEntryBook(ReadOnlyEntryBook entryBook) throws IOException {
+        saveEntryBook(entryBook, entryBookStorage.getEntryBookFilePath());
+    }
+
+    @Override
+    public void saveEntryBook(ReadOnlyEntryBook entryBook, String filePath) throws IOException {
+        logger.fine("Attempting to write to data file: " + filePath);
+        entryBookStorage.saveEntryBook(entryBook, filePath);
+    }
+
+    /**
+     * Loads data from the given file.
+     *
+     * @throws Exception
+     */
+    public EntryBook loadDataFromFile(String filepath) throws Exception {
+        try {
+            ReadOnlyEntryBook dataFromFile = XmlFileStorage.loadDataFromSaveFile(new File(filepath));
+            return new EntryBook(dataFromFile);
+        } catch (Exception e) {
+            throw new Exception("Nothing to load from!");
+        }
+    }
+
+    // ================ UserPrefsStorage methods ==============================
 
     @Override
     public String getUserPrefsFilePath() {
@@ -58,48 +105,7 @@ public class StorageManager extends ComponentManager implements Storage {
     public void saveUserPrefs(UserPrefs userPrefs) throws IOException {
         userPrefsStorage.saveUserPrefs(userPrefs);
     }
-
-    // ================ EntryBook methods ==============================
-
-    @Override
-    public String getEntryBookFilePath() {
-        return entryBookStorage.getEntryBookFilePath();
-    }
-
-    // @@author A0132788U
-    /** Sets the entryBookFilePath. */
-    @Override
-    public void setEntryBookFilePath(String newFilePath) {
-        entryBookStorage.setEntryBookFilePath(newFilePath);
-    }
-
-    // ================ Undo/Redo UserPrefs methods ==============================
-
-    /**
-     * Gets the proper filepath of the current snapshot with index
-     */
-    public String getEntryBookSnapshotPath() {
-        return userPrefs.getEntryBookSnapshotPath() + index + ".xml";
-    }
-
-    /**
-     * Methods to update the indices when files are created during mutation/deleted during exit
-     */
-    public static void incrementIndexByOne() {
-        index++;
-    }
-
-    public static void decrementIndexByOne() {
-        index--;
-    }
-
-    public static int getIndex() {
-        return index;
-    }
-
-    public static void setIndex(int index) {
-        StorageManager.index = index;
-    }
+    // ================ StorageUserPrefs methods ==============================
 
     /**
      * Gets and sets the proper filepath of the previous snapshot needed for undo
@@ -126,6 +132,13 @@ public class StorageManager extends ComponentManager implements Storage {
     }
 
     /**
+     * Gets the proper filepath of the current snapshot with index
+     */
+    public String getEntryBookSnapshotPath() {
+        return userPrefs.getEntryBookSnapshotPath() + index + ".xml";
+    }
+
+    /**
      * Gets the filepath of the most current snapshot xml file and increments index by one.
      */
     public String setEntryBookSnapshotPathAndUpdateIndex() {
@@ -140,44 +153,24 @@ public class StorageManager extends ComponentManager implements Storage {
         saveEntryBook(entryBook, setEntryBookSnapshotPathAndUpdateIndex());
     }
 
-    // @@author
     // ================ StorageManager methods ==============================
-    @Override
-    public Optional<ReadOnlyEntryBook> readEntryBook() throws DataConversionException, IOException {
-        return readEntryBook(entryBookStorage.getEntryBookFilePath());
-    }
-
-    @Override
-    public Optional<ReadOnlyEntryBook> readEntryBook(String filePath) throws DataConversionException, IOException {
-        logger.fine("Attempting to read data from file: " + filePath);
-        return entryBookStorage.readEntryBook(filePath);
-    }
-
-    @Override
-    public void saveEntryBook(ReadOnlyEntryBook entryBook) throws IOException {
-        saveEntryBook(entryBook, entryBookStorage.getEntryBookFilePath());
-    }
-
-    @Override
-    public void saveEntryBook(ReadOnlyEntryBook entryBook, String filePath) throws IOException {
-        logger.fine("Attempting to write to data file: " + filePath);
-        entryBookStorage.saveEntryBook(entryBook, filePath);
-    }
-
-    // @@author A0132788U
-
     /**
-     * Loads data from the given file.
-     *
-     * @throws Exception
+     * Methods to update the indices when files are created during mutation/deleted during startup.
      */
-    public EntryBook loadDataFromFile(String filepath) throws Exception {
-        try {
-            ReadOnlyEntryBook dataFromFile = XmlFileStorage.loadDataFromSaveFile(new File(filepath));
-            return new EntryBook(dataFromFile);
-        } catch (Exception e) {
-            throw new Exception("Nothing to load from!");
-        }
+    public static void incrementIndexByOne() {
+        index++;
+    }
+
+    public static void decrementIndexByOne() {
+        index--;
+    }
+
+    public static int getIndex() {
+        return index;
+    }
+
+    public static void setIndex(int index) {
+        StorageManager.index = index;
     }
 
     // ================ Event Handling methods ==============================
