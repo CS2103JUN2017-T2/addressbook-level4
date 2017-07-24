@@ -56,9 +56,11 @@ public class CommandAutocompleteTest {
 
     @Test
     public void commandAutocomplete_getPossibilities_correct() {
-        assertStringEquals(commandAutoComplete.getPossibilities("e"), "e: clear complete delete edit exit "
-                                                                    + "help open redo restore save ");
-        assertStringEquals(commandAutoComplete.getPossibilities("its"), "its: history list ");
+        assertStringEquals(commandAutoComplete.getPossibilities("e"), "e:  clear        complete        delete        "
+                                                                    + "edit        exit        help        "
+                                                                    + "open        redo        restore        "
+                                                                    + "save        ");
+        assertStringEquals(commandAutoComplete.getPossibilities("its"), "its:  history        list        ");
         assertTrue(commandAutoComplete.getPossibilities("list") == null);
         assertTrue(commandAutoComplete.getPossibilities("vy") == null);
     }

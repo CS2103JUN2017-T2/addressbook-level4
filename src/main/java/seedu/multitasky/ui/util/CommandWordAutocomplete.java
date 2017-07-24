@@ -43,7 +43,7 @@ public class CommandWordAutocomplete implements TextAutocomplete {
         for (int level = PowerMatch.MIN_LEVEL; level <= PowerMatch.MAX_LEVEL; ++level) {
             for (String commandWord : commandWords) {
                 if (matcher.isMatch(level, input, commandWord)) {
-                    possibilities.append(commandWord).append(" ");
+                    possibilities.append(commandWord).append("        ");
                 }
             }
             if (!possibilities.toString().isEmpty() && possibilities.toString().split(" ").length > 1) {
