@@ -32,6 +32,14 @@ About 50 sample entries should be loaded on to the GUI panel.
 ### Add an event 
 > Command: `add Football match on 2nd August 6 pm to 9 pm tag play`  
 - Scroll down the Events List to ensure that it is successfully added.
+> Command: `add Wash dishes`
+- MultiTasky should prevent us from adding duplicate entries.
+> Command: `add Driving test from 28 July 10am to 28 July 11am`
+- The entry should be added successfully but with an alert that it overlaps with existing event(s).
+> Command: `add NDP 2016 on 9 August 2016 to 9 Aug 2016`  
+- The entry should be added successfully but with an alert that the added event is overdue.
+> Command: `add Register for SOC modules from 9 July to 10 July`
+- The entry should be added successfully but with an alert that it is overdue and overlaps with existing event(s).
 
 ## Complete Command
 ### Completing an entry by index
@@ -189,25 +197,6 @@ Scroll down the Floating Task list to ensure that the entry is edited successful
    ```
    Scroll down the Deadlines list to find the deadline named `visit gardens by the bay`.  
    MultiTasky is able to identify the correct "by" word and figure out the deadline.
-
-1. **Detection and alerts**  
-   _Duplicates_  
-   Key in the following command to add a duplicate entry 
-   `add Wash dishes`  
-   MultiTasky should prevent us from adding duplicate entries.
-   
-   _Overlapping Events_  
-   Try adding an overlapping event with existing entry  
-   `add Driving test from 28 July 10am to 28 July 11am`  
-   The entry should be added successfully but with an alert that it overlaps with existing event(s).
-   
-   _Overdue Events or Deadlines_  
-   `add NDP 2016 on 9 August 2016 to 9 Aug 2016`  
-   The entry should be added successfully but with an alert that the added event is overdue.
-   
-   _Overdue and Overlapping Events_  
-   `add Register for SOC modules from 9 July to 10 July`  
-   The entry should be added successfully but with an alert that it is overdue and overlaps with existing event(s).
 
 1. **Default duration for fast entry**  
    `add Christmas party from christmas 7pm`  
