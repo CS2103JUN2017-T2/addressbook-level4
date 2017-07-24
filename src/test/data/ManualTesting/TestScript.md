@@ -125,7 +125,7 @@ About 50 sample data should be loaded to the GUI panel.
    `add NDP 2016 on 9 August 2016 to 9 Aug 2016`  
    The entry should be added successfully but with an alert that the added event is overdue.
    
-   _Overdue and Overlapping Events_
+   _Overdue and Overlapping Events_  
    `add Register for SOC modules from 9 July to 10 July`  
    The entry should be added successfully but with an alert that it is overdue and overlaps with existing event(s).
 
