@@ -6,7 +6,7 @@ We are a team based in the http://www.comp.nus.edu.sg[School of Computing, Natio
 
 == Project Team
 
-== http://github.com/mattheuslee[Mattheus Lee]
+=== http://github.com/mattheuslee[Mattheus Lee]
 image::mattheuslee.jpg[width="150", align="left"]
 
 * Role: Team Leader
@@ -40,7 +40,7 @@ image::chuapingchan.png[width="150", align="left"]
 ** Maintain meeting minutes
 
 '''
-== http://github.com/kevinLamKB[Kevin Lam]
+=== http://github.com/kevinLamKB[Kevin Lam]
 image::kevinlamkb.png[width="150", align="left"]
 * Role: Developer
 * Components in charge of: https://github.com/CS2103JUN2017-T2/main/blob/master/docs/DeveloperGuide.adoc#logic-component[Logic]
@@ -55,7 +55,7 @@ image::kevinlamkb.png[width="150", align="left"]
 ** Implement workaround for FilteredList refresh issues.
 
 '''
-== http://github.com/akd13[Akankshita Dash]
+=== http://github.com/akd13[Akankshita Dash]
 image::akd13.png[width="150", align="left"]
 * Role: Developer
 * Components in charge of: https://github.com/CS2103JUN2017-T2/main/blob/master/docs/DeveloperGuide.adoc#storage-component[Storage]
