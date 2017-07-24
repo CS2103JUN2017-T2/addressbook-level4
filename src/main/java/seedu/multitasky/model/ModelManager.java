@@ -2,7 +2,6 @@ package seedu.multitasky.model;
 
 import static seedu.multitasky.commons.util.CollectionUtil.requireAllNonNull;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -357,8 +356,6 @@ public class ModelManager extends ComponentManager implements Model {
         protected List<Entry.State> states;
         protected Search search;
         protected int level;
-
-        protected DateFormat dateFormat;
 
         /**
          * Constructs the NameDateStateQualifier.
