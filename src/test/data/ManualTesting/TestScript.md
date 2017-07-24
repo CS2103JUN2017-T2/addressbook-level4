@@ -180,6 +180,26 @@ About 50 sample entries should be loaded on to the GUI panel.
 > Command: `Ctrl + Y`
 - Redo again using keyboard shortcut. (redo delete `Wash dishes`).
 
+## Save Command
+### Save entries to user-specified filepath
+> Command: `save ./datafile.xml`
+- Saves all the current information in the application to the specified filepath.
+- In this case the data is now saved to the file `datafile.xml` in the same directory as `MultiTasky.jar`.
+
+### Save command keyboard shortcut
+> Command: `ctrl` + `s`
+- `save` is entered into the command box.
+
+## Open Command
+### Opens entries from to user-specified filepath
+> Command: `open ./data/entrybook.xml`
+- Loads all the information from the specified file into the application.
+- The current save location remains unchanged as `./datafile.xml`.
+
+### Open command keyboard shortcut
+> Command: `ctrl` + `o`
+- `open` is entered into the command box.
+
 # Outdated
 ## Add Command
 1. **Edit a floating task's name**  
