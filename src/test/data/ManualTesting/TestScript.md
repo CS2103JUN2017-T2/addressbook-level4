@@ -6,7 +6,7 @@ This is a guide which explains the steps to perform manual testing to users.
 1. Download the `SampleData.xml` file from [GitHub repository](https://github.com/CS2103JUN2017-T2/main/blob/master/src/test/data/ManualTesting/SampleData.xml).
 1. Start MultiTasky using the `.jar` file.
 1. Load the sample data by entering the command `open <filepath to SampleData.xml>`.  
-About 50 sample entries should be loaded to the GUI panel.
+About 50 sample entries should be loaded on to the GUI panel.
 
 ## Help Command
 ### Opening the help window
@@ -17,15 +17,31 @@ About 50 sample entries should be loaded to the GUI panel.
 > Command: `F1`  
 - Opens MultiTasky's UserGuide.
 
+## Add Command
+
+### Add a floating task
+> Command: `add run dishwasher tag housework`  
+- Scroll down the Floating Task list to ensure that the entry is added successfully.
+
+### Add a deadline 
+> Command:`add Pay camp fee by tomorrow 6 pm tag school important`   
+- This entry will be added to the Deadline List.  
+- On the GUI, the next day's date is displayed.  
+- The notations `one day from now` and time as `6 pm` are also displayed below the date.
+
+### Add an event 
+> Command: `add Football match on 2nd August 6 pm to 9 pm tag play`  
+- Scroll down the Events List to ensure that it is successfully added.
+
 ## Complete Command
 ### Completing an entry by index
 > Command: `complete deadline 1`
-- The first entry in the active deadlines list (`V0.5RC due`) is moved to the archive.
+   * The first entry in the active deadlines list (`V0.5RC due`) is moved to the archive.
 
 ### Completing an entry by keyword search
 > Command: `complete mpe modules`
-- The entry `Register for MPE for modules` is moved to the archive.
-- We do not need to specify the full name to select the entry to complete, as long as the keywords provided are sufficient to identify a single entry.
+   * The entry `Register for MPE for modules` is moved to the archive.
+   * We do not need to specify the full name to select the entry to complete, as long as the keywords provided are sufficient to identify a single entry.
 
 ## List Command
 ### Listing the active entries
@@ -74,8 +90,8 @@ About 50 sample entries should be loaded to the GUI panel.
 
 ## Add Command
 1. **Edit a floating task's name**  
-   `edit dishwasher name buy dishwasher first`  
-   Scroll down the Floating Task list to ensure that the entry is edited successfully.
+   `edit dishwasher name buy dishwasher first`.  
+Scroll down the Floating Task list to ensure that the entry is edited successfully.
 
 1. **Using keywords as names**  
    The words "event", "deadline", and "float" have special meanings for MultiTasky. To enter them as part of the name of entries, escape-word is necessary. As an example, to delete the event named "Homecoming-event briefing" in the sample data, try  
@@ -83,12 +99,11 @@ About 50 sample entries should be loaded to the GUI panel.
    Scroll down the Events list to ensure that the event is successfully deleted.
 
 1. **Moving an entry to and from archive**  
-   `complete deadline 1`  
-   `list archive`  
-   The entry has been completed and moved to archive. Scroll down in archive to find “label fridge”.  
-   `restore label fridge`  
-   `list`  
-   The entry has been moved back to active.
+   ```
+   complete deadline 1
+   list archive
+   ```
+   Scroll down in archive to find “label fridge”.
    
    ```
    restore label fridge
@@ -103,8 +118,8 @@ About 50 sample entries should be loaded to the GUI panel.
    To find a completed entry (in archive), do  
    `find turtle archive`
 1. **Clearing entries**  
-   `list`
-   `clear`  
+   `list`  
+   `clear`    
    Active entries are listed, and then cleared.  
    
    `list bin`  
@@ -149,8 +164,6 @@ About 50 sample entries should be loaded to the GUI panel.
    `Ctrl`+`Y` | `redo`
    `Up` | Previous entered command
    `Down` | Next entered command
-   `Ctrl`+`z` | `undo`
-   `Ctrl`+`y` | `redo`
 
 ### Smart-Features
 1. **Auto-correct**  
