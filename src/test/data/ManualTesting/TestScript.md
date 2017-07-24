@@ -217,7 +217,7 @@ About 50 sample entries should be loaded on to the GUI panel.
 - In this case the data is now saved to the file `datafile.xml` in the same directory as `MultiTasky.jar`.
 
 ### Save command keyboard shortcut
-> Command: `ctrl` + `s`
+> Command: `Ctrl` + `S`
 - `save` is entered into the command box.
 
 ## Open Command
@@ -227,7 +227,7 @@ About 50 sample entries should be loaded on to the GUI panel.
 - The current save location remains unchanged as `./datafile.xml`.
 
 ### Open command keyboard shortcut
-> Command: `ctrl` + `o`
+> Command: `Ctrl` + `O`
 - `open` is entered into the command box.
 
 ## Clear command
@@ -261,6 +261,12 @@ About 50 sample entries should be loaded on to the GUI panel.
 - This should display an empty list.
 > Command: `undo`
 - Execute undo to bring back the cleared entries for subsequent tests.
+
+## Exit command
+> `exit`
+- MultiTasky should be closed normally.
+
+# End of Manual Test Script
 
 
 # Outdated
