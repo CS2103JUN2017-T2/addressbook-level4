@@ -60,21 +60,6 @@ About 50 sample entries should be loaded on to the GUI panel.
 - The entry `Register for MPE for modules` is moved to the archive.
 - We do not need to specify the full name to select the entry to complete, as long as the keywords provided are sufficient to identify a single entry.
 
-## Restore Command
-### Restore an archived entry using keywords
-> Command: `list archive`
-> Command: `restore Register for FYP`
-- List all archived entries and restore "Register for FYP" deadline. The entry should disappear from the archived after it is restored.
-> Command: `list`
-- This brings back the active list, which should have the restored "Register for FYP" deadline.
-
-### Restore an archived entry using index
-> Command: `list archive`
-> Command: `restore float 2`
-- This should restore the floating task "Buy cornflakes".
-> Command: `list`
-- This brings back the active list, which should have the restored "Buy cornflakes" floating task.
-
 ## List Command
 ### Listing the active entries
 > Command: `list`
@@ -120,6 +105,36 @@ About 50 sample entries should be loaded on to the GUI panel.
 > Command: press the `F5` key
 - `list` is entered ino the command box.
 
+## Edit Command
+### Editing an entry by index
+> Command: `edit float 5 name practice piano`
+- The 5th floating task entry's name is changed to `practice piano` 
+
+### Editing an entry by keyword search
+> Command: `edit practice piano name practice guitar`
+- The `practice piano` floating task entry's name is modified to `practice guitar`.
+
+### Editing an entry's details
+> Command: `edit bid cors from 30 july 10:30am to 12pm addtag dont_miss!`
+- The `bid on cors` entry's start and end date are updated accordingly, and an additional `dont_miss!` tag is added
+> Command: `edit bid cors tag`
+- All tags are removed from the `bid on cors` entry.
+
+### Editing across entry type
+> Command: `edit cors from`
+- the start date fields from `bid on cors` are removed, and the entry is automatically converted to a deadline entry. Scroll down on the deadline lists to verify.
+> Command: `edit teach mom from tomorrow 9pm to 10pm`
+- the entry `teach Mom to use Excel` is converted from a floating task to an event.
+
+### Using saved edit details
+> Command: `edit party from 27 dec 7pm to 9pm`
+> Command: `edit event 2`
+- If more than one entries are found through edit by keyword search, the edit details are saved and user can use index or hone the keyword search to identify the target entry to edit with the saved edit details.
+
+### Edit shortcut
+> Command: `F2`
+- `edit` keyword appears on the command line.
+
 ## Find command
 ### Finding entries using basic keyword search
 > Command: `find cs2103`
@@ -158,10 +173,42 @@ About 50 sample entries should be loaded on to the GUI panel.
 > Command: `delete float 1`
 - `Wash dishes` is deleted and moved from Floating Tasks Active list to Bin.
 
+## Restore Command
+### Restore an archived entry using keywords
+> Command: `list archive`
+> Command: `restore Register for FYP`
+- List all archived entries and restore "Register for FYP" deadline. The entry should disappear from the archived after it is restored.
+> Command: `list`
+- This brings back the active list, which should have the restored "Register for FYP" deadline.
+
+### Restore an archived entry using index
+> Command: `list archive`
+> Command: `restore float 2`
+- This should restore the floating task "Buy cornflakes".
+> Command: `list`
+- This brings back the active list, which should have the restored "Buy cornflakes" floating task.
+
 ## History Command
 ### View command history
 > Command: `history`
 - All the entered commands are shown in the result display, with the most recently entered command shown first.
+
+## Undo and Redo Commands
+### Undo
+> Command: `undo`
+- Undo the previous data mutating action (undo delete `Wash dishes`).
+
+### Undo shortcut
+> Command: `Ctrl + Z`
+- Undo again using keyboard shortcut (undo delete `Do lecture quiz`)
+
+### Redo
+> Command: `redo`
+- Redo the previous undo (redo delete `Do lecture quiz`)
+
+### Redo shortcut
+> Command: `Ctrl + Y`
+- Redo again using keyboard shortcut. (redo delete `Wash dishes`).
 
 ## Save Command
 ### Save entries to user-specified filepath
@@ -170,7 +217,7 @@ About 50 sample entries should be loaded on to the GUI panel.
 - In this case the data is now saved to the file `datafile.xml` in the same directory as `MultiTasky.jar`.
 
 ### Save command keyboard shortcut
-> Command: `ctrl` + `s`
+> Command: `Ctrl` + `S`
 - `save` is entered into the command box.
 
 ## Open Command
@@ -180,8 +227,44 @@ About 50 sample entries should be loaded on to the GUI panel.
 - The current save location remains unchanged as `./datafile.xml`.
 
 ### Open command keyboard shortcut
-> Command: `ctrl` + `o`
+> Command: `Ctrl` + `O`
 - `open` is entered into the command box.
+
+## Clear command
+### Clear active entries
+> Command: `list`
+> Command: `clear`
+- Active entries are listed, and then cleared.
+
+### Clear bin
+> Command: `list bin`
+> Command: `clear bin`
+- The bin is cleared.
+> Command: `list`
+- Entries which are active should still be present.
+> Command: `undo`
+- Execute undo to bring back the cleared entries for subsequent tests.
+
+### Clear archive
+> Command: `list archive`
+> Command: `clear archive`
+- The archive is cleared.
+> Command: `list`
+- Entries which are active should still be present.
+> Command: `undo`
+- Execute undo to bring back the cleared entries for subsequent tests.
+
+### Clear all entries
+> Command: `clear all`
+- This clears all command.
+> Command: `list all`
+- This should display an empty list.
+> Command: `undo`
+- Execute undo to bring back the cleared entries for subsequent tests.
+
+## Exit command
+> `exit`
+- MultiTasky should be closed normally.
 
 ## Additional Features
 ### Command word Autocomplete
@@ -211,11 +294,10 @@ About 50 sample entries should be loaded on to the GUI panel.
 - The `up arrow` key brings up the previously entered command into the command box, and the `down arrow` key brings up the next entered command into the command box.
 
 
+# End of Manual Test Script
+
 # Outdated
 ## Add Command
-1. **Edit a floating task's name**  
-   `edit dishwasher name buy dishwasher first`.  
-Scroll down the Floating Task list to ensure that the entry is edited successfully.
 
 1. **Using keywords as names**  
    The words "event", "deadline", and "float" have special meanings for MultiTasky. To enter them as part of the name of entries, escape-word is necessary. As an example, to delete the event named "Homecoming-event briefing" in the sample data, try  
@@ -228,14 +310,6 @@ Scroll down the Floating Task list to ensure that the entry is edited successful
    
    To find a completed entry (in archive), do  
    `find turtle archive`
-1. **Clearing entries**  
-   `list`  
-   `clear`    
-   Active entries are listed, and then cleared.  
-   
-   `list bin`  
-   Entries in the bin should appear (not cleared). Clear all entries, including those in the archive and bin, with the command  
-   `clear all`
 1. **Undo and redo changes**  
    `undo`  
    Clears the changes made by the previous command (i.e. `clear all`). The entries in the bin should reappear.  
@@ -257,19 +331,5 @@ Scroll down the Floating Task list to ensure that the entry is edited successful
 1. **Default duration for fast entry**  
    `add Christmas party from christmas 7pm`  
    Should result in a default event duration of 1 hour.
-
-1. **Memory for edit command**
-   ```
-   edit party from 27 dec 7pm to 9pm
-   edit event 2
-   ```
-   If more than one entries are found, the edit details are saved and one should just need to use index or hone the keyword search to identify the target entry to edit with the saved edit details.
-
-1. **Editing entries across entry types**  
-   ```
-   list
-   edit cors from
-   ```
-   The event named `Bid on CORS` should be turned into a deadline. Scroll down the deadline panel to check.
 
 **End of Manual Test Script**
