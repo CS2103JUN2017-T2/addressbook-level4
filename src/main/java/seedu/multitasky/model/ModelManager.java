@@ -206,48 +206,8 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public UnmodifiableObservableList<ReadOnlyEntry> getActiveList() {
-        return new UnmodifiableObservableList<>(entryBook.getAllEntries());
-    }
-
-    @Override
-    public void updateFilteredEventListToShowAll() {
-        filteredEventList.setPredicate(null);
-    }
-
-    @Override
-    public void updateFilteredDeadlineListToShowAll() {
-        filteredDeadlineList.setPredicate(null);
-    }
-
-    @Override
-    public void updateFilteredFloatingTaskListToShowAll() {
-        filteredFloatingTaskList.setPredicate(null);
-    }
-
-    /**
-     * Updates all filtered list to show all entries.
-     */
-    @Override
-    public void updateAllFilteredListToShowAll() {
-        updateFilteredEventListToShowAll();
-        updateFilteredDeadlineListToShowAll();
-        updateFilteredFloatingTaskListToShowAll();
-    }
-
-    @Override
     public void updateAllFilteredListToShowAllActiveEntries() {
         this.updateAllFilteredLists(new HashSet<>(), null, null, Entry.State.ACTIVE, Search.AND);
-    }
-
-    @Override
-    public void updateAllFilteredListToShowAllArchivedEntries() {
-        this.updateAllFilteredLists(new HashSet<>(), null, null, Entry.State.ARCHIVED, Search.AND);
-    }
-
-    @Override
-    public void updateAllFilteredListToShowAllDeletedEntries() {
-        this.updateAllFilteredLists(new HashSet<>(), null, null, Entry.State.DELETED, Search.AND);
     }
 
     // @@author A0125586X
@@ -300,28 +260,9 @@ public class ModelManager extends ComponentManager implements Model {
         filteredEventList.setPredicate(expression::satisfies);
     }
 
-    // @@author A0125586X
-    @Override
-    public void updateFilteredEventList(Set<String> keywords, Calendar startDate, Calendar endDate,
-                                        Entry.State state, Search search, int level) {
-        updateFilteredEventList(new PredicateExpression(new NameDateStateQualifier(keywords,
-                                                                                   startDate, endDate, state,
-                                                                                   search, level)));
-    }
-
     // @@author A0126623L
     private void updateFilteredDeadlineList(Expression expression) {
         filteredDeadlineList.setPredicate(expression::satisfies);
-    }
-
-    // @@author A0125586X
-    @Override
-    public void updateFilteredDeadlineList(Set<String> keywords, Calendar startDate,
-                                           Calendar endDate, Entry.State state, Search search,
-                                           int level) {
-        updateFilteredDeadlineList(new PredicateExpression(new NameDateStateQualifier(keywords,
-                                                                                      startDate, endDate,
-                                                                                      state, search, level)));
     }
 
     // @@author A0126623L
@@ -393,10 +334,6 @@ public class ModelManager extends ComponentManager implements Model {
             return qualifier.run(entry);
         }
 
-        @Override
-        public String toString() {
-            return qualifier.toString();
-        }
     }
 
     interface Qualifier {
@@ -476,8 +413,6 @@ public class ModelManager extends ComponentManager implements Model {
                     || entry instanceof Deadline && isWithinRange(entry.getEndDateAndTime())
                     || entry instanceof Event && isWithinRange(entry.getStartDateAndTime())) {
                     return true;
-                } else {
-                    assert false : "DateAndStatusQualifier::run received ReadOnlyEntry of unknown type";
                 }
             }
             return false;
@@ -517,6 +452,7 @@ public class ModelManager extends ComponentManager implements Model {
                 }
                 return true;
             case POWER_OR:
+            default:
                 if (nameAndTagKeywords.size() == 0) {
                     return true;
                 }
@@ -526,10 +462,7 @@ public class ModelManager extends ComponentManager implements Model {
                     }
                 }
                 return false;
-            default:
-                assert false : "DateAndStatusQualifier: unknown search type";
             }
-            return false;
         }
 
         // @@author A0126623L
@@ -566,33 +499,6 @@ public class ModelManager extends ComponentManager implements Model {
             }
         }
 
-        // @@author A0126623L
-        @Override
-        public String toString() {
-            StringBuilder builder = new StringBuilder();
-            builder.append("NameDateStateQualifier: ")
-                   .append("keywords = ");
-            for (String keyword : nameAndTagKeywords) {
-                builder.append(keyword).append(", ");
-            }
-            builder.append("startDate = ");
-            if (startDate == null) {
-                builder.append("null");
-            } else {
-                builder.append(dateFormat.format(startDate));
-            }
-            builder.append(", endDate = ");
-            if (endDate == null) {
-                builder.append("null");
-            } else {
-                builder.append(dateFormat.format(endDate));
-            }
-            builder.append(", states =");
-            for (Entry.State state : states) {
-                builder.append(state.toString());
-            }
-            return builder.toString();
-        }
     }
 
     // @@author A0132788U
