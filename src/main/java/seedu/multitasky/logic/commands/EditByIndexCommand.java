@@ -46,15 +46,15 @@ public class EditByIndexCommand extends EditCommand {
         if (index.getZeroBased() >= listToEditFrom.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
         }
-
         ReadOnlyEntry entryToEdit = listToEditFrom.get(index.getZeroBased());
         String targetEntryString = entryToEdit.toString();
         Entry editedEntry = createEditedEntry(entryToEdit, editEntryDescriptor);
-
         try {
+
             assert entryToEdit != null;
             assert editedEntry != null;
 
+            editedEntry.setState(entryToEdit.getState());
             model.updateEntry(entryToEdit, editedEntry);
         } catch (EntryNotFoundException pnfe) {
             throw new AssertionError("The target entry cannot be missing");
