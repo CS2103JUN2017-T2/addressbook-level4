@@ -16,10 +16,10 @@ import seedu.multitasky.model.entry.exceptions.EntryOverdueException;
 import seedu.multitasky.model.entry.exceptions.OverlappingAndOverdueEventException;
 import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 
-//@@author A0126623L-reused
-/*
-* Restores an entry identified using the type of entry followed by displayed index.
-*/
+//@@author A0126623L
+/**
+ * Restores an entry identified using the type of entry followed by displayed index.
+ */
 public class RestoreByIndexCommand extends RestoreCommand {
 
     private Index targetIndex;

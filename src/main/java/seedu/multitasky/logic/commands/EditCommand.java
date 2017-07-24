@@ -119,7 +119,81 @@ public abstract class EditCommand extends Command {
                                                        .orElse(entryToEdit.getStartDateAndTime());
         Calendar updatedEndDate = editEntryDescriptor.getEndDate()
                                                      .orElse(entryToEdit.getEndDateAndTime());
-        // set calendars for comparison purposes
+        calibrateCalendarsForComparison(updatedStartDate, updatedEndDate);
+
+        if (isEditedEntryFloatingTask(editEntryDescriptor, updatedStartDate, updatedEndDate)) {
+            return new FloatingTask(updatedName, updatedTags);
+
+        } else if (isEditedEntryDeadline(editEntryDescriptor, updatedStartDate, updatedEndDate)) {
+            updatedEndDate = (updatedEndDate == null) ? updatedStartDate : updatedEndDate;
+            return new Deadline(updatedName, updatedEndDate, updatedTags);
+
+        } else if (isEditedEntryFullDayEvent(updatedStartDate, updatedEndDate)) {
+            if (updatedStartDate == updatedEndDate) {
+                // can not change both to different dates if they are the same object
+                updatedEndDate = (Calendar) updatedStartDate.clone();
+            }
+            setToFullDay(updatedStartDate, updatedEndDate);
+            return new Event(updatedName, updatedStartDate, updatedEndDate, updatedTags);
+
+        } else if (isEditedEntryEvent(updatedStartDate, updatedEndDate)) { // normal events cases
+            if (updatedEndDate.compareTo(updatedStartDate) < 0) { // edited to invalid end date
+                throw new CommandException(MESSAGE_ENDDATE_BEFORE_STARTDATE);
+            }
+            return new Event(updatedName, updatedStartDate, updatedEndDate, updatedTags);
+        } else {
+            throw new AssertionError("can only have event, deadline or floating task");
+        }
+    }
+
+    private static boolean isEditedEntryEvent(Calendar updatedStartDate, Calendar updatedEndDate) {
+        return editToEvent(updatedStartDate, updatedEndDate);
+    }
+
+    private static boolean isEditedEntryFullDayEvent(Calendar updatedStartDate, Calendar updatedEndDate) {
+        return isEditedEntryEvent(updatedStartDate, updatedEndDate)
+                   && updatedEndDate.compareTo(updatedStartDate) == 0;
+    }
+
+    /**
+     * converts input {@code Calendar} HOUR and MINUTE fields to 12am and 11.59pm.
+     * @param startDate
+     * @param endDate
+     */
+    private static void setToFullDay(Calendar updatedStartDate, Calendar updatedEndDate) {
+        updatedStartDate.set(Calendar.HOUR_OF_DAY, 0);
+        updatedStartDate.set(Calendar.MINUTE, 0);
+        updatedEndDate.set(Calendar.HOUR_OF_DAY, 23);
+        updatedEndDate.set(Calendar.MINUTE, 59);
+    }
+
+    private static boolean isEditedEntryDeadline(EditEntryDescriptor editEntryDescriptor,
+                                                 Calendar updatedStartDate, Calendar updatedEndDate) {
+        return editToDeadline(updatedStartDate, updatedEndDate) // deadline cases
+                   // event with start date removed
+                   || isEditedEntryEvent(updatedStartDate, updatedEndDate)
+                      && editEntryDescriptor.hasResetStartDate()
+                   // event with end date removed
+                   || isEditedEntryEvent(updatedStartDate, updatedEndDate)
+                      && editEntryDescriptor.hasResetEndDate();
+    }
+
+    private static boolean isEditedEntryFloatingTask(EditEntryDescriptor editEntryDescriptor,
+                                                     Calendar updatedStartDate, Calendar updatedEndDate) {
+        return editToFloating(updatedStartDate, updatedEndDate)
+            // deadline but reset end date
+            || editToDeadline(updatedStartDate, updatedEndDate) && editEntryDescriptor.hasResetEndDate()
+            // event but reset both start, end date
+            || isEditedEntryEvent(updatedStartDate, updatedEndDate) && editEntryDescriptor.hasResetEndDate()
+               && editEntryDescriptor.hasResetStartDate();
+    }
+
+    /**
+     * method that sets input {@code Calendar} to be less precise in order to facilitate comparison
+     * @param startDate
+     * @param endDate
+     */
+    private static void calibrateCalendarsForComparison(Calendar updatedStartDate, Calendar updatedEndDate) {
         if (updatedStartDate != null) {
             updatedStartDate.set(Calendar.SECOND, 0);
             updatedStartDate.set(Calendar.MILLISECOND, 0);
@@ -127,46 +201,6 @@ public abstract class EditCommand extends Command {
         if (updatedEndDate != null) {
             updatedEndDate.set(Calendar.SECOND, 0);
             updatedEndDate.set(Calendar.MILLISECOND, 0);
-        }
-
-        if (editToFloating(updatedStartDate, updatedEndDate) // floating task cases
-            // deadline but reset end date
-            || editToDeadline(updatedStartDate, updatedEndDate) && editEntryDescriptor.hasResetEndDate()
-            // event but reset both start, end date
-            || editToEvent(updatedStartDate, updatedEndDate) && editEntryDescriptor.hasResetEndDate()
-               && editEntryDescriptor.hasResetStartDate()) {
-            return new FloatingTask(updatedName, updatedTags);
-
-        } else if (editToDeadline(updatedStartDate, updatedEndDate) // deadline cases
-                   // event with start date removed
-                   || (editToEvent(updatedStartDate, updatedEndDate))
-                      && editEntryDescriptor.hasResetStartDate()
-                   // event with end date removed
-                   || editToEvent(updatedStartDate, updatedEndDate)
-                      && editEntryDescriptor.hasResetEndDate()) {
-            updatedEndDate = (updatedEndDate == null) ? updatedStartDate : updatedEndDate;
-            return new Deadline(updatedName, updatedEndDate, updatedTags);
-
-        } else if (editToEvent(updatedStartDate, updatedEndDate) // event with start date == end date
-                   && updatedEndDate.compareTo(updatedStartDate) == 0) {
-            // can not change both to different dates if they are the same
-            if (updatedStartDate.equals(updatedEndDate)) {
-                updatedEndDate = (Calendar) updatedStartDate.clone();
-            }
-            // convert automatically to full day event
-            updatedStartDate.set(Calendar.HOUR_OF_DAY, 0);
-            updatedStartDate.set(Calendar.MINUTE, 0);
-            updatedEndDate.set(Calendar.HOUR_OF_DAY, 23);
-            updatedEndDate.set(Calendar.MINUTE, 59);
-            return new Event(updatedName, updatedStartDate, updatedEndDate, updatedTags);
-
-        } else if (editToEvent(updatedStartDate, updatedEndDate)) { // normal events cases
-            if (updatedEndDate.compareTo(updatedStartDate) < 0) { // edited to invalid end date
-                throw new CommandException(MESSAGE_ENDDATE_BEFORE_STARTDATE);
-            }
-            return new Event(updatedName, updatedStartDate, updatedEndDate, updatedTags);
-        } else {
-            throw new AssertionError("can only have event, deadline or floating task");
         }
     }
 

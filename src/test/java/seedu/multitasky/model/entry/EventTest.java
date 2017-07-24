@@ -17,14 +17,10 @@ import seedu.multitasky.model.util.EntryBuilder;
 import seedu.multitasky.model.util.TagSetBuilder;
 
 // @@author A0126623L
-/**
- * TODO: Make SetUp less dependent on actual classes, e.g. create utility classes and stubs.
- */
 public class EventTest {
 
     private Event event1, event2, event3, event4, event5, event6;
 
-    // @@author A0126623L
     /**
      * Gets an array of 6 sample events.
      * The first two events are meaningfully equivalent, the remaining are unique.
@@ -59,16 +55,13 @@ public class EventTest {
             return null;
         }
     }
-    // @@author
 
-    // @@author A0126623L
     /**
      * method that returns list of Events of 6 sample elements.
      */
     public static List<Event> getSampleEventList() {
         return Arrays.asList(EventTest.getSampleEventArray());
     }
-    // @@author
 
     @Before
     public void setUp() {
@@ -82,15 +75,13 @@ public class EventTest {
         event6 = (Event) EntryBuilder.build(sampleEventArrayData[5]);
     }
 
-    // @@author A0126623L
     @Test
-    public void getNameTest() {
+    public void getName_actualAndExpected_success() {
         assertEquals("error at getName()", "SampleName1", event1.getName().fullName);
     }
 
-    // @@author A0126623L
     @Test
-    public void getTagsTest() {
+    public void getTags_actualAndExpected_success() {
         // Same tags
         assertTrue(event1.getTags().equals(event2.getTags()));
 
@@ -98,9 +89,8 @@ public class EventTest {
         assertFalse(event1.getTags().equals(event6.getTags()));
     }
 
-    // @@author A0126623L
     @Test
-    public void resetDataTest() {
+    public void resetData_sampleEventToReset_success() {
         Event tester999 = (Event) EntryBuilder.build(event1);
         assertFalse(tester999.equals(event3));
 
@@ -108,17 +98,15 @@ public class EventTest {
         assertTrue(tester999.equals(event3));
     }
 
-    // @@author A0126623L
     @Test
-    public void toStringTest() {
+    public void toString_expectedString_success() {
         assertEquals("Event formatting is wrong",
                      "SampleName1, Start: Jul 7, 2017 6:30 PM, End: Jul 8, 2017 6:30 PM, Tags: [tag1]",
                      event1.toString());
     }
 
-    // @@author A0126623L
     @Test
-    public void equalsTest() {
+    public void equals_variousCases_success() {
         Event dummyEvent = (Event) EntryBuilder.build(event2);
 
         // Equal
@@ -145,9 +133,8 @@ public class EventTest {
         assertTrue(array1[0].equals(array2[0]));
     }
 
-    // @@author A0126623L
     @Test
-    public void hasOverlappingTimeTest() {
+    public void overlaps_variousCases_success() {
         final int offsetAmount = 2;
 
         // Make an event with start time overlapping with event1.
@@ -183,11 +170,9 @@ public class EventTest {
             fail("Should not fail.");
         }
     }
-    // @@author
 
-    // @@author A0126623L
     @Test
-    public void isOverdueTest() {
+    public void isOverdue_variousCases_success() {
         final int offsetAmount = 10;
         try {
             // Overdue event

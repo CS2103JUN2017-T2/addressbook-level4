@@ -16,7 +16,7 @@ import seedu.multitasky.model.entry.exceptions.OverlappingAndOverdueEventExcepti
 import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 
 // @@author A0140633R
-/*
+/**
  * Finds entries from given keywords and deletes entry if it is the only one found.
  */
 public class DeleteByFindCommand extends DeleteCommand {

@@ -6,11 +6,11 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
+// @@author A0126623L
 public class NameTest {
 
-    // @@author A0126623L
     @Test
-    public void isValidName() {
+    public void isValidName_variousNames_success() {
         // invalid name
         assertFalse(Name.isValidName("")); // empty string
         assertFalse(Name.isValidName(" ")); // spaces only
@@ -30,7 +30,6 @@ public class NameTest {
         assertTrue(Name.isValidName("peter? . , / * &")); // punctuation marks with space characters
     }
 
-    // @@author A0126623L
     @Test
     public void equalsTest() {
 

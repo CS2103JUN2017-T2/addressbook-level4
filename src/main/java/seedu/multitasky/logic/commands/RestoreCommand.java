@@ -49,7 +49,6 @@ public abstract class RestoreCommand extends Command {
 
     @Override
     public void setData(Model model, CommandHistory history) {
-        //TODO: Consider refactoring these to the superclass's setData();
         Objects.requireNonNull(history);
         Objects.requireNonNull(model);
         this.model = model;
