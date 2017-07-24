@@ -48,9 +48,6 @@ public class MainWindow extends UiPart<Region> {
     private Logic logic;
 
     // Independent Ui parts residing in this Ui container
-    private EventListPanel eventListPanel;
-    private DeadlineListPanel deadlineListPanel;
-    private FloatingTaskListPanel floatingTaskListPanel;
     private UserPrefs prefs;
 
     @FXML
@@ -179,17 +176,16 @@ public class MainWindow extends UiPart<Region> {
         });
     }
 
-
-    void fillInnerParts() {
+    public void fillInnerParts() {
         stateCurrentlyShown.setText(String.format(Messages.MESSAGE_CURRENTLY_DISPLAYING, "active"));
 
-        eventListPanel = new EventListPanel(logic.getFilteredEventList());
+        EventListPanel eventListPanel = new EventListPanel(logic.getFilteredEventList());
         eventListPanelPlaceholder.getChildren().add(eventListPanel.getRoot());
 
-        deadlineListPanel = new DeadlineListPanel(logic.getFilteredDeadlineList());
+        DeadlineListPanel deadlineListPanel = new DeadlineListPanel(logic.getFilteredDeadlineList());
         deadlineListPanelPlaceholder.getChildren().add(deadlineListPanel.getRoot());
 
-        floatingTaskListPanel = new FloatingTaskListPanel(logic.getFilteredFloatingTaskList());
+        FloatingTaskListPanel floatingTaskListPanel = new FloatingTaskListPanel(logic.getFilteredFloatingTaskList());
         floatingTaskListPanelPlaceholder.getChildren().add(floatingTaskListPanel.getRoot());
 
         ResultDisplay resultDisplay = new ResultDisplay();
@@ -203,7 +199,7 @@ public class MainWindow extends UiPart<Region> {
 
     }
 
-    void hide() {
+    public void hide() {
         primaryStage.hide();
     }
 
@@ -239,7 +235,7 @@ public class MainWindow extends UiPart<Region> {
     /**
      * Returns the current size and the position of the main Window.
      */
-    GuiSettings getCurrentGuiSetting() {
+    public GuiSettings getCurrentGuiSetting() {
         return new GuiSettings(primaryStage.getWidth(), primaryStage.getHeight(),
                 (int) primaryStage.getX(), (int) primaryStage.getY());
     }
@@ -250,7 +246,7 @@ public class MainWindow extends UiPart<Region> {
         helpWindow.show();
     }
 
-    void show() {
+    public void show() {
         primaryStage.show();
     }
 

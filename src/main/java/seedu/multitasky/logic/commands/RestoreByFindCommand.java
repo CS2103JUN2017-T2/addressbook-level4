@@ -18,6 +18,7 @@ import seedu.multitasky.model.entry.exceptions.EntryOverdueException;
 import seedu.multitasky.model.entry.exceptions.OverlappingAndOverdueEventException;
 import seedu.multitasky.model.entry.exceptions.OverlappingEventException;
 
+// @@author A0126623L
 /**
  * Finds entries from given keywords and restores entry if it is the only one found.
  */
@@ -40,7 +41,6 @@ public class RestoreByFindCommand extends RestoreCommand {
         this.keywords = keywords;
     }
 
-    // @@author A0126623L-reused
     @Override
     public CommandResult execute() throws CommandException, DuplicateEntryException {
 
@@ -91,9 +91,7 @@ public class RestoreByFindCommand extends RestoreCommand {
             }
         }
     }
-    // @@author
 
-    // @@author A0126623L
     /**
      * Collates all archived and deleted entries that matches search keywords.
      * @return List of matched entries
@@ -111,7 +109,6 @@ public class RestoreByFindCommand extends RestoreCommand {
 
         return allList;
     }
-    // @@author
 
     private void raise(BaseEvent event) {
         EventsCenter.getInstance().post(event);

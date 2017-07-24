@@ -14,12 +14,12 @@ import seedu.multitasky.model.entry.exceptions.DuplicateEntryException;
 import seedu.multitasky.model.entry.exceptions.EntryNotFoundException;
 import seedu.multitasky.model.util.EntryBuilder;
 
+// @@author A0126623L
 public class FloatingTaskListTest {
 
     private FloatingTaskList floatingTaskList1, floatingTaskList2, floatingTaskList3;
     private FloatingTask[] sampleFloatingTaskArray = FloatingTaskTest.getSampleFloatingTaskArray();
 
-    // @@author A0126623L
     /**
      * Copies the floatingTasks in the given floatingTasks collection into an FloatingTask List.
      *
@@ -37,7 +37,6 @@ public class FloatingTaskListTest {
         return floatingTaskList;
     }
 
-    // @@author A0126623L
     /**
      * Copies all the elements of a given floatingTask list into a new floatingTask list
      *
@@ -59,7 +58,6 @@ public class FloatingTaskListTest {
         }
     }
 
-    // @@author A0126623L
     /**
      * Generates an array of 3 FloatingTaskList samples.
      * The first two floatingTasks are meaningfully equivalent, the third one is unique.
@@ -92,7 +90,6 @@ public class FloatingTaskListTest {
         floatingTaskList3 = listOfFloatingTaskList[2];
     }
 
-    // @@author A0126623L
     /**
      * Dependent on the correct functioning of the contains method.
      */
@@ -113,7 +110,6 @@ public class FloatingTaskListTest {
         }
     }
 
-    // @@author A0126623L
     @Test(expected = DuplicateEntryException.class)
     public void add_duplicateFloatingTask_throwDuplicateEntryException() throws DuplicateEntryException {
         FloatingTaskList floatingTaskListUnderTest = FloatingTaskListTest.copyFloatingTaskList(floatingTaskList1);
@@ -122,7 +118,6 @@ public class FloatingTaskListTest {
         floatingTaskListUnderTest.add(copiedFloatingTask);
     }
 
-    // @@author A0126623L
     @Test
     public void equals_variousSampleFloatingTasks_success() {
         FloatingTaskList dummyFloatingTaskList = FloatingTaskListTest.copyFloatingTaskList(floatingTaskList2);
@@ -135,7 +130,6 @@ public class FloatingTaskListTest {
         assertFalse(floatingTaskList1.equals(floatingTaskList3));
     }
 
-    // @@author A0126623L
     @Test
     public void remove_removeSampleFloatingTask_success() throws EntryNotFoundException {
         FloatingTaskList floatingTaskListToTest = FloatingTaskListTest.copyFloatingTaskList(floatingTaskList1);
@@ -145,7 +139,6 @@ public class FloatingTaskListTest {
         assertTrue(floatingTaskListToTest.asObservableList().get(0).equals(sampleFloatingTaskArray[2]));
     }
 
-    // @@author A0126623L
     @Test(expected = Exception.class)
     public void remove_nonExistentEntry_returnEntryNotFoundException() throws EntryNotFoundException {
         FloatingTaskList floatingTaskListUnderTest = FloatingTaskListTest.copyFloatingTaskList(floatingTaskList1);
@@ -153,7 +146,6 @@ public class FloatingTaskListTest {
         floatingTaskListUnderTest.remove(sampleFloatingTaskArray[3]);
     }
 
-    // @@author A0126623L
     @Test
     public void update_updateSampleFloatingTask_success() throws EntryNotFoundException {
         FloatingTaskList floatingTaskListToTest = FloatingTaskListTest.copyFloatingTaskList(floatingTaskList1);
@@ -170,7 +162,6 @@ public class FloatingTaskListTest {
         }
     }
 
-    // @@author A0126623L
     @Test
     public void setEntriesTest_newFloatingTaskList_equalsMethodReturnsFalse() {
         FloatingTaskList floatingTaskListToTest = FloatingTaskListTest.copyFloatingTaskList(floatingTaskList3);
@@ -180,9 +171,7 @@ public class FloatingTaskListTest {
         floatingTaskListToTest.setEntries(floatingTaskList1);
         assertTrue(floatingTaskListToTest.equals(floatingTaskList1));
     }
-    // @@author
 
-    // @@author A0126623L
     @Test(expected = DuplicateEntryException.class)
     public void duplicatePermission_activeDuplicateFloatingTask_throwsDuplicateEntryException()
             throws DuplicateEntryException {
@@ -194,7 +183,6 @@ public class FloatingTaskListTest {
 
     }
 
-    // @@author A0126623L
     @Test
     public void duplicatePermission_nonActiveDuplicateFloatingTask_success() {
         FloatingTaskList floatingTaskListUnderTest = FloatingTaskListTest.copyFloatingTaskList(floatingTaskList1);
