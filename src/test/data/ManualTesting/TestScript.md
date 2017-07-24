@@ -163,6 +163,22 @@ About 50 sample entries should be loaded on to the GUI panel.
 > Command: `history`
 - All the entered commands are shown in the result display, with the most recently entered command shown first.
 
+## Undo and Redo Commands
+### Undo
+> Command: `undo`
+- Undo the previous data mutating action (undo delete `Wash dishes`).
+
+### Undo shortcut
+> Command: `Ctrl + Z`
+- Undo again using keyboard shortcut (undo delete `Do lecture quiz`)
+
+### Redo
+> Command: `redo`
+- Redo the previous undo (redo delete `Do lecture quiz`)
+
+### Redo shortcut
+> Command: `Ctrl + Y`
+- Redo again using keyboard shortcut. (redo delete `Wash dishes`).
 
 # Outdated
 ## Add Command
