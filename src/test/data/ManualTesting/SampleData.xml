@@ -264,11 +264,6 @@
         <state>ACTIVE</state>
         <tagged>enhancement</tagged>
     </floatingTasks>
-    <floatingTasks>
-        <name>Buy dishwasher first</name>
-        <state>ACTIVE</state>
-        <tagged>housework</tagged>
-    </floatingTasks>
     <deadlines>
         <name>Register for FYP</name>
         <endDateAndTime>05/07/17 11:00</endDateAndTime>
