@@ -172,7 +172,7 @@ link:{repoURL}/src/main/java/seedu/multitasky/logic/Logic.java[`Logic.java`]
 
 The Logic component deals with controlling the flow of modifications to underlying data. It parses user inputs and handles the manipulation of the states of data within the application accordingly.
 
-The class diagram above shows how the Logic component is structured. `Logic` applies the Facade pattern, and the API calls are made through the `LogicManager` class to the subsequent Parser classes. Note also that dependency inversion has been applied to LogicUserPrefs so that the dependencies that Logic has to the lower level module UserPrefs, are abstracted out into a common interface.
+The class diagram above shows how the Logic component is structured. `Logic` applies a pseudo Facade pattern, where the API calls are made through the `LogicManager` class to the subsequent Parser classes. Note also that dependency inversion has been applied to LogicUserPrefs so that the dependencies that Logic has to the lower level module UserPrefs, are abstracted out into a common interface.
 
 The `Logic` component:
 
