@@ -55,7 +55,7 @@ public class RestoreCommandTest {
         CommandTestUtil.assertCommandFailure(restoreCommand, model,
                                              Messages.MESSAGE_INVALID_ENTRY_DISPLAYED_INDEX);
     }
-     
+
 
     @Test
     public void execute_invalidIndexFilteredList_throwsCommandException() throws Exception {
