@@ -6,7 +6,7 @@ This is a guide which explains the steps to perform manual testing to users.
 1. Download the `SampleData.xml` file from [GitHub repository](https://github.com/CS2103JUN2017-T2/main/blob/master/src/test/data/ManualTesting/SampleData.xml).
 1. Start MultiTasky using the `.jar` file.
 1. Load the sample data by entering the command `open <filepath to SampleData.xml>`.  
-About 50 sample entries should be loaded to the GUI panel.
+About 50 sample data should be loaded to the GUI panel.
 
 ## Test Cases
 ### Basic Features
@@ -34,7 +34,7 @@ About 50 sample entries should be loaded to the GUI panel.
    list
    list upcoming
    ```
-   Upcoming events are displayed in order of ascending date. Overdue deadlines are shifted to the bottom of the deadline panel. Scroll down to check.
+   Overdue deadline is shifted to the bottom of the deadline panel. Scroll down to check.
 1. **Finding an entry**  
    `find exam`  
    By default, only active entries are searched.
@@ -55,7 +55,7 @@ About 50 sample entries should be loaded to the GUI panel.
    Enter the command  
    `list`  
    and notice that the active lists are still empty.
-   Use the undo shortcut `Ctrl`+`Z` to make one additional undo, this will undo the changes made by `clear` and the active entries should re-appear.
+   Use the undo shortcut `Ctrl`+`Z` to make one additional undo, this will undo the changes made by `clear` and the active entries should appear.
    Redo can be done either by keying in the command `redo` or using the shortcut `Ctrl`+`Y`. The active entries should disappear again. Execute undo once more with `Ctrl`+`Z` to bring back the active entries for the upcoming tests.
    
 ### Time-Saving Features
@@ -123,7 +123,11 @@ About 50 sample entries should be loaded to the GUI panel.
    
    _Overdue Events or Deadlines_  
    `add NDP 2016 on 9 August 2016 to 9 Aug 2016`  
-   The entry should be added successfully but with an alert that the added event is overdue.  
+   The entry should be added successfully but with an alert that the added event is overdue.
+   
+   _Overdue and Overlapping Events_  
+   `add Register for SOC modules from 9 July to 10 July`  
+   The entry should be added successfully but with an alert that it is overdue and overlaps with existing event(s).
 
 1. **Default duration for fast entry**  
    `add Christmas party from christmas 7pm`  
