@@ -9,10 +9,10 @@ import seedu.multitasky.model.Model;
 import seedu.multitasky.model.entry.ReadOnlyEntry;
 
 //@@author A0126623L-reused
-/*
-* Abstract class that represents a restore command. Holds command_word and confirmation messages a restore
-* command will be using.
-*/
+/**
+ * Abstract class that represents a restore command. Holds command_word and confirmation messages a restore
+ * command will be using.
+ */
 public abstract class RestoreCommand extends Command {
 
     public static final String COMMAND_WORD = "restore";
@@ -20,9 +20,9 @@ public abstract class RestoreCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD + " : Restores an archived/deleted entry identified"
             + " by keywords if it is the only entry found, or restores the entry identified by the index number of"
             + " the last archived/deleted entry listing.\n"
-            + "Format: " + COMMAND_WORD + " [" + "[" + "KEYWORDS" + "]" + " |"
-            + " [" + String.join(" | ", CliSyntax.PREFIX_EVENT.toString(), CliSyntax.PREFIX_DEADLINE.toString(),
-            CliSyntax.PREFIX_FLOATINGTASK.toString()) + "]" + " INDEX" + "]" + "\n"
+            + "Format: " + COMMAND_WORD + " <" + "KEYWORDS" + ">" + " |"
+            + " <<" + String.join(" | ", CliSyntax.PREFIX_EVENT.toString(), CliSyntax.PREFIX_DEADLINE.toString(),
+            CliSyntax.PREFIX_FLOATINGTASK.toString()) + ">" + " INDEX" + ">" + "\n"
             + "All possible flags for Restore : 'event', 'deadline', 'float'";
 
     public static final String MESSAGE_SUCCESS = "Entry restored:" + "\n"

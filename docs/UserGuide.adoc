@@ -38,9 +38,9 @@ image::Ui.png[width="790"]
 e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 .  Some example commands you can try:
 
-* *`list`* : lists all active tasks
 * *`add`* `sales proposal by 5 july 2017 14:00` : adds an entry named `sales proposal` with deadline `5th July, 2pm` to MultiTasky
-* *`delete`* `deadline 3` : deletes the 3rd deadline entry shown in the current list
+* *`list`* : lists all active tasks
+* *`delete`* `deadline 1` : deletes the 1st deadline entry shown in the current list
 * *`exit`* : exits the app
 
 .  Refer to the link:#features[Features] section below for details of each command.
@@ -55,10 +55,11 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 * Items in `[ ]` are optional.
 * Items separated by `|` indicate that either should be used, but not both.
 * Items with `...` after them can have multiple instances.
+* Items may be marked with `< >` to denote that they belong in the same group, for greater clarity.
 * `DATE_TIME` format is `MM/dd/yy hh:mm`.
 [NOTE]
 You can replace date by smart keywords like `tomorrow` or `friday`! +
-`2pm` or `830am` can be also be used alternatively to indicate time
+`2pm` or `8.30am` can be also be used alternatively to indicate time
 
 ====
 *Defaults*
@@ -74,7 +75,7 @@ Format: `help`
 === Adding an entry: `add`
 
 Adds an entry to the active tasks +
-Format: `add ENTRY_NAME [on | at | from DATE_TIME_A] [to | by DATE_TIME_B] [tag TAG_1 TAG_2...]`
+Format: `add ENTRY_NAME [<on | at | from> START_DATETIME] [<to | by> END_DATETIME] [tag TAG_1 TAG_2...]`
 
 ****
 * If no date is specified, the entry will contain no date information and automatically be classified under `floating entry`
@@ -84,7 +85,7 @@ Format: `add ENTRY_NAME [on | at | from DATE_TIME_A] [to | by DATE_TIME_B] [tag 
 * You may use multiple flags to replace the previous flags if you come to realise mid-typing that you've entered the wrong information. e.g `add project deadline by tomorrow tag school finals by next week` will use `next week` as the deadline instead of `tomorrow` because the last flag to indicate end time is `by next week`.
 * `tag` can be used as an optional command to tag your entries.
 [NOTE]
-To add a full day event, simply use the same start datetime and end datetime. e.g. `add work from tomorrow to tomorrow`.
+Shortcut to add a full day event, simply use the same start datetime and end datetime. e.g. `add work from tomorrow to tomorrow`.
 ****
 
 *Defaults from `preferences.json`*: +
@@ -93,8 +94,8 @@ To add a full day event, simply use the same start datetime and end datetime. e.
 
 Examples:
 
-* `add dinner with parents from friday 6pm to friday 9pm tag family`
-* `add go to the gym from monday 10am to monday 11am tag exercise activities`
+* `add dinner with parents from friday 6pm to 9pm tag family`
+* `add go to the gym from monday 10am to 11am tag exercise activities`
 * `add project submission by 5/7/2017 10:00 tag school`
 * `add write novel tag bucketlist`
 * `add clean up room`
@@ -103,7 +104,7 @@ Examples:
 === Completing a task : `complete`
 
 Finds and checkmarks a task as completed and moves it to archive. +
-Format: `complete [KEYWORD_1 KEYWORD_2...] | [event | deadline | float INDEX]`
+Format: `complete <KEYWORD_1 KEYWORD_2...> | <<event | deadline | float> INDEX>`
 
 * There are two ways to select an entry to complete: searching by `KEYWORD`, or specifying the `INDEX`.
 ** The keyword searches both the entry name and tags, and a found entry must match all keywords.
@@ -120,7 +121,7 @@ Examples:
 === Listing all entries : `list`
 
 Displays a list of entries sorted by datetime. +
-Format: `list [archive | bin | all] [reverse | upcoming] [from START_DATE_TIME] [to END_DATE_TIME]`
+Format: `list [archive | bin | all] [reverse | upcoming] [from START_DATETIME] [to END_DATETIME]`
 
 ****
 * By default the active entries will be listed.
@@ -141,7 +142,7 @@ Examples:
 === Editing an entry : `edit`
 
 Edits an existing entry in the active list. +
-Format: `edit [KEYWORD_1 KEYWORD_2...] | [event | deadline | float INDEX] [name NEW_ENTRY_NAME] [on | at | from DATE_TIME_A] [to | by DATE_TIME_B] [[tag TAG_1 TAG_2...] | [addtag TAG_3...]`
+Format: `edit <KEYWORD_1 KEYWORD_2...> | <<event | deadline | float> INDEX> [name NEW_ENTRY_NAME] [<on | at | from> NEW_START_DATETIME] [<to | by> NEW_END_DATETIME] [<tag TAG_1 TAG_2...> | <addtag TAG_1 TAG_2...> ]`
 
 ****
 * There are two ways to select an entry to edit: searching by `KEYWORD`, or specifying the `INDEX`.
@@ -164,6 +165,10 @@ Edits the 1st entry of event list to have starting datetime on the coming Saturd
 
 * `edit deadline 2 tag` +
 Edits the 2nd entry in deadline list to clear all its existing tags.
+
+* `edit float 1 by tonight` +
+Edits the 1st entry of floating tasks to become deadline with datetime 'tonight'.
+
 * `edit zoo outing on 9/20/2017 12:00` +
 Edits the entry matching "zoo" and "outing" to take place on 20 September, 12pm. If there are multiple entries that match the keywords, no entries are modified.
 
@@ -171,7 +176,7 @@ Edits the entry matching "zoo" and "outing" to take place on 20 September, 12pm.
 === Finding an entry : `find`
 
 Finds entries which names or tags contain all of the given keywords. +
-Format: `find KEYWORD_1 [KEYWORD_2 ...] [archive | bin] [from START_DATE] [to END_DATE]`
+Format: `find KEYWORD_1 [KEYWORD_2 ...] [archive | bin] [from START_DATETIME] [to END_DATETIME]`
 
 ****
 * The find is case insensitive. e.g `meeting` will match `Meeting`
@@ -184,7 +189,7 @@ Format: `find KEYWORD_1 [KEYWORD_2 ...] [archive | bin] [from START_DATE] [to EN
 === Deleting an entry : `delete`
 
 Deletes the specified entry from the active entries list. +
-Format: `delete [KEYWORD_1 KEYWORD_2...] | [event | deadline | float INDEX]`
+Format: `delete <KEYWORD_1 KEYWORD_2...> | <<event | deadline | float> INDEX>`
 
 ****
 * There are two ways to select an entry to delete: searching by `KEYWORD`, or specifying the `INDEX`.
@@ -207,7 +212,7 @@ Deletes all entries in the active list that matches "pasta" and "dinner" in the 
 === Restoring an entry : `restore`
 
 Finds and restores an archived or deleted entry back to active tasks +
-Format: `restore [KEYWORD_1 KEYWORD_2...] | [event | deadline | float INDEX]`
+Format: `restore <KEYWORD_1 KEYWORD_2...> | <<event | deadline | float> INDEX>`
 
 * There are two ways to select an entry to restore: searching by `KEYWORD`, or specifying the `INDEX`.
 ** The keyword searches both the entry name and tags, and a found entry must match all keywords.
@@ -219,8 +224,8 @@ Format: `restore [KEYWORD_1 KEYWORD_2...] | [event | deadline | float INDEX]`
 
 Examples:
 
-* `list /archive` +
-`restore /float 2` +
+* `list archive` +
+`restore float 2` +
 Restores the 2nd entry in the archive.
 * `restore feed dog` +
 Restores the only entry in the `archive` or `bin` that matches "feed" and "dog" in the name or tag.
@@ -315,28 +320,41 @@ MultiTasky data is saved in the hard disk automatically after any command that c
 There is no need to save manually.
 
 //<!-- @@author A0125586X -->
-=== Autocomplete
-
+=== Command Autocomplete
 Autocomplete functionality is enabled when entering commands. Simply press the `tab` key and MultiTasky will attempt to correct/complete words that you've typed so far. +
 Here are some examples you can try:
 
 * Autocomplete will only complete your input if it's sure that that's the word you want.
-** Type `e` and press `tab`. Notice how nothing has changed as there are two possibilities for this input: `edit` and `exit`. Now add an `x` behind `e` to get `ex` and now it completes to `exit` when you press `tab`.
-* Autocomplete is able to figure out what you want not just from the beginnings of words, but also from the middle.
-** Notice that typing just `x` and pressing `tab` gives you `exit` as well.
-* Autocomplete is able to compensate for the occasional typo, so you don't have to spend time going back to change a small typo.
-** Try typing `lisft` and pressing `tab`. This autocorrects to `list`.
-* For certain commands Autocomplete can even work on every word you've typed, not just the actual command word.
-** If you want to delete the first deadline in the list, you can type `d d` and press `tab`, and it completes to `delete deadline`. Now all you need is to enter `1` and press `enter` to execute your command.
-** This goes beyond just two words in some special cases. Try typing in `l u f` which completes to `list upcoming from`, and you can continue on to type your desired starting date.
+** Type `e` and press `tab`. Notice how nothing has changed as there are multiple possibilities for completing this input.
+** Now add an `x` behind `e` to get `ex` and now it completes to `exit` when you press `tab`.
+* You can also ask Autocomplete to show you the possibilities that it has found.
+** Try typing `is` and pressing `tab` once. The word is not completed. Then press `tab` twice quickly, which shows that `is` can be corrected to `history` or `list`.
+* Autocomplete is able to complete words using the middle of words, not just the beginning.
+** Try typing `x` and pressing `tab`, it completes to `exit`.
+* For certain cases Autocomplete can also complete multiple words as once.
+** Try typing in `l u t` which completes to `list upcoming to`.
 
-=== PowerSearch
+=== Command Autocorrect
+In addition to autocompleting your words, MultiTasky is also able to autocorrect your words.
+Here are some other examples you can try:
 
+* Autocorrect is able to correct when you type characters in the wrong order.
+** Try typing `lsti` and pressing `tab`. This autocorrects to `list`.
+* Autocorrect is also able to correct extra/missing/wrong characters that you enter.
+** Try typing `lsti` and pressing `tab`. This autocorrects to `list`.
+** `lisst` autocorrects to `list`.
+** `dete` autocorrects to `delete`.
+
+=== Keyword PowerSearch
 PowerSearch is enabled for all commands that search for entries by keyword, like `find`, `edit`, `complete` and so on:
 
 * PowerSearch is used automatically when regular search is unable to find any results.
-* PowerSearch uses similar matching rules as Autocomplete. It can also do some more interesting things that Autocomplete cannot:
-** It can match acronyms. So if you had an event called `Play tennis with friends`, the keyword `ptwf` would produce a match.
+** This means that if the regular keyword search rules produce search results, PowerSearch will not be used.
+* PowerSearch uses similar matching rules as Autocomplete and Autocorrect. This means that PowerSearch is able to check for the following:
+** substrings
+** acronyms
+** characters in the wrong order
+** missing/wrong characters
 
 === Keyboard Shortcuts
 
@@ -358,6 +376,21 @@ Shortcuts that bring up commands:
 
 Other shortcuts:
 * `F6` brings the command box into focus for typing
+//<!-- @@author -->
+
+//<!-- @@author A0140633R-->
+=== Smart Parsing
+
+Smart parsing is enabled while adding new entries to MultiTasky. When multiple date flags are detected, MultiTasky will only use the last date arguments to parse as date, and will help you automatically extend the entry name if it realises the arguments are not dates.
+
+* `add visit gardens by the bay by christmas` will add a deadline entry named `visit gardens by the bay` with date `christmas`
+* `add meet boss by next week by tomorrow` will ignore `by next week` and add a deadline entry named `meet boss` with date `tomorrow`
+//<!-- @@author -->
+
+//<!-- @@author A0126623L -->
+=== Smart Alert
+
+MultiTasky is capable of detecting commands that result in events or deadlines that are overdue and alert the user about it. Users will also be notified if they input a command that results in an active event that overlaps with existing event(s) that are active. The aforementioned events and deadlines will still be added normally.
 //<!-- @@author -->
 
 == FAQ
@@ -445,20 +478,22 @@ ____
 == Command Summary
 
 * *Help* `help`
-* *Add* `add ENTRY_NAME [on | at | from DATE_TIME_A] [to | by DATE_TIME_B] [tag TAG_1 TAG_2...]`
-** e.g. `add dinner with parents from friday 6pm to friday 9pm tag family`
-* *Complete* `complete [KEYWORD_1 KEYWORD_2...] | [event | deadline | float INDEX]`
+* *Add* `add ENTRY_NAME [<on | at | from> START_DATETIME] [<to | by> END_DATETIME] [tag TAG_1 TAG_2...]`
+** e.g. `add dinner with parents from friday 6pm to 9pm tag family`
+* *Complete* `complete <KEYWORD_1 KEYWORD_2...> | <<event | deadline | float> INDEX>`
 ** e,g, `complete clean up room` or `complete float 3`
-* *List* : `list [archive | bin | all] [reverse | upcoming] [from START_DATE_TIME] [to END_DATE_TIME]`
+* *List* : `list [archive | bin | all] [reverse | upcoming] [from START_DATETIME] [to END_DATETIME]`
 ** e.g. `list archive from yesterday 5pm`
-* *Edit* : `edit [KEYWORD_1 KEYWORD_2...] | [event | deadline | float INDEX] [name NEW_ENTRY_NAME] [on | at | from DATE_TIME_A] [to | by DATE_TIME_B] [[tag TAG_1 TAG_2...] | [addtag TAG_3 ...]]`
+* *Edit* : `edit <KEYWORD_1 KEYWORD_2...> | <<event | deadline | float> INDEX> [name NEW_ENTRY_NAME] [<on | at | from> NEW_START_DATETIME] [<to | by> NEW_END_DATETIME] [<tag TAG_1 TAG_2...> | <addtag TAG_1 TAG_2...> ]`
 ** e.g. `edit zoo outing on next friday`
-* *Find* : `find KEYWORD_1 [KEYWORD_2 ...] [archive | bin] [from START_DATE] [to END_DATE]`
+* *Find* : `find KEYWORD_1 [KEYWORD_2 ...] [archive | bin] [from START_DATETIME] [to END_DATETIME]`
 ** e.g. `find lecture`
+* *Delete* : `delete <KEYWORD_1 KEYWORD_2...> | <<event | deadline | float> INDEX>`
+** e.g. `delete pasta dinner`
+* *Restore* : `restore <KEYWORD_1 KEYWORD_2...> | <<event | deadline | float> INDEX>`
+** e.g. `restore feed dog`
 * *Save* : `save ./newfilepath.xml`
 ** e.g. `save ./entrybook.xml`
-* *Delete* : `delete [KEYWORD_1 KEYWORD_2...] | [event | deadline | float INDEX] `
-** e.g. `delete pasta dinner`
 * *History* : `history`
 * *Undo* : `undo`
 * *Redo* : `redo`

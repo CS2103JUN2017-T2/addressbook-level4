@@ -91,9 +91,7 @@ public class RestoreByFindCommand extends RestoreCommand {
             }
         }
     }
-    // @@author
 
-    // @@author A0126623L
     /**
      * Collates all archived and deleted entries that matches search keywords.
      * @return List of matched entries
@@ -111,7 +109,6 @@ public class RestoreByFindCommand extends RestoreCommand {
 
         return allList;
     }
-    // @@author
 
     private void raise(BaseEvent event) {
         EventsCenter.getInstance().post(event);
