@@ -10,11 +10,12 @@ About 50 sample entries should be loaded to the GUI panel.
 
 ## Help Command
 ### Opening the help window
-   `help`  
-   Opens MultiTasky's UserGuide.
+   Command: `help`  
+   * Opens MultiTasky's UserGuide.
+   
 ### Help window shortcut
-   `F1`  
-   Opens MultiTasky's UserGuide.
+   Command: `F1`  
+   * Opens MultiTasky's UserGuide.
 
 ## Add Command
 1. **Edit a floating task's name**  
