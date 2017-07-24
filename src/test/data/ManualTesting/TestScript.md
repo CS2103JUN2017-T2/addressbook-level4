@@ -32,12 +32,21 @@ About 50 sample entries should be loaded on to the GUI panel.
 ### Add an event 
 > Command: `add Football match on 2nd August 6 pm to 9 pm tag play`  
 - Scroll down the Events List to ensure that it is successfully added.
+
+### Add a duplicate entry
 > Command: `add Wash dishes`
-- MultiTasky should prevent us from adding duplicate entries.
+- MultiTasky should prevent us from adding duplicate entries. This also applies to deadlines and floating tasks.
+- Tags are not taken into account to determine duplicates.
+
+### Add an overlapping event
 > Command: `add Driving test from 28 July 10am to 28 July 11am`
 - The entry should be added successfully but with an alert that it overlaps with existing event(s).
+
+### Add an overdue event/deadline
 > Command: `add NDP 2016 on 9 August 2016 to 9 Aug 2016`  
-- The entry should be added successfully but with an alert that the added event is overdue.
+- The entry should be added successfully but with an alert that the added event is overdue. This is also true for adding deadlines.
+
+### Add an overlapping and overdue event
 > Command: `add Register for SOC modules from 9 July to 10 July`
 - The entry should be added successfully but with an alert that it is overdue and overlaps with existing event(s).
 
@@ -93,8 +102,8 @@ About 50 sample entries should be loaded on to the GUI panel.
 - Floating tasks remain unchanged.
 
 ### List command keyboard shortcut
-> Command: `F5`
-- `list` is entered into the command box.
+> Command: press the `F5` key
+- `list` is entered ino the command box.
 
 ## Find command
 ### Finding entries using basic keyword search
@@ -117,10 +126,29 @@ About 50 sample entries should be loaded on to the GUI panel.
 > Command: `F3`
 - `find` is entered into the command box.
 
+## Delete Command
+### Delete floating task
+> Command: `delete float 2`
+- Deletes `Take Vitamin supplements` from the Floating Tasks Active list and moves it to Bin.
+
+### Delete deadline
+> Command: `delete deadline quiz`
+- Deletes `Do lecture quiz` from the Deadlines Active list and moves it to Bin.
+
+### Delete event
+> Command: `delete dish`
+- Lists two entries with the word dish, `Wash dishes` and `Run dishwasher`.
+- User can specify which entry to delete using the index. 
+- We delete the first entry.
+
+> Command: `delete float 1`
+- `Wash dishes` is deleted.
+
 ## History Command
 ### View command history
 > Command: `history`
 - All the entered commands are shown in the result display, with the most recently entered command shown first.
+
 
 # Outdated
 ## Add Command
