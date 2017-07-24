@@ -88,6 +88,10 @@ About 50 sample entries should be loaded on to the GUI panel.
 > Command: press the `F5` key
 - `list` is entered ino the command box
 
+
+
+
+# Outdated
 ## Add Command
 1. **Edit a floating task's name**  
    `edit dishwasher name buy dishwasher first`.  
