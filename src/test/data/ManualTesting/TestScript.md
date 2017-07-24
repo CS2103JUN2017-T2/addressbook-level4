@@ -77,12 +77,12 @@ About 50 sample entries should be loaded on to the GUI panel.
 > Command: `list reverse`
 - The event and deadline that is furthest in the future is shown at the top of the list.
 
-### Listing entries after a cetain date
+### Listing entries after a certain date
 > Command: `list from July 26 2017`
 - All events and deadlines before July 26 2017 are no longer shown.
 - Floating tasks remain unchanged.
 
-### Listing entries before a cetain date
+### Listing entries before a certain date
 > Command: `list to July 26 2017`
 - All events and deadlines after July 26 2017 are no longer shown.
 - Floating tasks remain unchanged.
@@ -117,9 +117,10 @@ About 50 sample entries should be loaded on to the GUI panel.
 > Command: `F3`
 - `find` is entered into the command box.
 
-
-
-
+## History Command
+### View command history
+> Command: `history`
+- All the entered commands are shown in the result display, with the most recently entered command shown first.
 
 # Outdated
 ## Add Command
