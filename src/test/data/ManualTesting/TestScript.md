@@ -8,12 +8,15 @@ This is a guide which explains the steps to perform manual testing to users.
 1. Load the sample data by entering the command `open <filepath to SampleData.xml>`.  
 About 50 sample entries should be loaded to the GUI panel.
 
-## Test Cases
-### Basic Features
-1. **Add a floating task**  
-   `add run dishwasher tag housework`  
-   Scroll down the Floating Task list to ensure that the entry is added successfully.
-   
+## Help Command
+### Opening the help window
+   `help`  
+   Opens MultiTasky's UserGuide.
+### Help window shortcut
+   `F1`  
+   Opens MultiTasky's UserGuide.
+
+## Add Command
 1. **Edit a floating task's name**  
    `edit dishwasher name buy dishwasher first`  
    Scroll down the Floating Task list to ensure that the entry is edited successfully.
