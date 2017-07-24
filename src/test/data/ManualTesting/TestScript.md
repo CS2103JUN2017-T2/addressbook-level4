@@ -286,21 +286,21 @@ About 50 sample entries should be loaded on to the GUI panels.
 
 ## Additional Features
 ### Command word Autocomplete
-> Command: `del` + `tab key`
-- `del` is autocompleted to `delete`
+> Command: `del`  
+- Press the `tab` key. `del` is autocompleted to `delete`
 
 ### List command word Autocomplete possibilities
-> Command: `c` + `tab key` twice quickly
-- The result display should show `c:  clear        complete`, showing `clear` and `complete` as the two Autocomplete possibilities from `c`.
+> Command: `c`  
+- Press the `tab` key twice quickly. The result display should show `c:  clear        complete`, showing `clear` and `complete` as the two Autocomplete possibilities from `c`.
 - The command entered is unchanged as `c`.
 
 ### Command word and keywords Autocomplete
-> Command: `l u t` + `tab key`
-- The command entered is completed to `list upcoming to`.
+> Command: `l u t`  
+- Press the `tab` key. The command entered is completed to `list upcoming to`.
 
 ### Command word Autocorrect
-> Command: `dete` + `tab key`
-- The command entered is corrected to `delete`.
+> Command: `dete`
+- Press the `tab` key. The command entered is corrected to `delete`.
 
 ### Command box focus keyboard shortcuts
 > Action: click somewhere else in the window apart from the command box to remove focus from it.  
