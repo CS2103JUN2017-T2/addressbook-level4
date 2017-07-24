@@ -6,7 +6,7 @@ This is a guide which explains the steps to perform manual testing to users.
 1. Download the `SampleData.xml` file from [GitHub repository](https://github.com/CS2103JUN2017-T2/main/blob/master/src/test/data/ManualTesting/SampleData.xml).
 1. Start MultiTasky using the `.jar` file.
 1. Load the sample data by entering the command `open <filepath to SampleData.xml>`.  
-About 50 sample entries should be loaded on to the GUI panel.
+About 50 sample entries should be loaded on to the GUI panels.
 
 ## Help Command
 ### Opening the help window
