@@ -22,7 +22,7 @@
         <name>Register for MPE for modules</name>
         <startDateAndTime>07/07/17 23:12</startDateAndTime>
         <endDateAndTime>11/07/17 23:12</endDateAndTime>
-        <state>ARCHIVED</state>
+        <state>ACTIVE</state>
         <tagged>important</tagged>
         <tagged>school</tagged>
     </events>
@@ -40,6 +40,14 @@
         <state>DELETED</state>
         <tagged>important</tagged>
         <tagged>friend</tagged>
+    </events>
+    <events>
+        <name>2103 MultiTasky demo</name>
+        <startDateAndTime>26/07/17 14:39</startDateAndTime>
+        <endDateAndTime>26/07/17 15:39</endDateAndTime>
+        <state>ACTIVE</state>
+        <tagged>important</tagged>
+        <tagged>school</tagged>
     </events>
     <events>
         <name>Exam for Software Engineering</name>
