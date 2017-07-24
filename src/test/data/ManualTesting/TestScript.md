@@ -60,6 +60,21 @@ About 50 sample entries should be loaded on to the GUI panel.
    * The entry `Register for MPE for modules` is moved to the archive.
    * We do not need to specify the full name to select the entry to complete, as long as the keywords provided are sufficient to identify a single entry.
 
+## Restore Command
+### Restore an archived entry using keywords
+> Command: `list archive`
+> Command: `restore Register for FYP`
+- List all archived entries and restore "Register for FYP" deadline. The entry should disappear from the archived after it is restored.
+> Command: `list`
+- This brings back the active list, which should have the restored "Register for FYP" deadline.
+
+### Restore an archived entry using index
+> Command: `list archive`
+> Command: `restore float 2`
+- This should restore the floating task "Buy cornflakes".
+> Command: `list`
+- This brings back the active list, which should have the restored "Buy cornflakes" floating task.
+
 ## List Command
 ### Listing the active entries
 > Command: `list`
@@ -106,8 +121,6 @@ About 50 sample entries should be loaded on to the GUI panel.
 - `list` is entered ino the command box
 
 
-
-
 # Outdated
 ## Add Command
 1. **Edit a floating task's name**  
@@ -119,19 +132,6 @@ Scroll down the Floating Task list to ensure that the entry is edited successful
    `delete \event`  
    Scroll down the Events list to ensure that the event is successfully deleted.
 
-1. **Moving an entry to and from archive**  
-   ```
-   complete deadline 1
-   list archive
-   ```
-   Scroll down in archive to find “label fridge”.
-   
-   ```
-   restore label fridge
-   list
-   list upcoming
-   ```
-   Overdue deadlines are shifted to the bottom of the Deadline list. Scroll down to check.
 1. **Finding an entry**  
    `find exam`  
    By default, only active entries are searched.
