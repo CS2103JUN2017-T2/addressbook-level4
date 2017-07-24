@@ -24,7 +24,7 @@ About 50 sample entries should be loaded on to the GUI panels.
 - Scroll down the Floating Task list to ensure that the entry is added successfully.
 
 ### Add a deadline 
-> Command:`add Pay camp fee by tomorrow 6 pm tag school important`   
+> Command: `add Pay camp fee by tomorrow 6 pm tag school important`   
 - This entry will be added to the Deadline List.  
 - On the GUI, the next day's date is displayed.  
 - The notations `one day from now` and time as `6 pm` are also displayed below the date.
@@ -39,7 +39,7 @@ About 50 sample entries should be loaded on to the GUI panels.
 
 ### Add a duplicate entry
 > Command: `add Wash dishes`
-- MultiTasky should prevent us from adding duplicate entries. This also applies to deadlines and floating tasks.
+- MultiTasky should prevent us from adding duplicate entries. This also applies to events and deadlines.
 - Tags are not taken into account to determine duplicates.
 
 ### Add an overlapping event
@@ -51,7 +51,7 @@ About 50 sample entries should be loaded on to the GUI panels.
 - The entry should be added successfully but with an alert that the added event is overdue. This is also true for adding deadlines.
 
 ### Add an overlapping and overdue event
-> Command: `add Register for SOC modules from 9 July to 10 July`
+> Command: `add Medical checkup from 9 July to 10 July`
 - The entry should be added successfully but with an alert that it is overdue and overlaps with existing event(s).
 
 ### Smart parsing for adding entries
@@ -95,18 +95,18 @@ About 50 sample entries should be loaded on to the GUI panels.
 - The event and deadline that is furthest in the future is shown at the top of the list.
 
 ### Listing entries after a certain date
-> Command: `list from July 26 2017`
-- All events and deadlines before July 26 2017 are no longer shown.
+> Command: `list from July 27 2017`
+- All events and deadlines before July 27 2017 are no longer shown.
 - Floating tasks remain unchanged.
 
 ### Listing entries before a certain date
-> Command: `list to July 26 2017`
-- All events and deadlines after July 26 2017 are no longer shown.
+> Command: `list to July 27 2017`
+- All events and deadlines after July 27 2017 are no longer shown.
 - Floating tasks remain unchanged.
 
 ### Listing entries between two dates
-> Command: `list from July 26 2017 to July 29 2017
-- Only events and deadlines between the two dates are shown.
+> Command: `list from July 27 2017 to July 29 2017`
+- Only events and deadlines between the current time of the two dates are shown.
 - Floating tasks remain unchanged.
 
 ### List command keyboard shortcut
@@ -152,7 +152,7 @@ About 50 sample entries should be loaded on to the GUI panels.
 ### Finding entries over a date range
 > Command: `find cs2103 from 21 July 2017 to 25 July 2017`
 - Only entries that match `cs2103` and are between 21 July 2017 and 25 July 2017 are shown.
-- In this case, only `Do lecture quiz` should be displayed.
+- In this case, only `V0.5 due` should be displayed.
 
 ### Finding entries using PowerSearch
 > Command: `find sc2013`
@@ -166,8 +166,12 @@ About 50 sample entries should be loaded on to the GUI panels.
 
 ## Delete Command
 ### Delete event by index
+
+> Command: `list`
+- List all entries for deletion.
+
 > Command: `delete event 1`
-- Deletes `Register for MPE for modules` from the Events Active list and moves it to Bin.
+- Deletes `NDP 2016` from the Events Active list and moves it to Bin.
 
 ### Delete deadline by keyword
 > Command: `delete quiz`
@@ -181,15 +185,18 @@ About 50 sample entries should be loaded on to the GUI panels.
 > Command: `delete float 1`
 - `Wash dishes` is deleted and moved from Floating Tasks Active list to Bin.
 
-## Delete Command
 ### Delete entry that contains a keyword
+> Command: `list`
+- List all entries for deletion.
+
 > Command: `delete \event`
 - Deletes `Post homecoming-event briefing` from the Events Active list and moves it to Bin.
 
 ## Restore Command
 ### Restore an archived entry using keywords
-> Command: `list archive`
-> Command: `restore Register for FYP`
+> Command: `list archive` 
+
+> Command: `restore Register for FYP` 
 - List all archived entries and restore "Register for FYP" deadline. The entry should disappear from the archived after it is restored.
 > Command: `list`
 - This brings back the active list, which should have the restored "Register for FYP" deadline.
@@ -248,6 +255,9 @@ About 50 sample entries should be loaded on to the GUI panels.
 > Command: `list`
 > Command: `clear`
 - Active entries are listed, and then cleared.
+
+> Command: `undo`
+- Active entries are brought back.
 
 ### Clear bin
 > Command: `list bin`
