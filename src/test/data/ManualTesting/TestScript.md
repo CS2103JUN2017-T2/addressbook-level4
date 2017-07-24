@@ -330,5 +330,3 @@ About 50 sample entries should be loaded on to the GUI panels.
 1. **Default duration for fast entry**  
    `add Christmas party from christmas 7pm`  
    Should result in a default event duration of 1 hour.
-
-**End of Manual Test Script**
