@@ -117,14 +117,7 @@ public class ModelManager extends ComponentManager implements Model {
             if (target.getClass().equals(editedEntry.getClass())) { // updating to same type of entry
                 entryBook.updateEntry(target, editedEntry);
             } else { // updating to a different type of entry
-                entryBook.removeEntry(target);
-                try {
-                    entryBook.addEntry(editedEntry);
-                } catch (DuplicateEntryException dee) {
-                    // revert back to initial state
-                    entryBook.addEntry(target);
-                    throw dee;
-                }
+                changeEntryType(target, editedEntry);
             }
         } catch (EntryNotFoundException | OverlappingEventException
                  | OverlappingAndOverdueEventException | EntryOverdueException e) {
@@ -135,8 +128,8 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     /**
-     * Update a given entry subtype {@code target} to a different type {@code editedEntry} by
-     * first adding {@code editedEntry} into the EntryBook followed by removing {@code target}.
+     * Change a given entry {@code target} to a different entry type {@code editedEntry} by
+     * first removing the {@code target} entry from the EntryBook followed by adding {@code editedEntry}.
      * @param target
      * @param editedEntry
      * @throws DuplicateEntryException
@@ -148,12 +141,18 @@ public class ModelManager extends ComponentManager implements Model {
     private void changeEntryType(ReadOnlyEntry target, ReadOnlyEntry editedEntry)
             throws DuplicateEntryException, OverlappingEventException, OverlappingAndOverdueEventException,
             EntryOverdueException, EntryNotFoundException {
-        entryBook.addEntry(editedEntry);
+        entryBook.removeEntry(target);
         try {
-            entryBook.removeEntry(target);
-        } catch (EntryNotFoundException enfe) {
-            // Revert back to initial state before edit was attempted
-            entryBook.removeEntry(editedEntry);
+            entryBook.addEntry(editedEntry);
+        } catch (DuplicateEntryException dee) {
+            // revert back to initial state
+            try {
+                entryBook.addEntry(target);
+            } catch (OverlappingEventException | OverlappingAndOverdueEventException
+                     | EntryOverdueException e) {
+                // Do nothing. Users do not need to be alerted of overlaps and overdue for reverting
+            }
+            throw dee;
         }
     }
 
