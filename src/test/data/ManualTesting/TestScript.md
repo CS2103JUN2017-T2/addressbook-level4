@@ -183,6 +183,33 @@ About 50 sample entries should be loaded on to the GUI panel.
 > Command: `ctrl` + `o`
 - `open` is entered into the command box.
 
+## Additional Features
+### Command word Autocomplete
+> Command: `del` + `tab key`
+- `del` is autocompleted to `delete`
+
+### List command word Autocomplete possibilities
+> Command: `c` + `tab key` twice quickly
+- The result display should show `c:  clear        complete`, showing `clear` and `complete` as the two Autocomplete possibilities from `c`.
+- The command entered is unchanged as `c`.
+
+### Command word and keywords Autocomplete
+> Command: `l u t` + `tab key`
+- The command entered is completed to `list upcoming to`.
+
+### Command word Autocorrect
+> Command: `dete` + `tab key`
+- The command entered is corrected to `delete`.
+
+### Command box focus keyboard shortcuts
+> Action: click somewhere else in the window apart from the command box to remove focus from it.
+> Command: `F6`
+- Focus returns to the command box.
+
+### Navigating command history keyboard shortcuts
+> Command: `up arrow` and `down arrow` keys
+- The `up arrow` key brings up the previously entered command into the command box, and the `down arrow` key brings up the next entered command into the command box.
+
 
 # Outdated
 ## Add Command
@@ -217,50 +244,7 @@ Scroll down the Floating Task list to ensure that the entry is edited successful
    and notice that the active lists are still empty.
    Use the undo shortcut `Ctrl`+`Z` to make one additional undo, this will undo the changes made by `clear` and the active entries should appear.
    Redo can be done either by keying in the command `redo` or using the shortcut `Ctrl`+`Y`. The active entries should disappear again. Execute undo once more with `Ctrl`+`Z` to bring back the active entries for the upcoming tests.
-   
-### Time-Saving Features
-1. **Auto-complete for command word and multiple keywords**  
-   Key in the following line of incomplete words  
-   `l u t`
-   Press the `tab` key, and the command should auto-complete to `list upcoming to`.  
-   Complete the command
-   `list upcoming to 8pm`  
-1. **Double-`tab` to show all possibilities of possible words for autocomplete if a single match cannot be found**  
-   Key in the following in the command box  
-   `c`  
-   Press `tab` once. You should notice auto-complete doesn't work because there are two possible commands, i.e. `clear` and `complete`.  
-   Now, try pressing `tab` twice (double-tap) and MultiTasky should display the possible commands:  
-   `c: clear complete`
-1. **Shortcuts**
-   Try all the following keyboard shortcuts:
 
-   Keyboard Shortcut | Associated Command
-   ------------ | -------------
-   `F1` | `help`
-   `F2` | `edit`
-   `F3` | `find`
-   `F4` | `exit`
-   `F5` | `list`
-   `F6` | Brings focus back to command textbox
-   `Ctrl`+`S` | `save`
-   `Ctrl`+`O` | `open`
-   `Ctrl`+`Z` | `undo`
-   `Ctrl`+`Y` | `redo`
-   `Up` | Previous entered command
-   `Down` | Next entered command
-
-### Smart-Features
-1. **Auto-correct**  
-   Key in the following wrongly spelled command  
-   `lit revsi`  
-   Press `tab` and MultiTasky should be able to auto-correct the entered command to `list reverse`.
-2. **PowerSearch**  
-   _wrong order_: The following command  
-   `find sc2013` finds `CS2103`.  
-   _missing characters_: The following command  
-   `find cs213` finds `CS2103`.  
-   _wrong or extra characters_: The following command  
-   `find cs22223` finds `CS2103`.  
 3. **Smart Parsing**
    Key in the following command
    ```
