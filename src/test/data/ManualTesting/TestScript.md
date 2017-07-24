@@ -24,7 +24,7 @@ About 50 sample entries should be loaded on to the GUI panels.
 - Scroll down the Floating Task list to ensure that the entry is added successfully.
 
 ### Add a deadline 
-> Command:`add Pay camp fee by tomorrow 6 pm tag school important`   
+> Command: `add Pay camp fee by tomorrow 6 pm tag school important`   
 - This entry will be added to the Deadline List.  
 - On the GUI, the next day's date is displayed.  
 - The notations `one day from now` and time as `6 pm` are also displayed below the date.
@@ -39,7 +39,7 @@ About 50 sample entries should be loaded on to the GUI panels.
 
 ### Add a duplicate entry
 > Command: `add Wash dishes`
-- MultiTasky should prevent us from adding duplicate entries. This also applies to deadlines and floating tasks.
+- MultiTasky should prevent us from adding duplicate entries. This also applies to events and deadlines.
 - Tags are not taken into account to determine duplicates.
 
 ### Add an overlapping event
@@ -51,7 +51,7 @@ About 50 sample entries should be loaded on to the GUI panels.
 - The entry should be added successfully but with an alert that the added event is overdue. This is also true for adding deadlines.
 
 ### Add an overlapping and overdue event
-> Command: `add Register for SOC modules from 9 July to 10 July`
+> Command: `add Medical checkup from 9 July to 10 July`
 - The entry should be added successfully but with an alert that it is overdue and overlaps with existing event(s).
 
 ### Smart parsing for adding entries
@@ -95,18 +95,18 @@ About 50 sample entries should be loaded on to the GUI panels.
 - The event and deadline that is furthest in the future is shown at the top of the list.
 
 ### Listing entries after a certain date
-> Command: `list from July 26 2017`
-- All events and deadlines before July 26 2017 are no longer shown.
+> Command: `list from July 27 2017`
+- All events and deadlines before July 27 2017 are no longer shown.
 - Floating tasks remain unchanged.
 
 ### Listing entries before a certain date
-> Command: `list to July 26 2017`
-- All events and deadlines after July 26 2017 are no longer shown.
+> Command: `list to July 27 2017`
+- All events and deadlines after July 27 2017 are no longer shown.
 - Floating tasks remain unchanged.
 
 ### Listing entries between two dates
-> Command: `list from July 26 2017 to July 29 2017
-- Only events and deadlines between the two dates are shown.
+> Command: `list from July 27 2017 to July 29 2017`
+- Only events and deadlines between the current time of the two dates are shown.
 - Floating tasks remain unchanged.
 
 ### List command keyboard shortcut
