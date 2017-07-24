@@ -111,9 +111,11 @@ About 50 sample entries should be loaded on to the GUI panel.
 > Command: `delete float 2`
 - Deletes `Take Vitamin supplements` from the Floating Tasks Active list and moves it to Bin.
 
+### Delete deadline
 > Command: `delete deadline quiz`
 - Deletes `Do lecture quiz` from the Deadlines Active list and moves it to Bin.
 
+### Delete event
 > Command: `delete dish`
 - Lists two entries with the word dish, `Wash dishes` and `Run dishwasher`.
 - User can specify which entry to delete using the index. 
