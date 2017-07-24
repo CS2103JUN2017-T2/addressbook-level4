@@ -196,19 +196,19 @@ About 50 sample entries should be loaded on to the GUI panel.
 ## Undo and Redo Commands
 ### Undo
 > Command: `undo`
-- Undo the previous data mutating action (undo delete `Wash dishes`).
+- Undo the previous data mutating action (undo restore `Buy cornflakes`).
 
 ### Undo shortcut
 > Command: `Ctrl + Z`
-- Undo again using keyboard shortcut (undo delete `Do lecture quiz`)
+- Undo again using keyboard shortcut (undo restore `Register for FYP`)
 
 ### Redo
 > Command: `redo`
-- Redo the previous undo (redo delete `Do lecture quiz`)
+- Redo the previous undo (redo restore `Register for FYP`)
 
 ### Redo shortcut
 > Command: `Ctrl + Y`
-- Redo again using keyboard shortcut. (redo delete `Wash dishes`).
+- Redo again using keyboard shortcut. (redo restore `Buy cornflakes`).
 
 ## Save Command
 ### Save entries to user-specified filepath
