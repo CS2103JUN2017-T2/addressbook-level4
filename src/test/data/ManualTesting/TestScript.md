@@ -6,7 +6,7 @@ This is a guide which explains the steps to perform manual testing to users.
 1. Download the `SampleData.xml` file from [GitHub repository](https://github.com/CS2103JUN2017-T2/main/blob/master/src/test/data/ManualTesting/SampleData.xml).
 1. Start MultiTasky using the `.jar` file.
 1. Load the sample data by entering the command `open <filepath to SampleData.xml>`.  
-About 50 sample entries should be loaded on to the GUI panel.
+About 50 sample entries should be loaded on to the GUI panels.
 
 ## Help Command
 ### Opening the help window
@@ -33,6 +33,10 @@ About 50 sample entries should be loaded on to the GUI panel.
 > Command: `add Football match on 2nd August 6 pm to 9 pm tag play`  
 - Scroll down the Events List to ensure that it is successfully added.
 
+### Add an event using defaults for fast entry
+> Command: `add Christmas party from christmas 7pm`
+- A default duration of 1 hour will be used as the duration of the event to infer the ending datetime.
+
 ### Add a duplicate entry
 > Command: `add Wash dishes`
 - MultiTasky should prevent us from adding duplicate entries. This also applies to deadlines and floating tasks.
@@ -49,6 +53,10 @@ About 50 sample entries should be loaded on to the GUI panel.
 ### Add an overlapping and overdue event
 > Command: `add Register for SOC modules from 9 July to 10 July`
 - The entry should be added successfully but with an alert that it is overdue and overlaps with existing event(s).
+
+### Smart parsing for adding entries
+> Command: `add visit gardens by the bay by christmas`
+- Scroll to the new deadline entry and verify that `by the bay` is correctly parsed as a name and not a date. MultiTasky is able to identify the correct "by" word and figure out the deadline.
 
 ## Complete Command
 ### Completing an entry by index
@@ -127,7 +135,7 @@ About 50 sample entries should be loaded on to the GUI panel.
 - the entry `teach Mom to use Excel` is converted from a floating task to an event.
 
 ### Using saved edit details
-> Command: `edit party from 27 dec 7pm to 9pm`
+> Command: `edit party from 27 dec 7pm to 9pm`  
 > Command: `edit event 2`
 - If more than one entries are found through edit by keyword search, the edit details are saved and user can use index or hone the keyword search to identify the target entry to edit with the saved edit details.
 
@@ -286,7 +294,7 @@ About 50 sample entries should be loaded on to the GUI panel.
 - The command entered is corrected to `delete`.
 
 ### Command box focus keyboard shortcuts
-> Action: click somewhere else in the window apart from the command box to remove focus from it.
+> Action: click somewhere else in the window apart from the command box to remove focus from it.  
 > Command: `F6`
 - Focus returns to the command box.
 
