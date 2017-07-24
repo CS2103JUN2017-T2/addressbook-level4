@@ -195,17 +195,16 @@ About 50 sample entries should be loaded on to the GUI panels.
 ## Restore Command
 ### Restore an archived entry using keywords
 > Command: `list archive` 
-
 > Command: `restore Register for FYP` 
 - List all archived entries and restore "Register for FYP" deadline. The entry should disappear from the archived after it is restored.
-> Command: `list`
+> Command: `list`  
 - This brings back the active list, which should have the restored "Register for FYP" deadline.
 
 ### Restore an archived entry using index
-> Command: `list archive`
-> Command: `restore float 2`
+> Command: `list archive`  
+> Command: `restore float 2`  
 - This should restore the floating task "Buy cornflakes".
-> Command: `list`
+> Command: `list`  
 - This brings back the active list, which should have the restored "Buy cornflakes" floating task.
 
 ## History Command
@@ -252,25 +251,25 @@ About 50 sample entries should be loaded on to the GUI panels.
 
 ## Clear command
 ### Clear active entries
-> Command: `list`
-> Command: `clear`
+> Command: `list`  
+> Command: `clear`  
 - Active entries are listed, and then cleared.
 
-> Command: `undo`
+> Command: `undo`  
 - Active entries are brought back.
 
 ### Clear bin
-> Command: `list bin`
-> Command: `clear bin`
+> Command: `list bin`  
+> Command: `clear bin`  
 - The bin is cleared.
-> Command: `list`
+> Command: `list`  
 - Entries which are active should still be present.
-> Command: `undo`
+> Command: `undo`  
 - Execute undo to bring back the cleared entries for subsequent tests.
 
 ### Clear archive
-> Command: `list archive`
-> Command: `clear archive`
+> Command: `list archive`  
+> Command: `clear archive`  
 - The archive is cleared.
 > Command: `list`
 - Entries which are active should still be present.
@@ -305,15 +304,15 @@ About 50 sample entries should be loaded on to the GUI panels.
 
 ### Command box focus keyboard shortcuts
 > Action: click somewhere else in the window apart from the command box to remove focus from it.  
-> Command: `F6`
+> Command: `F6`  
 - Focus returns to the command box.
 
 ### Navigating command history keyboard shortcuts
-> Command: `up arrow` and `down arrow` keys
+> Command: `up arrow` and `down arrow` keys  
 - The `up arrow` key brings up the previously entered command into the command box, and the `down arrow` key brings up the next entered command into the command box.
 
 ## Exit command
-> `exit`
+> `exit`  
 - MultiTasky should be closed normally.
 
 **End of Manual Test Script**
