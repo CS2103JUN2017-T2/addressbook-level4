@@ -262,10 +262,6 @@ About 50 sample entries should be loaded on to the GUI panel.
 > Command: `undo`
 - Execute undo to bring back the cleared entries for subsequent tests.
 
-## Exit command
-> `exit`
-- MultiTasky should be closed normally.
-
 ## Additional Features
 ### Command word Autocomplete
 > Command: `del` + `tab key`
@@ -293,8 +289,11 @@ About 50 sample entries should be loaded on to the GUI panel.
 > Command: `up arrow` and `down arrow` keys
 - The `up arrow` key brings up the previously entered command into the command box, and the `down arrow` key brings up the next entered command into the command box.
 
+## Exit command
+> `exit`
+- MultiTasky should be closed normally.
 
-# End of Manual Test Script
+**End of Manual Test Script**
 
 # Outdated
 ## Add Command
