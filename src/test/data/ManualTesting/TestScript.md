@@ -8,6 +8,16 @@ This is a guide which explains the steps to perform manual testing to users.
 1. Load the sample data by entering the command `open <filepath to SampleData.xml>`.  
 About 50 sample entries should be loaded to the GUI panel.
 
+## Complete
+### Completing a task by index
+> Command: `complete deadline 1`
+- The first entry in the active deadlines list (`V0.5RC due`) is moved to the archive.
+
+### Completing a task by keyword search
+> Command: `complete mpe modules`
+- The entry `Register for MPE for modules` is moved to the archive.
+- We do not need to specify the full name to select the entry to complete, as long as the keywords provided are sufficient to identify a single entry.
+
 ## Test Cases
 ### Basic Features
 1. **Add a floating task**  
