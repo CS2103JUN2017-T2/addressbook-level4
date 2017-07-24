@@ -112,10 +112,11 @@ About 50 sample data should be loaded to the GUI panel.
    _Overlapping Events_  
    Try adding an overlapping event with existing entry  
    `add Driving test from 28 July 10am to 28 July 11am`  
-   The entry should be successfully added but with an alert that it overlaps with existing event(s).
+   The entry should be added successfully but with an alert that it overlaps with existing event(s).
    
    _Overdue Events or Deadlines_  
-   `add 
+   `add NDP 2016 on 9 August 2016 to 9 Aug 2016`  
+   The entry should be added successfully but with an alert that the added event is overdue.  
 
 1. **Default duration for fast entry**  
    `add Christmas party from christmas 7pm`  
