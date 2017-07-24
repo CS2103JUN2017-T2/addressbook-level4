@@ -6,7 +6,7 @@ This is a guide which explains the steps to perform manual testing to users.
 1. Download the `SampleData.xml` file from [GitHub repository](https://github.com/CS2103JUN2017-T2/main/blob/master/src/test/data/ManualTesting/SampleData.xml).
 1. Start MultiTasky using the `.jar` file.
 1. Load the sample data by entering the command `open <filepath to SampleData.xml>`.  
-About 50 sample entries should be loaded on to the GUI panel.
+About 50 sample entries should be loaded on to the GUI panels.
 
 ## Help Command
 ### Opening the help window
@@ -196,19 +196,19 @@ About 50 sample entries should be loaded on to the GUI panel.
 ## Undo and Redo Commands
 ### Undo
 > Command: `undo`
-- Undo the previous data mutating action (undo delete `Wash dishes`).
+- Undo the previous data mutating action (undo restore `Buy cornflakes`).
 
 ### Undo shortcut
 > Command: `Ctrl + Z`
-- Undo again using keyboard shortcut (undo delete `Do lecture quiz`)
+- Undo again using keyboard shortcut (undo restore `Register for FYP`)
 
 ### Redo
 > Command: `redo`
-- Redo the previous undo (redo delete `Do lecture quiz`)
+- Redo the previous undo (redo restore `Register for FYP`)
 
 ### Redo shortcut
 > Command: `Ctrl + Y`
-- Redo again using keyboard shortcut. (redo delete `Wash dishes`).
+- Redo again using keyboard shortcut. (redo restore `Buy cornflakes`).
 
 ## Save Command
 ### Save entries to user-specified filepath
@@ -262,10 +262,6 @@ About 50 sample entries should be loaded on to the GUI panel.
 > Command: `undo`
 - Execute undo to bring back the cleared entries for subsequent tests.
 
-## Exit command
-> `exit`
-- MultiTasky should be closed normally.
-
 ## Additional Features
 ### Command word Autocomplete
 > Command: `del` + `tab key`
@@ -293,8 +289,11 @@ About 50 sample entries should be loaded on to the GUI panel.
 > Command: `up arrow` and `down arrow` keys
 - The `up arrow` key brings up the previously entered command into the command box, and the `down arrow` key brings up the next entered command into the command box.
 
+## Exit command
+> `exit`
+- MultiTasky should be closed normally.
 
-# End of Manual Test Script
+**End of Manual Test Script**
 
 # Outdated
 ## Add Command
