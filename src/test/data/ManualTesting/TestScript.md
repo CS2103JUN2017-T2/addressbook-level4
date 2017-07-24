@@ -43,8 +43,8 @@ About 50 sample entries should be loaded to the GUI panel.
    To find a completed entry (in archive), do  
    `find turtle archive`
 1. **Clearing entries**  
-   `list`
-   `clear`  
+   `list`  
+   `clear`    
    Active entries are listed, and then cleared.  
    
    `list bin`  
