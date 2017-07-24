@@ -86,9 +86,12 @@ About 50 sample data should be loaded to the GUI panel.
    `lit revsi`  
    Press `tab` and MultiTasky should be able to auto-correct the entered command to `list reverse`.
 2. **PowerSearch**  
-   Key in the following command
-   `find cs223`  
-   PowerSearch should be able to compensate for missing/wrong characters and finds entries related to the keyword `CS2103`.
+   _wrong order_: The following command  
+   `find sc2013` finds `CS2103`.  
+   _missing characters_: The following command  
+   `find cs213` finds `CS2103`.  
+   _wrong or extra characters_: The following command  
+   `find cs22223` finds `CS2103`.  
 3. **Smart Parsing**
    Key in the following command
    ```
